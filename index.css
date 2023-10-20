@@ -142,16 +142,12 @@ button{
     flex-direction: row;
     gap: 0.2vw;
     align-items: center;
-  }
-  /* .calender-icon-input {
-    position:initial;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-  }
-  
-  */
-  .day{
+}
+.birthday{
+    margin-bottom: 1vh;
+    color: white;
+}
+.day{
     background-image: url('Icons/calendar-outline.svg');
     background-position: left center;
     background-repeat: no-repeat;
@@ -175,7 +171,7 @@ button{
     width: 3.6vw;
     text-align: right;
 }
-.birthday-input input{
-    padding-right: 10px;
-    margin: 10px;
+.birthday-input {
+    color: black;
+    margin-top: 1vh;
 }
