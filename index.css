@@ -12,16 +12,28 @@ section{
     min-height: 100vh;
     width: 100%;
 
-    background: url('background3.jpg');
+    background: url('Images/background3.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     background-position: center center;
 }
-.form-box{
+.register-box{
     position: relative;
-    width: 400px;
-    height: 450px;
+    width: 25vw;
+    height: 80vh;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-box{
+    position: relative;
+    width: 25vw;
+    height: 50vh;
     background: transparent;
     border: 2px solid rgba(255,255,255,0.5);
     border-radius: 20px;
@@ -37,8 +49,8 @@ h2{
 }
 .inputbox{
     position: relative;
-    margin: 30px 0;
-    width: 310px;
+    margin: 1vw 0;
+    width: 22vw;
     border-bottom: 2px solid white;
 }
 .inputbox label{
@@ -51,9 +63,11 @@ h2{
     pointer-events: none;
     transition: .5s;
 }
-input:focus ~ label,input:valid ~ label{
-    top: -5px;
+input:focus ~ label,
+input:valid ~ label{
+top: -5px;
 }
+
 .inputbox input{
     width: 100%;
     height: 50px;
@@ -72,7 +86,7 @@ input:focus ~ label,input:valid ~ label{
     top: 20px;
 }
 .forget{
-    margin: -15px 0 15px;
+    margin: 2vh 0 2vh;
     font-size: .9em;
     color: white;
     display: flex;
@@ -91,9 +105,16 @@ a{
 .forget label a:hover{
     text-decoration: underline;   
 }
+.privacy-policy{
+    margin: 1vw 0;
+    width: 22vw;
+}
+.privacy-policy label input{
+    margin-right: 3px;
+}
 button{
     width: 100%;
-    height: 40px;
+    height: 5vh;
     border-radius: 40px;
     background: white;
     border: none;
@@ -106,7 +127,7 @@ button{
     font-size: .9em;
     color: white;
     text-align: center;
-    margin: 25px 0 10px;
+    margin: 2vh 0 1vh;
 }
 .register p a{
     text-decoration: none;
@@ -115,4 +136,46 @@ button{
 }
 .register p a:hover{
     text-decoration: underline;
+}
+.birthday-input {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2vw;
+    align-items: center;
+  }
+  /* .calender-icon-input {
+    position:initial;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  */
+  .day{
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 1vw 1vw; /* Adjust the size as needed */
+    width: 2.7vw;
+    text-align: right;
+}
+.month {
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 1vw 1vw; /* Adjust the size as needed */
+    width: 2.9vw;
+    text-align: right;
+}
+.year {
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 1vw 1vw; /* Adjust the size as needed */
+    width: 3.6vw;
+    text-align: right;
+}
+.birthday-input input{
+    padding-right: 10px;
+    margin: 10px;
 }
