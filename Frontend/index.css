@@ -4,7 +4,6 @@
     padding: 0;
     font-family: 'poppins',sans-serif;
 }
-
 section{
     display: flex;
     justify-content: center;
@@ -18,29 +17,30 @@ section{
     background-attachment: fixed;
     background-position: center center;
 }
-.register-box{
-    position: relative;
-    width: 25vw;
-    height: 80vh;
-    background: transparent;
-    border: 2px solid rgba(255,255,255,0.5);
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .login-box{
     position: relative;
-    width: 25vw;
-    height: 50vh;
+    /* max-width: 25vw; */
+    max-width: 380px;
+    width: 90%;
+    height: 50%;
+    min-height: 55vh;
     background: transparent;
-    border: 2px solid rgba(255,255,255,0.5);
-    border-radius: 20px;
+    border: 0.1vw solid rgba(255,255,255,0.5);
+    border-radius: 30px;
     backdrop-filter: blur(15px);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+.login-value{
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 h2{
     font-size: 2em;
@@ -50,13 +50,13 @@ h2{
 .inputbox{
     position: relative;
     margin: 1vw 0;
-    width: 22vw;
-    border-bottom: 2px solid white;
+    width: 100%;
+    border-bottom: 0.3vh solid white;
 }
 .inputbox label{
     position: absolute;
     top: 50%;
-    left: 5px;
+    left: 0.3vw;
     transform: translateY(-50%);
     color: white;
     font-size: 1em;
@@ -65,25 +65,25 @@ h2{
 }
 input:focus ~ label,
 input:valid ~ label{
-top: -5px;
+    top: -0.1vh;
 }
 
 .inputbox input{
     width: 100%;
-    height: 50px;
+    height: 5vh;
     background: transparent;
     border: none;
     outline: none;
     font-size: 1em;
-    padding:0 35px 0 5px;
+    padding:0 3.5vw 0 0.4vw;
     color: white;
 }
 .inputbox ion-icon{
     position: absolute;
-    right: 8px;
+    right: 0.4vw;
     color: white;
     font-size: 1.2em;
-    top: 20px;
+    top: 2vh;
 }
 .forget{
     margin: 2vh 0 2vh;
@@ -93,10 +93,10 @@ top: -5px;
     justify-content: center;
 }
 a{
-    margin-left: 30px;
+    margin-left: 3vw;
 }
 .forget label input{
-    margin-right: 3px;
+    margin-right: 0.3vw;
 }
 .forget label a{
     color: white;
@@ -104,13 +104,6 @@ a{
 }
 .forget label a:hover{
     text-decoration: underline;   
-}
-.privacy-policy{
-    margin: 1vw 0;
-    width: 22vw;
-}
-.privacy-policy label input{
-    margin-right: 3px;
 }
 button{
     width: 100%;
@@ -137,41 +130,14 @@ button{
 .register p a:hover{
     text-decoration: underline;
 }
-.birthday-input {
-    display: flex;
-    flex-direction: row;
-    gap: 0.2vw;
-    align-items: center;
+@media (max-width: 768px) {
+    .login-box {
+        width: 70%; /* Adjust the width for smaller screens (e.g., 95% of the parent container) */
+    }
 }
-.birthday{
-    margin-bottom: 1vh;
-    color: white;
-}
-.day{
-    background-image: url('Icons/calendar-outline.svg');
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 1vw 1vw; /* Adjust the size as needed */
-    width: 2.7vw;
-    text-align: right;
-}
-.month {
-    background-image: url('Icons/calendar-outline.svg');
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 1vw 1vw; /* Adjust the size as needed */
-    width: 2.9vw;
-    text-align: right;
-}
-.year {
-    background-image: url('Icons/calendar-outline.svg');
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 1vw 1vw; /* Adjust the size as needed */
-    width: 3.6vw;
-    text-align: right;
-}
-.birthday-input {
-    color: black;
-    margin-top: 1vh;
+
+@media (max-width: 480px) {
+    .login-box {
+        width: 80%; /* Adjust the width for even smaller screens (100% of the parent container) */
+    }
 }
