@@ -21,7 +21,6 @@ public class RecipeRequest {
     }
 
 
-
     public String getTitle() {
         return title;
     }
