@@ -5,21 +5,23 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.RefreshToken;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.RefreshTokenRepository;
 
-
 @Service
 public class RefreshTokenService {
-	
+
 	@Value("${refresh.token.expires.in}")
 	Long expireSeconds;
-	
-	private RefreshTokenRepository refreshTokenRepository;
 
+	@Autowired
+	 RefreshTokenRepository refreshTokenRepository;
+
+	@Autowired
 	public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
 		this.refreshTokenRepository = refreshTokenRepository;
 	}

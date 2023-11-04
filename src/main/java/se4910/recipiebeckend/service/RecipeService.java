@@ -18,13 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class RecipeService {
 
-    @Autowired
     RecipeRepository recipeRepository;
-    @Autowired
     RatesService ratesService;
-
-    @Autowired
-    RatesRepository ratesRepository;
     public List<Recipe> getAllRecipes()
     {
         return recipeRepository.findAll();

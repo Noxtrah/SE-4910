@@ -1,21 +1,32 @@
 package se4910.recipiebeckend.security;
 
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+
+@Component
 public class JwtTokenProvider {
 
-    @Value("${recipie.secret}")
+    @Value("${recipie.app.secret}")
     private String RECIPIE_SECRET;
 
-    @Value("${recipie.expirationInMs}")
+    @Value("${recipie.expires.in}")
     private long EXPIRES_IN;
+
+
 
     public String generateJwtToken(Authentication auth) {
         JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();

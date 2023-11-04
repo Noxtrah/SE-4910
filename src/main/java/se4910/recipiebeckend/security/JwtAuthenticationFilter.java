@@ -18,8 +18,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
+    @Autowired
     JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Override

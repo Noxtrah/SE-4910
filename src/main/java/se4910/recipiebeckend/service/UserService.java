@@ -18,14 +18,12 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
+
     UserRepository userRepository;
 
     @Autowired
     UserRecipeRepository userRecipeRepository;
-
-    PasswordEncoder passwordEncoder;
-
+    
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -40,7 +38,7 @@ public class UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User getOneUserByUsername(String username) { return userRepository.findByUserName(username);}
+    public User getOneUserByUsername(String username) { return userRepository.findUserByUsername(username);}
 
     public ResponseEntity<String> saveUserRecipe(UserRecipeRequest userRecipeRequest)
     {
