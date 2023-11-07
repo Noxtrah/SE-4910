@@ -1,5 +1,6 @@
 package se4910.recipiebeckend.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,12 +16,11 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import se4910.recipiebeckend.entity.User;
 
 @Component
 public class JwtTokenProvider {
 
-    @Value("${recipie.app.secret}")
+   @Value("${recipie.app.secret}")
     private String RECIPIE_SECRET;
 
     @Value("${recipie.expires.in}")

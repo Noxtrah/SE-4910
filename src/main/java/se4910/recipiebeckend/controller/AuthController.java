@@ -2,33 +2,17 @@ package se4910.recipiebeckend.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import se4910.recipiebeckend.entity.RefreshToken;
-import se4910.recipiebeckend.entity.Role;
-import se4910.recipiebeckend.entity.User;
+import org.springframework.web.bind.annotation.*;
 import se4910.recipiebeckend.repository.RoleRepository;
 import se4910.recipiebeckend.request.LoginRequest;
 import se4910.recipiebeckend.request.NewUserRequest;
 import se4910.recipiebeckend.request.RefreshRequest;
 import se4910.recipiebeckend.response.AuthResponse;
-import se4910.recipiebeckend.security.JwtTokenProvider;
 import se4910.recipiebeckend.service.AuthenticationService;
-import se4910.recipiebeckend.service.RefreshTokenService;
 import se4910.recipiebeckend.service.UserService;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -49,6 +33,11 @@ public class AuthController
 
         return authenticationService.loginUser(loginRequest.getUsername(),loginRequest.getPassword());
 
+    }
+    @GetMapping("/hello")
+    public String hello()
+    {
+        return "hello";
     }
 
     @PostMapping("/register")
@@ -73,3 +62,5 @@ public class AuthController
 
     }
 }
+
+

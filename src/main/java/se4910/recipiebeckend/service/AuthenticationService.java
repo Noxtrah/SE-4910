@@ -21,6 +21,7 @@ import se4910.recipiebeckend.request.RefreshRequest;
 import se4910.recipiebeckend.response.AuthResponse;
 import se4910.recipiebeckend.security.JwtTokenProvider;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,7 +65,10 @@ public class AuthenticationService {
         user.setUsername(registerRequest.getUsername());
         user.setName(registerRequest.getName());
         user.setLastName(registerRequest.getLastName());
-        user.setBirthDay(registerRequest.getBirthDay());
+        if(registerRequest.getBirthDay() != null)
+        {
+            user.setBirthDay(registerRequest.getBirthDay());
+        }
         user.setEmail(registerRequest.getEmail());
         Role userRole = roleRepository.findByName("USER");
         Set<Role> authorities = new HashSet<>();

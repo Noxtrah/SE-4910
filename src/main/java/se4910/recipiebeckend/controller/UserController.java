@@ -7,6 +7,7 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.service.UserService;
 
+
 @RequestMapping("/user")
 @RestController
 public class UserController {
