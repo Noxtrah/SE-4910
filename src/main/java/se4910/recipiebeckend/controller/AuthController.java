@@ -2,6 +2,7 @@ package se4910.recipiebeckend.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,11 +34,6 @@ import java.util.Set;
 @RequestMapping("/auth")
 public class AuthController
 {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
-    private  final PasswordEncoder passwordEncoder;
-    private final RefreshTokenService refreshTokenService;
 
     @Autowired
     AuthenticationService authenticationService;
@@ -45,14 +41,8 @@ public class AuthController
     @Autowired
     RoleRepository roleRepository;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-                          UserService userService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.refreshTokenService = refreshTokenService;
-    }
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest loginRequest) {

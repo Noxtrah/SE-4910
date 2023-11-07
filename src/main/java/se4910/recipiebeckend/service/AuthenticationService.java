@@ -25,26 +25,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@Transactional
 public class AuthenticationService {
 
-    private  AuthenticationManager authenticationManager;
-    private  JwtTokenProvider jwtTokenProvider;
+    AuthenticationManager authenticationManager;
+    JwtTokenProvider jwtTokenProvider;
+    PasswordEncoder passwordEncoder;
+    RefreshTokenService refreshTokenService;
+
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RefreshTokenService refreshTokenService;
 
     public AuthResponse loginUser(String username, String password){
 
