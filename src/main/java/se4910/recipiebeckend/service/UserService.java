@@ -3,6 +3,9 @@ package se4910.recipiebeckend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.User;
@@ -12,11 +15,12 @@ import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
 import se4910.recipiebeckend.request.NewUserRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
+import se4910.recipiebeckend.security.JwtUserDetails;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
 
     UserRepository userRepository;
@@ -81,4 +85,18 @@ public class UserService {
 
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return JwtUserDetails.create(user);
+    }
+
+    public UserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id).get();
+        return JwtUserDetails.create(user);
+
+    }
 }

@@ -35,9 +35,9 @@ public class JwtUserDetails  implements UserDetails {
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
-
         return new JwtUserDetails(user.getId(), user.getUsername(), user.getPassword(), authoritiesList);
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -29,8 +29,17 @@ public class User{
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id",nullable = false)
     private Set<Role> roles;
 
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;
