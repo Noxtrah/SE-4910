@@ -34,14 +34,10 @@ public class AuthController
         return authenticationService.loginUser(loginRequest.getUsername(),loginRequest.getPassword());
 
     }
-    @GetMapping("/hello")
-    public String hello()
-    {
-        return "hello";
-    }
+
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody NewUserRequest registerRequest) {
+    public ResponseEntity<AuthResponse> register(@RequestBody NewUserRequest registerRequest) {
 
         AuthResponse authResponse = new AuthResponse();
         if(userService.getOneUserByUsername(registerRequest.getUsername()) != null) {

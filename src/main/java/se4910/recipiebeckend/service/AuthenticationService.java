@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.token.TokenService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import se4910.recipiebeckend.request.NewUserRequest;
 import se4910.recipiebeckend.request.RefreshRequest;
 import se4910.recipiebeckend.response.AuthResponse;
 import se4910.recipiebeckend.security.JwtTokenProvider;
+import se4910.recipiebeckend.security.JwtUserDetails;
 
 
 import java.util.HashSet;
@@ -28,11 +30,12 @@ import java.util.Set;
 @Service
 public class AuthenticationService {
 
-    AuthenticationManager authenticationManager;
     JwtTokenProvider jwtTokenProvider;
     PasswordEncoder passwordEncoder;
     RefreshTokenService refreshTokenService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     RoleRepository roleRepository;
@@ -40,25 +43,23 @@ public class AuthenticationService {
     @Autowired
     UserService userService;
 
+
     public AuthResponse loginUser(String username, String password){
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-
-        String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-
         User user = userService.getOneUserByUsername(username);
-
+        UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
+        String jwtToken = jwtTokenProvider.generateJwtToken((JwtUserDetails) userDetails);
         AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("new token");
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setUserId(user.getId());
-
         String refreshToken = refreshTokenService.createRefreshToken(user);
         authResponse.setRefreshToken(refreshToken);
-
         return authResponse;
     }
 
-    public ResponseEntity<String> registerUser(NewUserRequest registerRequest)
+    public ResponseEntity<AuthResponse> registerUser(NewUserRequest registerRequest)
     {
 
         User user = new User();
@@ -73,9 +74,13 @@ public class AuthenticationService {
         Role userRole = roleRepository.findByName("USER");
         Set<Role> authorities = new HashSet<>();
         authorities.add(userRole);
+        user.setRoles(authorities);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         userService.saveOneUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Registration successful.");
+        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+
 
     }
 

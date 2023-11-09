@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -26,13 +27,10 @@ public class JwtTokenProvider {
     @Value("${recipie.expires.in}")
     private long EXPIRES_IN;
 
-    JwtUserDetails jwtUserDetails;
 
-    public String generateJwtToken(Authentication auth) {
+    public String generateJwtToken(JwtUserDetails userDetails) {
 
-        JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
         Date expireDate = new Date(new Date().getTime() + EXPIRES_IN);
-
         List<String> roles = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
