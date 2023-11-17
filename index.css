@@ -47,6 +47,10 @@ ul{
   display: flex;
 }
 
+.column{
+  display: grid;
+}
+
 .container{
   max-width: 90%;
   margin: 0 auto;
@@ -75,4 +79,42 @@ nav ul{
 .primary-links{
   margin: auto;
 }
+
+nav a, .footer-content ul a {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+nav a:hover, .footer-content ul a:hover, .footer-links ul a:hover{
+  color:var(--cl-3--);
+  fill:var(--cl-3--);
+}
 /* End Navigation */
+
+/* Hero Section */
+.hero{
+  position: relative;
+  margin: 2em 0;
+  fill: var(--cl-2--);
+}
+
+.hero::after, .hero::before{
+  content:"";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 90%;
+  width: 2.5%;
+  background: var(--cl-4--);
+}
+
+.hero::after{
+  left: 0;
+  border-radius: 0p;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+}
+/* End Hero Section */
