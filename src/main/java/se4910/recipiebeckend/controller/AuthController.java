@@ -37,26 +37,13 @@ public class AuthController
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody NewUserRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody NewUserRequest registerRequest) {
 
-        AuthResponse authResponse = new AuthResponse();
-        if(userService.getOneUserByUsername(registerRequest.getUsername()) != null) {
-            authResponse.setMessage("Username already in use.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else {
-            return authenticationService.registerUser(registerRequest);
-        }
 
+       return authenticationService.register(registerRequest);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
 
-       return authenticationService.refresh(refreshRequest);
-
-
-    }
 }
 
 
