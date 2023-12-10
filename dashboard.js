@@ -166,6 +166,55 @@ function toggleFavorite(element) {
       input.value = '';
     }
   }
+  //Call jQuery before below code
+  $('.search-description').hide();
+  $('.main-btn').click(function() {
+	$('.search-description').slideToggle(300);
+  });
+  $('.search-description li').click(function() {
+	var target = $(this).html();
+	console.log("Target = " + target);
+	var toRemove = 'By ';
+	var newTarget = target.replace(toRemove, '');
+	console.log("new Taget = ", newTarget);
+	//remove spaces
+	newTarget = newTarget.replace(/\s/g, '');
+	console.log("new Taget after = ", newTarget);
+	$(".search-large").html(newTarget);
+	$('.search-description').hide();
+	$('.main-input').hide();
+	newTarget = newTarget.toLowerCase();
+	console.log("lower new Taget = ", newTarget);
+	$('.main-' + newTarget).show();
+  });
+  $('#main-submit-mobile').click(function() {
+	$('#main-submit').trigger('click');
+  });
+  $(window).resize(function() {
+	replaceMatches();
+  });
+  
+  function replaceMatches() {
+	var width = $(window).width();
+	if (width < 516) {
+	  $('.main-ingredients').attr('value', 'Ingredients');
+	} else {
+	  $('.main-ingredients').attr('value', 'Search by ingredients');
+	}
+  };
+  replaceMatches();
+  
+  function clearText(thefield) {
+	if (thefield.defaultValue == thefield.value) {
+	  thefield.value = ""
+	}
+  }
+  
+  function replaceText(thefield) {
+	if (thefield.value == "") {
+	  thefield.value = thefield.defaultValue
+	}
+  }
   
   
   
