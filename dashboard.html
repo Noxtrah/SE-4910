@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReciPie</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  
+   
+    <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
+
+    <script src="dashboard.js"></script>
+
+
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <!-- nav  -->
+    <nav class="navbar">
+      
+      <div class="nav-center">
+        <div class="nav-header">
+          <a href="index.html" class="nav-logo">
+            <img src="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=" alt="simply recipes" />
+          </a>
+          <button class="nav-btn btn">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+        <div  class="nav-links">
+          <a style="font-size: larger;" href="index.html" class="nav-link"> home </a>
+          <a style="font-size: larger;" href="about.html" class="nav-link"> about </a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link"> tags </a>
+          <a style="font-size: larger;" href="recipes.html" class="nav-link"> recipes </a>
+
+          <div class="nav-link contact-link">
+            <a href="profile.html" class="btn"> Profile </a>
+            <a href="contact.html" class="btn"> contact </a>
+          </div>
+        </div>
+      </div>
+      <br>
+    </nav>
+    <div >
+        
+      
+      </div>
+     <br>
+
+            </div>
+          </div>
+        </div>
+       
+    </div>
+    
+   <div class="searchS">
+    <p style="color: black; font-size:small; margin-left: 100px;" class="text">
+        This is a search bar that supports tags.<br>
+        Type <b>@ingredients yourText</b> and press <b>Enter, space or comma</b> to create a tag.<br>
+        You can also <b>click</b> on a tag to edit or delete it.
+    </p>
+    <div class="searchess">
+    <div id="searchWrapper">
+        <div id="inputWrapper">
+            <div id="tagWrapper"></div>
+            <span id="searchInput" contenteditable></span>
+        </div>
+    </div>
+      
+        <div><input type="text" name="search" placeholder="Search.."></div>
+        </div>
+    </div>
+    <!-- end of nav -->
+    <!-- main -->
+    <main class="page">
+      <!-- header -->
+      <header class="hero">
+        <div  class="hero-container" style="background-image: url(https://evinstudio.com/upload/wysiwyg/fotograf-edy-v-ekaterinburge-evgenii-evin-12-1811.jpg);  background-size: cover;">
+          <div class="hero-text">
+           
+            <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(0, 0, 0);">Blah Blah</h1>
+            <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4>
+          </div>
+        </div>
+      </header>
+      <!-- end of header -->
+      <section class="recipes-container">
+        <!-- tag container -->
+        <div class="tags-container">
+          <h4>recipes</h4>
+          <div class="tags-list">
+            <a href="tag-template.html">Dinner </a>
+            <a href="tag-template.html">Breakfast </a>
+            <a href="tag-template.html">Dessert </a>
+            <a href="tag-template.html">Lunch </a>
+            <a href="tag-template.html">Snack </a>
+          </div>
+          
+         
+        </div>
+      
+        
+        <!-- end of tag container -->
+        <!-- recipes list -->
+        <div
+        h1></h1>
+
+        <div class="select-container">
+          <label for="sorting">Sort By:</label>
+          <select id="sorting">
+            <option value="top-rated">Top Rated</option>
+            <option value="most-favorited">Most Favorited</option>
+          </select>
+        </div>
+<br>
+        <div class="recipes-list">
+            
+          <!-- single recipe -->
+          <div class="recipe">
+            <a href="single-recipe.html" class="recipe-link">
+              <img src="https://dfwblobstorage.blob.core.windows.net/images/Recipe/PF641ITALPASTAX1041-wc.jpg" class="img recipe-img" alt="" />
+            </a>
+            <div class="details">
+              <div class="rating">
+                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
+                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
+                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
+                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
+                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
+                  
+                <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
+              </div>
+              <h5>Fettuccine Alfredo</h5>
+              <p>Prep: 15min | Cook: 5min</p>
+            </div>
+        </div>
+    
+
+          <!-- end of single recipe -->
+          <!-- single recipe -->
+          <div class="recipe">
+          <a href="single-recipe.html" class="recipe-link">
+            <img src="https://dfwblobstorage.blob.core.windows.net/images/Recipe/PF641ITALPASTAX1041-wc.jpg" class="img recipe-img" alt="" />
+          </a>
+          <div class="details">
+            <div class="rating">
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
+                
+              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
+            </div>
+            <h5>Smoked Ribs</h5>
+            <p>Prep : 15min | Cook : 5min</p>
+          </div>
+        </div>
+    
+        <div class="recipe">
+        <a href="single-recipe.html" class="recipe-link">
+            <img src="" class="img recipe-img" alt="" />
+          </a>
+          <div class="details">
+            <div class="rating">
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
+                
+              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
+            </div>
+            <h5>Chicken Soup</h5>
+            <p>Prep : 15min | Cook : 5min</p>
+          </div>
+        </div>
+           
+        <div class="recipe">
+        <a href="single-recipe.html" class="recipe-link">
+            <img src="" class="img recipe-img" alt="" />
+          </a>
+          <div class="details">
+            <div class="rating">
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
+                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
+                
+              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
+            </div>
+            <h5>Chocolate Pancakes</h5>
+            <p>Prep : 15min | Cook : 5min</p>
+          </div>
+        </div>
+          
+          
+          <!-- end of single recipe -->
+        </div>
+        <!-- end of recipes list -->
+      </section>
+
+    </main>
+    <!-- end of main -->
+    <!-- footer -->
+    <br>
+
+<body>
+<body>
+    <div class="meal-planner">
+        <h1>Meal Planner</h1>
+        <input style="margin-bottom: 30px; margin-left: 30px;" type="text" id="searchMeal" placeholder="Search meal">
+        <button onclick="addMeal()">Add Meal</button>
+        <div class="days">
+          <div class="day" onclick="selectDay('monday')">
+            <h2 style="font-size:small;" >Monday</h2>
+            <ul id="mondayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('tuesday')">
+            <h2 style="font-size: small;" >Tuesday</h2>
+            <ul id="tuesdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('wednesday')">
+            <h2 style="font-size: small;" >Wednesday</h2>
+            <ul id="wednesdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('thursday')">
+            <h2 style="font-size: small;" >Thursday</h2>
+            <ul id="thursdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('friday')">
+            <h2 style="font-size: small;" >Friday</h2>
+            <ul id="fridayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('saturday')">
+            <h2 style="font-size: small;" >Saturday</h2>
+            <ul id="saturdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('sunday')">
+            <h2 style="font-size: small;" >Sunday</h2>
+            <ul id="sundayList"></ul>
+          </div>
+          <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->
+          <!-- Örnek olarak Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday ekleyebilirsiniz -->
+        </div>
+      </div>
+<br>
+<br>
+
+    <footer class="page-footer">
+
+      <p>
+   
+  </body>
+</html>
+                
