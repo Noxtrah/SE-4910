@@ -1,4 +1,4 @@
-package se4910.recipiebeckend.security;
+/*package se4910.recipiebeckend.security;
 
 import java.io.IOException;
 
@@ -20,3 +20,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 
 }
+*/

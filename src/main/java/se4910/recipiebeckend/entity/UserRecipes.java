@@ -4,8 +4,8 @@ package se4910.recipiebeckend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
-@Table(name="user_recipes")
+@Entity(name="user_recipes" )
+@Table(name="user_recipes" )
 @Data
 public class UserRecipes {
 
@@ -14,7 +14,7 @@ public class UserRecipes {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "users_id",nullable = false)
     private User user;
 
 
@@ -24,9 +24,8 @@ public class UserRecipes {
     @Column(nullable = false)
     private String ingredients;
 
-    @Lob
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
-
 
     private String cuisine;
 
@@ -36,7 +35,6 @@ public class UserRecipes {
 
     private int preparationTime;
 
-    @Lob
-    byte[] photoData;
+    private  String photoPath;
 
 }

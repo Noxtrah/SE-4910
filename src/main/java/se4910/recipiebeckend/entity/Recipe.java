@@ -3,10 +3,9 @@ package se4910.recipiebeckend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 
-@Entity
-@Table(name="recipe")
+@Entity(name="recipe" )
+@Table(name="recipe" )
 @Data
 public class Recipe {
 
@@ -20,9 +19,10 @@ public class Recipe {
   //  @Column(columnDefinition = "ingredients")
     private String ingredients;
 
-    @Lob
-   // @Column(columnDefinition = "description")
+
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
+
 
     private String cuisine;
 
@@ -30,8 +30,7 @@ public class Recipe {
 
     private int preparationTime;
 
-    @Lob
-    byte[] photoData;
+    private String photoPath;
 
 
     public void setId(Long id) {

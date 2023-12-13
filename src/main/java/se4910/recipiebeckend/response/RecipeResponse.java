@@ -1,6 +1,6 @@
 package se4910.recipiebeckend.response;
 
-import jakarta.persistence.Lob;
+
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.UserRecipes;
 
@@ -18,9 +18,7 @@ public class RecipeResponse {
     private String meal;
 
     private int preparationTime;
-
-    @Lob
-    byte[] photoData;
+    String photoPath;
     double rate;
 
 
@@ -32,7 +30,7 @@ public class RecipeResponse {
         this.cuisine = recipe.getCuisine();
         this.meal = recipe.getMeal();
         this.preparationTime = recipe.getPreparationTime();
-        this.photoData = recipe.getPhotoData();
+        this.photoPath = recipe.getPhotoPath();
         this.rate = rate;
 
     }
@@ -45,7 +43,7 @@ public class RecipeResponse {
         this.cuisine = recipe.getCuisine();
         this.meal = recipe.getMeal();
         this.preparationTime = recipe.getPreparationTime();
-        this.photoData = recipe.getPhotoData();
+        this.photoPath = recipe.getPhotoPath();
     }
 
     public RecipeResponse(UserRecipes userRecipes)
@@ -53,7 +51,7 @@ public class RecipeResponse {
         this.title = userRecipes.getTitle();
         this.ingredients = userRecipes.getIngredients();
         this.description = userRecipes.getDescription();
-        this.photoData = userRecipes.getPhotoData();
+        this.photoPath = userRecipes.getPhotoPath();
     }
 
     public String getTitle() {

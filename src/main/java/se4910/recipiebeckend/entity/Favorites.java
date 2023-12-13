@@ -6,7 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
+@Entity(name = "favorites")
 @Table(name="favorites")
 @Data
 public class Favorites {
@@ -23,7 +23,7 @@ public class Favorites {
     private Recipe recipe;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name="users_id", nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

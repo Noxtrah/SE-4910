@@ -10,7 +10,8 @@ public class UserRecipeRequest {
     private String cuisine;
     private String meal;
     private int preparationTime;
-    byte[] photoData;
+
+    private String photoPath;
 
 
     public long getId() {
@@ -21,12 +22,12 @@ public class UserRecipeRequest {
         this.id = id;
     }
 
-    public byte[] getPhotoData() {
-        return photoData;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhotoData(byte[] photoData) {
-        this.photoData = photoData;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     public String getTitle() {

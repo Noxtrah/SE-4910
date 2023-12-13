@@ -2,33 +2,41 @@ package se4910.recipiebeckend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.models.GroupedOpenApi;
 
 @Configuration
 public class SwaggerConfig {
 
-
-    public Docket api() {
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("se4910.recipie"))
-                .paths(PathSelectors.any())
-                .build().apiInfo(apiInfo());
-
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Recipie API")
-                .description("This is an API for managing recipes.")
-                .version("1.0.0")
+    // http://localhost:8282/swagger-ui/index.html#/
+    //https://airlinemidterm4458.azurewebsites.net/swagger-ui/index.html#/
+    @Bean
+    public GroupedOpenApi customApi() {
+        return GroupedOpenApi.builder()
+                .group("custom-api")
+                .pathsToMatch("/api/**")
                 .build();
     }
+
+    @Bean
+    public OpenAPI openApiConfiguration() {
+        return new OpenAPI()
+                .components(new Components()
+                        .addSecuritySchemes("bearer-key", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                        )
+                )
+                .info(new Info()
+                        .title("Recipie project")
+                        .version("1.0.0")
+                        .description("Project Api")
+                );
+
+    }
+
 }

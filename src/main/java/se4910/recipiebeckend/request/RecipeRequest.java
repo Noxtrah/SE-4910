@@ -1,25 +1,33 @@
 package se4910.recipiebeckend.request;
 
-import jakarta.persistence.Lob;
 
 public class RecipeRequest {
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
     private String title;
     private String ingredients;
     private String description;
     private String cuisine;
     private String meal;
     private int preparationTime;
-    byte[] photoData;
 
-    public byte[] getPhotoData() {
-        return photoData;
+    private String photoPath;
+
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhotoData(byte[] photoData) {
-        this.photoData = photoData;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
-
 
     public String getTitle() {
         return title;

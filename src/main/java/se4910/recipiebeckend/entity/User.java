@@ -10,8 +10,8 @@ import java.sql.Date;
 import java.util.Collection;
 import java.util.Set;
 
-@Entity(name = "user")
-@Table(name="`users`")
+@Entity(name="users" )
+@Table(name="users" )
 @Data
 public class User implements UserDetails {
 
@@ -33,7 +33,11 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id",nullable = false)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles;
 
 

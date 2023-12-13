@@ -6,7 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
+@Entity(name = "rates")
 @Table(name = "rates")
 @Data
 public class Rates {
@@ -27,7 +27,7 @@ public class Rates {
     private Recipe recipe;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name="users_id", nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 
-@Entity
+@Entity(name="refresh_token")
 @Table(name="refresh_token")
 @Data
 public class RefreshToken {
@@ -18,7 +18,7 @@ public class RefreshToken {
 
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", nullable=false)
+	@JoinColumn(name="users_id", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	User user;

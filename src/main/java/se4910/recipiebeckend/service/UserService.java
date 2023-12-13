@@ -1,26 +1,26 @@
 package se4910.recipiebeckend.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import se4910.recipiebeckend.entity.User;
 
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
 import se4910.recipiebeckend.request.UserRecipeRequest;
-import se4910.recipiebeckend.security.JwtUserDetails;
 
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
 
@@ -65,9 +65,9 @@ public class UserService implements UserDetailsService {
         {
           userRecipes.setMeal(userRecipeRequest.getMeal());
         }
-        if (userRecipeRequest.getPhotoData() != null)
+        if (userRecipeRequest.getPhotoPath() != null)
         {
-            userRecipes.setPhotoData(userRecipeRequest.getPhotoData());
+            userRecipes.setPhotoPath(userRecipeRequest.getPhotoPath());
         }
         User user = getOneUserById(userRecipeRequest.getUserId());
         userRecipes.setId(userRecipeRequest.getId());
@@ -93,13 +93,17 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return JwtUserDetails.create(user);
+        return  user;
     }
 
-    public UserDetails loadUserById(Long id) {
+    public UserDetails loadUserById(Long id)
+    {
         User user = userRepository.findById(id).get();
-        return JwtUserDetails.create(user);
-
+        if (user != null)
+        {
+            return user;
+        }
+        return null;
     }
 
 
