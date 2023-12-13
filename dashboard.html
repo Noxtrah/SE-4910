@@ -7,42 +7,44 @@
     <title>ReciPie</title>
     <!-- favicon -->
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
-  
-   
+
+
     <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
 
 
     <link rel="stylesheet" href="dashboard.css" />
   </head>
   <body>
+    <section class="backgorund">
     <!-- nav  -->
     <nav class="navbar">
-      
+
       <div class="nav-center">
         <div class="nav-header">
           <a href="index.html" class="nav-logo">
-            <img src="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=" alt="simply recipes" />
+            <img src="Icons/logo.svg" />
           </a>
           <button class="nav-btn btn">
             <i class="fas fa-align-justify"></i>
           </button>
         </div>
-        <div  class="nav-links">
-          <a style="font-size: larger;" href="index.html" class="nav-link"> home </a>
-          <a style="font-size: larger;" href="about.html" class="nav-link"> about </a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link"> tags </a>
-          <a style="font-size: larger;" href="recipes.html" class="nav-link"> recipes </a>
+        <div class="nav-links">
+          <a style="font-size: larger;" href="index.html" class="nav-link">Home</a>
+          <a style="font-size: larger;" href="about.html" class="nav-link">Recipes by Users</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link">Tags</a>
+          <a style="font-size: larger;" href="recipes.html" class="nav-link">Cuisines</a>
 
           <div class="nav-link contact-link">
-            <a href="profile.html" class="btn"> Profile </a>
-            <a href="contact.html" class="btn"> contact </a>
+            <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
+            <a href="profile.html" class="btn">
+              <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+            </a>
           </div>
         </div>
       </div>
       <br>
     </nav>
-   
-   
+
     <div class="centerbox">
       <br>
       <br>
@@ -63,10 +65,11 @@
           <input id="main-submit" class="" type="submit" value="Search" />
         </form>
       </div>
+      <button type="button" id="main-submit-mobile">Search</button>
     </div>
     <!-- mobile submit -->
-    <button type="button" id="main-submit-mobile">Search</button>
-    
+
+
     <!-- end of nav -->
     <!-- main -->
     <main class="page">
@@ -74,7 +77,7 @@
       <header class="hero">
         <div  class="hero-container" style="background-image: url(https://evinstudio.com/upload/wysiwyg/fotograf-edy-v-ekaterinburge-evgenii-evin-12-1811.jpg);  background-size: cover;">
           <div class="hero-text">
-           
+
             <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(0, 0, 0);">Blah Blah</h1>
             <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4>
           </div>
@@ -92,11 +95,11 @@
             <a href="tag-template.html">Lunch </a>
             <a href="tag-template.html">Snack </a>
           </div>
-          
-         
+
+
         </div>
-      
-        
+
+
         <!-- end of tag container -->
         <!-- recipes list -->
         <div
@@ -111,7 +114,7 @@
         </div>
 <br>
         <div class="recipes-list">
-            
+
           <!-- single recipe -->
           <div class="recipe">
             <a href="single-recipe.html" class="recipe-link">
@@ -124,14 +127,14 @@
                     <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
                     <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
                     <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-                  
+
                 <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
               </div>
               <h5>Fettuccine Alfredo</h5>
               <p>Prep: 15min | Cook: 5min</p>
             </div>
         </div>
-    
+
 
           <!-- end of single recipe -->
           <!-- single recipe -->
@@ -146,14 +149,14 @@
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-                
+
               <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
             </div>
             <h5>Smoked Ribs</h5>
             <p>Prep : 15min | Cook : 5min</p>
           </div>
         </div>
-    
+
         <div class="recipe">
         <a href="single-recipe.html" class="recipe-link">
             <img src="" class="img recipe-img" alt="" />
@@ -165,14 +168,14 @@
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-                
+
               <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
             </div>
             <h5>Chicken Soup</h5>
             <p>Prep : 15min | Cook : 5min</p>
           </div>
         </div>
-           
+
         <div class="recipe">
         <a href="single-recipe.html" class="recipe-link">
             <img src="" class="img recipe-img" alt="" />
@@ -184,15 +187,14 @@
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
                   <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-                
+
               <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
             </div>
             <h5>Chocolate Pancakes</h5>
             <p>Prep : 15min | Cook : 5min</p>
           </div>
         </div>
-          
-          
+
           <!-- end of single recipe -->
         </div>
         <!-- end of recipes list -->
@@ -202,9 +204,13 @@
     <!-- end of main -->
     <!-- footer -->
     <br>
+  </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="dashboard.js"></script>
 <body>
+
 <body>
     <div class="meal-planner">
         <h1>Meal Planner</h1>
@@ -245,7 +251,7 @@
       </div>
 
 
-   
+
   </body>
 </html>
-                
+
