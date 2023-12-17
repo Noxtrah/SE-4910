@@ -1,9 +1,11 @@
 package se4910.recipiebeckend.controller;
 
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeResponse;
@@ -40,6 +42,18 @@ public class RecipeController {
     public ResponseEntity<String> updateRecipebyID(@RequestBody RecipeRequest recipeRequest)
     {
         return recipeService.updateRecipe(recipeRequest);
+    }
+
+    @DeleteMapping("/delete-recipe/{id}")
+    public ResponseEntity<String> deleteRecipeById(@PathVariable Long id) {
+        return recipeService.deleteRecipe(id);
+    }
+
+
+    @GetMapping("/getRecipesByMeal")
+    public List<Recipe> getRecipesByMeal(@RequestParam String mealType) {
+
+        return recipeService.getRecipesByMeal(mealType);
     }
 
 }

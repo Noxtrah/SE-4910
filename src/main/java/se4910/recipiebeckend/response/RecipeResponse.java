@@ -1,9 +1,11 @@
 package se4910.recipiebeckend.response;
 
 
+import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.UserRecipes;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RecipeResponse {
@@ -15,7 +17,7 @@ public class RecipeResponse {
 
     private String cuisine;
 
-    private String meal;
+    private List<Meal> meal;
 
     private int preparationTime;
     String photoPath;

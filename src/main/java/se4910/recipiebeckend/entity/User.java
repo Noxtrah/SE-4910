@@ -41,6 +41,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
 
+
     public Set<Role> getRoles() {
         return roles;
     }

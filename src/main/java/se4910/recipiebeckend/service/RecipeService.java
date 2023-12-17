@@ -6,16 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
+import se4910.recipiebeckend.repository.MealRepository;
 import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeResponse;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,7 @@ public class RecipeService {
 
     RecipeRepository recipeRepository;
     RatesService ratesService;
+    MealRepository mealRepository;
     public List<Recipe> getAllRecipes()
     {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -43,7 +45,7 @@ public class RecipeService {
        List<Recipe>recipes = recipeRepository.findAll();
 
         return recipes.stream().map(recipe -> {
-            double rate = ratesService.GetOneRateByRecipeId(recipe.getId());
+            double rate = ratesService.GetRatesByRecipeId(recipe.getId());
            return new RecipeResponse(recipe,rate);
        })
                .collect(Collectors.toList());
@@ -58,7 +60,7 @@ public class RecipeService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Recipe recipe = new Recipe();
-        recipe.setMeal(recipeRequest.getMeal());
+        recipe.setMeal(mealConverter(recipeRequest.getMeal()));
         recipe.setCuisine(recipeRequest.getCuisine());
         recipe.setTitle(recipeRequest.getTitle());
         recipe.setIngredients(recipeRequest.getIngredients());
@@ -67,6 +69,33 @@ public class RecipeService {
         recipe.setPhotoPath(recipeRequest.getPhotoPath());
         recipeRepository.save(recipe);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    private List<Meal> mealConverter(String meal)
+    {
+        String[] mealNames = {};
+        List<Meal> meals = new ArrayList<>();
+        if(meal.contains(","))
+        {
+            mealNames = meal.split(",");
+
+
+            for (String mealName : mealNames) {
+                Optional<Meal> optionalMeal = Optional.ofNullable(mealRepository.findByMealName(mealName.trim()));
+
+                optionalMeal.ifPresent(meals::add);
+
+            }
+        }
+        else {
+
+            Meal newMeal = mealRepository.findByMealName(meal);
+            if (newMeal != null)
+            {
+                meals.add(newMeal);
+            }
+        }
+        return meals;
     }
 
     public ResponseEntity<String> updateRecipe(RecipeRequest recipeRequest)
@@ -88,7 +117,7 @@ public class RecipeService {
                 recipe.setCuisine(recipeRequest.getCuisine());
             }
             if (recipeRequest.getMeal() != null) {
-                recipe.setMeal(recipeRequest.getMeal());
+                recipe.setMeal(mealConverter(recipeRequest.getMeal()));
             }
             if (recipeRequest.getPreparationTime() > 0) {
                 recipe.setPreparationTime(recipeRequest.getPreparationTime());
@@ -101,8 +130,29 @@ public class RecipeService {
 
             return ResponseEntity.ok("Recipe updated successfully!" );
 
-        } else {
+        }
+        else {
             return ResponseEntity.notFound().build(); // Eğer reçete bulunamazsa 404 döndür
         }
+    }
+
+    public ResponseEntity<String> deleteRecipe(Long id)
+    {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            recipeRepository.delete(recipe);
+            return ResponseEntity.ok("Recipe with ID: " + id + " deleted successfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public List<Recipe> getRecipesByMeal(String mealType)
+    {
+        Meal meal = mealRepository.findByMealName(mealType);
+
+        return recipeRepository.findByMeal(meal);
+
     }
 }

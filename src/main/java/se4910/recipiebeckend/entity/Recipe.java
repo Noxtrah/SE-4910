@@ -1,7 +1,13 @@
 package se4910.recipiebeckend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.List;
+import java.util.Set;
 
 
 @Entity(name="recipe" )
@@ -17,6 +23,7 @@ public class Recipe {
     private String title;
 
   //  @Column(columnDefinition = "ingredients")
+  @Column(name = "ingredients", columnDefinition = "LONGTEXT")
     private String ingredients;
 
 
@@ -26,7 +33,13 @@ public class Recipe {
 
     private String cuisine;
 
-    private String meal;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "meal_recipe",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "meal_id")
+    )
+    private List<Meal> meal;
 
     private int preparationTime;
 

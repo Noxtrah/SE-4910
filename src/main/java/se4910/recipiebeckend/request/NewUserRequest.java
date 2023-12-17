@@ -1,18 +1,34 @@
 package se4910.recipiebeckend.request;
-
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
 import java.sql.Date;
 
 public class NewUserRequest {
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
     private String name;
     private String lastName;
     private String username;
     private String email;
     private Date birthDay;
     private String password;
+
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;

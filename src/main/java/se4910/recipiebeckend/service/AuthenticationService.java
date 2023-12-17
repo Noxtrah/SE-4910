@@ -8,14 +8,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se4910.recipiebeckend.entity.RefreshToken;
+import se4910.recipiebeckend.entity.Role;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.RoleRepository;
+import se4910.recipiebeckend.repository.UserRepository;
 import se4910.recipiebeckend.request.NewUserRequest;
-import se4910.recipiebeckend.request.RefreshRequest;
 import se4910.recipiebeckend.response.AuthResponse;
 import se4910.recipiebeckend.response.NewUserResponse;
 import se4910.recipiebeckend.security.JwtUtil;
+
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class AuthenticationService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     UserService userService;
@@ -72,7 +77,10 @@ public class AuthenticationService {
             user.setUsername(registerRequest.getUsername());
             user.setName(registerRequest.getName());
             user.setLastName(registerRequest.getLastName());
+            user.setEmail(registerRequest.getEmail());
             user.setPassword(password);
+            user.setRoles(roleConverter("user"));
+
 
             if (userService.getOneUserByUsername(user.getUsername()) != null) {
                 return  new ResponseEntity<>("this username already used",HttpStatus.BAD_REQUEST);
@@ -84,4 +92,77 @@ public class AuthenticationService {
         }
     }
 
+    public String updateUser(NewUserRequest userRequest)
+    {
+        Long userId = userRequest.getId();
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+
+            if (userRequest.getLastName() != null) {
+                user.setLastName(userRequest.getLastName());
+            }
+
+            if (userRequest.getName() != null) {
+                user.setName(userRequest.getName());
+            }
+            if (userRequest.getUsername() != null) {
+                user.setUsername(userRequest.getUsername());
+            }
+            if (userRequest.getEmail() != null) {
+                user.setEmail(userRequest.getEmail());
+            }
+            if (userRequest.getBirthDay() != null) {
+                user.setBirthDay(userRequest.getBirthDay());
+            }
+            if (userRequest.getPassword() != null) {
+                user.setPassword(userRequest.getPassword());
+            }
+            if (userRequest.getRole() != null) {
+                user.setRoles(roleConverter(userRequest.getRole()));
+            }
+
+            userRepository.save(user);
+            return "User updated successfully";
+        } else {
+            return "User with ID " + userId + " not found";
+        }
+
+    }
+
+    private Set<Role> roleConverter(String role)
+    {
+        String[] roleNames = {};
+        Set<Role> roles = new HashSet<>();
+        if(role.contains(","))
+        {
+            roleNames = role.split(",");
+
+            for (String roleName : roleNames)
+            {
+                Role userrole = roleRepository.findByName(roleName);
+                roles.add(userrole);
+            }
+        }
+        else
+        {
+            Role userrole = roleRepository.findByName(role);
+            roles.add(userrole);
+        }
+
+        return roles;
+    }
+
+    public String deleteUser(Long id)
+    {
+        User user = userRepository.findById(id).get();
+        if (user != null)
+        {
+            userRepository.delete(user);
+            return "user deleted";
+        }
+        return null;
+    }
 }
