@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="dashboard.css" />
   </head>
   <body>
-    <section class="backgorund">
+    <section class="background">
     <!-- nav  -->
     <nav class="navbar">
 
@@ -29,11 +29,16 @@
           </button>
         </div>
         <div class="nav-links">
-          <a style="font-size: larger;" href="index.html" class="nav-link">Home</a>
-          <a style="font-size: larger;" href="about.html" class="nav-link">Recipes by Users</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link">Tags</a>
-          <a style="font-size: larger;" href="recipes.html" class="nav-link">Cuisines</a>
-
+          <div class="glass-nav-links">
+          <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a>
+          <a style="font-size: larger;" href="about.html" class="nav-link glass">Recipes by Users</a>
+          <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Breakfast</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Dinner</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Dessert</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Lunch</a>
+          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Snack</a>
+        </div>
           <div class="nav-link contact-link">
             <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
             <a href="profile.html" class="btn">
@@ -96,106 +101,48 @@
             <a href="tag-template.html">Snack </a>
           </div>
 
-
+          <div class="select-container">
+            <form id="app-cover">
+              <div id="select-box">
+                <input type="checkbox" id="options-view-button">
+                <div id="select-button" class="brd">
+                  <div id="selected-value">
+                    <span>Sort by:</span>
+                  </div>
+                  <div id="chevrons">
+                    <i class="fas fa-chevron-up"></i>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div id="options">
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="codepen">
+                    <input class="s-c bottom" type="radio" name="platform" value="codepen">
+                    <i class="fab fa-codepen"></i>
+                    <span class="label">CodePen</span>
+                    <span class="opt-val">CodePen</span>
+                  </div>
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="dribbble">
+                    <input class="s-c bottom" type="radio" name="platform" value="dribbble">
+                    <i class="fab fa-dribbble"></i>
+                    <span class="label">Dribbble</span>
+                    <span class="opt-val">Dribbble</span>
+                  </div>
+                  <div id="option-bg"></div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
 
 
         <!-- end of tag container -->
         <!-- recipes list -->
-        <div
-        h1></h1>
-
-        <div class="select-container">
-          <label for="sorting">Sort By:</label>
-          <select id="sorting">
-            <option value="top-rated">Top Rated</option>
-            <option value="most-favorited">Most Favorited</option>
-          </select>
-        </div>
-<br>
-        <div class="recipes-list">
-
-          <!-- single recipe -->
-          <div class="recipe">
-            <a href="single-recipe.html" class="recipe-link">
-              <img src="https://dfwblobstorage.blob.core.windows.net/images/Recipe/PF641ITALPASTAX1041-wc.jpg" class="img recipe-img" alt="" />
-            </a>
-            <div class="details">
-              <div class="rating">
-                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
-                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
-                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
-                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
-                    <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-
-                <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
-              </div>
-              <h5>Fettuccine Alfredo</h5>
-              <p>Prep: 15min | Cook: 5min</p>
-            </div>
-        </div>
 
 
-          <!-- end of single recipe -->
-          <!-- single recipe -->
-          <div class="recipe">
-          <a href="single-recipe.html" class="recipe-link">
-            <img src="https://dfwblobstorage.blob.core.windows.net/images/Recipe/PF641ITALPASTAX1041-wc.jpg" class="img recipe-img" alt="" />
-          </a>
-          <div class="details">
-            <div class="rating">
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-
-              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
-            </div>
-            <h5>Smoked Ribs</h5>
-            <p>Prep : 15min | Cook : 5min</p>
-          </div>
-        </div>
-
-        <div class="recipe">
-        <a href="single-recipe.html" class="recipe-link">
-            <img src="" class="img recipe-img" alt="" />
-          </a>
-          <div class="details">
-            <div class="rating">
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-
-              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
-            </div>
-            <h5>Chicken Soup</h5>
-            <p>Prep : 15min | Cook : 5min</p>
-          </div>
-        </div>
-
-        <div class="recipe">
-        <a href="single-recipe.html" class="recipe-link">
-            <img src="" class="img recipe-img" alt="" />
-          </a>
-          <div class="details">
-            <div class="rating">
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(1)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(2)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(3)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(4)">☆</span>
-                  <span class="star" onmouseover="hoverStar(this)" onclick="setRating(5)">☆</span>
-
-              <span class="favorite-heart" onclick="toggleFavorite(this)">♥</span>
-            </div>
-            <h5>Chocolate Pancakes</h5>
-            <p>Prep : 15min | Cook : 5min</p>
-          </div>
-        </div>
-
-          <!-- end of single recipe -->
+        <div class="recipes-list" id="recipesList">
+          <!-- Boş, dinamik olarak doldurulacak -->
         </div>
         <!-- end of recipes list -->
       </section>

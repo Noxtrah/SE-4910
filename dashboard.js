@@ -13,13 +13,13 @@ window.onload = () => {
 	input.addEventListener("input", handleChange);
 	input.addEventListener("keydown", blockEnter);
 	getRidOfScrollbar()
-	
+
 	//Can be used to prefill the search bar with tags in currentTags
 	updateTags()
 	input.innerHTML = placeholder;
 	input.blur()
 	input.addEventListener("focus", handleFocus);
-	
+
 }
 
 //The search bar needs to be scrollable, but we don't want to see that ugly scrollbar
@@ -67,7 +67,7 @@ function handleChange(event) {
 			updateTags()
 		}
 	}
-	
+
 }
 
 //Renders the tags in currentTags in the search bar
@@ -77,7 +77,7 @@ function updateTags() {
 		displayStr += `<div class='tag'><button class="tagText" onclick="editTag(event)">${tag}</button><button class="x-button" onclick="deleteTag(event)">\u2716</button></div>`
 	}
 	document.getElementById("tagWrapper").innerHTML = displayStr;
-	
+
 	//Focus the input
 	input = document.getElementById('searchInput')
 	input.focus();
@@ -95,7 +95,7 @@ function editTag(event) {
 	let index = currentTags.indexOf(text)
 	event.target.parentElement.innerHTML = `<span>${text.substring(0,text.indexOf(':')+1)}&nbsp;</span><span onkeydown="blockEnter(event)" class="tagEditor" id="tag${index}" contenteditable>${text.substring(text.indexOf(':')+1)}</span><button class="x-button" onclick="deleteTag(event)">\u2716</button>`
 	let newInput = document.getElementById('tag' + index)
-	
+
 	newInput.focus()
   	window.getSelection().collapse(newInput.firstChild, newInput.innerHTML.length);
 }
@@ -120,15 +120,15 @@ function toggleFavorite(element) {
       element.classList.add('favorited');
     }
   }
-  
+
   function hoverStar(element) {
     // Mouse üzerine gelindiğinde işaret değiştirme
     element.style.cursor = 'pointer';
   }
-  
+
   function setRating(rating) {
     const stars = document.querySelectorAll('.star');
-  
+
     for (let i = 0; i < stars.length; i++) {
       if (i < rating) {
         stars[i].innerHTML = '★'; // Seçilen yıldızları yıldız simgesiyle doldur
@@ -142,7 +142,7 @@ function toggleFavorite(element) {
 
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
   let selectedDay = null;
-  
+
   function selectDay(day) {
     selectedDay = day;
     const dayDivs = document.querySelectorAll('.day');
@@ -151,21 +151,93 @@ function toggleFavorite(element) {
     });
     document.getElementById(day).classList.add('selected');
   }
-  
+
   function addMeal() {
     const input = document.getElementById('searchMeal');
     const inputValue = input.value.trim();
-  
+
     if (inputValue !== '' && selectedDay !== null) {
       const dayList = document.getElementById(`${selectedDay}List`);
-  
+
       const listItem = document.createElement('li');
       listItem.textContent = inputValue;
-  
+
       dayList.appendChild(listItem);
       input.value = '';
     }
   }
+
+  const fetchData = async () => {
+	try {
+	  const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+	  const data = await response.json();
+
+	  const recipesList = document.getElementById('recipesList');
+
+	  data.forEach((recipe, index) => {
+		// Create a new column for each recipe
+		const recipeDiv = document.createElement('div');
+		recipeDiv.classList.add('recipe-item');
+
+		const link = document.createElement('a');
+		link.href = 'your_new_page_url.html';
+
+		// Image
+		const imgDiv = document.createElement('div');
+		imgDiv.classList.add('imgDiv');
+		const img = document.createElement('img');
+		img.src = recipe.photoPath;
+		img.alt = 'Recipe Photo';
+
+		// Apply CSS to constrain image size
+		img.style.maxWidth = '100%'; // Adjust this value as needed
+		img.style.height = '100%'; // Maintain aspect ratio
+
+		link.appendChild(img);
+		imgDiv.appendChild(link);
+
+		// Create stars
+		const starContainer = document.createElement('div');
+		starContainer.classList.add('rating');
+		for (let i = 1; i <= 5; i++) {
+		  const star = document.createElement('span');
+		  star.classList.add('star');
+		  star.textContent = '☆';
+		  star.onmouseover = () => hoverStar(star);
+		  star.onclick = () => setRating(i);
+		  starContainer.appendChild(star);
+		}
+
+		// Create heart
+		const heart = document.createElement('span');
+		heart.classList.add('favorite-heart');
+		heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
+		heart.alt = 'Animated Heart';
+		heart.onclick = () => toggleFavorite(heart);
+		// heart.textContent = '♥';
+		// heart.onclick = () => toggleFavorite(heart);
+
+		// Title
+		const titleDiv = document.createElement('div');
+		titleDiv.classList.add('titleDiv');
+		titleDiv.textContent = recipe.title;
+
+		// Append stars and heart to the recipeDiv
+		recipeDiv.appendChild(imgDiv);
+		recipeDiv.appendChild(titleDiv);
+		recipeDiv.appendChild(starContainer);
+		recipeDiv.appendChild(heart);
+		recipesList.appendChild(recipeDiv);
+	  });
+	} catch (error) {
+	  console.error('Error fetching or displaying data:', error);
+	}
+  };
+
+  // fetchData fonksiyonunu çağırarak dataları al ve içeriği doldur
+  fetchData();
+
+
   //Call jQuery before below code
   $('.search-description').hide();
   $('.main-btn').click(function() {
@@ -193,7 +265,7 @@ function toggleFavorite(element) {
   $(window).resize(function() {
 	replaceMatches();
   });
-  
+
   function replaceMatches() {
 	var width = $(window).width();
 	if (width < 516) {
@@ -203,22 +275,22 @@ function toggleFavorite(element) {
 	}
   };
   replaceMatches();
-  
+
   function clearText(thefield) {
 	if (thefield.defaultValue == thefield.value) {
 	  thefield.value = ""
 	}
   }
-  
+
   function replaceText(thefield) {
 	if (thefield.value == "") {
 	  thefield.value = thefield.defaultValue
 	}
   }
-  
-  
-  
 
-  
-  
-    
+
+
+
+
+
+
