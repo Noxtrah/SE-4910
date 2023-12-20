@@ -19,8 +19,12 @@ jobs:
         with:
           submodules: true
           lfs: false
+      - name: Install apt-utils
+        run: sudo apt-get install -y apt-utils
       - name: Set Permissions on mvnw
         run: chmod +x ./mvnw
+      - name: Print Environment Variables
+        run: env
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
