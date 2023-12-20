@@ -945,6 +945,7 @@ Recipe Template
 
 .select-container {
   margin-top: 4vh;
+  position: relative;
 }
 
 .brd {
@@ -953,7 +954,7 @@ Recipe Template
 }
 
 #app-cover {
-  position: relative;
+  position: absolute;
   top: 0;
   right: 0;
   left: -1.5vw;
