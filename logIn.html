@@ -44,6 +44,11 @@
                     <h2>Registration Form</h2>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
+                        <input type="username" required id = "registerUserName">
+                        <label for="">Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
                         <input type="name" required>
                         <label for="">Name</label>
                     </div>
@@ -54,12 +59,12 @@
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" required>
+                        <input type="email" required id = "registerMail">
                         <label for="">Email</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
+                        <input type="password" required id = "registerPassword">
                         <label for="">Password</label>
                     </div>
                     <div class="inputbox">
@@ -79,7 +84,7 @@
                         <input type="number" id="year" name="year" min="1900" max="2099" placeholder="YYYY" class="icon-input year">
                       </div>
                     <div class="privacy-policy">
-                        <label for=""><input type="checkbox">I understand and agree
+                        <label for=""><input type="checkbox" id="Terms">I understand and agree
                         with the Terms & Conditions and Privacy Policy.</label>
                     </div>
                     <button id="register-button" type="button">Register</button>
