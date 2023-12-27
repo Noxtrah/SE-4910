@@ -11,7 +11,6 @@
   background-position: center; /* Adjust to your preference */
   background-repeat: no-repeat; /* Adjust to your preference */
   /* Other styles for the section */
-  padding: 2vw; /* Adjust to your preference */
   background-image: linear-gradient(silver,rgb(39, 5, 36)) ; /* Text color, adjust to your preference */
   color: white;
 }
@@ -112,11 +111,6 @@ a {
 }
 .btn-block {
   width: 100%;
-}
-
-.profile-icon{
-  margin-top: 0.1vh;
-  font-size: 50px;
 }
 
 /* alerts */
@@ -956,11 +950,10 @@ Recipe Template
 #app-cover {
   position: absolute;
   top: 0;
-  right: 0;
-  left: -1.5vw;
-  width: 13vw;
+  right: 1;
+  width: 180px;
   height: 42px;
-  margin: 0px auto 0 auto;
+  /* margin: 0px auto 0 auto; */
   z-index: 1;
 }
 
@@ -1010,7 +1003,8 @@ Recipe Template
 
 .option,
 .label {
-  color: #2d3667;
+  color: rgb(234, 227, 243);
+  background-color: #8a6d8d71;
   font-size: 16px;
 }
 
@@ -1044,11 +1038,10 @@ Recipe Template
 #options {
   position: absolute;
   top: 42px;
-  right: 0;
-  left: 0;
-  width: 298px;
+  right: 1;
+  width: 178px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: #ffffff00;
   border-radius: 4px;
 }
 
@@ -1079,12 +1072,12 @@ Recipe Template
 .label {
   display: none;
   padding: 0;
-  margin-left: 27px;
+  margin-left: 52px;
 }
 
 #options-view-button:checked ~ #options .label {
   display: block;
-  padding: 12px 14px;
+  padding: 12px 8px;
 }
 
 .s-c {
@@ -1131,6 +1124,16 @@ input[type="radio"] {
 .s-c.top:hover ~ i {
   top: -25px;
   animation: movedown 0.3s ease 0.1s forwards;
+}
+
+@media screen and (min-width: 992) {
+  #app-cover{
+    width: 100px;
+  }
+
+  #options {
+    width: 100px;
+  }
 }
 
 @keyframes moveup {
@@ -1221,12 +1224,44 @@ input[type="radio"] {
   top: -71px;
 }
 
+.option:nth-child(3) input[type="radio"]:checked ~ .label:before {
+  background-color: #ea4c89;
+}
+
+.option:nth-child(3) input[type="radio"]:checked ~ .opt-val {
+  top: -111px;
+}
 .option .fa-codepen {
   color: #000;
 }
 
+.sort-by-time {
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  margin-top: -4px;
+}
+
 .option .fa-dribbble {
   color: #ea4c89;
+}
+
+.sort-by-alphabet {
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  margin-top: -6px;
+}
+
+.option .fa-rate {
+  color: #000;
+}
+
+.sort-by-rate {
+  text-align: center;
+  color: white;
+  font-size: 25px;
+  margin-top: -7px;
 }
 
 #option-bg {
@@ -1257,6 +1292,11 @@ input[type="radio"] {
 .option:nth-child(2):hover ~ #option-bg {
   top: 40px;
   background-color: #ea4c89;
+}
+
+.option:nth-child(3):hover ~ #option-bg {
+  top: 80px;
+  background-color: #387fdb;
 }
 
 #select-button::after,
@@ -1336,4 +1376,45 @@ input[type="radio"],
     border-radius: 10px;
     min-height: 50vh;
   }
+}
+
+.profile-icon{
+  font-size: 50px;
+  margin-left: 42px;
+}
+
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-right: 7vw;
+  margin-top: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(169, 160, 174, 0);
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 14px;
+  border: 1px solid #af64c2;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #5c4577;
+  border-radius: 10px;
+  color: rgb(204, 204, 204);
+}
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
 }

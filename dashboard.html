@@ -39,12 +39,23 @@
           <a style="font-size: larger;" href="tags.html" class="nav-link glass">Lunch</a>
           <a style="font-size: larger;" href="tags.html" class="nav-link glass">Snack</a>
         </div>
-          <div class="nav-link contact-link">
+          <!-- <div class="nav-link contact-link">
             <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
             <a href="profile.html" class="btn">
               <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
-            </a>
+            </a> -->
           </div>
+        </div>
+      </div>
+      <div class="profile-dropdown">
+        <a href="profile.html" class="btn">
+          <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+        </a>
+        <div class="dropdown-content">
+          <a href="favourites.html">Favourites</a>
+          <a href="recipe-book.html">My Recipe Book</a>
+          <a href="profile.html">Profile</a>
+          <a href="logIn.html">Log-in</a>
         </div>
       </div>
       <br>
@@ -116,18 +127,25 @@
                 </div>
                 <div id="options">
                   <div class="option">
-                    <input class="s-c top" type="radio" name="platform" value="codepen">
-                    <input class="s-c bottom" type="radio" name="platform" value="codepen">
-                    <i class="fab fa-codepen"></i>
-                    <span class="label">CodePen</span>
-                    <span class="opt-val">CodePen</span>
+                    <input class="s-c top" type="radio" name="platform" value="time">
+                    <input class="s-c bottom" type="radio" name="platform" value="time">
+                    <i class="fab fa-codepen"><ion-icon name="time-outline" class="sort-by-time"></ion-icon></i>
+                    <span class="label">Prep. Time</span>
+                    <span class="opt-val">Prep. Time</span>
                   </div>
                   <div class="option">
-                    <input class="s-c top" type="radio" name="platform" value="dribbble">
-                    <input class="s-c bottom" type="radio" name="platform" value="dribbble">
-                    <i class="fab fa-dribbble"></i>
-                    <span class="label">Dribbble</span>
-                    <span class="opt-val">Dribbble</span>
+                    <input class="s-c top" type="radio" name="platform" value="aplhabet">
+                    <input class="s-c bottom" type="radio" name="platform" value="alphabet">
+                    <i class="fab fa-dribbble"><ion-icon name="text-outline" class="sort-by-alphabet"></ion-icon></i>
+                    <span class="label">Alphabetical</span>
+                    <span class="opt-val">Alphabetical</span>
+                  </div>
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="rate">
+                    <input class="s-c bottom" type="radio" name="platform" value="rate">
+                    <i class="fab fa-rate"><ion-icon name="star-outline" class="sort-by-rate"></ion-icon></i>
+                    <span class="label">Rate</span>
+                    <span class="opt-val">Rate</span>
                   </div>
                   <div id="option-bg"></div>
                 </div>
