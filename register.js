@@ -65,7 +65,7 @@ function registerUser() {
     };
 
     // Make the POST request to your Java backend
-    fetch('http://recipiebeckend.azurewebsites.net/auth/register', {
+    fetch('https://recipiebeckend.azurewebsites.net/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -14,19 +14,19 @@
                 <form action="">
                     <h2>Login</h2>
                     <div class="inputbox">
-                        <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" required>
-                        <label for="">Email</label>
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input id="loginUserName" type="username" required>
+                        <label for="loginUserName">Username</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
-                        <label for="">Password</label>
+                        <input id="loginPassword" type="password" required>
+                        <label for="loginPassword">Password</label>
                     </div>
                     <div class="forget">
-                        <label for=""><input type="checkbox">Remember Me <a href="#">Forget Password</a></label>
+                        <label><input id="loginRememberMe" type="checkbox">Remember Me <a href="#">Forget Password</a></label>
                     </div>
-                    <button>Log in</button>
+                    <button id="login-button">Log in</button>
                     <div class="register">
                         <p>Don't have a account <a href="#" id="registerLink">Register</a></p>
                     </div>
@@ -45,32 +45,32 @@
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
                         <input type="username" required id = "registerUserName">
-                        <label for="">Username</label>
+                        <label for="registerUserName">Username</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
-                        <input type="name" required>
-                        <label for="">Name</label>
+                        <input id="registerName" type="name" required>
+                        <label for="registerName">Name</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
-                        <input type="last-name" required>
-                        <label for="">Last Name</label>
+                        <input id="registerLastName" type="last-name" required>
+                        <label for="registerLastName">Last Name</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
                         <input type="email" required id = "registerMail">
-                        <label for="">Email</label>
+                        <label for="registerMail">Email</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
                         <input type="password" required id = "registerPassword">
-                        <label for="">Password</label>
+                        <label for="registerPassword">Password</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password-confirm" required>
-                        <label for="">Password Confirm</label>
+                        <input id="registerPasswordConfirm" type="password-confirm" required>
+                        <label for="registerPasswordConfirm">Password Confirm</label>
                     </div>
                     <div class="birthday">Birthday</div>
                     <div class="birthday-input">
@@ -84,7 +84,7 @@
                         <input type="number" id="year" name="year" min="1900" max="2099" placeholder="YYYY" class="icon-input year">
                       </div>
                     <div class="privacy-policy">
-                        <label for=""><input type="checkbox" id="Terms">I understand and agree
+                        <label><input type="checkbox" id="Terms">I understand and agree
                         with the Terms & Conditions and Privacy Policy.</label>
                     </div>
                     <button id="register-button" type="button">Register</button>
@@ -93,6 +93,7 @@
             </div>
         </div>
         <script src="register.js"></script>
+        <script src="logIn.js"></script>
     </section>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
