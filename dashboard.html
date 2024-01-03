@@ -103,8 +103,8 @@
       <section class="recipes-container">
         <!-- tag container -->
         <div class="tags-container">
-          <h4>recipes</h4>
-          <div class="tags-list">
+          <h4 style="color: black; font-family: 'Courier New', Courier, monospace;" >recipes</h4>
+          <div style="color: black; font-family: 'Courier New', Courier, monospace;" class="tags-list">
             <a href="tag-template.html">Dinner </a>
             <a href="tag-template.html">Breakfast </a>
             <a href="tag-template.html">Dessert </a>
@@ -173,40 +173,70 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="dashboard.js"></script>
+
 <body>
 
 <body>
     <div class="meal-planner">
-        <h1>Meal Planner</h1>
-        <input style="margin-bottom: 30px; margin-left: 30px;" type="text" id="searchMeal" placeholder="Search meal">
-        <button onclick="addMeal()">Add Meal</button>
+        <h1  style="font-family: 'Courier New', Courier, monospace;" >Meal Planner</h1>
+        <div id="gradient"></div>
+        <div class="searchbox" >
+        <input  type="search" id="searchMeal" placeholder="Type meal">
+        <button class="addMealbutton" type="submit" onclick="addMeal()"></button>
+
+
+        </div>
+       
+<div>
+      
+  <div id="intro-content" class="center-content">
+    <div class="center-content-inner">
+        <div class="content-section content-section-margin">
+            <div class="content-section-grid clearfix">
+                <a href="#" class="button nav-link" onclick="saveMealPlan()">
+                    <div class="bottom"></div>
+                    <div class="top">
+                        <div class="mealLabel">Save Meal Plan</div>
+                        <div class="button-border button-border-left"></div>
+                        <div class="button-border button-border-top"></div>
+                        <div class="button-border button-border-right"></div>
+                        <div class="button-border button-border-bottom"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+      
+
         <div class="days">
           <div class="day" onclick="selectDay('monday')">
-            <h2 style="font-size:small;" >Monday</h2>
+            <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;" >Monday</h2>
             <ul id="mondayList"></ul>
           </div>
           <div class="day" onclick="selectDay('tuesday')">
-            <h2 style="font-size: small;" >Tuesday</h2>
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Tuesday</h2>
             <ul id="tuesdayList"></ul>
           </div>
           <div class="day" onclick="selectDay('wednesday')">
-            <h2 style="font-size: small;" >Wednesday</h2>
+            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Wednesday</h2>
             <ul id="wednesdayList"></ul>
           </div>
           <div class="day" onclick="selectDay('thursday')">
-            <h2 style="font-size: small;" >Thursday</h2>
+            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Thursday</h2>
             <ul id="thursdayList"></ul>
           </div>
           <div class="day" onclick="selectDay('friday')">
-            <h2 style="font-size: small;" >Friday</h2>
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Friday</h2>
             <ul id="fridayList"></ul>
           </div>
           <div class="day" onclick="selectDay('saturday')">
-            <h2 style="font-size: small;" >Saturday</h2>
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Saturday</h2>
             <ul id="saturdayList"></ul>
           </div>
           <div class="day" onclick="selectDay('sunday')">
-            <h2 style="font-size: small;" >Sunday</h2>
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Sunday</h2>
             <ul id="sundayList"></ul>
           </div>
           <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->

@@ -140,32 +140,68 @@ function toggleFavorite(element) {
     }
   }
 
+  
+
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
   let selectedDay = null;
-
+  
   function selectDay(day) {
-    selectedDay = day;
-    const dayDivs = document.querySelectorAll('.day');
-    dayDivs.forEach(div => {
-      div.classList.remove('selected');
-    });
-    document.getElementById(day).classList.add('selected');
+	  selectedDay = day;
+	  const dayDivs = document.querySelectorAll('.day');
+	  dayDivs.forEach(div => {
+		  div.classList.remove('selected');
+	  });
+	  document.getElementById(day).classList.add('selected');
   }
-
+  
   function addMeal() {
-    const input = document.getElementById('searchMeal');
-    const inputValue = input.value.trim();
+	  const input = document.getElementById('searchMeal');
+	  const inputValue = input.value.trim();
+  
+	  if (inputValue !== '' && selectedDay !== null) {
+		  const dayList = document.getElementById(`${selectedDay}List`);
+  
+		  const listItem = document.createElement('li');
+		  listItem.textContent = inputValue;
+  
+		  // Create a span to hold the delete button
+		  const deleteSpan = document.createElement('span');
+		  deleteSpan.classList.add('delete-button');
+  
+		  // Create the delete button
+		  const deleteButton = document.createElement('button1');
+		  deleteButton.textContent = ' ✖'; // You can use any text or icon for delete
+		  deleteButton.onclick = function() {
+			  dayList.removeChild(listItem);
+		  };
+  
+		  // Append the delete button to the span
+		  deleteSpan.appendChild(deleteButton);
+  
+		  // Append the meal and delete button to the list item
+		  listItem.appendChild(deleteSpan);
+		  dayList.appendChild(listItem);
+		  input.value = '';
+	  }
 
-    if (inputValue !== '' && selectedDay !== null) {
-      const dayList = document.getElementById(`${selectedDay}List`);
-
-      const listItem = document.createElement('li');
-      listItem.textContent = inputValue;
-
-      dayList.appendChild(listItem);
-      input.value = '';
-    }
+	  
   }
+  
+  function saveMealPlan() {
+	const allDays = days.map(day => ({
+		day: day,
+		meals: Array.from(document.getElementById(`${day}List`).children).map(item => item.textContent)
+	}));
+
+	// Here you can perform actions with the 'allDays' array like saving it to a database or using it elsewhere
+	console.log(allDays); // For demonstration, it logs the meal plan to the console
+}
+	
+
+  
+
+  
+
 
   const fetchData = async () => {
 	try {

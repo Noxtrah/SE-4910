@@ -11,8 +11,12 @@
   background-position: center; /* Adjust to your preference */
   background-repeat: no-repeat; /* Adjust to your preference */
   /* Other styles for the section */
-  background-image: linear-gradient(silver,rgb(39, 5, 36)) ; /* Text color, adjust to your preference */
-  color: white;
+
+/* Text color, adjust to your preference */
+
+ 
+
+  color: rgb(243, 232, 247);
 }
 
 /* body {
@@ -250,8 +254,8 @@ a {
       color: black;
       border: 1px solid #cccccc;
       margin-bottom: 0px;
-      /* margin-left: 3.5vw; */
-      -webkit-appearance: none;
+      /* margin-left:webkit-appearance 3.5vw; */
+    
       border-radius: 4px 0px 0px 4px;
       -moz-border-radius: 4px 0px 0px 4px;
       -webkit-border-radius: 4px 0px 0px 4px;
@@ -511,22 +515,105 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ECF2FF;
   }
+  body{
+    background-color:#ECF2FF;
+}
+.byline{
+  text-align:center;
+  font-size:18px;
+}
+.byline a{
+  text-decoration:none;
+  color: #ce0000;
+}
+
+#gradient{
+    width:0;
+    height:30px;
+    margin:0 auto;
+    border-radius:100%;
+    -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    -moz-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+}
+.searchbox{
+    background-color:#fffbf8;
+    padding:13px;
+    width:335px;
+    margin-bottom: 35px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    border-radius:6px;
+    -webkit-box-shadow:
+        0 2px 4px 0 rgba(72, 72, 72, 0.83),
+        0 10px 15px 0 rgba(126, 126, 126, 0.12),
+        0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset, 
+        0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    -moz-box-shadow: 
+        0 2px 4px 0 rgba(72, 72, 72, 0.83),
+        0 10px 15px 0 rgba(126, 126, 126, 0.12),
+        0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset, 
+        0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+    box-shadow: 
+        0 2px 4px 0 rgba(72, 72, 72, 0.83),
+        0 10px 15px 0 rgba(126, 126, 126, 0.12),
+        0 -2px 6px 1px rgba(199, 199, 199, 0.55) inset, 
+        0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
+}
+input[type="search"]{
+    width:250px;
+    height:30px;
+    padding-left:15px;
+    border-radius:6px;
+    border:none;
+    color:#939393;
+    font-weight:500;
+    background-color:#fffbf8;
+    -webkit-box-shadow:
+        0 -2px 2px 0 rgba(199, 199, 199, 0.55),
+        0 1px 1px 0 #fff,
+        0 2px 2px 1px #fafafa,
+        0 2px 4px 0 #b2b2b2 inset,
+        0 -1px 1px 0 #f2f2f2 inset,
+        0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    -moz-box-shadow: 
+        0 -2px 2px 0 rgba(199, 199, 199, 0.55),
+        0 1px 1px 0 #fff,
+        0 2px 2px 1px #fafafa,
+        0 2px 4px 0 #b2b2b2 inset,
+        0 -1px 1px 0 #f2f2f2 inset,
+        0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+    box-shadow:
+        0 -2px 2px 0 rgba(199, 199, 199, 0.55),
+        0 1px 1px 0 #fff,
+        0 2px 2px 1px #fafafa,
+        0 2px 4px 0 #b2b2b2 inset,
+        0 -1px 1px 0 #f2f2f2 inset,
+        0 15px 15px 0 rgba(41, 41, 41, 0.09) inset;
+}
+
 
   .meal-planner {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #938993;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-
+  .selected {
+    background-color: yellow;
+  }
+  
   .days {
     display: flex;
     justify-content:space-evenly;
     flex-wrap: wrap;
+    cursor: pointer;
+
   }
 
   .day {
@@ -541,13 +628,179 @@ body {
     padding: 0;
   }
 
-  button {
+ .addMealbutton {
+    color: rgb(242, 212, 240);
+    width: 16px;
+    height:20px;
+    background-image:url(https://www.svgrepo.com/show/342551/cursor.svg);
+    background-repeat: no-repeat;
+    background-color:transparent;
+    background-size:20px 20px;
+    border:none;
     margin-top: 5px;
-    padding: 5px 10px;
+    padding: 6px 10px;
     cursor: pointer;
   }
 
 
+
+  html {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*,*:before,*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: 100%;
+}
+
+b {
+  position: relative;
+  display: block;
+  font-family: helvetica neue, helvetica, sans-serif;
+  line-height: 1.15em;
+  margin-top: -1.15em;
+  top: 2.3em;
+  font-size: 0.67em;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  opacity: 0.75;
+  text-align: center;
+}
+
+b span {
+  font-size: 0.785em;
+  font-weight: 400;
+  opacity: 0.4;
+}
+
+
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+    margin-top: 40px;
+}
+
+.button .bottom {
+  position: absolute;
+  left: 487px;
+  bottom: 73px;
+    width: 120px;
+    height: 100%;
+    margin-left: 100px;
+    background-color: #7b687b;
+    display: block;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button .top {
+  position: relative;
+  left: 480px;
+  bottom: 80px;
+  margin-left: 100px;
+  height: 100%;
+  padding-top: 15px;
+  width: 120px;
+  border: 2px solid #493b4b;
+}
+
+.button-dark .top {
+    border: 2px solid #fff;
+}
+
+.button .top .mealLabel{
+    font-family: sans-serif;
+    font-weight: 600;
+    color: #222023;
+    font-size: 8px;
+    line-height: 110%;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-transition: all .15s ease-out;
+    -moz-transition: all .15s ease-out;
+    -o-transition: all .15s ease-out;
+    transition: all .15s ease-out;
+}
+
+.button-dark .top .mealLabel {
+    color: #fff;
+}
+
+.button:hover .bottom {
+  left: 480px;
+  bottom: 80px;
+  background-color: #ccc4cd;
+}
+
+.button:hover .top .mealLabel{
+    color: #2acdc1;
+}
+
+.button-border {
+    position: absolute;
+    background-color: #2acdc1;
+    -webkit-transition: all .25s ease-out;
+    -moz-transition: all .25s ease-out;
+    -o-transition: all .25s ease-out;
+    transition: all .25s ease-out;
+}
+
+.button:hover .top .button-border-left,.button:hover .top .button-border-right {
+    height: calc(100% + 2px);
+}
+
+.button:hover .top .button-border-top,.button:hover .top .button-border-bottom {
+    width: calc(100% + 2px);
+}
+
+.button-border-left {
+    left: -2px;
+    bottom: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-top {
+    left: -2px;
+    top: -2px;
+    width: 0;
+    height: 2px;
+}
+
+.button-border-right {
+    right: -2px;
+    top: -2px;
+    width: 2px;
+    height: 0;
+}
+
+.button-border-bottom {
+    right: -2px;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+}
 /*
 ===============
 Navbar
@@ -731,7 +984,7 @@ Footer
 }
 /*
 ===============
-Hero
+ 
 ===============
 */
 
@@ -752,7 +1005,6 @@ Hero
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
-  border: 8px solid silver; /* Adjust the width and color as needed */
   border-radius: 10px; /* Adjust the radius for rounded corners if desired */
   overflow: hidden;
 }
@@ -1001,6 +1253,8 @@ Recipe Template
   height: 16px;
 }
 
+
+
 .option,
 .label {
   color: rgb(234, 227, 243);
@@ -1069,10 +1323,17 @@ Recipe Template
   padding: 12px 0;
 }
 
-.label {
-  display: none;
+.mealLabel {
   padding: 0;
-  margin-left: 52px;
+  margin-left: 0;
+  margin-bottom: 5px;
+
+}
+
+.option,
+.mealLabel {
+  color: rgb(234, 227, 243);
+  font-size: 16px;
 }
 
 #options-view-button:checked ~ #options .label {
@@ -1160,6 +1421,10 @@ input[type="radio"] {
 
 .label {
   transition: 0.3s ease all;
+    display: none;
+    padding: 0;
+    margin-left: 52px;
+  
 }
 
 .opt-val {
@@ -1349,6 +1614,7 @@ input[type="radio"],
   font-size: 30px;
   text-align: center;
   margin-top: 5px;
+  color: #000;
 }
 
 .favorite-heart {
