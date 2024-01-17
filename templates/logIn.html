@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/logIn.css">
+    <link rel="stylesheet" href="../styles/register.css">
+    <title>Log-In Screen</title>
+</head>
+<body>
+    <section>
+        <div class="login-box">
+            <div class="login-value">
+                <form action="">
+                    <h2>Login</h2>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input id="loginUserName" type="username" required>
+                        <label for="loginUserName">Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input id="loginPassword" type="password" required>
+                        <label for="loginPassword">Password</label>
+                    </div>
+                    <div class="forget">
+                        <label><input id="loginRememberMe" type="checkbox">Remember Me <a href="#">Forget Password</a></label>
+                    </div>
+                    <button id="login-button">Log in</button>
+                    <div class="register">
+                        <p>Don't have a account <a href="#" id="registerLink">Register</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="register-box" style="display: none;">
+            <div class="back-buton-container">
+                <button id="back-arrow-button">
+                  <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+                </button>
+              </div>
+            <div class="register-value">
+                <form action="" id="registration-form">
+                    <h2>Registration Form</h2>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input type="username" required id = "registerUserName">
+                        <label for="registerUserName">Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input id="registerName" type="name" required>
+                        <label for="registerName">Name</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input id="registerLastName" type="last-name" required>
+                        <label for="registerLastName">Last Name</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" required id = "registerMail">
+                        <label for="registerMail">Email</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" required id = "registerPassword">
+                        <label for="registerPassword">Password</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input id="registerPasswordConfirm" type="password-confirm" required>
+                        <label for="registerPasswordConfirm">Password Confirm</label>
+                    </div>
+                    <div class="birthday">Birthday</div>
+                    <div class="birthday-input">
+                        <label for="day" class="day-label">Day:</label>
+                        <input type="number" id="day" name="day" min="1" max="31" placeholder="DD" class="icon-input day">
+                    
+                        <label for="month" class="month-label">Month:</label>
+                        <input type="number" id="month" name="month" min="1" max="12" placeholder="MM" class="icon-input month">
+                    
+                        <label for="year" class="year-label">Year:</label>
+                        <input type="number" id="year" name="year" min="1900" max="2099" placeholder="YYYY" class="icon-input year">
+                      </div>
+                    <div class="privacy-policy">
+                        <label><input type="checkbox" id="Terms">I understand and agree
+                        with the Terms & Conditions and Privacy Policy.</label>
+                    </div>
+                    <button id="register-button" type="button">Register</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        <script src="../scripts/register.js"></script>
+        <script src="../scripts/logIn.js"></script>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

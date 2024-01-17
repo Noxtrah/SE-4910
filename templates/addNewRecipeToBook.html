@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/recipe-book.css">
+    <script src="../scripts/recipe-book.js" defer></script>
+    <title>Add New Recipe</title>
+</head>
+
+<body>
+    <div class="recipe-form-container">
+        <h1>Add New Recipe</h1>
+
+        <!-- Recipe form -->
+        <form id="recipe-form">
+            <label for="recipe-title">Title:</label>
+            <input type="text" id="recipe-title" name="title" required>
+
+            <label for="recipe-ingredients">Ingredients:</label>
+            <textarea id="recipe-ingredients" name="ingredients" required></textarea>
+
+            <label for="recipe-description">Description:</label>
+            <textarea id="recipe-description" name="description" required></textarea>
+
+            <button type="submit">Save Recipe</button>
+        </form>
+
+        <!-- Back button -->
+        <a href="recipe-book.html" id="back-button">Back to Recipe Book</a>
+    </div>
+</body>
+
+</html>

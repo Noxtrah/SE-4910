@@ -8,11 +8,8 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
 
-
     <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
-
-
-    <link rel="stylesheet" href="dashboard.css" />
+    <link rel="stylesheet" href="../styles/dashboard.css">
   </head>
   <body>
     <section class="background">
@@ -22,7 +19,8 @@
       <div class="nav-center">
         <div class="nav-header">
           <a href="index.html" class="nav-logo">
-            <img src="Icons/logo.svg" />
+            <!-- <img src="../Icons/logo.svg" /> -->
+            <img style="width: 90px; height: 90px; margin-left: 40px;" src="https://www.svgrepo.com/show/398059/pie.svg"  alt="logo">
           </a>
           <button class="nav-btn btn">
             <i class="fas fa-align-justify"></i>
@@ -30,14 +28,14 @@
         </div>
         <div class="nav-links">
           <div class="glass-nav-links">
-          <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a>
-          <a style="font-size: larger;" href="about.html" class="nav-link glass">Recipes by Users</a>
+          <!-- <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a> -->
+          <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
           <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Breakfast</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Dinner</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Dessert</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Lunch</a>
-          <a style="font-size: larger;" href="tags.html" class="nav-link glass">Snack</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
         </div>
           <!-- <div class="nav-link contact-link">
             <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
@@ -69,14 +67,14 @@
           <input type="text" class="main-input main-name" name="NAME" value="Search by name" onfocus="clearText(this)" onblur="replaceText(this)" />
           <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" />
           <div class=" search-wrapper">
-          <button type="button" class="main-btn">
+          <!-- <button type="button" class="main-btn">
             <p class="search-small">SEARCH BY</p>
             <p class="search-large">Name</p>
           </button>
           <ul class="search-description">
             <li>By Ingredients</li>
             <li>By Name</li>
-          </ul>
+          </ul> -->
         </div>
           <input id="main-submit" class="" type="submit" value="Search" />
         </form>
@@ -91,11 +89,11 @@
     <main class="page">
       <!-- header -->
       <header class="hero">
-        <div  class="hero-container" style="background-image: url(https://evinstudio.com/upload/wysiwyg/fotograf-edy-v-ekaterinburge-evgenii-evin-12-1811.jpg);  background-size: cover;">
+        <div  class="hero-container" style="background-image:url(https://thetrestlestop.com/wp-content/uploads/2021/03/Dessert-Banner-e1617261331998.jpg);  background-size: cover;">
           <div class="hero-text">
 
-            <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(0, 0, 0);">Blah Blah</h1>
-            <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4>
+            <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(88, 55, 105); font-family:  Courier, monospace;"> Welcome!</h1>
+            <!-- <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4> -->
           </div>
         </div>
       </header>
@@ -104,12 +102,12 @@
         <!-- tag container -->
         <div class="tags-container">
           <h4 style="color: black; font-family: 'Courier New', Courier, monospace;" >recipes</h4>
-          <div style="color: black; font-family: 'Courier New', Courier, monospace;" class="tags-list">
-            <a href="tag-template.html">Dinner </a>
-            <a href="tag-template.html">Breakfast </a>
-            <a href="tag-template.html">Dessert </a>
-            <a href="tag-template.html">Lunch </a>
-            <a href="tag-template.html">Snack </a>
+          <div style="color: black; font-family: 'Courier New', Courier, monospace; cursor: pointer; " class="tags-list">
+            <a onclick="fetchDataByMealType('dinner')">Dinner </a>
+            <a onclick="fetchDataByMealType('breakfast')">Breakfast </a>
+            <a onclick="fetchDataByMealType('dessert')">Dessert </a>
+            <a onclick="fetchDataByMealType('lunch')">Lunch </a>
+            <a onclick="fetchDataByMealType('snack')">Snack </a>
           </div>
 
           <div class="select-container">
@@ -172,11 +170,11 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="dashboard.js"></script>
+    <script src="../scripts/dashboard.js"></script>
 
 <body>
 
-<body>
+<body class="meal-planner-body">
     <div class="meal-planner">
         <h1  style="font-family: 'Courier New', Courier, monospace;" >Meal Planner</h1>
         <div id="gradient"></div>
@@ -196,7 +194,7 @@
                 <a href="#" class="button nav-link" onclick="saveMealPlan()">
                     <div class="bottom"></div>
                     <div class="top">
-                        <div class="mealLabel">Save Meal Plan</div>
+                        <div class="mealLabel">SAVE</div>
                         <div class="button-border button-border-left"></div>
                         <div class="button-border button-border-top"></div>
                         <div class="button-border button-border-right"></div>

@@ -1,0 +1,49 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+nav {
+    background-color: #897e96; /* Navbar background color */
+    color: #ffffff; /* Navbar text color */
+    height: 70px; /* Set the navbar height */
+    width: 100%;
+    display: flex;
+    font-size: 28px;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-container {
+    margin-top: 10px;
+    color: #ccc;
+    display: flex;
+    flex-wrap: wrap; 
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    
+    gap: 20px;
+}
+
+.user-recipe-box {
+    background-color: rgb(48, 34, 48);
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.recipe-image {
+    width: 400px;
+    height: 400px;
+    object-fit: cover; /* Maintain aspect ratio */
+    margin-bottom: 10px;
+}
+
+.recipe-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

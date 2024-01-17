@@ -8,7 +8,7 @@ function loginUser() {
     };
 
     // Make the POST request to your Java backend
-    fetch('https://recipiebeckend.azurewebsites.net/auth/login', {
+    fetch('https://recipiebeckend.azurewebsites.net/auth/login2', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

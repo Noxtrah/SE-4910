@@ -126,19 +126,22 @@ function toggleFavorite(element) {
     element.style.cursor = 'pointer';
   }
 
-  function setRating(rating) {
-    const stars = document.querySelectorAll('.star');
-
-    for (let i = 0; i < stars.length; i++) {
-      if (i < rating) {
-        stars[i].innerHTML = '★'; // Seçilen yıldızları yıldız simgesiyle doldur
-        stars[i].style.color = 'gold'; // Sarı renk yap
-      } else {
-        stars[i].innerHTML = '☆'; // Diğer yıldızları boş bırak
-        stars[i].style.color = 'black'; // Siyah renk yap
-      }
-    }
+  
+function setRating(rating, starContainer) {
+	const stars = starContainer.querySelectorAll('.star');
+  
+	for (let i = 0; i < stars.length; i++) {
+	  if (i < rating) {
+		stars[i].innerHTML = '★';
+		stars[i].style.color = 'gold';
+	  } else {
+		stars[i].innerHTML = '☆';
+		stars[i].style.color = 'black';
+	  }
+	}
   }
+
+  //post (starContainer,rating)
 
   
 
@@ -203,75 +206,76 @@ function toggleFavorite(element) {
   
 
 
-  const fetchData = async () => {
-	try {
-	  const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
-	  const data = await response.json();
+//   const fetchData = async () => {
+// 	try {
+// 	 // const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+// 	  const data = await response.json();
 
-	  const recipesList = document.getElementById('recipesList');
+// 	  const recipesList = document.getElementById('recipesList');
 
-	  data.forEach((recipe, index) => {
-		// Create a new column for each recipe
-		const recipeDiv = document.createElement('div');
-		recipeDiv.classList.add('recipe-item');
+// 	  data.forEach((recipe, index) => {
+// 		// Create a new column for each recipe
+// 		const recipeDiv = document.createElement('div');
+// 		recipeDiv.classList.add('recipe-item');
 
-		const link = document.createElement('a');
-		link.href = 'your_new_page_url.html';
+// 		const link = document.createElement('a');
+// 		link.href = 'your_new_page_url.html';
 
-		// Image
-		const imgDiv = document.createElement('div');
-		imgDiv.classList.add('imgDiv');
-		const img = document.createElement('img');
-		img.src = recipe.photoPath;
-		img.alt = 'Recipe Photo';
+// 		// Image
+// 		const imgDiv = document.createElement('div');
+// 		imgDiv.classList.add('imgDiv');
+// 		const img = document.createElement('img');
+// 		img.src = recipe.photoPath;
+// 		img.alt = 'Recipe Photo';
 
-		// Apply CSS to constrain image size
-		img.style.maxWidth = '100%'; // Adjust this value as needed
-		img.style.height = '100%'; // Maintain aspect ratio
+// 		// Apply CSS to constrain image size
+// 		img.style.maxWidth = '100%'; // Adjust this value as needed
+// 		img.style.height = '100%'; // Maintain aspect ratio
 
-		link.appendChild(img);
-		imgDiv.appendChild(link);
+// 		link.appendChild(img);
+// 		imgDiv.appendChild(link);
 
-		// Create stars
-		const starContainer = document.createElement('div');
-		starContainer.classList.add('rating');
-		for (let i = 1; i <= 5; i++) {
-		  const star = document.createElement('span');
-		  star.classList.add('star');
-		  star.textContent = '☆';
-		  star.onmouseover = () => hoverStar(star);
-		  star.onclick = () => setRating(i);
-		  starContainer.appendChild(star);
-		}
+// 		// Create stars
+// 		const starContainer = document.createElement('div');
+// 		starContainer.classList.add('rating');
+// 		for (let i = 1; i <= 5; i++) {
+// 		  const star = document.createElement('span');
+// 		  star.classList.add('star');
+// 		  star.textContent = '☆';
+// 		  star.onmouseover = () => hoverStar(star);
+// 		  star.onclick = () => setRating(i,starContainer);
+// 		  starContainer.appendChild(star);
+// 		}
+// 	    recipeDiv.appendChild(starContainer);
 
-		// Create heart
-		const heart = document.createElement('span');
-		heart.classList.add('favorite-heart');
-		heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
-		heart.alt = 'Animated Heart';
-		heart.onclick = () => toggleFavorite(heart);
-		// heart.textContent = '♥';
-		// heart.onclick = () => toggleFavorite(heart);
+// 		// Create heart
+// 		const heart = document.createElement('span');
+// 		heart.classList.add('favorite-heart');
+// 		heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
+// 		heart.alt = 'Animated Heart';
+// 		heart.onclick = () => toggleFavorite(heart);
+// 		// heart.textContent = '♥';
+// 		// heart.onclick = () => toggleFavorite(heart);
 
-		// Title
-		const titleDiv = document.createElement('div');
-		titleDiv.classList.add('titleDiv');
-		titleDiv.textContent = recipe.title;
+// 		// Title
+// 		const titleDiv = document.createElement('div');
+// 		titleDiv.classList.add('titleDiv');
+// 		titleDiv.textContent = recipe.title;
 
-		// Append stars and heart to the recipeDiv
-		recipeDiv.appendChild(imgDiv);
-		recipeDiv.appendChild(titleDiv);
-		recipeDiv.appendChild(starContainer);
-		recipeDiv.appendChild(heart);
-		recipesList.appendChild(recipeDiv);
-	  });
-	} catch (error) {
-	  console.error('Error fetching or displaying data:', error);
-	}
-  };
+// 		// Append stars and heart to the recipeDiv
+// 		recipeDiv.appendChild(imgDiv);
+// 		recipeDiv.appendChild(titleDiv);
+// 		recipeDiv.appendChild(starContainer);
+// 		recipeDiv.appendChild(heart);
+// 		recipesList.appendChild(recipeDiv);
+// 	  });
+// 	} catch (error) {
+// 	  console.error('Error fetching or displaying data:', error);
+// 	}
+//   };
 
-  // fetchData fonksiyonunu çağırarak dataları al ve içeriği doldur
-  fetchData();
+//   // fetchData fonksiyonunu çağırarak dataları al ve içeriği doldur
+//   fetchData();
 
 
   //Call jQuery before below code
@@ -325,6 +329,107 @@ function toggleFavorite(element) {
   }
 
 
+  // Function to create a recipe element based on the provided recipe data
+const createRecipeElement = (recipe) => {
+    // Create a new column for each recipe
+    const recipeDiv = document.createElement('div');
+    recipeDiv.classList.add('recipe-item');
+
+    const link = document.createElement('a');
+    link.href = 'your_new_page_url.html';
+
+    // Image
+    const imgDiv = document.createElement('div');
+    imgDiv.classList.add('imgDiv');
+    const img = document.createElement('img');
+    img.src = recipe.photoPath;
+    img.alt = 'Recipe Photo';
+
+    // Apply CSS to constrain image size
+    img.style.maxWidth = '100%'; // Adjust this value as needed
+    img.style.height = '100%'; // Maintain aspect ratio
+
+    link.appendChild(img);
+    imgDiv.appendChild(link);
+
+    // Create stars
+    const starContainer = document.createElement('div');
+    starContainer.classList.add('rating');
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.textContent = '☆';
+        star.onmouseover = () => hoverStar(star);
+        star.onclick = () => setRating(i, starContainer);
+        starContainer.appendChild(star);
+    }
+    recipeDiv.appendChild(starContainer);
+
+    // Create heart
+    const heart = document.createElement('span');
+    heart.classList.add('favorite-heart');
+    heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
+    heart.alt = 'Animated Heart';
+    heart.onclick = () => toggleFavorite(heart);
+    heart.textContent = '♥';
+     heart.onclick = () => toggleFavorite(heart);
+
+    // Title
+    const titleDiv = document.createElement('div');
+    titleDiv.classList.add('titleDiv');
+    titleDiv.textContent = recipe.title;
+
+    // Append stars and heart to the recipeDiv
+    recipeDiv.appendChild(imgDiv);
+    recipeDiv.appendChild(titleDiv);
+    recipeDiv.appendChild(starContainer);
+    recipeDiv.appendChild(heart);
+
+    return recipeDiv;
+};
+
+// Function to display recipes in the dashboard
+const displayDashboard = (recipes) => {
+    const recipesList = document.getElementById('recipesList');
+
+    // Clear the existing content before adding new recipes
+    recipesList.innerHTML = '';
+
+    recipes.forEach((recipe, index) => {
+        const recipeElement = createRecipeElement(recipe);
+        recipesList.appendChild(recipeElement);
+    });
+};
+
+// Function to fetch data from the API
+const fetchData = async () => {
+    try {
+        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+        const data = await response.json();
+
+        // Call displayDashboard to render the fetched data
+        displayDashboard(data);
+    } catch (error) {
+        console.error('Error fetching or displaying data:', error);
+    }
+};
+
+// Call fetchData to initiate the process
+fetchData();
+
+const fetchDataByMealType = async (mealType) => {
+    try {
+        // Modify the endpoint based on the mealType parameter
+        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByMeal?mealType=${mealType}`;
+
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        displayDashboard(data);
+    } catch (error) {
+        console.error('Error fetching or displaying data:', error);
+    }
+};
 
 
 
