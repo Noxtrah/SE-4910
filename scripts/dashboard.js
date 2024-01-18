@@ -7,20 +7,20 @@ const currentTags = ["ingredients: apple"];
 //Tags the user can choose from
 const tags = ["ingredients"]
 
-window.onload = () => {
-	//Initialization
-	let input = document.getElementById("searchInput")
-	input.addEventListener("input", handleChange);
-	input.addEventListener("keydown", blockEnter);
-	getRidOfScrollbar()
+// window.onload = () => {
+// 	//Initialization
+// 	let input = document.getElementById("searchInput")
+// 	input.addEventListener("input", handleChange);
+// 	input.addEventListener("keydown", blockEnter);
+// 	getRidOfScrollbar()
 
-	//Can be used to prefill the search bar with tags in currentTags
-	updateTags()
-	input.innerHTML = placeholder;
-	input.blur()
-	input.addEventListener("focus", handleFocus);
+// 	//Can be used to prefill the search bar with tags in currentTags
+// 	updateTags()
+// 	input.innerHTML = placeholder;
+// 	input.blur()
+// 	input.addEventListener("focus", handleFocus);
 
-}
+// }
 
 //The search bar needs to be scrollable, but we don't want to see that ugly scrollbar
 function getRidOfScrollbar() {
