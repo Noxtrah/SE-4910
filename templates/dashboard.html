@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReciPie</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+
+    <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+  </head>
+  <body>
+    <section class="background">
+    <!-- nav  -->
+    <nav class="navbar">
+
+      <div class="nav-center">
+        <div class="nav-header">
+          <a href="index.html" class="nav-logo">
+            <!-- <img src="../Icons/logo.svg" /> -->
+            <img style="width: 90px; height: 90px; margin-left: 40px;" src="https://www.svgrepo.com/show/398059/pie.svg"  alt="logo">
+          </a>
+          <button class="nav-btn btn">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+        <div class="nav-links">
+          <div class="glass-nav-links">
+          <!-- <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a> -->
+          <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
+          <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
+          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
+        </div>
+          <!-- <div class="nav-link contact-link">
+            <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
+            <a href="profile.html" class="btn">
+              <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+            </a> -->
+          </div>
+        </div>
+      </div>
+      <div class="profile-dropdown">
+        <a href="profile.html" class="btn">
+          <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+        </a>
+        <div class="dropdown-content">
+          <a href="favourites.html">Favourites</a>
+          <a href="recipe-book.html">My Recipe Book</a>
+          <a href="profile.html">Profile</a>
+          <a href="logIn.html">Log-in</a>
+        </div>
+      </div>
+      <br>
+    </nav>
+
+    <div class="centerbox">
+      <br>
+      <br>
+      <div class="main-form-container">
+        <form id="" class="" method="post">
+          <input type="text" class="main-input main-name" name="NAME" value="Search by name" onfocus="clearText(this)" onblur="replaceText(this)" />
+          <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" />
+          <div class=" search-wrapper">
+          <!-- <button type="button" class="main-btn">
+            <p class="search-small">SEARCH BY</p>
+            <p class="search-large">Name</p>
+          </button>
+          <ul class="search-description">
+            <li>By Ingredients</li>
+            <li>By Name</li>
+          </ul> -->
+        </div>
+          <input id="main-submit" class="" type="submit" value="Search" />
+        </form>
+      </div>
+      <button type="button" id="main-submit-mobile">Search</button>
+    </div>
+    <!-- mobile submit -->
+
+
+    <!-- end of nav -->
+    <!-- main -->
+    <main class="page">
+      <!-- header -->
+      <header class="hero">
+        <div  class="hero-container" style="background-image:url(https://thetrestlestop.com/wp-content/uploads/2021/03/Dessert-Banner-e1617261331998.jpg);  background-size: cover;">
+          <div class="hero-text">
+
+            <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(88, 55, 105); font-family:  Courier, monospace;"> Welcome!</h1>
+            <!-- <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4> -->
+          </div>
+        </div>
+      </header>
+      <!-- end of header -->
+      <section class="recipes-container">
+        <!-- tag container -->
+        <div class="tags-container">
+          <h4 style="color: black; font-family: 'Courier New', Courier, monospace;" >recipes</h4>
+          <div style="color: black; font-family: 'Courier New', Courier, monospace; cursor: pointer; " class="tags-list">
+            <a onclick="fetchDataByMealType('dinner')">Dinner </a>
+            <a onclick="fetchDataByMealType('breakfast')">Breakfast </a>
+            <a onclick="fetchDataByMealType('dessert')">Dessert </a>
+            <a onclick="fetchDataByMealType('lunch')">Lunch </a>
+            <a onclick="fetchDataByMealType('snack')">Snack </a>
+          </div>
+
+          <div class="select-container">
+            <form id="app-cover">
+              <div id="select-box">
+                <input type="checkbox" id="options-view-button">
+                <div id="select-button" class="brd">
+                  <div id="selected-value">
+                    <span>Sort by:</span>
+                  </div>
+                  <div id="chevrons">
+                    <i class="fas fa-chevron-up"></i>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div id="options">
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="time">
+                    <input class="s-c bottom" type="radio" name="platform" value="time">
+                    <i class="fab fa-codepen"><ion-icon name="time-outline" class="sort-by-time"></ion-icon></i>
+                    <span class="label">Prep. Time</span>
+                    <span class="opt-val">Prep. Time</span>
+                  </div>
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="aplhabet">
+                    <input class="s-c bottom" type="radio" name="platform" value="alphabet">
+                    <i class="fab fa-dribbble"><ion-icon name="text-outline" class="sort-by-alphabet"></ion-icon></i>
+                    <span class="label">Alphabetical</span>
+                    <span class="opt-val">Alphabetical</span>
+                  </div>
+                  <div class="option">
+                    <input class="s-c top" type="radio" name="platform" value="rate">
+                    <input class="s-c bottom" type="radio" name="platform" value="rate">
+                    <i class="fab fa-rate"><ion-icon name="star-outline" class="sort-by-rate"></ion-icon></i>
+                    <span class="label">Rate</span>
+                    <span class="opt-val">Rate</span>
+                  </div>
+                  <div id="option-bg"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <!-- end of tag container -->
+
+        <!-- recipes list -->
+        <div class="recipes-list" id="recipesList">
+          <!-- Boş, dinamik olarak doldurulacak -->
+        </div>
+        <!-- end of recipes list -->
+      </section>
+
+    </main>
+    <!-- end of main -->
+    <!-- footer -->
+    <br>
+  </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../scripts/dashboard.js"></script>
+
+<body>
+
+<body class="meal-planner-body">
+    <div class="meal-planner">
+        <h1  style="font-family: 'Courier New', Courier, monospace;" >Meal Planner</h1>
+        <div id="gradient"></div>
+        <div class="searchbox" >
+        <input  type="search" id="searchMeal" placeholder="Type meal">
+        <button class="addMealbutton" type="submit" onclick="addMeal()"></button>
+
+
+        </div>
+       
+<div>
+      
+  <div id="intro-content" class="center-content">
+    <div class="center-content-inner">
+        <div class="content-section content-section-margin">
+            <div class="content-section-grid clearfix">
+                <a href="#" class="button nav-link" onclick="saveMealPlan()">
+                    <div class="bottom"></div>
+                    <div class="top">
+                        <div class="mealLabel">SAVE</div>
+                        <div class="button-border button-border-left"></div>
+                        <div class="button-border button-border-top"></div>
+                        <div class="button-border button-border-right"></div>
+                        <div class="button-border button-border-bottom"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+      
+
+        <div class="days">
+          <div class="day" onclick="selectDay('monday')">
+            <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;" >Monday</h2>
+            <ul id="mondayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('tuesday')">
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Tuesday</h2>
+            <ul id="tuesdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('wednesday')">
+            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Wednesday</h2>
+            <ul id="wednesdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('thursday')">
+            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Thursday</h2>
+            <ul id="thursdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('friday')">
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Friday</h2>
+            <ul id="fridayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('saturday')">
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Saturday</h2>
+            <ul id="saturdayList"></ul>
+          </div>
+          <div class="day" onclick="selectDay('sunday')">
+            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Sunday</h2>
+            <ul id="sundayList"></ul>
+          </div>
+          <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->
+          <!-- Örnek olarak Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday ekleyebilirsiniz -->
+        </div>
+      </div>
+
+
+
+  </body>
+</html>
