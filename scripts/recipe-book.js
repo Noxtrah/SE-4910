@@ -16,7 +16,48 @@ let recipes = [
         description: "Healthy and flavorful stir-fried vegetables with tofu."
     }
 ];
+let title;
+let ingredients;
+let description;
 
+function sendRecipesToDatabase(){
+    fetch('https://recipiebeckend.azurewebsites.net/auth/login2', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title: title,
+            ingredients: ingredients,
+            description: description
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
+        else{
+            console.log("Response is OK");
+        }
+
+    })
+    .catch(error => {
+        // handle error
+        console.error('Error:', error);
+    });
+
+}
+
+async function getRecipesFromDatabase(){
+    try {
+        const response = await fetch('your_api_endpoint_here');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        return [];
+    }
+}
 document.addEventListener("DOMContentLoaded", function () {
     const recipeContainer = document.querySelector(".recipe-book-container");
 
@@ -30,12 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const description = document.getElementById("recipe-description").value;
 
         if (title && ingredients && description) {
+
             // Yeni tarifi veritabanına ekle
-            recipes.push({
-                title: title,
-                ingredients: ingredients,
-                description: description
-            });
+            sendRecipesToDatabase();
+            // recipes.push({
+            //     title: title,
+            //     ingredients: ingredients,
+            //     description: description
+            // });
 
             // Tarif eklendikten sonra tarifleri göster
             showRecipes();
@@ -56,18 +99,25 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to display recipes in the recipe container
-function showRecipes() {
+async function showRecipes() {
     const recipeContainer = document.querySelector(".recipe-book-container");
     recipeContainer.innerHTML = "";
 
-    recipes.forEach(recipe => {
-        const recipeItem = document.createElement("div");
-        recipeItem.classList.add("recipe-item");
-        recipeItem.innerHTML = `
-            <h2>${recipe.title}</h2>
-            <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
-            <p><strong>Description:</strong> ${recipe.description}</p>
-        `;
-        recipeContainer.appendChild(recipeItem);
-    });
+    try {
+        // Call the fetchRecipes function
+        const recipes = await fetchRecipes();
+
+        recipes.forEach(recipe => {
+            const recipeItem = document.createElement("div");
+            recipeItem.classList.add("recipe-item");
+            recipeItem.innerHTML = `
+                <h2>${recipe.title}</h2>
+                <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
+                <p><strong>Description:</strong> ${recipe.description}</p>
+            `;
+            recipeContainer.appendChild(recipeItem);
+        });
+    } catch (error) {
+        console.error('Error showing recipes:', error);
+    }
 }
