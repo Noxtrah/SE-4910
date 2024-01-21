@@ -336,7 +336,10 @@ const createRecipeElement = (recipe) => {
     recipeDiv.classList.add('recipe-item');
 
     const link = document.createElement('a');
-    link.href = 'your_new_page_url.html';
+    //link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
+
+	link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
+
 
     // Image
     const imgDiv = document.createElement('div');
@@ -407,6 +410,7 @@ const fetchData = async () => {
         const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
         const data = await response.json();
 
+		console.log('Fetched Data:', data);
         // Call displayDashboard to render the fetched data
         displayDashboard(data);
     } catch (error) {
@@ -431,7 +435,12 @@ const fetchDataByMealType = async (mealType) => {
     }
 };
 
-
+const openRecipeDetailPage = (id) => {
+    const recipeDetailURL = `recipeDetail.html?id=${id}`;
+    // Perform any additional actions before navigating, if needed
+    // For example, you might want to validate the id or perform some asynchronous tasks
+    window.location.href = recipeDetailURL;
+};
 
 
 
