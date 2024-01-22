@@ -1,13 +1,10 @@
 package se4910.recipiebeckend.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.Meal;
-import se4910.recipiebeckend.entity.Rates;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.MealRepository;
@@ -15,10 +12,8 @@ import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RateResponse;
 import se4910.recipiebeckend.response.RecipeInfoResponse;
-import se4910.recipiebeckend.response.RecipeResponse;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,19 +33,6 @@ public class RecipeService {
         {
             return Collections.emptyList();
         }
-
-    }
-
-    public List<RecipeResponse> getAllRecipesWithRate()
-    {
-
-       List<Recipe>recipes = recipeRepository.findAll();
-
-        return recipes.stream().map(recipe -> {
-            double rate = ratesService.GetRatesByRecipeId(recipe.getId());
-           return new RecipeResponse(recipe,rate);
-       })
-               .collect(Collectors.toList());
 
     }
 

@@ -3,14 +3,12 @@ package se4910.recipiebeckend.service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.Rates;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
-import se4910.recipiebeckend.response.OneUserRates;
 import se4910.recipiebeckend.response.RateResponse;
 
 import java.util.ArrayList;

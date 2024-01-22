@@ -1,6 +1,5 @@
 package se4910.recipiebeckend.controller;
 
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,12 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeInfoResponse;
-import se4910.recipiebeckend.response.RecipeResponse;
 import se4910.recipiebeckend.service.RecipeService;
 import se4910.recipiebeckend.service.UserService;
 
@@ -66,12 +63,6 @@ public class RecipeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    @GetMapping("/all-recipes-rate")
-    public List<RecipeResponse> getAllRecipesWithRate()
-    {
-        return recipeService.getAllRecipesWithRate();
-    }
 
     @PostMapping("/create-recipe")
     public ResponseEntity<String> createRecipe(@RequestBody RecipeRequest recipeRequest)
