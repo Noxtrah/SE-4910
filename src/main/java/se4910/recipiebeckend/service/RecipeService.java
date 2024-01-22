@@ -6,14 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import se4910.recipiebeckend.entity.Meal;
+import se4910.recipiebeckend.entity.Rates;
 import se4910.recipiebeckend.entity.Recipe;
+import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.MealRepository;
-import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.request.RecipeRequest;
+import se4910.recipiebeckend.response.RateResponse;
+import se4910.recipiebeckend.response.RecipeInfoResponse;
 import se4910.recipiebeckend.response.RecipeResponse;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class RecipeService {
     RecipeRepository recipeRepository;
     RatesService ratesService;
     MealRepository mealRepository;
+    FavService favService;
     public List<Recipe> getAllRecipes()
     {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -154,5 +156,18 @@ public class RecipeService {
 
         return recipeRepository.findByMeal(meal);
 
+    }
+
+    public ResponseEntity<RecipeInfoResponse> getAllRecipesWithInfo(User currentUser)
+    {
+        List<Long> favsId =  favService.getOneUserFavoritesId(currentUser);
+        List<RateResponse> rateResponseList = ratesService.getOneUserRates(currentUser);
+        RecipeInfoResponse response = new RecipeInfoResponse(favsId,rateResponseList);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    public Recipe getRecipeByID(long id) {
+        Optional<Recipe> recipe = recipeRepository.findById(id);
+        return recipe.orElse(null);
     }
 }

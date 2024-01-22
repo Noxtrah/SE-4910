@@ -1,13 +1,9 @@
 package se4910.recipiebeckend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.List;
-import java.util.Set;
+
 
 
 @Entity(name="recipe" )
@@ -23,11 +19,11 @@ public class Recipe {
     private String title;
 
   //  @Column(columnDefinition = "ingredients")
-  @Column(name = "ingredients", columnDefinition = "LONGTEXT")
+  @Column(name = "ingredients", columnDefinition = "varchar(max)")
     private String ingredients;
 
 
-    @Column(name = "description", columnDefinition = "LONGTEXT")
+   @Column(name = "description", columnDefinition = "varchar(max)")
     private String description;
 
 

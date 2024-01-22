@@ -17,24 +17,23 @@ public class UserRecipes {
     @JoinColumn(name = "users_id",nullable = false)
     private User user;
 
-
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "ingredients", columnDefinition = "varchar(max)")
     private String ingredients;
 
-    @Column(name = "description", columnDefinition = "LONGTEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     private String cuisine;
 
-
     private String meal;
-
 
     private int preparationTime;
 
     private  String photoPath;
+
+    private boolean isPublish;
 
 }

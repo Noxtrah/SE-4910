@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,17 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+
 public class JwtUtil {
 
-   @Value("${token.signing.key}")
+    @Value("${token.signing.key}")
     private String jwtSigningKey;
 
     RefreshTokenRepository refreshTokenRepository;
+
+    public JwtUtil(RefreshTokenRepository refreshTokenRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

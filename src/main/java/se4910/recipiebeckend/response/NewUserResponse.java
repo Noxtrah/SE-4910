@@ -18,6 +18,7 @@ public class NewUserResponse {
             this.name = user.getName();
             this.lastname = user.getLastName();
             this.username = user.getUsername();
+            this.password = user.getPassword();
 
         }
 

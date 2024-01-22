@@ -12,25 +12,19 @@ import org.springdoc.core.models.GroupedOpenApi;
 public class SwaggerConfig {
 
     // http://localhost:8282/swagger-ui/index.html#/
-    //https://airlinemidterm4458.azurewebsites.net/swagger-ui/index.html#/
+    //recipiebeckend.azurewebsites.net/swagger-ui/index.html#/
     @Bean
     public GroupedOpenApi customApi() {
         return GroupedOpenApi.builder()
                 .group("custom-api")
-                .pathsToMatch("/api/**")
+                .pathsToMatch("/**")
                 .build();
     }
 
     @Bean
     public OpenAPI openApiConfiguration() {
         return new OpenAPI()
-                .components(new Components()
-                        .addSecuritySchemes("bearer-key", new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                        )
-                )
+
                 .info(new Info()
                         .title("Recipie project")
                         .version("1.0.0")

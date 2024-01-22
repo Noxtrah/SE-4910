@@ -8,20 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-import se4910.recipiebeckend.entity.Role;
 import se4910.recipiebeckend.entity.User;
 
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
-import se4910.recipiebeckend.request.NewUserRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -48,7 +43,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User getOneUserByUsername(String username) { return userRepository.findUserByUsername(username);}
+    public User getOneUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
 
     public ResponseEntity<String> saveUserRecipe(UserRecipeRequest userRecipeRequest)
     {
@@ -78,6 +75,7 @@ public class UserService implements UserDetailsService {
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
         userRecipes.setTitle(userRecipeRequest.getTitle());
         userRecipes.setUser(user);
+        userRecipes.setPublish(false);
 
         try {
             userRecipeRepository.save(userRecipes);

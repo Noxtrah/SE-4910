@@ -5,7 +5,6 @@ import se4910.recipiebeckend.entity.Recipe;
 public class OneUserRates {
 
     Recipe recipe;
-
     int rate;
 
 

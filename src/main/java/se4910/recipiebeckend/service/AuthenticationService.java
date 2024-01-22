@@ -59,8 +59,25 @@ public class AuthenticationService {
                         .build();
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return AuthResponse.builder().accessToken("An error occurred").build();
+
+            return AuthResponse.builder().accessToken("Error: " + e.getMessage()).build();
+        }
+    }
+
+    public ResponseEntity<?> loginUser2(String username, String password)
+    {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+            User user = userService.getOneUserByUsername(username);
+            if (user != null) {
+
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -78,6 +95,7 @@ public class AuthenticationService {
             user.setName(registerRequest.getName());
             user.setLastName(registerRequest.getLastName());
             user.setEmail(registerRequest.getEmail());
+            user.setBirthDay(registerRequest.getBirthDay());
             user.setPassword(password);
             user.setRoles(roleConverter("user"));
 
@@ -165,4 +183,6 @@ public class AuthenticationService {
         }
         return null;
     }
+
+
 }

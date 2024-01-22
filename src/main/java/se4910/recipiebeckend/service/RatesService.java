@@ -11,6 +11,7 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.response.OneUserRates;
+import se4910.recipiebeckend.response.RateResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,19 +53,17 @@ public class RatesService
         return ratesRepository.findByIdRecipeId(id);
     }
 
-    public List<OneUserRates> getOneUserRates(User currentUser)
+    // bu fonksiyon current usera göre ratingleri alır ve recipe ID, rate döndürür.
+    public List<RateResponse> getOneUserRates(User currentUser)
     {
         List<Rates>userRates = ratesRepository.findByUser(currentUser);
-
-        List<OneUserRates> ourList = new ArrayList<>();
+        List<RateResponse> rateResponseList = new ArrayList<>();
         for (Rates oneRate:userRates) {
-            Recipe recipe = oneRate.getRecipe();
+            Long recipeId = oneRate.getRecipe().getId();
             int rate = oneRate.getRate();
-            OneUserRates oneUserRates = new OneUserRates(recipe,rate);
-            ourList.add(oneUserRates);
-
+            RateResponse response = new RateResponse(recipeId,rate);
+            rateResponseList.add(response);
         }
-
-        return ourList;
+        return rateResponseList;
     }
 }

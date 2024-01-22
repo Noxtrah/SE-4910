@@ -6,9 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import se4910.recipiebeckend.entity.Favorites;
+import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.response.OneUserRates;
+import se4910.recipiebeckend.response.RateResponse;
+import se4910.recipiebeckend.service.FavService;
 import se4910.recipiebeckend.service.RatesService;
 import se4910.recipiebeckend.service.UserService;
 
@@ -24,6 +28,10 @@ public class UserController {
 
     @Autowired
     RatesService ratesService;
+
+    @Autowired
+    FavService favService;
+
 
     public User SaveNewUser( User user)
     {
@@ -50,7 +58,7 @@ public class UserController {
         return userService.saveUserRecipe(userRecipeRequest);
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/all-users")
     public List<User> getAllUsers()
     {
         return userService.getAllUsers();
@@ -65,12 +73,60 @@ public class UserController {
 
     }
 
-    @GetMapping("/get-user-rate")
-    public List<OneUserRates> getOneUserRates(Authentication authentication)
-    {
+    @GetMapping("/authHello")
+    public ResponseEntity<String> authHello(Authentication authentication) {
 
         User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            String firstName = currentUser.getName();
+             return ResponseEntity.ok("Hello " + firstName);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/get-user-rate")
+    public List<RateResponse> getOneUserRates(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
         return ratesService.getOneUserRates(currentUser);
+    }
+
+    @PostMapping("/give-like")
+    public ResponseEntity<?> giveOneLike(@RequestParam long recipeId, Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return favService.giveOneLike(recipeId,currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    @DeleteMapping("/unlike")
+    public ResponseEntity<?> unlike(@RequestParam long recipeId ,Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return favService.unlike(recipeId,currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/user-favorites")
+    public List<Recipe> getOneUserFavorites(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        return favService.getOneUserFavorites(currentUser);
+    }
+
+    @GetMapping("/user-favorites-id")
+    public List<Long> getOneUserFavoritesId(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        return favService.getOneUserFavoritesId(currentUser);
     }
 
 
