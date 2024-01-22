@@ -13,8 +13,6 @@
   /* Other styles for the section */
 
 /* Text color, adjust to your preference */
-
- 
   background-color: rgb(205, 199, 208);
   color: rgb(243, 232, 247);
 }
@@ -1427,10 +1425,13 @@ input[type="radio"] {
 .opt-val {
   position: absolute;
   left: 14px;
-  width: 217px;
-  height: 21px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  background-color: #fff;
+  z-index: 3;
   transform: scale(0);
 }
 

@@ -442,5 +442,30 @@ const openRecipeDetailPage = (id) => {
     window.location.href = recipeDetailURL;
 };
 
+document.addEventListener('DOMContentLoaded', function () {
+    const optionsViewButton = document.getElementById('options-view-button');
+    const selectedValue = document.getElementById('selected-value');
+    const options = document.querySelectorAll('.option');
 
+    // Close the dropdown and reset the selected value to "Sort by:" when clicking anywhere outside the dropdown
+    document.addEventListener('click', function (event) {
+        if (event.target !== optionsViewButton) {
+            optionsViewButton.checked = false;
+
+			selectedValue.style.display = 'none';
+            // Show the options when closing the dropdown
+            options.forEach(function (option) {
+                option.style.display = 'block';
+            });
+        }
+    });
+
+    // Add event listeners to each option to update the selected value and close the dropdown
+    options.forEach(function (option) {
+        option.addEventListener('click', function () {
+            selectedValue.textContent = option.querySelector('.opt-val').textContent;
+            optionsViewButton.checked = false; // Close the dropdown when an option is selected
+        });
+    });
+});
 
