@@ -4,12 +4,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const recipeId = parseInt(urlParams.get('id'), 10); // Assuming the parameter name is 'id'
 
     // Fetch data from the API endpoint (replace with your actual API endpoint)
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes')
-        .then(response => response.json())
-        .then(data => {
-            // Find the recipe with the specified id
-            const selectedRecipe = data.find(recipe => recipe.id === recipeId);
-
+    if (recipeId) {
+        // Fetch data from the API endpoint (replace with your actual API endpoint)
+        fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-by-id?id=${recipeId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+    .then(data => {
+        // Find the recipe with the specified id
+        const selectedRecipe = data;
+        console.log(data);
             // Check if the recipe is found
             if (selectedRecipe) {
                 // Update recipe title
@@ -97,4 +104,4 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error fetching recipe data:', error);
         });
-});
+}});
