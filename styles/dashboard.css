@@ -836,14 +836,19 @@ Navbar
   font-size: 1.25rem;
 }
 .nav-links {
-  height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: var(--transition);
   margin-left: 3vw;
   gap: 3vw;
 }
+
+.nav-links a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
 .show-links {
   height: 23.9375rem;
 }
@@ -861,6 +866,65 @@ Navbar
 }
 .nav-link:hover {
   color: var(--primary-500);
+}
+
+.tags-dropdown {
+  float: left;
+}
+
+/* Dropdown button */
+.tags-dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.nav-links a:hover, .tags-dropdown:hover .dropbtn {
+  background: linear-gradient(rgb(72, 50, 123),rgb(190, 180, 195));
+}
+
+/* Dropdown content (hidden by default) */
+.tags-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f900;
+  min-width: 160px;
+  box-shadow: 10px 8px 16px 9px rgba(0,0,0,0.2);
+  border: 1px solid #af64c2;
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.tags-dropdown-content a {
+  float:none;
+  width: 165px;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.tags-dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.tags-dropdown:hover .tags-dropdown-content {
+  display: block;
+  width: max-content;
+}
+
+.dropdown-arrow-icon{
+  margin-right: -16px;
+  vertical-align: bottom;
 }
 
 .contact-link {
@@ -987,7 +1051,6 @@ Footer
   height: 40vh;
   position: relative;
   margin-bottom: 2rem;
-  background: url('../assets/main.jpeg') center/cover no-repeat;
   border-radius: var(--borderRadius);
 }
 .hero-container {

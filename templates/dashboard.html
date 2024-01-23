@@ -26,17 +26,29 @@
             <i class="fas fa-align-justify"></i>
           </button>
         </div>
+
         <div class="nav-links">
           <div class="glass-nav-links">
-          <!-- <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a> -->
-          <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
-          <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
-          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
-          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
-          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
-          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
-          <a style="font-size: larger;"  class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
+            <!-- <a style="font-size: larger;" href="index.html" class="nav-link glass">Home</a> -->
+            <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
+            <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
+
+            <!-- Meal Types Dropdown -->
+            <div class="tags-dropdown" style="position: relative; display: inline-block;">
+              <button style="font-size: larger; cursor: pointer;" class="dropbtn glass">Meal Types
+                <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
+              </button>
+              <div class="tags-dropdown-content">
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
+              </div>
+            </div>
+          </div>
         </div>
+
           <!-- <div class="nav-link contact-link">
             <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
             <a href="profile.html" class="btn">
