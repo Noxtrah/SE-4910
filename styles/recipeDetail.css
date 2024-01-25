@@ -45,3 +45,34 @@ header {
 .recipe-description {
     line-height: 1.6;
 }
+
+#header-container {
+    display: flex;
+    align-items: center;
+}
+
+#back-arrow-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+}
+
+.back-arrow {
+    font-size: 5em;
+    color: var(--light_purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -50%);
+    transition: color 0.3s ease-in-out; 
+}
+
+#back-arrow-button:hover .back-arrow {
+    color: var(--purple); /* Change the color on hover */
+    cursor: pointer; /* Change the cursor on hover */
+}
+
+#recipe-title {
+    flex-grow: 1; /* This will make the title take up the remaining space */
+}

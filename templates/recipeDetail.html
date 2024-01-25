@@ -9,7 +9,12 @@
 <body>
 
     <header>
-        <h1 id="recipe-title">Loading...</h1>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+              </button>
+            <h1 id="recipe-title">Loading...</h1>
+        </div>
     </header>
 
     <div class="recipe-container">
@@ -42,6 +47,8 @@
     </div>
 
     <script src="../scripts/recipeDetail.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 </body>
 </html>
