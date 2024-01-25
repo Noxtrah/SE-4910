@@ -127,7 +127,7 @@ function toggleFavorite(element) {
   }
 
   
-function setRating(rating, starContainer) {
+function setRating(rating, starContainer, recipe) {
 	const stars = starContainer.querySelectorAll('.star');
   
 	for (let i = 0; i < stars.length; i++) {
@@ -139,11 +139,40 @@ function setRating(rating, starContainer) {
 		stars[i].style.color = 'black';
 	  }
 	}
+	if (recipe && recipe.id) {
+    	giveRating(rating, recipe.id);
+    } else {
+        console.error('Recipe ID not found for the given recipe:', recipe);
+        // Handle the case where the recipe ID is not available
+    }
   }
 
-  //post (starContainer,rating)
+  function giveRating(newRating, recipeId) {
+    const url = `https://recipiebeckend.azurewebsites.net/user/give-rate?recipeId=${recipeId}&rate=${newRating}`;
 
-  
+    // Replace 'your_token' with the actual authentication token if required
+    const headers = {
+        'Content-Type': 'application/json',
+        // 'Authorization': 'Bearer your_token',
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle the response data if needed
+        console.log('Rating updated successfully:', data);
+    })
+    .catch(error => console.error('Error updating rating:', error));
+}
+
 
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
   let selectedDay = null;
@@ -199,84 +228,6 @@ function setRating(rating, starContainer) {
 	// Here you can perform actions with the 'allDays' array like saving it to a database or using it elsewhere
 	console.log(allDays); // For demonstration, it logs the meal plan to the console
 }
-	
-
-  
-
-  
-
-
-//   const fetchData = async () => {
-// 	try {
-// 	 // const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
-// 	  const data = await response.json();
-
-// 	  const recipesList = document.getElementById('recipesList');
-
-// 	  data.forEach((recipe, index) => {
-// 		// Create a new column for each recipe
-// 		const recipeDiv = document.createElement('div');
-// 		recipeDiv.classList.add('recipe-item');
-
-// 		const link = document.createElement('a');
-// 		link.href = 'your_new_page_url.html';
-
-// 		// Image
-// 		const imgDiv = document.createElement('div');
-// 		imgDiv.classList.add('imgDiv');
-// 		const img = document.createElement('img');
-// 		img.src = recipe.photoPath;
-// 		img.alt = 'Recipe Photo';
-
-// 		// Apply CSS to constrain image size
-// 		img.style.maxWidth = '100%'; // Adjust this value as needed
-// 		img.style.height = '100%'; // Maintain aspect ratio
-
-// 		link.appendChild(img);
-// 		imgDiv.appendChild(link);
-
-// 		// Create stars
-// 		const starContainer = document.createElement('div');
-// 		starContainer.classList.add('rating');
-// 		for (let i = 1; i <= 5; i++) {
-// 		  const star = document.createElement('span');
-// 		  star.classList.add('star');
-// 		  star.textContent = '☆';
-// 		  star.onmouseover = () => hoverStar(star);
-// 		  star.onclick = () => setRating(i,starContainer);
-// 		  starContainer.appendChild(star);
-// 		}
-// 	    recipeDiv.appendChild(starContainer);
-
-// 		// Create heart
-// 		const heart = document.createElement('span');
-// 		heart.classList.add('favorite-heart');
-// 		heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
-// 		heart.alt = 'Animated Heart';
-// 		heart.onclick = () => toggleFavorite(heart);
-// 		// heart.textContent = '♥';
-// 		// heart.onclick = () => toggleFavorite(heart);
-
-// 		// Title
-// 		const titleDiv = document.createElement('div');
-// 		titleDiv.classList.add('titleDiv');
-// 		titleDiv.textContent = recipe.title;
-
-// 		// Append stars and heart to the recipeDiv
-// 		recipeDiv.appendChild(imgDiv);
-// 		recipeDiv.appendChild(titleDiv);
-// 		recipeDiv.appendChild(starContainer);
-// 		recipeDiv.appendChild(heart);
-// 		recipesList.appendChild(recipeDiv);
-// 	  });
-// 	} catch (error) {
-// 	  console.error('Error fetching or displaying data:', error);
-// 	}
-//   };
-
-//   // fetchData fonksiyonunu çağırarak dataları al ve içeriği doldur
-//   fetchData();
-
 
   //Call jQuery before below code
   $('.search-description').hide();
@@ -363,7 +314,8 @@ const createRecipeElement = (recipe) => {
         star.classList.add('star');
         star.textContent = '☆';
         star.onmouseover = () => hoverStar(star);
-        star.onclick = () => setRating(i, starContainer);
+        const clickHandler = () => setRating(i, starContainer, recipe);
+    	star.onclick = clickHandler;
         starContainer.appendChild(star);
     }
     recipeDiv.appendChild(starContainer);
@@ -471,3 +423,81 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function fetchSortOperations(selectedValue) {
+    switch (selectedValue) {
+        case 'time':
+            fetchSortByTime();
+            break;
+        case 'alphabet':
+            fetchSortByAlphabet();
+            break;
+        case 'rate':
+            fetchSortByRate();
+            break;
+        default:
+            console.log("Invalid option selected");
+    }
+}
+
+function fetchSortByTime() {
+    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime')
+        .then(response => response.json())
+        .then(data => {
+            // Sort recipes based on prep time (replace 'prepTime' with your actual property)
+            const sortedRecipes = data.sort((a, b) => a.prepTime - b.prepTime);
+            displayDashboard(sortedRecipes);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+// Function to fetch and display recipes sorted alphabetically
+function fetchSortByAlphabet() {
+    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-alph')
+        .then(response => {
+            if (!response.ok) {
+                console.log('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
+                // Sort recipes alphabetically based on title
+                const sortedRecipes = data.sort((a, b) => a.title.localeCompare(b.title));
+                displayDashboard(sortedRecipes);
+            } else {
+                console.error('Invalid data format:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+
+// Function to fetch and display recipes sorted by rate
+function fetchSortByRate() {
+    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-rate')
+        .then(response => {
+            if (!response.ok) {
+                console.log('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
+                // Sort recipes based on rate
+                const sortedRecipes = data.sort((a, b) => b.rate - a.rate);
+                displayDashboard(sortedRecipes);
+            } else {
+                console.error('Invalid data format:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', function () {
+        if (this.checked) {
+            console.log("Selected value:", this.value);
+            fetchSortOperations(this.value);
+        }
+    });
+});
