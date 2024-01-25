@@ -1,21 +1,25 @@
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
 }
 
-nav {
-    background-color: #897e96; /* Navbar background color */
-    color: #ffffff; /* Navbar text color */
-    height: 70px; /* Set the navbar height */
-    width: 100%;
-    display: flex;
-    font-size: 28px;
-    align-items: center;
-    justify-content: center;
+body {
+    font-family: Arial, sans-serif;
+    font-size: larger;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background_color);
+}
+
+header {
+    background-color: var(--dark_grey);
+    color: var(--light_purple);
+    text-align: center;
+    padding: 1em;
 }
 
 .grid-container {
@@ -24,8 +28,8 @@ nav {
     display: flex;
     flex-wrap: wrap; 
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    
     gap: 20px;
+    justify-content: center; /* Center vertically */
 }
 
 .user-recipe-box {
@@ -46,4 +50,35 @@ nav {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+#header-container {
+    display: flex;
+    align-items: center;
+}
+
+#back-arrow-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+}
+
+.back-arrow {
+    font-size: 5em;
+    color: var(--light_purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -50%);
+    transition: color 0.3s ease-in-out; 
+}
+
+#back-arrow-button:hover .back-arrow {
+    color: var(--purple); /* Change the color on hover */
+    cursor: pointer; /* Change the cursor on hover */
+}
+
+.header-title {
+    flex-grow: 1; /* This will make the title take up the remaining space */
 }

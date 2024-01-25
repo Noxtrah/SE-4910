@@ -4,22 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/userDashboard.css">
-    <script src="../scripts/userDashboard.js" defer></script>
     <title>User Dashboard</title>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav>
-        <div class="navbar">
-            <span class="navbar-title">USER RECIPE DASHBOARD</span>
+    <header>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+              </button>
+              <h1 class="header-title">USER RECIPE DASHBOARD</h1>
         </div>
-    </nav>
+    </header>
 
+    <!-- <span class="navbar-title">USER RECIPE DASHBOARD</span> -->
     <!-- 3x3 Grid -->
     <div class="grid-container">
         <!-- User Recipe Boxes will be generated dynamically here -->
     </div>
 
+    <script src="../scripts/userDashboard.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
