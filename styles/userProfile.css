@@ -1,0 +1,79 @@
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: var(--background_color);
+    color: var(--dark_grey);
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 20px;
+    background-color: var(--light_purple);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.section-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--dark_purple);
+}
+
+.photo-frame {
+    width: 100px;
+    height: 100px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid var(--dark_purple);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+select {
+    background-color: white;
+}
+
+#save-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#save-button:hover {
+    background-color: var(--dark_purple);
+}
