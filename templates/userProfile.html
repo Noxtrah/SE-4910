@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/userProfile.css">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <div class="profile-container">
+        <div class="section photo-edit-section">
+            <div class="section-header">Profile Photo Edit</div>
+            <input type="file" id="photo-upload" accept="image/*">
+            <div class="photo-frame" id="photo-frame"></div>
+        </div>
+    
+        <div class="section password-update-section">
+            <div class="section-header">Password Update</div>
+            <label for="new-password">New Password:</label>
+            <input type="password" id="new-password" name="new-password">
+    
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password">
+        </div>
+    
+        <div class="section bio-section">
+            <div class="section-header">Bio</div>
+            <textarea id="bio" name="bio" rows="4" placeholder="Write your bio here..."></textarea>
+        </div>
+    
+        <div class="section allergic-food-section">
+            <div class="section-header">Allergic Food</div>
+            <label for="allergic-food">Select Allergic Food:</label>
+            <select id="allergic-food" name="allergic-food"></select>
+    
+            <div class="other-input" style="display: none;">
+                <label for="other-food">Other Food:</label>
+                <input type="text" id="other-food" name="other-food">
+            </div>
+        </div>
+    
+        <button id="save-button">Save</button>
+    </div>
+    
+
+
+    <script src="../scripts/userProfile.js"></script>
+</body>
+</html>
