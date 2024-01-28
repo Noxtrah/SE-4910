@@ -7,13 +7,49 @@
     <title>ReciPie</title>
     <!-- favicon -->
     <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
     <link rel="stylesheet" href="../styles/dashboard.css">
   </head>
   <body>
     <section class="background">
     <!-- nav  -->
+    <div class="responsive-nav-menu">
+      <div class="topnav" id="myTopnav">
+        <a href="dashboard.html" class="active">Home</a>
+        <a href="userDashboard.html">Recipes by Users</a>
+        <a href="recipes.html">Cuisines</a>
+        <a href="userProfile.html">Profile</a>
+        <div class="nav-dropdown" onmouseover="toggleDropdown()" onmouseout="closeDropdown()">
+          <button class="meal-types">Meal Types <ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
+          <div class="nav-dropdown-content">
+            <a onclick="fetchDataByMealType('breakfast'); closeDropdownOnOptionClick()">Breakfast</a>
+            <a onclick="fetchDataByMealType('dinner'); closeDropdownOnOptionClick()">Dinner</a>
+            <a onclick="fetchDataByMealType('dessert'); closeDropdownOnOptionClick()">Dessert</a>
+            <a onclick="fetchDataByMealType('lunch'); closeDropdownOnOptionClick()">Lunch</a>
+            <a onclick="fetchDataByMealType('snack'); closeDropdownOnOptionClick()">Snack</a>
+          </div>
+        </div>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+      <script>
+        function myFunction() {
+          var x = document.getElementById("myTopnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+        </script>
+        <a href="dashboard.html" class="nav-logo-centered">
+          <!-- <img src="../Icons/logo.svg" /> -->
+          <img style="width: 90px; height: 90px;" src="https://www.svgrepo.com/show/398059/pie.svg"  alt="logo">
+        </a>
+    </div>
+
     <nav class="navbar">
 
       <div class="nav-center">
@@ -130,30 +166,30 @@
                   <div id="selected-value">
                     <span>Sort by:</span>
                   </div>
-                  <div id="chevrons">
+                  <!-- <div id="chevrons">
                     <i class="fas fa-chevron-up"></i>
                     <i class="fas fa-chevron-down"></i>
-                  </div>
+                  </div> -->
                 </div>
                 <div id="options">
                   <div class="option">
                     <input class="s-c top" type="radio" name="platform" value="time" id="timeRadio">
                     <input class="s-c bottom" type="radio" name="platform" value="time">
-                    <i class="fab fa-codepen"><ion-icon name="time-outline" class="sort-by-time"></ion-icon></i>
+                    <i class="first-sort-option"><ion-icon name="time-outline" class="sort-by-time"></ion-icon></i>
                     <span class="label">Prep. Time</span>
                     <span class="opt-val">Prep. Time</span>
                   </div>
                   <div class="option">
                     <input class="s-c top" type="radio" name="platform" value="alphabet" id="alphabetRadio">
                     <input class="s-c bottom" type="radio" name="platform" value="alphabet">
-                    <i class="fab fa-dribbble"><ion-icon name="text-outline" class="sort-by-alphabet"></ion-icon></i>
+                    <i class="second-sort-option"><ion-icon name="text-outline" class="sort-by-alphabet"></ion-icon></i>
                     <span class="label">Alphabetical</span>
                     <span class="opt-val">Alphabetical</span>
                   </div>
                   <div class="option">
                     <input class="s-c top" type="radio" name="platform" value="rate" id="rateRadio">
                     <input class="s-c bottom" type="radio" name="platform" value="rate">
-                    <i class="fab fa-rate"><ion-icon name="star-outline" class="sort-by-rate"></ion-icon></i>
+                    <i class="third-sort-option"><ion-icon name="star-outline" class="sort-by-rate"></ion-icon></i>
                     <span class="label">Rate</span>
                     <span class="opt-val">Rate</span>
                   </div>
@@ -199,7 +235,7 @@
        
 <div>
       
-  <div id="intro-content" class="center-content">
+  <!-- <div id="intro-content" class="center-content">
     <div class="center-content-inner">
         <div class="content-section content-section-margin">
             <div class="content-section-grid clearfix">
@@ -218,7 +254,7 @@
     </div>
 </div>
 
-      
+       -->
 
         <div class="days">
           <div class="day" onclick="selectDay('monday')">

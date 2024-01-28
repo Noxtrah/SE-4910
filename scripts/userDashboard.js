@@ -29,5 +29,15 @@ function generateUserRecipeBoxes() {
     });
 }
 
+function setupBackButton() {
+    const backButton = document.getElementById('back-arrow-button');
+
+    backButton.addEventListener('click', () => {
+        window.history.back();
+    });
+}
 // Call the function to generate user recipe boxes when the page loads
-window.onload = generateUserRecipeBoxes;
+window.onload = function () {
+    generateUserRecipeBoxes();
+    setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
+};

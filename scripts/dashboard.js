@@ -501,3 +501,19 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
         }
     });
 });
+
+function toggleDropdown() {
+    var dropdown = document.querySelector('.nav-dropdown-content');
+    dropdown.classList.add('show-dropdown');
+    console.log("toggle add");
+  }
+
+function closeDropdown() {
+var dropdown = document.querySelector('.nav-dropdown-content');
+dropdown.classList.remove('show-dropdown');
+console.log("toggle remove");
+}
+
+function closeDropdownOnOptionClick() {
+closeDropdown(); // Close the dropdown when an option is clicked
+}
