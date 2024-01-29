@@ -332,7 +332,7 @@ a {
     .main-form-container
     {
       /* width: 90vw; */
-      padding: 2.5vw;
+      padding: 4.5vw;
       height:150px;
     }
 
@@ -821,6 +821,7 @@ Navbar
 }
 .nav-center {
   width: 100vw;
+  margin-left:2.5vw;
   max-width: var(--max-width);
 }
 .nav-header {
@@ -844,6 +845,7 @@ Navbar
   font-size: 1.25rem;
 }
 .nav-links {
+  margin-top: 3vh;
   margin-left: 3vw;
   gap: 3vw;
 }
@@ -1849,7 +1851,7 @@ input[type="radio"],
 }
 
 .profile-icon{
-  font-size: 50px;
+  font-size: 60px;
   margin-left: 42px;
 }
 
@@ -1858,7 +1860,7 @@ input[type="radio"],
   display: inline-block;
   float: right;
   margin-right: 7vw;
-  margin-top: 10px;
+  margin-top: 3vh;
 }
 
 .dropdown-content {
