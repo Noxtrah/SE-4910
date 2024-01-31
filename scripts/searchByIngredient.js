@@ -1,26 +1,46 @@
 const searchBar = document.getElementById('searchBar');
-        const searchInput = document.getElementById('searchInput');
+const searchInput = document.getElementById('searchInput');
+const tagsArray = []; // Array to store entered values
 
-        searchInput.addEventListener('keydown', function(event) {
-            if (event.key === ' ' || event.key === 'Enter') {
-                event.preventDefault();
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                tag.textContent = searchInput.value.trim();
+searchInput.addEventListener('keydown', function (event) {
+    if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        const inputValue = searchInput.value.trim();
 
-                const removeButton = document.createElement('span');
-                removeButton.className = 'remove';
-                removeButton.textContent = '×';
-                removeButton.addEventListener('click', function() {
-                    searchBar.removeChild(tag);
-                });
+        if (inputValue !== '') {
+            tagsArray.push(inputValue); // Add value to the array
 
-                tag.appendChild(removeButton);
-                searchBar.insertBefore(tag, searchInput);
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.textContent = inputValue;
 
-                searchInput.value = '';
-            }
-        });
+            const removeButton = document.createElement('span');
+            removeButton.className = 'remove';
+            removeButton.textContent = '×';
+            removeButton.addEventListener('click', function () {
+                searchBar.removeChild(tag);
+                const index = tagsArray.indexOf(inputValue);
+                if (index !== -1) {
+                    tagsArray.splice(index, 1); // Remove value from the array
+                }
+            });
+
+            tag.appendChild(removeButton);
+            searchBar.insertBefore(tag, searchInput);
+
+            searchInput.value = ''; // Clear the input field
+        }
+    }
+});
+
+function openNewTab() {
+    const baseURL = 'http://127.0.0.1:5500/templates/searchByIngredientTab.html';
+    const urlToOpen = baseURL + '?query=' + encodeURIComponent(JSON.stringify(tagsArray));
+
+    // Open a new tab with the constructed URL
+    window.open(urlToOpen, '_blank');
+}
+
 
 function setupBackButton() {
     const backButton = document.getElementById('back-arrow-button');
