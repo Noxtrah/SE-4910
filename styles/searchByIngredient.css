@@ -54,13 +54,19 @@ header {
 
 .searchBar {
     display: flex;
-    width: 400px;
+    max-width: 80vw;/*make it 80vw later*/
+    max-height: 50vh;
     background: white;
     border-radius: 4px;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x:visible;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-inline: 10vw;
     margin-top: 30vh;
-    margin-left: 40vw;
+    flex-grow: 1;
+    white-space: nowrap;
+    flex-direction: row; /* Lay out items horizontally */
+    flex-wrap: wrap;
 }
 
 .tag {
@@ -89,4 +95,26 @@ input {
     font-size: 16px;
     background: transparent;
     outline: none;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    margin-top: 1vh;
+    min-width: 80vw;
+    height: 40px;
+    background-color: var(--dark_purple);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--purple);
 }

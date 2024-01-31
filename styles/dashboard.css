@@ -1001,13 +1001,13 @@ Navbar
   }
 }
 
-@media (min-width: 1019px) {
+@media (min-width: 1333px) {
   .responsive-nav-menu{
     display: none;
   }
 }
 
-@media (max-width: 1018px) {
+@media (max-width: 1332px) {
   .nav-logo-centered{
     display: flex;
     justify-content: center; /* Horizontal centering */
