@@ -68,7 +68,27 @@
           <div class="glass-nav-links">
             <a style="font-size: larger;" href="dashboard.html" class="nav-link glass">Home</a>
             <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
-            <a style="font-size: larger;" href="recipes.html" class="nav-link glass">Cuisines</a>
+
+            <!-- Cuisines Dropdown -->
+            <div class="cuisines-dropdown" style="position: relative; display: inline-block;">
+              <button style="font-size: larger; cursor: pointer;" class="dropbtn glass">Cuisines
+                <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
+              </button>
+              <div class="cuisines-dropdown-content">
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">French</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Chinese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Japanese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Italian</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Turkey</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Greek</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Spanish</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Indian</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Mexican</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Thai</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lebanese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">American</a>
+              </div>
+            </div>
 
             <!-- Meal Types Dropdown -->
             <div class="tags-dropdown" style="position: relative; display: inline-block;">

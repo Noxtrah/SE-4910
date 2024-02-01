@@ -878,7 +878,7 @@ Navbar
   color: var(--primary-500);
 }
 
-.tags-dropdown {
+.tags-dropdown .cuisines-dropdown {
   float: left;
 }
 
@@ -895,12 +895,12 @@ Navbar
 }
 
 /* Add a red background color to navbar links on hover */
-.nav-links a:hover, .tags-dropdown:hover .dropbtn {
+.nav-links a:hover, .tags-dropdown:hover .dropbtn, .cuisines-dropdown:hover .dropbtn {
   background: linear-gradient(rgb(72, 50, 123),rgb(190, 180, 195));
 }
 
 /* Dropdown content (hidden by default) */
-.tags-dropdown-content {
+.tags-dropdown-content{
   display: none;
   position: absolute;
   background-color: #f9f9f900;
@@ -915,6 +915,7 @@ Navbar
   float:none;
   width: 165px;
   color: black;
+  /* backdrop-filter: blur(15px); */
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -928,6 +929,50 @@ Navbar
 
 /* Show the dropdown menu on hover */
 .tags-dropdown:hover .tags-dropdown-content {
+  display: block;
+  width: max-content;
+}
+
+/* Dropdown button */
+.cuisines-dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+
+.cuisines-dropdown-content{
+  display: none;
+  position: absolute;
+  background-color: #f9f9f900;
+  min-width: 130px;
+  box-shadow: 10px 8px 16px 9px rgba(0,0,0,0.2);
+  border: 1px solid #af64c2;
+  z-index: 1;
+}
+
+.cuisines-dropdown-content a{
+  float:none;
+  width: 142px;
+  color: black;
+  /* backdrop-filter: blur(15px); */
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.cuisines-dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.cuisines-dropdown:hover .cuisines-dropdown-content {
   display: block;
   width: max-content;
 }
