@@ -1921,15 +1921,17 @@ input[type="radio"],
 
 .dropdown-content a {
   color: black;
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
 
 .dropdown-content a:hover {
-  background-color: #5c4577;
+  background: linear-gradient(rgb(72, 50, 123),rgb(190, 180, 195));
   border-radius: 10px;
-  color: rgb(204, 204, 204);
+  color: white;
 }
 
 .profile-dropdown:hover .dropdown-content {
