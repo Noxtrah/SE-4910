@@ -24,11 +24,11 @@
         <div class="nav-dropdown" onmouseover="toggleDropdown()" onmouseout="closeDropdown()">
           <button class="meal-types">Meal Types <ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-dropdown-content">
-            <a onclick="fetchDataByMealType('breakfast'); closeDropdownOnOptionClick()">Breakfast</a>
-            <a onclick="fetchDataByMealType('dinner'); closeDropdownOnOptionClick()">Dinner</a>
-            <a onclick="fetchDataByMealType('dessert'); closeDropdownOnOptionClick()">Dessert</a>
-            <a onclick="fetchDataByMealType('lunch'); closeDropdownOnOptionClick()">Lunch</a>
-            <a onclick="fetchDataByMealType('snack'); closeDropdownOnOptionClick()">Snack</a>
+            <a onclick="fetchDataByCuisine('breakfast'); closeDropdownOnOptionClick()">Breakfast</a>
+            <a onclick="fetchDataByCuisine('dinner'); closeDropdownOnOptionClick()">Dinner</a>
+            <a onclick="fetchDataByCuisine('dessert'); closeDropdownOnOptionClick()">Dessert</a>
+            <a onclick="fetchDataByCuisine('lunch'); closeDropdownOnOptionClick()">Lunch</a>
+            <a onclick="fetchDataByCuisine('snack'); closeDropdownOnOptionClick()">Snack</a>
           </div>
         </div>
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -75,18 +75,18 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="cuisines-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">French</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Chinese</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Japanese</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Italian</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Turkey</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Greek</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Spanish</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Indian</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Mexican</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Thai</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lebanese</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">American</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French')">French</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Chinese')">Chinese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Japanese')">Japanese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Italian')">Italian</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Turkish')">Turkish</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Greek')">Greek</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Spanish')">Spanish</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Indian')">Indian</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Lunch')">Mexican</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Thai')">Thai</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Lebanese')">Lebanese</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('American')">American</a>
               </div>
             </div>
 
@@ -96,11 +96,11 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="tags-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('breakfast')">Breakfast</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('dinner')">Dinner</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('dessert')">Dessert</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('lunch')">Lunch</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('snack')">Snack</a>
               </div>
             </div>
             <a style="font-size: larger;" href="searchByIngredient.html" class="nav-link glass">Search By Ingredient</a>
@@ -173,11 +173,11 @@
         <div class="tags-container">
           <h4 style="color: black; font-family: 'Courier New', Courier, monospace;" >recipes</h4>
           <div style="color: black; font-family: 'Courier New', Courier, monospace; cursor: pointer; " class="tags-list">
-            <a onclick="fetchDataByMealType('dinner')">Dinner </a>
-            <a onclick="fetchDataByMealType('breakfast')">Breakfast </a>
-            <a onclick="fetchDataByMealType('dessert')">Dessert </a>
-            <a onclick="fetchDataByMealType('lunch')">Lunch </a>
-            <a onclick="fetchDataByMealType('snack')">Snack </a>
+            <a onclick="fetchDataByCuisine('dinner')">Dinner </a>
+            <a onclick="fetchDataByCuisine('breakfast')">Breakfast </a>
+            <a onclick="fetchDataByCuisine('dessert')">Dessert </a>
+            <a onclick="fetchDataByCuisine('lunch')">Lunch </a>
+            <a onclick="fetchDataByCuisine('snack')">Snack </a>
           </div>
 
           <div class="select-container">

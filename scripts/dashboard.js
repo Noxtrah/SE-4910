@@ -387,6 +387,19 @@ const fetchDataByMealType = async (mealType) => {
     }
 };
 
+const fetchDataByCuisine = async (cuisine) => {
+    try {
+        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByCuisine?cuisine=${cuisine}`;
+        console.log(apiUrl);
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        displayDashboard(data);
+    } catch (error) {
+        console.error('Error fetching or displaying data:', error);
+    }
+};
+
 const openRecipeDetailPage = (id) => {
     const recipeDetailURL = `recipeDetail.html?id=${id}`;
     // Perform any additional actions before navigating, if needed
