@@ -528,12 +528,3 @@ function toggleAndCloseDropdown(dropdown) {
         console.log("toggle add");
     }
 }
-
-function closeDropdown(dropdown) {
-    dropdown.querySelector('.nav-cuisines-dropdown-content, .nav-dropdown-content').classList.remove('show-dropdown');
-    console.log("toggle remove");
-}
-
-function closeDropdownOnOptionClick(dropdown) {
-    closeDropdown(dropdown); // Close the dropdown when an option is clicked
-}
