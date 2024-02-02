@@ -18,17 +18,34 @@
       <div class="topnav" id="myTopnav">
         <a href="dashboard.html" class="active">Home</a>
         <a href="userDashboard.html">Recipes by Users</a>
-        <a href="recipes.html">Cuisines</a>
+        <!-- <a href="recipes.html">Cuisines</a> -->
         <a href="userProfile.html">Profile</a>
         <a href="searchByIngredient.html">Search By Ingredient</a>
-        <div class="nav-dropdown" onmouseover="toggleDropdown()" onmouseout="closeDropdown()">
-          <button class="meal-types">Meal Types <ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
+        <div class="nav-dropdown  show-dropdown" onclick="toggleAndCloseDropdown(this)">
+          <button class="meal-types">Cuisines<ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
+          <div class="nav-cuisines-dropdown-content">
+            <a onclick="fetchDataByCuisine('French'); closeDropdownOnOptionClick()">French</a>
+            <a onclick="fetchDataByCuisine('Chinese'); closeDropdownOnOptionClick()">Chinese</a>
+            <a onclick="fetchDataByCuisine('Japanese'); closeDropdownOnOptionClick()">Japanese</a>
+            <a onclick="fetchDataByCuisine('Italian'); closeDropdownOnOptionClick()">Italian</a>
+            <a onclick="fetchDataByCuisine('Turkish'); closeDropdownOnOptionClick()">Turkish</a>
+            <a onclick="fetchDataByCuisine('Greek'); closeDropdownOnOptionClick()">Greek</a>
+            <a onclick="fetchDataByCuisine('Spanish'); closeDropdownOnOptionClick()">Spanish</a>
+            <a onclick="fetchDataByCuisine('Indian'); closeDropdownOnOptionClick()">Indian</a>
+            <a onclick="fetchDataByCuisine('Lunch'); closeDropdownOnOptionClick()">Mexican</a>
+            <a onclick="fetchDataByCuisine('Thai'); closeDropdownOnOptionClick()">Thai</a>
+            <a onclick="fetchDataByCuisine('Lebanese'); closeDropdownOnOptionClick()">Lebanese</a>
+            <a onclick="fetchDataByCuisine('American'); closeDropdownOnOptionClick()">American</a>
+          </div>
+        </div>
+        <div class="nav-dropdown  show-dropdown" onclick="toggleAndCloseDropdown(this)">
+          <button class="meal-types">Meal Types<ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-dropdown-content">
-            <a onclick="fetchDataByCuisine('breakfast'); closeDropdownOnOptionClick()">Breakfast</a>
-            <a onclick="fetchDataByCuisine('dinner'); closeDropdownOnOptionClick()">Dinner</a>
-            <a onclick="fetchDataByCuisine('dessert'); closeDropdownOnOptionClick()">Dessert</a>
-            <a onclick="fetchDataByCuisine('lunch'); closeDropdownOnOptionClick()">Lunch</a>
-            <a onclick="fetchDataByCuisine('snack'); closeDropdownOnOptionClick()">Snack</a>
+            <a onclick="fetchDataByMealType('breakfast'); closeDropdownOnOptionClick()">Breakfast</a>
+            <a onclick="fetchDataByMealType('dinner'); closeDropdownOnOptionClick()">Dinner</a>
+            <a onclick="fetchDataByMealType('dessert'); closeDropdownOnOptionClick()">Dessert</a>
+            <a onclick="fetchDataByMealType('lunch'); closeDropdownOnOptionClick()">Lunch</a>
+            <a onclick="fetchDataByMealType('snack'); closeDropdownOnOptionClick()">Snack</a>
           </div>
         </div>
         <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -96,11 +113,11 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="tags-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('breakfast')">Breakfast</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('dinner')">Dinner</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('dessert')">Dessert</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('lunch')">Lunch</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('snack')">Snack</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
               </div>
             </div>
             <a style="font-size: larger;" href="searchByIngredient.html" class="nav-link glass">Search By Ingredient</a>

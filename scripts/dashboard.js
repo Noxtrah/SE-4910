@@ -515,18 +515,25 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     });
 });
 
-function toggleDropdown() {
-    var dropdown = document.querySelector('.nav-dropdown-content');
-    dropdown.classList.add('show-dropdown');
-    console.log("toggle add");
-  }
-
-function closeDropdown() {
-var dropdown = document.querySelector('.nav-dropdown-content');
-dropdown.classList.remove('show-dropdown');
-console.log("toggle remove");
+function toggleAndCloseDropdown(dropdown) {
+    const dropdownContent = dropdown.querySelector('.nav-cuisines-dropdown-content, .nav-dropdown-content');
+    
+    if (dropdownContent.classList.contains('show-dropdown')) {
+        // If the dropdown is already open, close it
+        dropdownContent.classList.remove('show-dropdown');
+        console.log("toggle remove");
+    } else {
+        // If the dropdown is closed, open it
+        dropdownContent.classList.add('show-dropdown');
+        console.log("toggle add");
+    }
 }
 
-function closeDropdownOnOptionClick() {
-closeDropdown(); // Close the dropdown when an option is clicked
+function closeDropdown(dropdown) {
+    dropdown.querySelector('.nav-cuisines-dropdown-content, .nav-dropdown-content').classList.remove('show-dropdown');
+    console.log("toggle remove");
+}
+
+function closeDropdownOnOptionClick(dropdown) {
+    closeDropdown(dropdown); // Close the dropdown when an option is clicked
 }
