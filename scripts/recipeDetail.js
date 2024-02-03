@@ -90,7 +90,7 @@ class RecipeDetail {
             gifImg.style.verticalAlign = 'top';
 
             const timeText = document.createElement('span');
-            timeText.textContent = `${hours > 0 ? hours + ' hour' + (hours > 1 ? 's' : '') : ''} ${minutes > 0 ? minutes + ' minute' + (minutes > 1 ? 's' : '') : ''}`;
+            timeText.textContent = `${hours > 0 ? ' ' + hours + ' hour' + (hours > 1 ? 's' : '') : ''} ${minutes > 0 ? minutes + ' minute' + (minutes > 1 ? 's' : '') : ''}`;
 
             prepTimeElement.appendChild(gifImg);
             prepTimeElement.appendChild(timeText);

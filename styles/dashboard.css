@@ -1752,6 +1752,15 @@ input[type="radio"] {
 .option:nth-child(3) input[type="radio"]:checked ~ .opt-val {
   top: -111px;
 }
+
+.option:nth-child(4) input[type="radio"]:checked ~ .label:before {
+  background-color: #10b81b
+}
+
+.option:nth-child(4) input[type="radio"]:checked ~ .opt-val {
+  top: -151px;
+}
+
 .option .first-sort-option {
   color: #000;
 }
@@ -1782,6 +1791,17 @@ input[type="radio"] {
   text-align: center;
   color: white;
   font-size: 25px;
+  margin-top: -7px;
+}
+
+.option .fourth-sort-option {
+  color: #10b81b;
+}
+
+.sort-by-ingrCount{
+  width: 25px;
+  height: auto;
+  filter: invert(100%);
   margin-top: -7px;
 }
 
@@ -1818,6 +1838,11 @@ input[type="radio"] {
 .option:nth-child(3):hover ~ #option-bg {
   top: 80px;
   background-color: #387fdb;
+}
+
+.option:nth-child(4):hover ~ #option-bg {
+  top: 120px;
+  background-color: #10b81b;
 }
 
 #select-button::after,

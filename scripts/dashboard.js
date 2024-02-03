@@ -506,6 +506,27 @@ function fetchSortByRate() {
         .catch(error => console.error('Error fetching data:', error));
 }
 
+// Function to fetch and display recipes sorted by ingredient count
+function fetchSortByRate() {
+    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-ingCount')
+        .then(response => {
+            if (!response.ok) {
+                console.log('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
+                // Sort recipes based on rate
+                const sortedRecipes = data.sort((a, b) => b.rate - a.rate);
+                displayDashboard(sortedRecipes);
+            } else {
+                console.error('Invalid data format:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
 document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', function () {
         if (this.checked) {
