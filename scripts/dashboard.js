@@ -447,6 +447,9 @@ function fetchSortOperations(selectedValue) {
         case 'rate':
             fetchSortByRate();
             break;
+        case 'ingrCount':
+            fetchSortByIngrCount();
+            break;
         default:
             console.log("Invalid option selected");
     }
@@ -456,9 +459,7 @@ function fetchSortByTime() {
     fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime')
         .then(response => response.json())
         .then(data => {
-            // Sort recipes based on prep time (replace 'prepTime' with your actual property)
-            const sortedRecipes = data.sort((a, b) => a.prepTime - b.prepTime);
-            displayDashboard(sortedRecipes);
+            displayDashboard(data);
         })
         .catch(error => console.error('Error fetching data:', error));
 }
@@ -474,9 +475,7 @@ function fetchSortByAlphabet() {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                // Sort recipes alphabetically based on title
-                const sortedRecipes = data.sort((a, b) => a.title.localeCompare(b.title));
-                displayDashboard(sortedRecipes);
+                displayDashboard(data);
             } else {
                 console.error('Invalid data format:', data);
             }
@@ -496,9 +495,7 @@ function fetchSortByRate() {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                // Sort recipes based on rate
-                const sortedRecipes = data.sort((a, b) => b.rate - a.rate);
-                displayDashboard(sortedRecipes);
+                displayDashboard(data);
             } else {
                 console.error('Invalid data format:', data);
             }
@@ -507,24 +504,18 @@ function fetchSortByRate() {
 }
 
 // Function to fetch and display recipes sorted by ingredient count
-function fetchSortByRate() {
+function fetchSortByIngrCount() {
     fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-ingCount')
-        .then(response => {
-            if (!response.ok) {
-                console.log('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                // Sort recipes based on rate
-                const sortedRecipes = data.sort((a, b) => b.rate - a.rate);
-                displayDashboard(sortedRecipes);
-            } else {
-                console.error('Invalid data format:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayDashboard(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
 }
 
 document.querySelectorAll('input[type="radio"]').forEach((radio) => {
