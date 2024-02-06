@@ -410,9 +410,26 @@ const openRecipeDetailPage = (id) => {
 document.addEventListener('DOMContentLoaded', function () {
     const optionsViewButton = document.getElementById('options-view-button');
     const selectedValue = document.getElementById('selected-value');
+    const optionValue = document.querySelectorAll('.opt-val');
     const options = document.querySelectorAll('.option');
+    const inputs = document.querySelectorAll('input[type="radio"]');
 	let isOptionSelected = false;
 
+    inputs.forEach(input => {
+        input.checked = false;
+    });
+
+    inputs.forEach(input => {
+        input.addEventListener('change', function () {
+            // Check if the radio button is checked
+            if (this.checked) {
+                // Apply styles to .opt-val when a radio button is checked
+                optionValue.forEach(val => {
+                    val.style.display = 'block';
+                });
+            }
+        });
+    });
     // Close the dropdown and reset the selected value to "Sort by:" when clicking anywhere outside the dropdown
     document.addEventListener('click', function (event) {
         if (event.target !== optionsViewButton && isOptionSelected) {
@@ -429,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event listeners to each option to update the selected value and close the dropdown
     options.forEach(function (option) {
         option.addEventListener('click', function () {
-            selectedValue.textContent = option.querySelector('.opt-val').textContent;
+            selectedValue.textContent = optionValue;
             optionsViewButton.checked = false; // Close the dropdown when an option is selected
 			isOptionSelected = true;
         });

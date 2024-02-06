@@ -104,6 +104,7 @@ class RecipeDetail {
 
         backButton.addEventListener('click', () => {
             window.history.back();
+            // window.history.go(-1);
         });
     }
 }

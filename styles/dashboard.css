@@ -1691,12 +1691,18 @@ input[type="radio"] {
   opacity: 0;
   z-index: 3;
   transform: scale(0);
+  display: none;
 }
 
 .option input[type="radio"]:checked ~ .opt-val {
   opacity: 1;
   transform: scale(1);
 }
+
+/* .option input[type="radio"]:not(:checked) ~ .opt-val {
+  opacity: 0;
+  transform: scale(0);
+} */
 
 .option input[type="radio"]:checked ~ i {
   top: 0;
