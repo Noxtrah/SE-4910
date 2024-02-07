@@ -48,16 +48,58 @@ function sendRecipesToDatabase(){
 
 }
 
-async function getRecipesFromDatabase(){
+// async function getRecipesFromDatabase(){
+//     try {
+//         const response = await fetch('https://recipiebeckend.azurewebsites.net/user/save-recipe');
+//         const data = await response.json();
+//         return data;
+//     } catch (error) {
+//         console.error('Error fetching recipes:', error);
+//         return [];
+//     }
+// }
+
+async function saveRecipe(recipeData) {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-recipe'; // Replace with your actual API endpoint
+  
     try {
-        const response = await fetch('your_api_endpoint_here');
-        const data = await response.json();
-        return data;
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(recipeData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to save recipe. Status: ${response.status}`);
+      }
+  
+      const savedRecipe = await response.json();
+      console.log('Recipe saved successfully:', savedRecipe);
+      return savedRecipe;
     } catch (error) {
-        console.error('Error fetching recipes:', error);
-        return [];
+      console.error('Error saving recipe:', error.message);
+      throw error;
     }
-}
+  }
+  
+  // Example usage:
+  const recipeData = {
+    title: 'Pasta Carbonara',
+    ingredients: 'Spaghetti, eggs, pancetta, Parmesan cheese',
+    description: 'A classic Italian pasta dish',
+    cuisine: 'Italian',
+    meal: 'Dinner',
+    preparationTime: 30,
+    photoPath: 'path/to/photo.jpg',
+  };
+  
+  // Save the recipe, ignoring optional parameters
+  saveRecipe({ title: recipeData.title, ingredients: recipeData.ingredients });
+  
+
 document.addEventListener("DOMContentLoaded", function () {
     const recipeContainer = document.querySelector(".recipe-book-container");
 

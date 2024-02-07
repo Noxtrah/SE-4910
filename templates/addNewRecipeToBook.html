@@ -23,11 +23,33 @@
             <label for="recipe-description">Description:</label>
             <textarea id="recipe-description" name="description" required></textarea>
 
-            <button type="submit">Save Recipe</button>
+            <label for="recipe-cuisine">Cuisine:</label>
+            <textarea id="recipe-cuisine" name="cuisine"></textarea>
+
+            <label for="recipe-meal">Meal:</label>
+            <textarea id="recipe-meal" name="meal"></textarea>
+
+            <label for="recipe-prep-time">Preparation Time:</label>
+            <textarea id="recipe-prep-time" name="prep-time"></textarea>
+
+            <label for="photo">Choose a Photo: <span class="file-name" style="color: black;"></span></label>
+            <label class="custom-file-input" for="photo">
+                Choose File
+                <input type="file" id="photo" class="photo" name="photo" accept="image/*" onchange="displayFileName(this)">
+            </label>
+            <script>
+                function displayFileName(input) {
+                  const fileName = input.files[0] ? input.files[0].name : '';
+                  document.querySelector('.file-name').textContent = fileName;
+                }
+              </script>
         </form>
 
         <!-- Back button -->
-        <a href="recipe-book.html" id="back-button">Back to Recipe Book</a>
+        <div class="button-container">
+            <a href="recipe-book.html" id="back-button">Back to Recipe Book</a>
+            <button type="submit" class="save-button">Save Recipe</button>
+        </div>
     </div>
     <script src="../scripts/recipe-book.js"></script>
 
