@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
+import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeInfoResponse;
 import se4910.recipiebeckend.service.RecipeService;
@@ -54,7 +55,6 @@ public class RecipeController {
     @GetMapping("/all-recipes-info")
     public ResponseEntity<RecipeInfoResponse> getAllRecipesWithInfo(Authentication authentication)
     {
-
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
@@ -63,6 +63,11 @@ public class RecipeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/recipe-rate")
+    public ResponseEntity<List<String>> recipeRates()
+    {
+        return recipeService.getRecipeWithRates();
+    }
 
     @PostMapping("/create-recipe")
     public ResponseEntity<String> createRecipe(@RequestBody RecipeRequest recipeRequest)
@@ -88,4 +93,36 @@ public class RecipeController {
         return recipeService.getRecipesByMeal(mealType);
     }
 
+    @GetMapping("/getRecipesByCuisine")
+    public List<Recipe> getRecipesByCuisine(@RequestParam String cuisine) {
+
+        return recipeService.getRecipesByCuisine(cuisine);
+    }
+
+    @GetMapping("/recipe-sort-preptime")
+    public List<Recipe> sortRecipesPrepTime()
+    {
+        return recipeService.sortRecipesPrepTime();
+    }
+
+    @GetMapping("/recipe-sort-alph")
+    public List<Recipe> sortRecipesAlph()
+    {
+        return recipeService.sortRecipesAlph();
+    }
+
+    @GetMapping("/recipe-sort-rate")
+    public List<Recipe> sortRecipesRate()
+    {
+        return recipeService.sortRecipesRate();
+    }
+
+    @GetMapping("/recipe-sort-ingCount")
+    public List<Recipe> sortRecipesIngCount() { return recipeService.sortRecipesIngCount();}
+
+    @GetMapping("/user-recipe-dashboard")
+    public List<UserRecipes> userRecipes()
+    {
+        return recipeService.getPublishedUserRecipes();
+    }
 }

@@ -47,11 +47,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username);
     }
 
-    public ResponseEntity<String> saveUserRecipe(UserRecipeRequest userRecipeRequest)
+    public ResponseEntity<?> saveUserRecipe(UserRecipeRequest userRecipeRequest,User user)
     {
-        if (userRecipeRequest.getTitle() == null || userRecipeRequest.getIngredients() == null)
+        if (userRecipeRequest.getTitle().isEmpty()|| userRecipeRequest.getIngredients().isEmpty())
         {
-            return ResponseEntity.ok("Required fields cannot be empty");
+            return new ResponseEntity<>("title and getIngredients can not be empty",HttpStatus.BAD_REQUEST);
         }
         UserRecipes userRecipes = new UserRecipes();
         if(userRecipeRequest.getCuisine() !=null)
@@ -70,12 +70,10 @@ public class UserService implements UserDetailsService {
         {
             userRecipes.setPhotoPath(userRecipeRequest.getPhotoPath());
         }
-        User user = getOneUserById(userRecipeRequest.getUserId());
-        userRecipes.setId(userRecipeRequest.getId());
+
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
         userRecipes.setTitle(userRecipeRequest.getTitle());
         userRecipes.setUser(user);
-        userRecipes.setPublish(false);
 
         try {
             userRecipeRepository.save(userRecipes);
@@ -109,5 +107,25 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public ResponseEntity<?> publishUserRecipe(long userRecipeId)
+    {
+        UserRecipes publishRecipe;
+        if (userRecipeRepository.findById(userRecipeId).isPresent())
+        {
+           publishRecipe = userRecipeRepository.findById(userRecipeId).get();
+           publishRecipe.setIsPublish(true);
+           return new ResponseEntity<>(publishRecipe,HttpStatus.OK);
+        }
 
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    public ResponseEntity<?> getSavedRecipes(User currentUser)
+    {
+
+        List<UserRecipes> userRecipes = userRecipeRepository.findByUser(currentUser);
+        return new ResponseEntity<>(userRecipes,HttpStatus.OK);
+
+    }
 }

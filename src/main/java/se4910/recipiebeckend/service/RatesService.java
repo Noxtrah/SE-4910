@@ -36,8 +36,9 @@ public class RatesService
             rates.setRate(rate);
             rates.setUser(currentUser);
 
-            String msg = "new rate added for " + currentUser.getUsername();
-            return new ResponseEntity(msg, HttpStatus.OK);
+            ratesRepository.save(rates);
+            String msg = "new rate added for " + currentUser.getUsername() + "  " + recipe.getTitle();
+            return new ResponseEntity<>(msg, HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>("rate already given" ,HttpStatus.BAD_REQUEST);
@@ -46,10 +47,6 @@ public class RatesService
     }
 
 
-    public double GetRatesByRecipeId(Long id)
-    {
-        return ratesRepository.findByIdRecipeId(id);
-    }
 
     // bu fonksiyon current usera göre ratingleri alır ve recipe ID, rate döndürür.
     public List<RateResponse> getOneUserRates(User currentUser)
@@ -63,5 +60,14 @@ public class RatesService
             rateResponseList.add(response);
         }
         return rateResponseList;
+    }
+
+    public double GetAvgRatesByRecipeId(Long id) {
+
+        if (ratesRepository.findByIdRecipeId(id) != null)
+        {
+            return ratesRepository.findByIdRecipeId(id);
+        }
+       return 0;
     }
 }

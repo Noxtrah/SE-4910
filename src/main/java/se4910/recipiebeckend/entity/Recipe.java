@@ -2,6 +2,8 @@ package se4910.recipiebeckend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Collection;
 import java.util.List;
 
 
@@ -49,4 +51,6 @@ public class Recipe {
     public Long getId() {
         return id;
     }
+
+
 }

@@ -3,10 +3,14 @@ package se4910.recipiebeckend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name="user_recipes" )
 @Table(name="user_recipes" )
 @Data
+@Getter
+@Setter
 public class UserRecipes {
 
     @Id
@@ -34,6 +38,6 @@ public class UserRecipes {
 
     private  String photoPath;
 
-    private boolean isPublish;
+    private Boolean isPublish = false;
 
 }

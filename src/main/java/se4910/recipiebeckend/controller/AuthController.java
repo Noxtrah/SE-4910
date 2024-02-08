@@ -1,6 +1,7 @@
 package se4910.recipiebeckend.controller;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +29,13 @@ public class AuthController
     UserService userService;
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest loginRequest) {
-
-        return authenticationService.loginUser(loginRequest.getUsername(),loginRequest.getPassword());
-
+    public AuthResponse login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        return authenticationService.loginUser(loginRequest.getUsername(), loginRequest.getPassword(), response);
     }
+
     @PostMapping("/login2")
     public ResponseEntity<?> login2(@RequestBody LoginRequest loginRequest) {
-
         return authenticationService.loginUser2(loginRequest.getUsername(),loginRequest.getPassword());
-
     }
 
 

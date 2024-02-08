@@ -1,5 +1,7 @@
 package se4910.recipiebeckend.service;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +40,7 @@ public class AuthenticationService {
     UserService userService;
 
 
-    public AuthResponse loginUser(String username, String password){
+    public AuthResponse loginUser(String username, String password,HttpServletResponse response){
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
@@ -47,6 +49,16 @@ public class AuthenticationService {
                 // Eğer kullanıcı bulunursa, yeni tokenlar oluşturulur
                 var jwt = jwtService.generateToken(user);
                 var refreshToken = jwtService.generateRefreshToken(user);
+
+                Cookie accessTokenCookie = new Cookie("access_token", jwt);
+                accessTokenCookie.setHttpOnly(true); // Sadece sunucuya gönderilmesini sağlar
+                accessTokenCookie.setSecure(true); // Sadece HTTPS üzerinden gönderilmesini sağlar
+                response.addCookie(accessTokenCookie);
+
+                Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+                refreshTokenCookie.setHttpOnly(true);
+                refreshTokenCookie.setSecure(true);
+                response.addCookie(refreshTokenCookie);
 
                 // Access token ve refresh token birlikte döndürülür
                 return AuthResponse.builder()

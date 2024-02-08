@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
+import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.response.RateResponse;
 import se4910.recipiebeckend.service.FavService;
@@ -51,10 +52,36 @@ public class UserController {
     }
 
     @PostMapping("/save-recipe")
-    public ResponseEntity<String> saveUserRecipe(@RequestBody UserRecipeRequest userRecipeRequest)
+    public ResponseEntity<?> saveUserRecipe(@RequestBody UserRecipeRequest userRecipeRequest,Authentication authentication )
     {
-        return userService.saveUserRecipe(userRecipeRequest);
+        User currentUser = getCurrentUser(authentication);
+        return userService.saveUserRecipe(userRecipeRequest,currentUser);
     }
+
+    @GetMapping("/get-saved-recipes")
+    public ResponseEntity<?> getSavedRecipes(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            return userService.getSavedRecipes(currentUser);
+        }
+
+    }
+
+
+
+    @PostMapping("/publish-recipe")
+    public ResponseEntity<?> publishUserRecipe(@RequestParam long userRecipeId )
+    {
+        return userService.publishUserRecipe(userRecipeId);
+    }
+
+
 
     @GetMapping("/all-users")
     public List<User> getAllUsers()

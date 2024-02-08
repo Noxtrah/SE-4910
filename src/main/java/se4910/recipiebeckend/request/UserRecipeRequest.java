@@ -2,25 +2,14 @@ package se4910.recipiebeckend.request;
 
 public class UserRecipeRequest {
 
-    private long id;
     private String title;
-    private  long UserId;
     private String ingredients;
     private String description;
     private String cuisine;
     private String meal;
     private int preparationTime;
-
     private String photoPath;
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getPhotoPath() {
         return photoPath;
@@ -78,12 +67,5 @@ public class UserRecipeRequest {
         this.preparationTime = preparationTime;
     }
 
-    public long getUserId() {
-        return UserId;
-    }
-
-    public void setUserId(long userId) {
-        UserId = userId;
-    }
 
 }

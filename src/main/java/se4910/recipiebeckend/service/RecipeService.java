@@ -7,9 +7,12 @@ import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
+import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.MealRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
+import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.request.RecipeRequest;
+import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.response.RateResponse;
 import se4910.recipiebeckend.response.RecipeInfoResponse;
 
@@ -23,6 +26,7 @@ public class RecipeService {
     RatesService ratesService;
     MealRepository mealRepository;
     FavService favService;
+    UserRecipeRepository userRecipeRepository;
     public List<Recipe> getAllRecipes()
     {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -140,6 +144,13 @@ public class RecipeService {
 
     }
 
+    public List<Recipe> getRecipesByCuisine(String cuisine)
+    {
+        //Baş harfi büyük yap
+        cuisine = cuisine.substring(0, 1).toUpperCase() + cuisine.substring(1).toLowerCase();
+        return recipeRepository.findByCuisine(cuisine);
+
+    }
     public ResponseEntity<RecipeInfoResponse> getAllRecipesWithInfo(User currentUser)
     {
         List<Long> favsId =  favService.getOneUserFavoritesId(currentUser);
@@ -151,5 +162,82 @@ public class RecipeService {
     public Recipe getRecipeByID(long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         return recipe.orElse(null);
+    }
+
+    public List<Recipe> sortRecipesPrepTime() {
+
+        List<Recipe> recipes = recipeRepository.findAll();
+
+        // Sorting recipes based on preparation time
+        recipes.sort(Comparator.comparingInt(Recipe::getPreparationTime));
+
+        return recipes;
+
+    }
+
+    public List<Recipe> sortRecipesAlph() {
+
+        List<Recipe> recipes = recipeRepository.findAll();
+
+        // Sorting recipes alphabetically by name
+        recipes.sort(Comparator.comparing(Recipe::getTitle));
+
+        return recipes;
+    }
+
+    public List<String> getIngredientsList(Recipe recipe)
+    {
+        return Arrays.asList(recipe.getIngredients().split(","));
+    }
+    public List<Recipe> sortRecipesIngCount() {
+
+        List<Recipe> recipes = recipeRepository.findAll();
+
+        Collections.sort(recipes, Comparator.comparingInt(recipe -> getIngredientsList(recipe).size()));
+      //  Collections.reverse(recipes);
+        return recipes;
+    }
+
+    public List<Recipe> sortRecipesRate() {
+
+        List<Recipe> sortedList = new ArrayList<>();
+        List<Long> ids = recipeRepository.findRecipesOrderByAvgRatings();
+
+        for (Long id : ids) {
+            Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+
+            if (optionalRecipe.isPresent()) {
+                sortedList.add(optionalRecipe.get());
+            }
+
+        }
+
+        return sortedList;
+    }
+
+    public ResponseEntity<List<String>> getRecipeWithRates()
+    {
+
+        List<String> recipeInfoRates = new ArrayList<>();
+
+        List<Recipe> recipes = recipeRepository.findAll();
+
+        for (Recipe recipe : recipes) {
+
+            double rate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
+                String rateString = String.valueOf(rate);
+                String str = recipe.getTitle() + "(" + recipe.getId() + ") Rate: " + rateString;
+                recipeInfoRates.add(str);
+
+
+        }
+        return ResponseEntity.ok(recipeInfoRates);
+
+
+    }
+
+    public List<UserRecipes> getPublishedUserRecipes()
+    {
+        return userRecipeRepository.findByIsPublishTrue();
     }
 }
