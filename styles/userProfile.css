@@ -42,6 +42,8 @@ body {
     height: 100px;
     background-color: #ddd;
     border-radius: 50%;
+    background-size: cover;
+    background-position: center;
     margin-top: 10px;
 }
 
