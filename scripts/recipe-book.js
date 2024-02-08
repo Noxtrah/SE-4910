@@ -90,7 +90,7 @@ async function showRecipes() {
 
     try {
         // Call the fetchRecipes function
-        const recipes = await fetchRecipes();
+        const recipes = await getSavedRecipes();
 
         recipes.forEach(recipe => {
             const recipeItem = document.createElement("div");
@@ -104,5 +104,30 @@ async function showRecipes() {
         });
     } catch (error) {
         console.error('Error showing recipes:', error);
+    }
+}
+
+async function getSavedRecipes(){
+    try {
+        const apiURL = 'https://recipiebeckend.azurewebsites.net/user/get-saved-recipes';
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
+        const headers = {
+            'Authorization': JWTAccessToken
+        };
+        const response = await fetch(apiURL, {
+            method: 'GET',
+            headers: headers,
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+		console.log('Fetched Data:', data);
+        // Call displayDashboard to render the fetched data
+        return Array.isArray(data) ? data : [data];
+    } catch (error) {
+        console.error('Error fetching or displaying data:', error);
+        return [];
     }
 }
