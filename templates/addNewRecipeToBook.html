@@ -30,7 +30,7 @@
             <textarea id="recipe-meal" name="meal"></textarea>
 
             <label for="recipe-prep-time">Preparation Time:</label>
-            <textarea id="recipe-prep-time" name="prep-time"></textarea>
+            <input type="number" id="recipe-prep-time" name="prep-time"></input>
 
             <label for="photo">Choose a Photo: <span class="file-name" style="color: black;"></span></label>
             <label class="custom-file-input" for="photo">
@@ -48,7 +48,7 @@
         <!-- Back button -->
         <div class="button-container">
             <a href="recipe-book.html" id="back-button">Back to Recipe Book</a>
-            <button type="submit" class="save-button">Save Recipe</button>
+            <button type="submit" class="save-button" id="save-button">Save Recipe</button>
         </div>
     </div>
     <script src="../scripts/recipe-book.js"></script>

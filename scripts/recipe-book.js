@@ -21,7 +21,7 @@ let ingredients;
 let description;
 
 function sendRecipesToDatabase(){
-    fetch('https://recipiebeckend.azurewebsites.net/auth/login2', {
+    fetch('https://recipiebeckend.azurewebsites.net/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -48,57 +48,50 @@ function sendRecipesToDatabase(){
 
 }
 
-// async function getRecipesFromDatabase(){
-//     try {
-//         const response = await fetch('https://recipiebeckend.azurewebsites.net/user/save-recipe');
-//         const data = await response.json();
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching recipes:', error);
-//         return [];
-//     }
-// }
-
 async function saveRecipe(recipeData) {
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-recipe'; // Replace with your actual API endpoint
-  
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-recipe';
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(recipeData),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Failed to save recipe. Status: ${response.status}`);
-      }
-  
-      const savedRecipe = await response.json();
-      console.log('Recipe saved successfully:', savedRecipe);
-      return savedRecipe;
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken
+            },
+            body: JSON.stringify(recipeData),
+        });
+
+        console.log('Request URL:', apiUrl);
+        console.log('Request Headers:', {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JWTAccessToken}`
+        });
+
+        console.log('Request Body:', JSON.stringify(recipeData));
+        const errorText = await response.text();
+        if (!response.ok) {
+            console.log('Response Text:', errorText);
+            throw new Error(`Failed to save recipe. Status: ${response.status}`);
+        }
+
+        let savedRecipe;
+        try {
+            // Try parsing the response as JSON
+            savedRecipe = await response.json();
+            console.log('Recipe saved successfully:', savedRecipe);
+        } catch (error) {
+            // Handle non-JSON response (e.g., success message as plain text)
+            console.log('Response is not a valid JSON. Message:', errorText);
+            savedRecipe = { message: errorText }; // You can adjust this based on your needs
+        }
+
+        return savedRecipe;
     } catch (error) {
       console.error('Error saving recipe:', error.message);
       throw error;
     }
-  }
-  
-  // Example usage:
-  const recipeData = {
-    title: 'Pasta Carbonara',
-    ingredients: 'Spaghetti, eggs, pancetta, Parmesan cheese',
-    description: 'A classic Italian pasta dish',
-    cuisine: 'Italian',
-    meal: 'Dinner',
-    preparationTime: 30,
-    photoPath: 'path/to/photo.jpg',
-  };
-  
-  // Save the recipe, ignoring optional parameters
-  saveRecipe({ title: recipeData.title, ingredients: recipeData.ingredients });
-  
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const recipeContainer = document.querySelector(".recipe-book-container");
@@ -133,12 +126,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Sayfa yüklendiğinde formun submit işlemini dinle
-    const recipeForm = document.getElementById("recipe-form");
-    recipeForm.addEventListener("submit", function (event) {
-        event.preventDefault(); // Sayfanın yeniden yüklenmesini önle
-        addRecipe(); // Tarifi ekle
-    });
 });
+
+const saveButton = document.getElementById("save-button");
+    saveButton.addEventListener("click", function (event) {
+        const recipeData = {
+            title: document.getElementById('recipe-title').value,
+            ingredients: document.getElementById('recipe-ingredients').value,
+            description: document.getElementById('recipe-description').value,
+            cuisine: document.getElementById('recipe-cuisine').value,
+            meal: document.getElementById('recipe-meal').value,
+            preparationTime: parseInt(document.getElementById('recipe-prep-time').value) || 0,
+            photoPath: document.getElementById('photo').files[0] ? document.getElementById('photo').files[0].name : '',
+          };
+        event.preventDefault(); // Sayfanın yeniden yüklenmesini önle
+        // addRecipe();
+        console.log("Save button clicked");
+        console.log(recipeData);
+        saveRecipe(recipeData);
+    });
 
 // Function to display recipes in the recipe container
 async function showRecipes() {
