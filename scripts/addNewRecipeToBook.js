@@ -50,7 +50,7 @@ const saveButton = document.getElementById("save-button");
             description: document.getElementById('recipe-description').value,
             cuisine: document.getElementById('recipe-cuisine').value,
             meal: document.getElementById('recipe-meal').value,
-            preparationTime: parseInt(document.getElementById('recipe-prep-time').value) || 0,
+            preparationTime: document.getElementById('recipe-prep-time').value,
             photoPath: document.getElementById('photo').files[0] ? document.getElementById('photo').files[0].name : '',
           };
         event.preventDefault(); // Sayfanın yeniden yüklenmesini önle

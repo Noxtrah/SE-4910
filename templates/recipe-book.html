@@ -5,25 +5,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/recipe-book.css">
-
     <title>Recipe Book</title>
 </head>
 
-<body style=" text-align: center;">
+<body>
     <br>
     <h1 style="margin: 50px;">My Recipe Book</h1>
-    <div class="recipe-book-container">
-        <div class="recipe-item" v-for="recipe in recipes">
-            <h2>{{ recipe.title }}</h2>
-            <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-            <p><strong>Description:</strong> {{ recipe.description }}</p>
+    <div class="add-recipe-btn">
+      <a href="addNewRecipeToBook.html" id="addrecipebtn">Add New Recipe</a>
+    </div>
+
+    <div class="grid-container">
+
+        <div class="recipe-item">
+        <div class="book">
+            <div class="gloss"></div>
+            <img class="cover" src="../Images/background.png">
+            <div class="description">
+                <h1 class="recipe-dame"></h1>
+                <hr>
+                <p class="recipe-description"></p>
+            </div>
+
+        </div>
+
+        <h1 class="recipe-title"></h1>
+
+            <div class="buttons">
+                <button>Publish</button>
+                <button>Edit</button>
+                <button>Delete</button>
+            </div>
+
+        </div>
+
+        <!-- <div class="recipe-item">
+            <div class="book">
+                <div class="gloss"></div>
+                <img class="cover" src="../Images/background.png">
+                <div class="description">
+                    <h1 class="recipe-dame"></h1>
+                    <hr>
+                    <p class="recipe-description"></p>
+                </div>
+
+            </div>
+
+            <h1 class="recipe-title"></h1>
+
+                <div class="buttons">
+                    <button>Publish</button>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+
+        </div>
+
+        <div class="recipe-item">
+            <div class="book">
+                <div class="gloss"></div>
+                <img class="cover" src="../Images/background.png">
+                <div class="description">
+                    <h1 class="recipe-dame"></h1>
+                    <hr>
+                    <p class="recipe-description"></p>
+                </div>
+
+            </div>
+
+            <h1 class="recipe-title"></h1>
+
+                <div class="buttons">
+                    <button>Publish</button>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
+
+        </div>
+
+        <div class="recipe-item">
+            <div class="book">
+                <div class="gloss"></div>
+                <img class="cover" src="../Images/background.png">
+                <div class="description">
+                    <h1 class="recipe-dame"></h1>
+                    <hr>
+                    <p class="recipe-description"></p>
+                </div>
+
+            </div>
+
+            <h1 class="recipe-title"></h1>
+
+                <div class="buttons">
+                    <button>Publish</button>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div> -->
+
         </div>
     </div>
-    <div class="add-recipe-btn">
-        <a href="addNewRecipeToBook.html" id="addrecipebtn">Add New Recipe</a>
-    </div>
-    <script src="../scripts/recipe-book.js"></script>
-</body>
 
+  <script src="../scripts/recipe-book.js"></script>
+</body>
 
 </html>

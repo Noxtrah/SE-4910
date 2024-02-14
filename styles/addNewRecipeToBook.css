@@ -1,0 +1,149 @@
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
+}
+
+body, label{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.recipe-form-container,
+.recipe-book-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.recipe-form-container .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Adjust the margin as needed */
+}
+
+h1, h2 {
+    color: #6a0572; /* Purple */
+}
+
+.recipe-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.recipe-item:last-child {
+    border-bottom: none;
+}
+
+strong {
+    color: #9e579d; /* Lilac */
+}
+
+.recipe-form-container form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6a0572; /* Purple */
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.save-button {
+    display: inline-block;
+    padding: 10px 20px;
+    max-width: 120px;
+    background-color: var(--purple); /* Purple */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: var(--dark_purple); /* Hover color */
+}
+
+.add-recipe-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#addrecipebtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6a0572; /* Purple */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#addrecipebtn:hover {
+    background-color: #9e579d; /* Hover color */
+}
+
+#back-button {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--dark_purple); /* Purple */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#back-button:hover {
+    color: var(--purple); /* Hover color */
+}
+
+.custom-file-input {
+    display: block;
+    max-width: 120px;
+    overflow: hidden;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    background-color: var(--dark_grey);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Style for the file name display */
+  .file-name {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  /* Hide the default file input styling */
+  .photo {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+
+  }

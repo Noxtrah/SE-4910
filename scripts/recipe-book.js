@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to display recipes in the recipe container
 async function showRecipes() {
-    const recipeContainer = document.querySelector(".recipe-book-container");
+    const recipeContainer = document.querySelector(".grid-container");
     recipeContainer.innerHTML = "";
 
     try {
@@ -93,14 +93,119 @@ async function showRecipes() {
         const recipes = await getSavedRecipes();
 
         recipes.forEach(recipe => {
+            // Create recipe item container
             const recipeItem = document.createElement("div");
             recipeItem.classList.add("recipe-item");
-            recipeItem.innerHTML = `
-                <h2>${recipe.title}</h2>
-                <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
-                <p><strong>Description:</strong> ${recipe.description}</p>
-            `;
+
+            // Create book container
+            const bookContainer = document.createElement("div");
+            bookContainer.classList.add("book");
+
+            // Create gloss div
+            const glossDiv = document.createElement("div");
+            glossDiv.classList.add("gloss");
+            bookContainer.appendChild(glossDiv);
+
+            // Create cover image
+            const coverImage = document.createElement("img");
+            coverImage.classList.add("cover");
+            coverImage.src = "../Images/background.png";
+            // coverImage.src = recipe.photoPath;
+            bookContainer.appendChild(coverImage);
+
+            // Create description container
+            const descriptionContainer = document.createElement("div");
+            descriptionContainer.classList.add("description");
+
+            // Create recipe name (h1)
+            const recipeName = document.createElement("h1");
+            recipeName.classList.add("recipe-dame");
+            descriptionContainer.appendChild(recipeName);
+
+            // Create horizontal line (hr)
+            const hrElement = document.createElement("hr");
+            descriptionContainer.appendChild(hrElement);
+
+            // Create recipe description (p)
+            const recipeDescription = document.createElement("p");
+            recipeDescription.classList.add("recipe-description");
+            descriptionContainer.appendChild(recipeDescription);
+
+            // Append book container and description container to recipe item
+            bookContainer.appendChild(descriptionContainer);
+            recipeItem.appendChild(bookContainer);
+
+            // Create recipe ingredients (p)
+            const recipeIngredients = document.createElement("p");
+            recipeIngredients.classList.add("recipe-ingredients");
+            descriptionContainer.appendChild(recipeIngredients);
+
+            bookContainer.appendChild(descriptionContainer);
+            recipeItem.appendChild(bookContainer);
+
+            // Create recipe cuisine (p)
+            const recipeCuisine = document.createElement("p");
+            recipeCuisine.classList.add("recipe-cuisine");
+            descriptionContainer.appendChild(recipeCuisine);
+
+            bookContainer.appendChild(descriptionContainer);
+            recipeItem.appendChild(bookContainer);
+
+            // Create recipe meal (p)
+            const recipeMeal = document.createElement("p");
+            recipeMeal.classList.add("recipe-meal");
+            descriptionContainer.appendChild(recipeMeal);
+
+            bookContainer.appendChild(descriptionContainer);
+            recipeItem.appendChild(bookContainer);
+
+            // Create recipe prep. Time (p)
+            const recipePrepTime = document.createElement("p");
+            recipePrepTime.classList.add("recipe-prep-time");
+            descriptionContainer.appendChild(recipePrepTime);
+
+            bookContainer.appendChild(descriptionContainer);
+            recipeItem.appendChild(bookContainer);
+
+            // Create recipe title (h1)
+            const recipeTitle = document.createElement("h1");
+            recipeTitle.classList.add("recipe-title");
+            recipeItem.appendChild(recipeTitle);
+
+            // Create buttons container
+            const buttonsContainer = document.createElement("div");
+            buttonsContainer.classList.add("buttons");
+
+            // Create Publish button
+            const publishButton = document.createElement("button");
+            publishButton.textContent = "Publish";
+            buttonsContainer.appendChild(publishButton);
+
+            // Create Edit button
+            const editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            buttonsContainer.appendChild(editButton);
+
+            // Create Delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            buttonsContainer.appendChild(deleteButton);
+
+            // Append buttons container to recipe item
+            recipeItem.appendChild(buttonsContainer);
+
+            // Append recipe item to recipe container
             recipeContainer.appendChild(recipeItem);
+
+            // Set content for each element based on the recipe data
+            recipeName.textContent = recipe.title;
+            recipeDescription.textContent = "Description: " + recipe.description;
+            recipeIngredients.textContent = "Ingredients: " + recipe.ingredients;
+            recipeCuisine.textContent = "Cuisine: " + recipe.cuisine;
+            recipeMeal.textContent = "Meal: " + recipe.meal;
+            recipePrepTime.textContent = "Preparation Time: " + recipe.preparationTime;
+            recipeTitle.textContent = recipe.title;
+
         });
     } catch (error) {
         console.error('Error showing recipes:', error);

@@ -4,87 +4,18 @@
     --purple: #927fbf;
     --light_purple: #c4bbf0;
     --background_color: rgb(205, 199, 208);
+    --perspective: 1000px;
+    --link-color:#010790;
 }
 
-body, h1, h2, p, ul, li, label, input, textarea, button, a {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+	box-sizing: border-box;
 }
 
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f2f2f2;
     color: #333;
-}
-
-.recipe-form-container,
-.recipe-book-container {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.recipe-form-container .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px; /* Adjust the margin as needed */
-}
-
-h1, h2 {
-    color: #6a0572; /* Purple */
-}
-
-.recipe-item {
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
-}
-
-.recipe-item:last-child {
-    border-bottom: none;
-}
-
-strong {
-    color: #9e579d; /* Lilac */
-}
-
-.recipe-form-container form {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #6a0572; /* Purple */
-}
-
-input,
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.save-button {
-    display: inline-block;
-    padding: 10px 20px;
-    max-width: 120px;
-    background-color: var(--purple); /* Purple */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.save-button:hover {
-    background-color: var(--dark_purple); /* Hover color */
 }
 
 .add-recipe-btn {
@@ -107,43 +38,117 @@ textarea {
     background-color: #9e579d; /* Hover color */
 }
 
-#back-button {
-    display: inline-block;
-    margin-top: 10px;
-    color: var(--dark_purple); /* Purple */
-    text-decoration: none;
-    font-weight: bold;
+.grid-container {
+    color: #ccc;
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-content: center; /* Center vertically */
 }
 
-#back-button:hover {
-    color: var(--purple); /* Hover color */
-}
-
-.custom-file-input {
+a{
+    color:var(--link-color);
+    font-weight:bold;
+  }
+  
+  h1{
+    font-family: 'Stint Ultra Expanded', cursive;
+    font-size: 1.5em;
+    text-align: center;
+  }
+  
+  .book {
     display: block;
-    max-width: 120px;
-    overflow: hidden;
-    padding: 10px 20px;
-    font-size: 0.9em;
-    background-color: var(--dark_grey);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    position: relative;
+    width: 20vw;
+    height:40vh;
+    margin:0 auto;
+    margin-top: 5rem;
+    margin-inline: 5vw;
   }
-
-  /* Style for the file name display */
-  .file-name {
-    display: inline-block;
-    margin-left: 10px;
-  }
-
-  /* Hide the default file input styling */
-  .photo {
+  
+  .gloss{
     position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-
+    top:0;
+    z-index:200;
+    overflow: hidden;
+    width:20%;
+    height:100%;
+    opacity:0.5;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+    transition:all .5s;
+    transform: translateX(50%) rotateY(0deg);
+    transform-origin: left center;
   }
+  
+  .cover {
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index:100;
+    border: solid 1px grey;
+    transition:transform .5s;
+    transform: translateX(0);
+    transform-origin: left center;
+    backface-visibility: hidden;
+  }
+  
+  .description{
+    position: absolute;
+    left:0;
+    top:0;
+    width:inherit;
+    height:inherit;
+    border: solid 1px grey;
+    background:white;
+    transition: all .3s;
+    padding: 10% 10%;
+    padding-top:5%;
+    z-index:1;
+  }
+  
+  .description h1{
+    font-family: 'Pontano Sans', sans-serif;
+    font-size: calc(0.75em + .1vw);
+    text-align: center;
+    line-height: 1.25em;
+  }
+  
+  .book:hover{
+    cursor: pointer;
+  }
+  
+  .book:hover .cover {
+    transform: perspective(var(--perspective)) rotateY(-80deg);
+  }
+  
+  .book:hover .gloss {
+    transform: perspective(var(--perspective)) rotateY(-80deg) translateX(100%) scaleX(5);
+  }
+  
+  .book:hover .description {
+    transform: translateX(20%);
+  }
+  
+  .buttons {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    height:2em;
+    margin:0 auto;
+    color:grey;
+  }
+  
+  .buttons > span {
+    display: inline-block;
+    position: relative;
+    font-size: 1.75em;
+    margin-right:.2em;
+  }
+  
+  .buttons > span ~ span:before {
+     content: "\2605";
+     position: absolute;
+     color:#8d2a06;
+  }
+  
