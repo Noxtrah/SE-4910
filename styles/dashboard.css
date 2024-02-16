@@ -1886,11 +1886,28 @@ input[type="radio"],
   border-radius: 10px;
 }
 
-.rating {
+.average-rating{
   font-size: 40px;
   position:absolute;
   bottom: 1vh;
   right: 1vw;
+  color:#000;
+}
+
+.star-span{
+  margin-right: 5px;
+}
+
+.average-rate-span{
+  font-size: 30px;
+  vertical-align:middle;
+}
+
+.rating {
+  font-size: 40px;
+  position:absolute;
+  bottom: 1vh;
+  left: 1vw;
 }
 
 .star {

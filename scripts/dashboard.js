@@ -149,11 +149,11 @@ function setRating(rating, starContainer, recipe) {
 
   function giveRating(newRating, recipeId) {
     const url = `https://recipiebeckend.azurewebsites.net/user/give-rate?recipeId=${recipeId}&rate=${newRating}`;
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
 
-    // Replace 'your_token' with the actual authentication token if required
     const headers = {
         'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer your_token',
+        'Authorization': JWTAccessToken,
     };
 
     fetch(url, {
@@ -162,15 +162,45 @@ function setRating(rating, starContainer, recipe) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`Network response was not ok (status: ${response.status})`);
         }
-        return response.json();
+        return response.text(); // or response.blob(), response.json(), depending on the expected response type
     })
     .then(data => {
-        // Handle the response data if needed
-        console.log('Rating updated successfully:', data);
+        console.log('Response Data:', data);
+        // Continue handling the response as needed
     })
     .catch(error => console.error('Error updating rating:', error));
+}
+
+async function getAverageRating(index) {
+    try {
+        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-rate');
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+
+        const data = await response.json();
+        // console.log("Data: ");
+        // console.log(data);
+
+        if (!Array.isArray(data)) {
+            throw new Error('Data is not an array');
+        }
+
+        // Assuming data is an array of strings with the format "RecipeName Rate: X.X"
+        const match = data[index].match(/^(.*?) Rate: (\d+\.\d+)$/);
+
+        if (match) {
+            return match[2]; // Return only the rate as a string
+        } else {
+            throw new Error('Invalid data format for the specified index');
+        }
+    } catch (error) {
+        console.error('Error fetching rating for the specified recipe:', error);
+        return null;
+    }
 }
 
 
@@ -279,9 +309,10 @@ function setRating(rating, starContainer, recipe) {
 	}
   }
 
+let recipeIndex = 0;
 
   // Function to create a recipe element based on the provided recipe data
-const createRecipeElement = (recipe) => {
+const createRecipeElement = async (recipe) => {
     // Create a new column for each recipe
     const recipeDiv = document.createElement('div');
     recipeDiv.classList.add('recipe-item');
@@ -289,7 +320,7 @@ const createRecipeElement = (recipe) => {
     const link = document.createElement('a');
     //link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
 
-	link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
+    link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
 
 
     // Image
@@ -306,18 +337,38 @@ const createRecipeElement = (recipe) => {
     link.appendChild(img);
     imgDiv.appendChild(link);
 
-    // Create stars
     const starContainer = document.createElement('div');
     starContainer.classList.add('rating');
+
+    // Create stars
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
         star.classList.add('star');
         star.textContent = '☆';
         star.onmouseover = () => hoverStar(star);
         const clickHandler = () => setRating(i, starContainer, recipe);
-    	star.onclick = clickHandler;
+        star.onclick = clickHandler;
         starContainer.appendChild(star);
     }
+    // Create average star
+    const generalRateOfRecipe = await getAverageRating(recipeIndex);
+    recipeIndex++;
+
+    const averageRatingSpan = document.createElement('span');
+    averageRatingSpan.classList.add('average-rating');
+    const starSpan = document.createElement('span');
+    starSpan.classList.add('star-span');
+    starSpan.textContent = '★';
+    starSpan.style.color = 'gold'; // You can use any color value
+
+    const rateSpan = document.createElement('span');
+    rateSpan.classList.add('average-rate-span');
+    rateSpan.textContent = generalRateOfRecipe;
+
+    averageRatingSpan.appendChild(starSpan);
+    averageRatingSpan.appendChild(rateSpan);
+
+    recipeDiv.appendChild(averageRatingSpan);
     recipeDiv.appendChild(starContainer);
 
     // Create heart
@@ -327,7 +378,7 @@ const createRecipeElement = (recipe) => {
     heart.alt = 'Animated Heart';
     heart.onclick = () => toggleFavorite(heart);
     heart.textContent = '♥';
-     heart.onclick = () => toggleFavorite(heart);
+    heart.onclick = () => toggleFavorite(heart);
 
     // Title
     const titleDiv = document.createElement('div');
@@ -344,16 +395,16 @@ const createRecipeElement = (recipe) => {
 };
 
 // Function to display recipes in the dashboard
-const displayDashboard = (recipes) => {
+const displayDashboard = async (recipes) => {
     const recipesList = document.getElementById('recipesList');
 
     // Clear the existing content before adding new recipes
     recipesList.innerHTML = '';
 
-    recipes.forEach((recipe, index) => {
-        const recipeElement = createRecipeElement(recipe);
+    for (const recipe of recipes) {
+        const recipeElement = await createRecipeElement(recipe);
         recipesList.appendChild(recipeElement);
-    });
+    }
 };
 
 // Function to fetch data from the API
