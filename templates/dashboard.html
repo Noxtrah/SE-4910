@@ -150,24 +150,15 @@
       <br>
       <br>
       <div class="main-form-container">
-        <form id="" class="" method="post">
-          <input type="text" class="main-input main-name" name="NAME" value="Search by name" onfocus="clearText(this)" onblur="replaceText(this)" />
-          <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" />
-          <div class=" search-wrapper">
-          <!-- <button type="button" class="main-btn">
-            <p class="search-small">SEARCH BY</p>
-            <p class="search-large">Name</p>
-          </button>
-          <ul class="search-description">
-            <li>By Ingredients</li>
-            <li>By Name</li>
-          </ul> -->
-        </div>
-          <input id="main-submit" class="" type="submit" value="Search" />
-        </form>
+          <form id="recipeSearchForm" action="https://recipiebeckend.azurewebsites.net/recipes/basic-search" method="get" onsubmit="event.preventDefault(); basicSearch();">
+              <input type="text" class="main-input main-name" name="targetWord" value="Search by name" onfocus="clearText(this)" onblur="replaceText(this)" />
+              <!-- Remove the ingredients input field if you only want to search by name -->
+              <!-- <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" /> -->
+              <input id="main-submit" class="" type="submit" value="Search" />
+          </form>
       </div>
       <button type="button" id="main-submit-mobile">Search</button>
-    </div>
+  </div>
     <!-- mobile submit -->
 
 
