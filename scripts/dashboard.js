@@ -408,18 +408,19 @@ const displayDashboard = async (recipes) => {
 };
 
 // Function to fetch data from the API
-const fetchData = async () => {
-    try {
-        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
-        const data = await response.json();
+// This fetch method closed in order to reduce usage of database. Open before starting development
+// const fetchData = async () => {
+//     try {
+//         const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+//         const data = await response.json();
 
-		console.log('Fetched Data:', data);
-        // Call displayDashboard to render the fetched data
-        displayDashboard(data);
-    } catch (error) {
-        console.error('Error fetching or displaying data:', error);
-    }
-};
+// 		console.log('Fetched Data:', data);
+//         // Call displayDashboard to render the fetched data
+//         displayDashboard(data);
+//     } catch (error) {
+//         console.error('Error fetching or displaying data:', error);
+//     }
+// };
 
 // Call fetchData to initiate the process
 fetchData();
