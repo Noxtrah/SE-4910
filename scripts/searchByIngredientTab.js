@@ -120,8 +120,11 @@ function displayRecipes(recipeDataArray) {
     // Loop through the data and create recipe items
     recipeDataArray.forEach(function (recipeData) {
         var recipeItem = createRecipeItem(recipeData);
+        console.log(recipeItem);
         recipesContainer.appendChild(recipeItem);
+        console.log("Çağrıldı");
     });
+    adjustContentContainerHeight();
 }
 
 function createRecipeItem(recipeData) {
@@ -185,3 +188,66 @@ function createRecipeItem(recipeData) {
     // Return the created recipe item
     return recipeItem;
 }
+
+// recipeData'nın yüksekliğini kontrol eden bir fonksiyon
+function adjustContentContainerHeight() {
+    var recipeItems = document.querySelectorAll('.recipe-item');
+
+    // Her bir recipe-item için işlem yap
+    recipeItems.forEach(function (recipeItem) {
+        var contentContainer = recipeItem.querySelector('.content-container');
+        var infoContainer = recipeItem.querySelector('.info-container');
+        var recipeTagsContainer = recipeItem.querySelector('.recipe-tags');
+
+        // Eğer infoContainer'ın yüksekliği 218px'den büyükse
+        if (infoContainer.clientHeight > 218) {
+            // Yeni bir infoContainer oluştur
+            var infoContainer2 = document.createElement('div');
+            infoContainer2.className = 'info-container-2';
+
+            // Taşan kısmı bulmak için recipeTagsContainer'nin içerisine sığacak kadar kopyala
+            var totalHeight = 0;
+            var tagsToMove = Array.from(recipeTagsContainer.children);
+            var i = 0;
+
+            for (i = 0; i < tagsToMove.length; i++) {
+                var tag = tagsToMove[i];
+                
+                var tagHeight = tag.offsetHeight;
+                if (i > 0 && tag.offsetTop !== tagsToMove[i - 1].offsetTop) {
+                    totalHeight += tagHeight;
+                }
+                console.log("Recipe Number: " , i);
+                if (totalHeight < 192) {
+                    // Taşmadan sığacaksa taşıma
+                    console.log("Tag height: ", tagHeight);
+                    // if (i > 0 && tag.offsetTop !== tagsToMove[i - 1].offsetTop) {
+                    //     totalHeight += tagHeight;
+                    // }
+                    console.log("Total height: ", totalHeight);
+                    console.log("Taşınmadı");
+                } else {
+                    infoContainer2.appendChild(tagsToMove[i]);
+                    console.log("Taşındı!");
+                }
+            }
+
+            // Kalanlar infoContainer içinde kalsın
+            tagsToMove.slice(i).forEach(function(tag) {
+                recipeTagsContainer.appendChild(tag);
+            });
+
+            // contentContainer içine infoContainer2'yi ekle
+            contentContainer.appendChild(infoContainer2);
+        }
+    });
+}
+
+
+
+
+
+
+// // Sayfa yüklendiğinde ve içerik değiştiğinde bu fonksiyonu çağırın
+// document.addEventListener('DOMContentLoaded', adjustContentContainerHeight);
+// window.addEventListener('resize', adjustContentContainerHeight);
