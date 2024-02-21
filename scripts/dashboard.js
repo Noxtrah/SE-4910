@@ -173,37 +173,6 @@ function setRating(rating, starContainer, recipe) {
     .catch(error => console.error('Error updating rating:', error));
 }
 
-async function getAverageRating(index) {
-    try {
-        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-rate');
-
-        if (!response.ok) {
-            throw new Error(`Network response was not ok (status: ${response.status})`);
-        }
-
-        const data = await response.json();
-        // console.log("Data: ");
-        // console.log(data);
-
-        if (!Array.isArray(data)) {
-            throw new Error('Data is not an array');
-        }
-
-        // Assuming data is an array of strings with the format "RecipeName Rate: X.X"
-        const match = data[index].match(/^(.*?) Rate: (\d+\.\d+)$/);
-
-        if (match) {
-            return match[2]; // Return only the rate as a string
-        } else {
-            throw new Error('Invalid data format for the specified index');
-        }
-    } catch (error) {
-        console.error('Error fetching rating for the specified recipe:', error);
-        return null;
-    }
-}
-
-
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
   let selectedDay = null;
   
@@ -340,18 +309,37 @@ const createRecipeElement = async (recipe) => {
     const starContainer = document.createElement('div');
     starContainer.classList.add('rating');
 
+    const getCustomData = await getCustomDataOfDashboard(recipeIndex);
+    const rate = getCustomData.rate;
+    // const recipeId = getStarAndHeartInfo.recipe.id;
+    // const getRateInfo = getStarAndHeartInfo[0].rateResponseList[0].rate;
+    // const getRatedRecipeId = getStarAndHeartInfo[0].rateResponseList[1].recipeId;
+
+    console.log("Star Info: " , rate);
+    // const isRatedByUser = recipe.id === recipeId;
+
+    // if (isRatedByUser) {
+    // console.log("Recipe is rated by the user");
+    // } else {
+    // console.log("Recipe is not rated by the user");
+    // }
+    // const userRating = getUserRating(recipe.id);
     // Create stars
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
         star.classList.add('star');
-        star.textContent = '☆';
+        if (i <= rate) {
+            star.textContent = '★';
+        } else {
+            star.textContent = '☆';
+        }
         star.onmouseover = () => hoverStar(star);
         const clickHandler = () => setRating(i, starContainer, recipe);
         star.onclick = clickHandler;
         starContainer.appendChild(star);
     }
     // Create average star
-    const generalRateOfRecipe = await getAverageRating(recipeIndex);
+    const generalRateOfRecipe = getCustomData.avgRate;
     recipeIndex++;
 
     const averageRatingSpan = document.createElement('span');
@@ -409,18 +397,18 @@ const displayDashboard = async (recipes) => {
 
 // Function to fetch data from the API
 // This fetch method closed in order to reduce usage of database. Open before starting development
-// const fetchData = async () => {
-//     try {
-//         const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
-//         const data = await response.json();
+const fetchData = async () => {
+    try {
+        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+        const data = await response.json();
 
-// 		console.log('Fetched Data:', data);
-//         // Call displayDashboard to render the fetched data
-//         displayDashboard(data);
-//     } catch (error) {
-//         console.error('Error fetching or displaying data:', error);
-//     }
-// };
+		console.log('Fetched Data:', data);
+        // Call displayDashboard to render the fetched data
+        displayDashboard(data);
+    } catch (error) {
+        console.error('Error fetching or displaying data:', error);
+    }
+};
 
 // Call fetchData to initiate the process
 fetchData();
@@ -627,4 +615,68 @@ function basicSearch() {
         displayDashboard(data);
     })
     .catch(error => console.error('Error fetching data:', error));
+}
+//https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info
+// async function getStarsAndHeart(index) {
+//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info';
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     // const headers = {
+//     //     'Content-Type': 'application/json',
+//     //     'Authorization': JWTAccessToken,
+//     // };
+//     const response = await fetch(
+// 		apiUrl,
+// 		{
+// 			method: 'GET',
+// 			headers: {
+// 				'Content-Type': 'application/json',
+//                 'Authorization': JWTAccessToken,
+// 			}
+// 		}
+// 	);
+// 	if (!response.ok) {
+// 		throw new Error(`HTTP error! status: ${response.status}`);
+// 	}
+// 	const data = await response.json();
+//     console.log(data);
+//     var starAndHeartInfoArray = []
+//     starAndHeartInfoArray.push(data);
+//     return starAndHeartInfoArray;
+// }
+async function getCustomDataOfDashboard(index) {
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-dashboard';
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const response = await fetch(
+        apiUrl,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken,
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const contentType = response.headers.get('Content-Type');
+
+    if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        console.log("Data: " , data);
+        // Check if the array has elements and if the specified index is valid
+        if (data.length > index) {
+            return data[index];
+        } else {
+            console.error('Index out of bounds or empty array');
+            return null; // or handle it according to your application's logic
+        }
+    } else {
+        // Handle non-JSON response or empty response
+        console.error('Invalid or empty JSON response');
+        return null; // or handle it according to your application's logic
+    }
 }
