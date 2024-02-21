@@ -35,11 +35,11 @@ backButton.addEventListener("click", function(event) {
 
 function registerUser() {
     const userName = document.querySelector('#registerUserName').value;
-    const name = document.querySelector('input[type="name"]').value;
-    const lastName = document.querySelector('input[type="last-name"]').value;
+    const name = document.querySelector('#registerName').value;
+    const lastName = document.querySelector('#registerLastName').value;
     const email = document.querySelector('#registerMail').value;
     const password = document.querySelector('#registerPassword').value;
-    const confirmPassword = document.querySelector('input[type="password-confirm"]').value;
+    const confirmPassword = document.querySelector('#registerPasswordConfirm').value;
     const day = document.getElementById('day').value;
     const month = document.getElementById('month').value;
     const year = document.getElementById('year').value;
