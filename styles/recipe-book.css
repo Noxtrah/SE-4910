@@ -98,6 +98,8 @@ a{
     font-family: 'Stint Ultra Expanded', cursive;
     font-size: 1.5em;
     text-align: center;
+    max-width:30vw;
+    word-wrap: break-word;
   }
   
   .book {
@@ -148,6 +150,8 @@ a{
     padding: 10% 10%;
     padding-top:5%;
     z-index:1;
+    word-wrap: break-word;
+    overflow-y: scroll;
   }
   
   .description h1{
@@ -157,6 +161,12 @@ a{
     line-height: 1.25em;
   }
   
+  /* .recipe-title{
+    max-width: 10vw;
+    word-wrap: break-word;
+    color:#010790
+  } */
+
   .book:hover{
     cursor: pointer;
   }

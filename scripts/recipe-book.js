@@ -131,7 +131,7 @@ async function showRecipes() {
 
             // Create recipe name (h1)
             const recipeName = document.createElement("h1");
-            recipeName.classList.add("recipe-dame");
+            recipeName.classList.add("recipe-name");
             descriptionContainer.appendChild(recipeName);
 
             // Create horizontal line (hr)
