@@ -9,27 +9,37 @@
 </head>
 
 <body>
+
+    <header>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+            </button>
+            <h1 id="my-recipe-book-title">Loading...</h1>
+        </div>
+    </header>
+
     <br>
-    <h1 style="margin: 50px;">My Recipe Book</h1>
+    <!-- <h1 style="margin: 50px;">My Recipe Book</h1> -->
     <div class="add-recipe-btn">
-      <a href="addNewRecipeToBook.html" id="addrecipebtn">Add New Recipe</a>
+        <a href="addNewRecipeToBook.html" id="addrecipebtn">Add New Recipe</a>
     </div>
 
     <div class="grid-container">
 
         <div class="recipe-item">
-        <div class="book">
-            <div class="gloss"></div>
-            <img class="cover" src="../Images/background.png">
-            <div class="description">
-                <h1 class="recipe-dame"></h1>
-                <hr>
-                <p class="recipe-description"></p>
+            <div class="book">
+                <div class="gloss"></div>
+                <img class="cover" src="../Images/background.png">
+                <div class="description">
+                    <h1 class="recipe-dame"></h1>
+                    <hr>
+                    <p class="recipe-description"></p>
+                </div>
+
             </div>
 
-        </div>
-
-        <h1 class="recipe-title"></h1>
+            <h1 class="recipe-title"></h1>
 
             <div class="buttons">
                 <button>Publish</button>
@@ -103,10 +113,12 @@
                     <button>Delete</button>
                 </div> -->
 
-        </div>
+    </div>
     </div>
 
-  <script src="../scripts/recipe-book.js"></script>
+    <script src="../scripts/recipe-book.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

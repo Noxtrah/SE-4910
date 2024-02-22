@@ -61,7 +61,7 @@ header {
     overflow-y:auto;
     overflow-x:visible;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-inline: 9.6vw;
+    margin-inline: 10vw;
     margin-top: 10vh;
     white-space: nowrap;
     flex-direction: row; /* Lay out items horizontally */

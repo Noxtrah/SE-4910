@@ -48,7 +48,19 @@ function sendRecipesToDatabase(){
 
 }
 
+function setupBackButton() {
+        const backButton = document.getElementById('back-arrow-button');
+
+        backButton.addEventListener('click', () => {
+            window.history.back();
+            // window.history.go(-1);
+        });
+}
+
+setupBackButton();
+
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('my-recipe-book-title').textContent = "My Recipe Book";
     const recipeContainer = document.querySelector(".recipe-book-container");
 
     // Show recipes when the page is loaded
