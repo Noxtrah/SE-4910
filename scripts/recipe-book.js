@@ -121,8 +121,8 @@ async function showRecipes() {
             // Create cover image
             const coverImage = document.createElement("img");
             coverImage.classList.add("cover");
-            coverImage.src = "../Images/background.png";
-            // coverImage.src = recipe.photoPath;
+            // coverImage.src = "../Images/background.png";
+            coverImage.src = recipe.photoPath;
             bookContainer.appendChild(coverImage);
 
             // Create description container
@@ -218,6 +218,24 @@ async function showRecipes() {
             recipePrepTime.textContent = "Preparation Time: " + recipe.preparationTime;
             recipeTitle.textContent = recipe.title;
 
+            // const publishButton = document.getElementById("publishButton");
+            publishButton.addEventListener("click", () => {
+                const userRecipeId = recipe.id;
+                console.log(userRecipeId);
+                const recipeDetails = {
+                    title: recipe.title,
+                    description: recipe.description,
+                    ingredients: recipe.ingredients,
+                    cuisine: recipe.cuisine,
+                    meal: recipe.meal,
+                    preparationTime: recipe.preparationTime,
+                    photoData: recipe.coverImage
+                };
+                console.log(recipeDetails);
+
+                // Call publishRecipe with local variables
+                publishRecipe(userRecipeId, recipeDetails);
+            });
         });
     } catch (error) {
         console.error('Error showing recipes:', error);
@@ -241,10 +259,59 @@ async function getSavedRecipes(){
         const data = await response.json();
 
 		console.log('Fetched Data:', data);
+        console.log("Response: ", response);
         // Call displayDashboard to render the fetched data
         return Array.isArray(data) ? data : [data];
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
         return [];
     }
+}
+
+async function publishRecipe(userRecipeId, recipeDetails){
+    try {
+        const apiURL = `https://recipiebeckend.azurewebsites.net/user/publish-recipe?userRecipeId=${userRecipeId}`;
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
+        const headers = {
+            "Content-type": "application/json",
+            'Authorization': JWTAccessToken
+        };
+        const response = await fetch(apiURL, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                recipeDetails: recipeDetails
+              }),
+        });
+        if (response.ok) {
+            alert('Recipe published successfully!');
+            // Handle success scenario, if needed
+        } else {
+            alert('Failed to publish recipe!');
+            // Handle failure scenario, if needed
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// const publishButton = document.getElementById("publishButton");
+
+// // Attach a click event listener
+// publishButton.addEventListener("click", () => publishRecipe(userRecipeId, recipeDetails));
+
+
+// function handlePublishClick(userRecipeId, recipeDetails) {
+//     alert('Publish button clicked!');
+//     publishRecipe(userRecipeId, recipeDetails);
+// }
+
+function handleEditClick() {
+    alert('Edit button clicked!');
+    // Add your logic for the Edit button here
+}
+
+function handleDeleteClick() {
+    alert('Delete button clicked!');
+    // Add your logic for the Delete button here
 }

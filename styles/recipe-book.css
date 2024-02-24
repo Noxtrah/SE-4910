@@ -94,13 +94,13 @@ a{
     font-weight:bold;
   }
   
-  h1{
+  /* h1{
     font-family: 'Stint Ultra Expanded', cursive;
     font-size: 1.5em;
     text-align: center;
     max-width:30vw;
     word-wrap: break-word;
-  }
+  } */
   
   .book {
     display: block;
@@ -161,11 +161,17 @@ a{
     line-height: 1.25em;
   }
   
-  /* .recipe-title{
-    max-width: 10vw;
+  .recipe-title{
+    /* max-width: 10vw;
     word-wrap: break-word;
-    color:#010790
-  } */
+    color:#010790 */
+    color: var(--dark_grey);
+    font-family: 'Stint Ultra Expanded', cursive;
+    font-size: 1.5em;
+    text-align: center;
+    max-width:30vw;
+    word-wrap: break-word;
+  }
 
   .book:hover{
     cursor: pointer;
