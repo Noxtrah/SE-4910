@@ -4,16 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se4910.recipiebeckend.entity.Rates;
-import se4910.recipiebeckend.entity.Recipe;
-import se4910.recipiebeckend.entity.User;
+import se4910.recipiebeckend.entity.*;
 import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.response.RateResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -24,34 +20,43 @@ public class RatesService
     RecipeRepository recipeRepository;
 
 
-    public ResponseEntity<?> giveOneRate(int rate,long recipeId, User currentUser)
+    public ResponseEntity<String> giveOneRate(int rate,long recipeId, User currentUser)
     {
-        Rates rates = new Rates();
 
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
-        Recipe recipe = optionalRecipe.get();
-        if (ratesRepository.findByRecipeAndUser(recipe, currentUser) == null) {
-
-            rates.setRecipe(recipe);
-            rates.setRate(rate);
-            rates.setUser(currentUser);
-
-            ratesRepository.save(rates);
-            String msg = "new rate added for " + currentUser.getUsername() + "  " + recipe.getTitle();
-            return new ResponseEntity<>(msg, HttpStatus.OK);
+        if (optionalRecipe.isEmpty()) {
+            return new ResponseEntity<>("Recipe not found", HttpStatus.NOT_FOUND);
         }
-        else{
-            return new ResponseEntity<>("rate already given" ,HttpStatus.BAD_REQUEST);
+
+        Recipe recipe = optionalRecipe.get();
+        Rates existingRates = ratesRepository.findByRecipeAndUser(recipe, currentUser);
+        if (existingRates == null) {
+            Rates newRates = new Rates();
+            newRates.setRecipe(recipe);
+            newRates.setRate(rate);
+            newRates.setUser(currentUser);
+            ratesRepository.save(newRates);
+            return new ResponseEntity<>("New rate added for " + currentUser.getUsername() + " - " + recipe.getTitle(), HttpStatus.OK);
+        } else {
+            existingRates.setRate(rate);
+            ratesRepository.save(existingRates);
+            return new ResponseEntity<>("Rate updated for " + currentUser.getUsername() + " - " + recipe.getTitle(), HttpStatus.OK);
         }
 
     }
 
 
+    public double GetAvgRatesByRecipeId(Long id) {
 
-    // bu fonksiyon current usera göre ratingleri alır ve recipe ID, rate döndürür.
-    public List<RateResponse> getOneUserRates(User currentUser)
-    {
-        List<Rates>userRates = ratesRepository.findByUser(currentUser);
+        if (ratesRepository.findByIdRecipeId(id) != null)
+        {
+            return ratesRepository.findByIdRecipeId(id);
+        }
+       return 0;
+    }
+
+    public List<RateResponse> getOneUserRatesRecipe(User currentUser) {
+        List<Rates>userRates = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
         List<RateResponse> rateResponseList = new ArrayList<>();
         for (Rates oneRate:userRates) {
             Long recipeId = oneRate.getRecipe().getId();
@@ -62,12 +67,49 @@ public class RatesService
         return rateResponseList;
     }
 
-    public double GetAvgRatesByRecipeId(Long id) {
-
-        if (ratesRepository.findByIdRecipeId(id) != null)
-        {
-            return ratesRepository.findByIdRecipeId(id);
+    public List<RateResponse> getOneUserRatesUserRecipe(User currentUser) {
+        List<Rates>userRates = ratesRepository.findByUserAndUserRecipesIsNotNull(currentUser);
+        List<RateResponse> rateResponseList = new ArrayList<>();
+        for (Rates oneRate:userRates) {
+            Long recipeId = oneRate.getRecipe().getId();
+            int rate = oneRate.getRate();
+            RateResponse response = new RateResponse(recipeId,rate);
+            rateResponseList.add(response);
         }
-       return 0;
+        return rateResponseList;
+    }
+
+    public List<Recipe> getOneUserRatesRecipe1(User currentUser)
+    {
+        List<Rates> ratesList = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
+        return ratesList.stream().map(Rates::getRecipe).toList();
+    }
+
+    public Map<Long, Integer> getRatesByRecipeIds(User currentUser, List<Recipe> allRecipes)
+    {
+
+        Map<Long, Integer> ratesByRecipeIds = new HashMap<>();
+
+        List<Rates> ratesList = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
+        // Her bir puanı Map'e ekle
+        for (Rates rate : ratesList) {
+            ratesByRecipeIds.put(rate.getRecipe().getId(), rate.getRate());
+        }
+        return ratesByRecipeIds;
+
+    }
+
+    public Map<Long, Integer> getRatesByUserRecipeIds(User currentUser, List<UserRecipes> allRecipes)
+    {
+
+        Map<Long, Integer> ratesByRecipeIds = new HashMap<>();
+
+        List<Rates> ratesList = ratesRepository.findByUserAndUserRecipesIsNotNull(currentUser);
+        // Her bir puanı Map'e ekle
+        for (Rates rate : ratesList) {
+            ratesByRecipeIds.put(rate.getRecipe().getId(), rate.getRate());
+        }
+        return ratesByRecipeIds;
+
     }
 }

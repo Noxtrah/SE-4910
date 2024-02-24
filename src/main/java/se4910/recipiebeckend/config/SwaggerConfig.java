@@ -12,7 +12,7 @@ import org.springdoc.core.models.GroupedOpenApi;
 public class SwaggerConfig {
 
     // http://localhost:8282/swagger-ui/index.html#/
-    //recipiebeckend.azurewebsites.net/swagger-ui/index.html#/
+    //recipiebeckend.azurewebsites.net/swagger-ui/index.html#
     @Bean
     public GroupedOpenApi customApi() {
         return GroupedOpenApi.builder()

@@ -6,11 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import se4910.recipiebeckend.entity.Favorites;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
+import se4910.recipiebeckend.request.ProfileInfoRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.response.RateResponse;
+import se4910.recipiebeckend.response.UserInfoResponse;
+import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.service.FavService;
 import se4910.recipiebeckend.service.RatesService;
 import se4910.recipiebeckend.service.UserService;
@@ -31,11 +35,6 @@ public class UserController {
     @Autowired
     FavService favService;
 
-
-    public User SaveNewUser( User user)
-    {
-         return userService.saveOneUser(user);
-    }
 
     public User getCurrentUser(Authentication authentication) {
 
@@ -59,12 +58,12 @@ public class UserController {
     }
 
     @GetMapping("/get-saved-recipes")
-    public ResponseEntity<?> getSavedRecipes(Authentication authentication)
+    public List<UserRecipeResponse> getSavedRecipes(Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser == null)
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
         else
         {
@@ -73,14 +72,11 @@ public class UserController {
 
     }
 
-
-
     @PostMapping("/publish-recipe")
-    public ResponseEntity<?> publishUserRecipe(@RequestParam long userRecipeId )
+    public ResponseEntity<String> publishUserRecipe(@RequestParam long userRecipeId )
     {
         return userService.publishUserRecipe(userRecipeId);
     }
-
 
 
     @GetMapping("/all-users")
@@ -90,7 +86,7 @@ public class UserController {
     }
 
     @PostMapping("/give-rate")
-    public ResponseEntity<?> giveOneRate(@RequestParam int rate,@RequestParam long recipeId, Authentication authentication )
+    public ResponseEntity<String> giveOneRate(@RequestParam int rate,@RequestParam long recipeId, Authentication authentication )
     {
 
           User currentUser = getCurrentUser(authentication);
@@ -110,15 +106,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/get-user-rate")
-    public List<RateResponse> getOneUserRates(Authentication authentication)
-    {
-        User currentUser = getCurrentUser(authentication);
-        return ratesService.getOneUserRates(currentUser);
-    }
 
     @PostMapping("/give-like")
-    public ResponseEntity<?> giveOneLike(@RequestParam long recipeId, Authentication authentication)
+    public ResponseEntity<String> giveOneLike(@RequestParam long recipeId, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
@@ -129,30 +119,49 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/unlike")
-    public ResponseEntity<?> unlike(@RequestParam long recipeId ,Authentication authentication)
+    @PostMapping("/give-like-user-recipes")
+    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long recipeId, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
-            return favService.unlike(recipeId,currentUser);
+            return favService.giveOneLikeUserRecipes(recipeId,currentUser);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     @GetMapping("/user-favorites")
-    public List<Recipe> getOneUserFavorites(Authentication authentication)
+    public ResponseEntity<List<Object>> getOneUserFavorites(Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
-        return favService.getOneUserFavorites(currentUser);
+        if (currentUser != null)
+        {
+            return favService.getOneUserFavorites(currentUser);
+        }
+        return null;
+
     }
 
-    @GetMapping("/user-favorites-id")
-    public List<Long> getOneUserFavoritesId(Authentication authentication)
+    @PutMapping("/save-user-profile")
+    public ResponseEntity<String> saveUserProfile(@RequestBody ProfileInfoRequest profileInfoRequest, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
-        return favService.getOneUserFavoritesId(currentUser);
+        if (currentUser != null)
+        {
+            return userService.saveUserProfile(profileInfoRequest,currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
+
+    @GetMapping("/user-profile-info")
+    public ResponseEntity<UserInfoResponse> getUserInfo(@RequestParam String username)
+    {
+
+        return userService.getUserInfo(username);
+    }
+
 
 
 

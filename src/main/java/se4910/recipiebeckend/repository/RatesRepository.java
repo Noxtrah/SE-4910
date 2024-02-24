@@ -22,8 +22,9 @@ public interface RatesRepository extends JpaRepository<Rates,Long>{
     Double findByIdRecipeId(@Param("recipeId") Long recipeId);
 
 
+    List<Rates> findByUserAndRecipeIsNotNull(User user);
 
-    List<Rates> findByUser(User user);
+    List<Rates> findByUserAndUserRecipesIsNotNull(User user);
 
     Rates findByRecipeAndUser(Recipe recipe, User user);
 }

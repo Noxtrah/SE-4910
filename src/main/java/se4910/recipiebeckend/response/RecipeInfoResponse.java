@@ -1,25 +1,25 @@
 package se4910.recipiebeckend.response;
 
 
+import se4910.recipiebeckend.entity.Recipe;
+import se4910.recipiebeckend.entity.UserRecipes;
+
 import java.util.List;
 
 public class RecipeInfoResponse {
 
-    List<Long> favIdList;
+    List<Recipe> LikedRecipeList;
+    List<UserRecipes> LikedUserRecipesList;
     List<RateResponse>rateResponseList;
 
+    List<RateResponse>rateResponseUserRcipesList;
 
-    public RecipeInfoResponse(List<Long> favIdList, List<RateResponse> rateResponseList) {
-        this.favIdList = favIdList;
+
+    public RecipeInfoResponse(List<Recipe> likedRecipeList, List<UserRecipes> likedUserRecipesList, List<RateResponse> rateResponseList, List<RateResponse> rateResponseUserRcipesList) {
+        LikedRecipeList = likedRecipeList;
+        LikedUserRecipesList = likedUserRecipesList;
         this.rateResponseList = rateResponseList;
-    }
-
-    public List<Long> getFavIdList() {
-        return favIdList;
-    }
-
-    public void setFavIdList(List<Long> favIdList) {
-        this.favIdList = favIdList;
+        this.rateResponseUserRcipesList = rateResponseUserRcipesList;
     }
 
     public List<RateResponse> getRateResponseList() {

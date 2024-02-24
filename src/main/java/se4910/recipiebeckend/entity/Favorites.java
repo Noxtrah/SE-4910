@@ -17,10 +17,17 @@ public class Favorites {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="recipe_id", nullable=false)
+    @JoinColumn(name="recipe_id", nullable=true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Recipe recipe;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_recipes_id", nullable=true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private UserRecipes userRecipes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="users_id", nullable=false)

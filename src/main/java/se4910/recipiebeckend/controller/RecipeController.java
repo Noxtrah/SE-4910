@@ -12,9 +12,14 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeInfoResponse;
+import se4910.recipiebeckend.response.RecipeResponse;
+import se4910.recipiebeckend.response.UserRecipeResponse;
+import se4910.recipiebeckend.response.UserRecipeResponseFull;
 import se4910.recipiebeckend.service.RecipeService;
 import se4910.recipiebeckend.service.UserService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -52,18 +57,29 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/all-recipes-info")
-    public ResponseEntity<RecipeInfoResponse> getAllRecipesWithInfo(Authentication authentication)
+    @GetMapping("/get-custom-data-dashboard")
+    public List<RecipeResponse> getCustomDataDashboard(Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
-            return recipeService.getAllRecipesWithInfo(currentUser);
+           return recipeService.getCustomDataDashboard(currentUser);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return null;
     }
 
-    @GetMapping("/recipe-rate")
+    @GetMapping("/get-custom-data-userdashboard")
+    public List<UserRecipeResponseFull> getCustomDataUserDashboard(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return recipeService.getCustomDataUserDashboard(currentUser);
+        }
+        return null;
+    }
+
+    @GetMapping("/recipe-avg-rates")
     public ResponseEntity<List<String>> recipeRates()
     {
         return recipeService.getRecipeWithRates();
@@ -95,7 +111,6 @@ public class RecipeController {
 
     @GetMapping("/getRecipesByCuisine")
     public List<Recipe> getRecipesByCuisine(@RequestParam String cuisine) {
-
         return recipeService.getRecipesByCuisine(cuisine);
     }
 
@@ -121,8 +136,33 @@ public class RecipeController {
     public List<Recipe> sortRecipesIngCount() { return recipeService.sortRecipesIngCount();}
 
     @GetMapping("/user-recipe-dashboard")
-    public List<UserRecipes> userRecipes()
+    public List<UserRecipeResponse> userRecipes()
     {
         return recipeService.getPublishedUserRecipes();
     }
+
+    @GetMapping("/one-user-published-recipes")
+    public List<UserRecipes> publishedRecipesOneUser(@RequestParam String username)
+    {
+        return recipeService.publishedRecipesOneUser(username);
+    }
+
+
+    @GetMapping("/lower-recipe")
+    public void lowerRecipe()
+    {
+        recipeService.lowerRecipe();
+    }
+    @GetMapping("/basic-search")
+    public List<Recipe> BasicSearch(@RequestParam String targetWord)
+    {
+        return recipeService.BasicSearch(targetWord);
+    }
+    @GetMapping("/ingredient-based-search")
+    public List<Recipe> IngredientBasedSearch(String TargetIngredients) {
+        String[] ingredientsArray = TargetIngredients.split(",");
+        List<String> ingredientList = Arrays.asList(ingredientsArray);
+        return recipeService.IngredientBasedSearch(ingredientList);
+    }
+
 }

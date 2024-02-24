@@ -1,5 +1,6 @@
 package se4910.recipiebeckend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -25,8 +26,15 @@ public class Rates {
  //   @JsonIgnore
     private Recipe recipe;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="users_id", nullable=false)
+    @JoinColumn(name="user_recipes_id", nullable=true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private UserRecipes userRecipes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="users_id", nullable=true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

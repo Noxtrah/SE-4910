@@ -13,10 +13,14 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
+import se4910.recipiebeckend.request.ProfileInfoRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
+import se4910.recipiebeckend.response.UserInfoResponse;
+import se4910.recipiebeckend.response.UserRecipeResponse;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +29,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RecipeService recipeService;
 
     @Autowired
     UserRecipeRepository userRecipeRepository;
@@ -107,25 +114,58 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public ResponseEntity<?> publishUserRecipe(long userRecipeId)
+    public ResponseEntity<String> publishUserRecipe(long userRecipeId)
     {
         UserRecipes publishRecipe;
         if (userRecipeRepository.findById(userRecipeId).isPresent())
         {
            publishRecipe = userRecipeRepository.findById(userRecipeId).get();
-           publishRecipe.setIsPublish(true);
-           return new ResponseEntity<>(publishRecipe,HttpStatus.OK);
+            if (!publishRecipe.getIsPublish()) {
+                publishRecipe.setIsPublish(true);
+                return new ResponseEntity<>( publishRecipe.getTitle() + " is published", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Recipe is already published", HttpStatus.BAD_REQUEST);
+            }
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
-    public ResponseEntity<?> getSavedRecipes(User currentUser)
+    public List<UserRecipeResponse> getSavedRecipes(User currentUser)
     {
 
         List<UserRecipes> userRecipes = userRecipeRepository.findByUser(currentUser);
-        return new ResponseEntity<>(userRecipes,HttpStatus.OK);
+       return userRecipes.stream()
+                .map(UserRecipeResponse::new)
+                .collect(Collectors.toList());
+    }
 
+    public ResponseEntity<String> saveUserProfile(ProfileInfoRequest profileInfoRequest, User currentUser) {
+
+        if (!profileInfoRequest.getPassword().isEmpty()) {
+            currentUser.setPassword(profileInfoRequest.getPassword());
+        }
+        if (!profileInfoRequest.getBio().isEmpty()) {
+            currentUser.setBio(profileInfoRequest.getBio());
+        }
+        if (!profileInfoRequest.getAllergicFoods().isEmpty()) {
+            currentUser.setAllergicFoods(profileInfoRequest.getAllergicFoods());
+        }
+        if (!profileInfoRequest.getProfilePhoto().isEmpty()) {
+            currentUser.setProfilePhoto(profileInfoRequest.getProfilePhoto());
+        }
+
+        userRepository.save(currentUser);
+        return new ResponseEntity<>("User updated", HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<UserInfoResponse> getUserInfo(String username)
+    {
+
+        User targetUser = userRepository.findUserByUsername(username);
+        List<UserRecipes> userRecipesList = recipeService.publishedRecipesOneUser(username);
+        return new ResponseEntity<>(new UserInfoResponse(targetUser,userRecipesList),HttpStatus.OK);
     }
 }

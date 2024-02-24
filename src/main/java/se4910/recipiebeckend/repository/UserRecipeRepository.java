@@ -19,6 +19,8 @@ public interface UserRecipeRepository extends JpaRepository<UserRecipes,Long>
 
     List<UserRecipes>  findByIsPublishTrue();
 
+    List<UserRecipes>  findByUserAndIsPublishTrue(User user);
+
     List<UserRecipes> findByUser(User user);
 
 
