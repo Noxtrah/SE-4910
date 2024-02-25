@@ -1,8 +1,5 @@
 package se4910.recipiebeckend.response;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 import se4910.recipiebeckend.entity.User;
