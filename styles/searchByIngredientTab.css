@@ -164,7 +164,7 @@ input {
 
 .image-container {
     position: relative;
-    min-width: 318px;
+    max-width: 318px;
     height: 218px;
     grid-column: 1;
     grid-row: 1;
@@ -181,7 +181,7 @@ input {
 
 .info-container {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     position:relative;
     height: 100%;
     /* width: 400px; */
@@ -217,7 +217,7 @@ input {
 
 .recipe-tags {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap:wrap;
 }
 
 .recipe-tag {
