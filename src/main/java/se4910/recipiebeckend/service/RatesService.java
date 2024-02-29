@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import se4910.recipiebeckend.entity.*;
 import se4910.recipiebeckend.repository.RatesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
+import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.response.RateResponse;
 
 import java.util.*;
@@ -19,6 +20,8 @@ public class RatesService
 
     RecipeRepository recipeRepository;
 
+
+    UserRecipeRepository userRecipeRepository;
 
     public ResponseEntity<String> giveOneRate(int rate,long recipeId, User currentUser)
     {
@@ -42,6 +45,30 @@ public class RatesService
             ratesRepository.save(existingRates);
             return new ResponseEntity<>("Rate updated for " + currentUser.getUsername() + " - " + recipe.getTitle(), HttpStatus.OK);
         }
+
+    }
+
+
+    public ResponseEntity<String> giveOneRateUserRecipe(int rate, long userRecipeId, User currentUser)
+    {
+        UserRecipes userRecipe = userRecipeRepository.findById(userRecipeId).orElse(null);
+        if (userRecipe == null) {
+            return new ResponseEntity<>("Recipe not found", HttpStatus.NOT_FOUND);
+        }
+        Rates existingRates = ratesRepository.findByUserRecipesAndUser(userRecipe, currentUser);
+        if (existingRates == null) {
+            Rates newRates = new Rates();
+            newRates.setUserRecipes(userRecipe);
+            newRates.setRate(rate);
+            newRates.setUser(currentUser);
+            ratesRepository.save(newRates);
+            return new ResponseEntity<>("New rate added for " + currentUser.getUsername() + " - " + userRecipe.getTitle(), HttpStatus.OK);
+        } else {
+            existingRates.setRate(rate);
+            ratesRepository.save(existingRates);
+            return new ResponseEntity<>("Rate updated for " + currentUser.getUsername() + " - " + userRecipe.getTitle(), HttpStatus.OK);
+        }
+
 
     }
 
@@ -79,15 +106,8 @@ public class RatesService
         return rateResponseList;
     }
 
-    public List<Recipe> getOneUserRatesRecipe1(User currentUser)
-    {
-        List<Rates> ratesList = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
-        return ratesList.stream().map(Rates::getRecipe).toList();
-    }
-
     public Map<Long, Integer> getRatesByRecipeIds(User currentUser, List<Recipe> allRecipes)
     {
-
         Map<Long, Integer> ratesByRecipeIds = new HashMap<>();
 
         List<Rates> ratesList = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
@@ -112,4 +132,6 @@ public class RatesService
         return ratesByRecipeIds;
 
     }
+
+
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import se4910.recipiebeckend.entity.Rates;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
+import se4910.recipiebeckend.entity.UserRecipes;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,6 @@ public interface RatesRepository extends JpaRepository<Rates,Long>{
     List<Rates> findByUserAndUserRecipesIsNotNull(User user);
 
     Rates findByRecipeAndUser(Recipe recipe, User user);
+
+    Rates findByUserRecipesAndUser(UserRecipes userRecipes, User user);
 }

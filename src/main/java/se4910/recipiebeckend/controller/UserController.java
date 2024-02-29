@@ -94,6 +94,15 @@ public class UserController {
 
     }
 
+    @PostMapping("/give-rate-user-recipe")
+    public ResponseEntity<String> giveOneRateUserRecipe(@RequestParam int rate,@RequestParam long userRecipeId, Authentication authentication )
+    {
+
+        User currentUser = getCurrentUser(authentication);
+        return ratesService.giveOneRateUserRecipe(rate,userRecipeId, currentUser);
+
+    }
+
     @GetMapping("/authHello")
     public ResponseEntity<String> authHello(Authentication authentication) {
 
@@ -120,12 +129,12 @@ public class UserController {
     }
 
     @PostMapping("/give-like-user-recipes")
-    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long recipeId, Authentication authentication)
+    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long userReciceId, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
-            return favService.giveOneLikeUserRecipes(recipeId,currentUser);
+            return favService.giveOneLikeUserRecipes(userReciceId,currentUser);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

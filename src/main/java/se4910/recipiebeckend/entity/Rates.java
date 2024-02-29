@@ -21,7 +21,7 @@ public class Rates {
     int rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="recipe_id", nullable=false)
+    @JoinColumn(name="recipe_id", nullable=true)
     @OnDelete(action = OnDeleteAction.CASCADE)
  //   @JsonIgnore
     private Recipe recipe;
@@ -34,7 +34,7 @@ public class Rates {
     private UserRecipes userRecipes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="users_id", nullable=true)
+    @JoinColumn(name="users_id", nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
