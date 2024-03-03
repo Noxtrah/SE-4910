@@ -279,9 +279,9 @@ async function publishRecipe(userRecipeId, recipeDetails){
         const response = await fetch(apiURL, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({
-                recipeDetails: recipeDetails
-              }),
+            // body: JSON.stringify({
+            //     recipeDetails: recipeDetails
+            //   }),
         });
         if (response.ok) {
             alert('Recipe published successfully!');
