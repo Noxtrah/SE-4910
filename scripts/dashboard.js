@@ -120,6 +120,7 @@ function toggleFavorite(element) {
       element.classList.add('favorited');
     }
   }
+  //aaaaaaaaaaaa
 
   function hoverStar(element) {
     // Mouse üzerine gelindiğinde işaret değiştirme
