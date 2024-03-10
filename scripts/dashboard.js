@@ -286,16 +286,14 @@ const createRecipeElement = async (recipe) => {
     // Create a new column for each recipe
     const recipeDiv = document.createElement('div');
     recipeDiv.classList.add('recipe-item');
-
     const link = document.createElement('a');
-    //link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
 
-    link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
-
+    link.addEventListener('click', () => openRecipeDetailPage(recipe.recipe.id));
 
     // Image
     const imgDiv = document.createElement('div');
     imgDiv.classList.add('imgDiv');
+    imgDiv.style.cursor = 'pointer';
     const img = document.createElement('img');
     img.src = recipe.recipe.photoPath;
     img.alt = 'Recipe Photo';
