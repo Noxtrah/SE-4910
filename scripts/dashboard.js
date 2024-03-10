@@ -297,7 +297,7 @@ const createRecipeElement = async (recipe) => {
     const imgDiv = document.createElement('div');
     imgDiv.classList.add('imgDiv');
     const img = document.createElement('img');
-    img.src = recipe.photoPath;
+    img.src = recipe.recipe.photoPath;
     img.alt = 'Recipe Photo';
 
     // Apply CSS to constrain image size
@@ -310,7 +310,7 @@ const createRecipeElement = async (recipe) => {
     const starContainer = document.createElement('div');
     starContainer.classList.add('rating');
 
-    const getCustomData = await getCustomDataOfDashboard(recipeIndex);
+    const getCustomData = await getSelectedCustomDataOfDashboard(recipeIndex);
     const rate = getCustomData.rate;
     // const recipeId = getStarAndHeartInfo.recipe.id;
     // const getRateInfo = getStarAndHeartInfo[0].rateResponseList[0].rate;
@@ -372,7 +372,7 @@ const createRecipeElement = async (recipe) => {
     // Title
     const titleDiv = document.createElement('div');
     titleDiv.classList.add('titleDiv');
-    titleDiv.textContent = recipe.title;
+    titleDiv.textContent = recipe.recipe.title;
 
     // Append stars and heart to the recipeDiv
     recipeDiv.appendChild(imgDiv);
@@ -400,11 +400,11 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     try {
-        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/all-recipes');
+        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-dashboard');
         const data = await response.json();
 
 		console.log('Fetched Data:', data);
-        // Call displayDashboard to render the fetched data
+
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
@@ -413,6 +413,9 @@ const fetchData = async () => {
 
 // Call fetchData to initiate the process
 fetchData();
+// let i = 1;
+// console.log("Fetch çalıştı " + i)
+// i+1;
 
 const fetchDataByMealType = async (mealType) => {
     try {
@@ -517,6 +520,7 @@ function fetchSortByTime() {
     fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime')
         .then(response => response.json())
         .then(data => {
+            console.log("data ne: " , data);
             displayDashboard(data);
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -645,7 +649,7 @@ function basicSearch() {
 //     starAndHeartInfoArray.push(data);
 //     return starAndHeartInfoArray;
 // }
-async function getCustomDataOfDashboard(index) {
+async function getSelectedCustomDataOfDashboard(index) {
     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-dashboard';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     const response = await fetch(
