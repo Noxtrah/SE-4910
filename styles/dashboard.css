@@ -485,22 +485,15 @@ a {
     color: rgb(33, 31, 34);
   }
 
-  .favorite-heart {
-    /* Kalp simgesini büyütmek için */
-    /* İstenilen boyuta göre */
-    margin-left: 20px;
 
-  }
   .favorite-heart {
+    margin-left: 20px;
     font-size: 24px;
     color: black;
 
     cursor: pointer;
   }
 
-  .favorite-heart.favorited {
-    color: red;
-  }
   .recipe p {
     margin-bottom: 0;
     line-height: 1;

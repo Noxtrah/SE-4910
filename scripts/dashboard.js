@@ -140,16 +140,60 @@ function setRating(rating, starContainer, recipe) {
 		stars[i].style.color = 'black';
 	  }
 	}
-	if (recipe && recipe.id) {
-    	giveRating(rating, recipe.id);
+	if (recipe && recipe.recipe.id) {
+    	giveRating(rating, recipe.recipe.id);
     } else {
         console.error('Recipe ID not found for the given recipe:', recipe);
         // Handle the case where the recipe ID is not available
     }
   }
 
+  function setLike(isClicked, heartContainer, recipe) {
+    if (isClicked) {
+        heartContainer.textContent = '♥';
+        heartContainer.style.color = 'red';
+    } else {
+        heartContainer.textContent = '♥';
+        heartContainer.style.color = 'black';
+    }
+
+    if (recipe && recipe.recipe.id) {
+        giveLike(recipe.recipe.id);
+    } else {
+        console.error('Recipe ID not found for the given recipe:', recipe);
+        // Handle the case where the recipe ID is not available
+    }
+}
+
+
   function giveRating(newRating, recipeId) {
     const url = `https://recipiebeckend.azurewebsites.net/user/give-rate?recipeId=${recipeId}&rate=${newRating}`;
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        return response.text(); // or response.blob(), response.json(), depending on the expected response type
+    })
+    .then(data => {
+        console.log('Response Data:', data);
+        // Continue handling the response as needed
+    })
+    .catch(error => console.error('Error updating rating:', error));
+}
+
+function giveLike(recipeId) {
+    const url = `https://recipiebeckend.azurewebsites.net/user/give-like?recipeId=${recipeId}`;
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
     const headers = {
@@ -310,20 +354,9 @@ const createRecipeElement = async (recipe) => {
 
     const getCustomData = await getSelectedCustomDataOfDashboard(recipeIndex);
     const rate = getCustomData.rate;
-    // const recipeId = getStarAndHeartInfo.recipe.id;
-    // const getRateInfo = getStarAndHeartInfo[0].rateResponseList[0].rate;
-    // const getRatedRecipeId = getStarAndHeartInfo[0].rateResponseList[1].recipeId;
 
     console.log("Star Info: " , rate);
-    // const isRatedByUser = recipe.id === recipeId;
 
-    // if (isRatedByUser) {
-    // console.log("Recipe is rated by the user");
-    // } else {
-    // console.log("Recipe is not rated by the user");
-    // }
-    // const userRating = getUserRating(recipe.id);
-    // Create stars
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
         star.classList.add('star');
@@ -359,13 +392,20 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(starContainer);
 
     // Create heart
-    const heart = document.createElement('span');
-    heart.classList.add('favorite-heart');
-    heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
-    heart.alt = 'Animated Heart';
-    heart.onclick = () => toggleFavorite(heart);
-    heart.textContent = '♥';
-    heart.onclick = () => toggleFavorite(heart);
+    const heartContainer = document.createElement('span');
+    // heart.src = 'Gifs/heart.gif';
+    // heart.alt = 'Animated Heart';
+    // heart.onclick = () => toggleFavorite(heart);
+    heartContainer.textContent = '♥';
+    heartContainer.classList.add('favorite-heart');
+    if(getCustomData.isLiked){
+        heartContainer.style.color = 'red';
+    }
+    // heart.onclick = () => toggleFavorite(heart);
+
+    const clickHandler = () => setLike(true, heartContainer, recipe);
+    heartContainer.onclick = clickHandler;
+
 
     // Title
     const titleDiv = document.createElement('div');
@@ -376,7 +416,7 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
     recipeDiv.appendChild(starContainer);
-    recipeDiv.appendChild(heart);
+    recipeDiv.appendChild(heartContainer);
 
     return recipeDiv;
 };
