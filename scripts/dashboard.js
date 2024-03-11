@@ -393,10 +393,11 @@ const createRecipeElement = async (recipe) => {
 
     // Create heart
     const heartContainer = document.createElement('span');
-    // heart.src = 'Gifs/heart.gif';
-    // heart.alt = 'Animated Heart';
-    // heart.onclick = () => toggleFavorite(heart);
+    heartContainer.classList.add('heart-border'); 
     heartContainer.textContent = '♥';
+
+    document.body.appendChild(heartContainer);
+
     heartContainer.classList.add('favorite-heart');
     if(getCustomData.isLiked){
         heartContainer.style.color = 'red';
