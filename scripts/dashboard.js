@@ -723,3 +723,11 @@ async function getSelectedCustomDataOfDashboard(index) {
         return null; // or handle it according to your application's logic
     }
 }
+
+function openNewTab() {
+    const baseURL = 'http://127.0.0.1:5500/templates/searchByIngredientTab.html';
+    // const urlToOpen = baseURL + '?query=' + encodeURIComponent(JSON.stringify(tagsArray));
+
+    // Open a new tab with the constructed URL
+    window.open(baseURL, '_blank');
+}

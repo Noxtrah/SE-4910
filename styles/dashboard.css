@@ -349,9 +349,9 @@ a {
         margin-right: 10px; /* Add margin-right to separate the buttons */
       }
 
-      #main-submit {
-        margin-top: 1vh; /* Adjust the top margin as needed */
-      }
+      /* #main-submit {
+        margin-top: 1vh; 
+      } */
     }
 /*
     @media screen and (max-width: 373px) {
@@ -1329,7 +1329,7 @@ Recipes
   margin-top: 0.5rem;
   letter-spacing: var(--letterSpacing);
 }
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 692px) {
   .recipes-list {
     grid-template-columns: 1fr 1fr;
   }

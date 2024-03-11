@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ReciPie</title>
-    <!-- favicon -->
-    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link  rel="icon" href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
-    <link rel="stylesheet" href="../styles/dashboard.css">
-  </head>
-  <body>
-    <section class="background">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReciPie</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon"
+    href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+
+<body>
+  <section class="background">
     <!-- nav  -->
     <div class="responsive-nav-menu">
       <div class="topnav" id="myTopnav">
@@ -20,9 +23,10 @@
         <a href="userDashboard.html">Recipes by Users</a>
         <!-- <a href="recipes.html">Cuisines</a> -->
         <a href="userProfile.html">Profile</a>
-        <a href="searchByIngredient.html">Search By Ingredient</a>
+        <a onclick="openNewTab()">Search By Ingredient</a>
         <div class="nav-dropdown  show-dropdown" onclick="toggleAndCloseDropdown(this)">
-          <button class="meal-types">Cuisines<ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
+          <button class="meal-types">Cuisines<ion-icon name="chevron-down-outline"
+              class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-cuisines-dropdown-content">
             <a onclick="fetchDataByCuisine('French');">French</a>
             <a onclick="fetchDataByCuisine('Chinese');">Chinese</a>
@@ -39,7 +43,8 @@
           </div>
         </div>
         <div class="nav-dropdown  show-dropdown" onclick="toggleAndCloseDropdown(this)">
-          <button class="meal-types">Meal Types<ion-icon name="chevron-down-outline" class="nav-dropdown-arrow-icon"></ion-icon></button>
+          <button class="meal-types">Meal Types<ion-icon name="chevron-down-outline"
+              class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-dropdown-content">
             <a onclick="fetchDataByMealType('breakfast');">Breakfast</a>
             <a onclick="fetchDataByMealType('dinner');">Dinner</a>
@@ -61,11 +66,11 @@
             x.className = "topnav";
           }
         }
-        </script>
-        <a href="dashboard.html" class="nav-logo-centered">
-          <!-- <img src="../Icons/logo.svg" /> -->
-          <img style="width: 90px; height: 90px;" src="https://www.svgrepo.com/show/398059/pie.svg"  alt="logo">
-        </a>
+      </script>
+      <a href="dashboard.html" class="nav-logo-centered">
+        <!-- <img src="../Icons/logo.svg" /> -->
+        <img style="width: 90px; height: 90px;" src="https://www.svgrepo.com/show/398059/pie.svg" alt="logo">
+      </a>
     </div>
 
     <nav class="navbar">
@@ -74,7 +79,8 @@
         <div class="nav-header">
           <a href="dashboard.html" class="nav-logo">
             <!-- <img src="../Icons/logo.svg" /> -->
-            <img style="width: 90px; height: 90px; margin-left: 40px;" src="https://www.svgrepo.com/show/398059/pie.svg"  alt="logo">
+            <img style="width: 90px; height: 90px; margin-left: 40px;" src="https://www.svgrepo.com/show/398059/pie.svg"
+              alt="logo">
           </a>
           <button class="nav-btn btn">
             <i class="fas fa-align-justify"></i>
@@ -94,7 +100,8 @@
               <div class="cuisines-dropdown-content">
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French')">French</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Chinese')">Chinese</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Japanese')">Japanese</a>
+                <a style="font-size: larger;" class="nav-link glass"
+                  onclick="fetchDataByCuisine('Japanese')">Japanese</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Italian')">Italian</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Turkish')">Turkish</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Greek')">Greek</a>
@@ -102,8 +109,10 @@
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Indian')">Indian</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Lunch')">Mexican</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Thai')">Thai</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Lebanese')">Lebanese</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('American')">American</a>
+                <a style="font-size: larger;" class="nav-link glass"
+                  onclick="fetchDataByCuisine('Lebanese')">Lebanese</a>
+                <a style="font-size: larger;" class="nav-link glass"
+                  onclick="fetchDataByCuisine('American')">American</a>
               </div>
             </div>
 
@@ -113,24 +122,27 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="tags-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('breakfast')">Breakfast</a>
+                <a style="font-size: larger;" class="nav-link glass"
+                  onclick="fetchDataByMealType('breakfast')">Breakfast</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dinner')">Dinner</a>
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('dessert')">Dessert</a>
+                <a style="font-size: larger;" class="nav-link glass"
+                  onclick="fetchDataByMealType('dessert')">Dessert</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('lunch')">Lunch</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByMealType('snack')">Snack</a>
               </div>
             </div>
-            <a style="font-size: larger;" href="searchByIngredient.html" class="nav-link glass">Search By Ingredient</a>
+            <a style="font-size: larger;" onclick="openNewTab()" class="nav-link glass">Search By
+              Ingredient</a>
           </div>
         </div>
 
-          <!-- <div class="nav-link contact-link">
+        <!-- <div class="nav-link contact-link">
             <a style="font-size: larger;" href="profile.html" class="btn nav-link">Profile</a>
             <a href="profile.html" class="btn">
               <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
             </a> -->
-          </div>
-        </div>
+      </div>
+      </div>
       </div>
       <div class="profile-dropdown">
         <a href="profile.html" class="btn">
@@ -150,15 +162,17 @@
       <br>
       <br>
       <div class="main-form-container">
-          <form id="recipeSearchForm" action="https://recipiebeckend.azurewebsites.net/recipes/basic-search" method="get" onsubmit="event.preventDefault(); basicSearch();">
-              <input type="text" class="main-input main-name" name="targetWord" value="Search by name" onfocus="clearText(this)" onblur="replaceText(this)" />
-              <!-- Remove the ingredients input field if you only want to search by name -->
-              <!-- <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" /> -->
-              <input id="main-submit" class="" type="submit" value="Search" />
-          </form>
+        <form id="recipeSearchForm" action="https://recipiebeckend.azurewebsites.net/recipes/basic-search" method="get"
+          onsubmit="event.preventDefault(); basicSearch();">
+          <input type="text" class="main-input main-name" name="targetWord" value="Search by name"
+            onfocus="clearText(this)" onblur="replaceText(this)" />
+          <!-- Remove the ingredients input field if you only want to search by name -->
+          <!-- <input type="text" class="main-input main-ingredients" name="INGREDIENTS" value="Search by ingredients" onfocus="clearText(this)" onblur="replaceText(this)" /> -->
+          <input id="main-submit" class="" type="submit" value="Search" />
+        </form>
       </div>
       <button type="button" id="main-submit-mobile">Search</button>
-  </div>
+    </div>
     <!-- mobile submit -->
 
 
@@ -167,10 +181,13 @@
     <main class="page">
       <!-- header -->
       <header class="hero">
-        <div  class="hero-container" style="background-image:url(https://thetrestlestop.com/wp-content/uploads/2021/03/Dessert-Banner-e1617261331998.jpg);  background-size: cover;">
+        <div class="hero-container"
+          style="background-image:url(https://thetrestlestop.com/wp-content/uploads/2021/03/Dessert-Banner-e1617261331998.jpg);  background-size: cover;">
           <div class="hero-text">
 
-            <h1 style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(88, 55, 105); font-family:  Courier, monospace;"> Welcome!</h1>
+            <h1
+              style="text-shadow: 2px 2px 2px rgb(255, 255, 255); color: rgb(88, 55, 105); font-family:  Courier, monospace;">
+              Welcome!</h1>
             <!-- <h4 style="text-shadow: 1px 1px 1px rgb(255, 255, 255); color: rgb(0, 0, 0);">blah , blah blah</h4> -->
           </div>
         </div>
@@ -179,8 +196,9 @@
       <section class="recipes-container">
         <!-- tag container -->
         <div class="tags-container">
-          <h4 style="color: black; font-family: 'Courier New', Courier, monospace;" >recipes</h4>
-          <div style="color: black; font-family: 'Courier New', Courier, monospace; cursor: pointer; " class="tags-list">
+          <h4 style="color: black; font-family: 'Courier New', Courier, monospace;">recipes</h4>
+          <div style="color: black; font-family: 'Courier New', Courier, monospace; cursor: pointer; "
+            class="tags-list">
             <a onclick="fetchDataByCuisine('dinner')">Dinner </a>
             <a onclick="fetchDataByCuisine('breakfast')">Breakfast </a>
             <a onclick="fetchDataByCuisine('dessert')">Dessert </a>
@@ -226,7 +244,8 @@
                   <div class="option">
                     <input class="s-c top" type="radio" name="platform" value="ingrCount" id="ingrCountRadio">
                     <input class="s-c bottom" type="radio" name="platform" value="rate">
-                    <i class="fourth-sort-option"><img src="../Images/Ingredients Icon.png" alt="Ingredients Icon" class="sort-by-ingrCount"></i>
+                    <i class="fourth-sort-option"><img src="../Images/Ingredients Icon.png" alt="Ingredients Icon"
+                        class="sort-by-ingrCount"></i>
                     <span class="label">Ingr. Count</span>
                     <span class="opt-val">Ingredient Count</span>
                   </div>
@@ -252,27 +271,27 @@
     <!-- footer -->
     <br>
   </section>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="../scripts/dashboard.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="../scripts/dashboard.js"></script>
 
-<body>
+  <body>
 
-<body class="meal-planner-body">
-    <div class="meal-planner">
-        <h1  style="font-family: 'Courier New', Courier, monospace;" >Meal Planner</h1>
+    <body class="meal-planner-body">
+      <div class="meal-planner">
+        <h1 style="font-family: 'Courier New', Courier, monospace;">Meal Planner</h1>
         <div id="gradient"></div>
-        <div class="searchbox" >
-        <input  type="search" id="searchMeal" placeholder="Type meal">
-        <button class="addMealbutton" type="submit" onclick="addMeal()"></button>
+        <div class="searchbox">
+          <input type="search" id="searchMeal" placeholder="Type meal">
+          <button class="addMealbutton" type="submit" onclick="addMeal()"></button>
 
 
         </div>
-       
-<div>
-      
-  <!-- <div id="intro-content" class="center-content">
+
+        <div>
+
+          <!-- <div id="intro-content" class="center-content">
     <div class="center-content-inner">
         <div class="content-section content-section-margin">
             <div class="content-section-grid clearfix">
@@ -293,41 +312,42 @@
 
        -->
 
-        <div class="days">
-          <div class="day" onclick="selectDay('monday')">
-            <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;" >Monday</h2>
-            <ul id="mondayList"></ul>
+          <div class="days">
+            <div class="day" onclick="selectDay('monday')">
+              <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;">Monday</h2>
+              <ul id="mondayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('tuesday')">
+              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Tuesday</h2>
+              <ul id="tuesdayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('wednesday')">
+              <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;">Wednesday</h2>
+              <ul id="wednesdayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('thursday')">
+              <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;">Thursday</h2>
+              <ul id="thursdayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('friday')">
+              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Friday</h2>
+              <ul id="fridayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('saturday')">
+              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Saturday</h2>
+              <ul id="saturdayList"></ul>
+            </div>
+            <div class="day" onclick="selectDay('sunday')">
+              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Sunday</h2>
+              <ul id="sundayList"></ul>
+            </div>
+            <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->
+            <!-- Örnek olarak Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday ekleyebilirsiniz -->
           </div>
-          <div class="day" onclick="selectDay('tuesday')">
-            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Tuesday</h2>
-            <ul id="tuesdayList"></ul>
-          </div>
-          <div class="day" onclick="selectDay('wednesday')">
-            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Wednesday</h2>
-            <ul id="wednesdayList"></ul>
-          </div>
-          <div class="day" onclick="selectDay('thursday')">
-            <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;" >Thursday</h2>
-            <ul id="thursdayList"></ul>
-          </div>
-          <div class="day" onclick="selectDay('friday')">
-            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Friday</h2>
-            <ul id="fridayList"></ul>
-          </div>
-          <div class="day" onclick="selectDay('saturday')">
-            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Saturday</h2>
-            <ul id="saturdayList"></ul>
-          </div>
-          <div class="day" onclick="selectDay('sunday')">
-            <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;" >Sunday</h2>
-            <ul id="sundayList"></ul>
-          </div>
-          <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->
-          <!-- Örnek olarak Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday ekleyebilirsiniz -->
         </div>
-      </div>
 
 
 
-  </body>
+    </body>
+
 </html>
