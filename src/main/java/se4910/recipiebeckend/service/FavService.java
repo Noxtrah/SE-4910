@@ -107,4 +107,15 @@ public class FavService {
                 .map(favorite -> favorite.getRecipe().getId())
                 .collect(Collectors.toSet());
     }
+
+    public boolean checkFav(User currentUser, Recipe recipe)
+    {
+        return favoritesRepository.findByRecipeAndUser(recipe, currentUser) != null;
+
+    }
+
+    public boolean checkFavUserRecipes(User currentUser, UserRecipes userRecipes)
+    {
+        return favoritesRepository.findByUserRecipesAndUser(userRecipes, currentUser) != null;
+    }
 }

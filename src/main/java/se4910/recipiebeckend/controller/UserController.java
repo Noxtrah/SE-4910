@@ -89,9 +89,12 @@ public class UserController {
     public ResponseEntity<String> giveOneRate(@RequestParam int rate,@RequestParam long recipeId, Authentication authentication )
     {
 
-          User currentUser = getCurrentUser(authentication);
-          return ratesService.giveOneRate(rate,recipeId, currentUser);
-
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return ratesService.giveOneRate(rate,recipeId, currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/give-rate-user-recipe")
@@ -99,8 +102,11 @@ public class UserController {
     {
 
         User currentUser = getCurrentUser(authentication);
-        return ratesService.giveOneRateUserRecipe(rate,userRecipeId, currentUser);
-
+        if (currentUser != null)
+        {
+            return ratesService.giveOneRateUserRecipe(rate,userRecipeId, currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/authHello")

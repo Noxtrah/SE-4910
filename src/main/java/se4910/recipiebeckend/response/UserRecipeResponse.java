@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class UserRecipeResponse {
 
+    long id;
     String title;
     String ingredients;
     String description;
@@ -22,6 +23,7 @@ public class UserRecipeResponse {
     String username;
 
     public UserRecipeResponse(UserRecipes userRecipes) {
+        this.id = userRecipes.getId();
         this.title = userRecipes.getTitle();
         this.ingredients = userRecipes.getIngredients();
         this.description = userRecipes.getDescription();

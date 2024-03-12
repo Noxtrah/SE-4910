@@ -27,13 +27,9 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     RecipeService recipeService;
-
-    @Autowired
     UserRecipeRepository userRecipeRepository;
     
 
@@ -122,6 +118,7 @@ public class UserService implements UserDetailsService {
            publishRecipe = userRecipeRepository.findById(userRecipeId).get();
             if (!publishRecipe.getIsPublish()) {
                 publishRecipe.setIsPublish(true);
+                userRecipeRepository.save(publishRecipe);
                 return new ResponseEntity<>( publishRecipe.getTitle() + " is published", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Recipe is already published", HttpStatus.BAD_REQUEST);

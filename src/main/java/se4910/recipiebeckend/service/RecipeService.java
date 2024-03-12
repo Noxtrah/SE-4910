@@ -1,9 +1,12 @@
 package se4910.recipiebeckend.service;
 
+import com.microsoft.azure.storage.blob.CloudBlobClient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
@@ -11,7 +14,12 @@ import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.*;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.*;
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +35,8 @@ public class RecipeService {
     UserRepository userRepository;
 
     FavoritesRepository favoritesRepository;
-    public List<Recipe> getAllRecipes()
+
+    public List<Recipe> getAllRecipesBasic()
     {
         List<Recipe> recipes = recipeRepository.findAll();
         if (recipes != null) {
@@ -58,6 +67,86 @@ public class RecipeService {
         recipeRepository.save(recipe);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    public Recipe getRecipeByID(long id) {
+        Optional<Recipe> recipe = recipeRepository.findById(id);
+        return recipe.orElse(null);
+    }
+
+
+    private final String sasToken = "?sp=raw&st=2024-03-11T20:05:15Z&se=2024-03-12T04:05:15Z&sip=149.0.177.113&spr=https&sv=2022-11-02&sr=c&sig=dHa277%2BLK%2FPRcQZkelaJOrzfIPl8AvWB0qOxftVmZik%3D";
+    private final String containerName = "recipeimages";
+    private final String storageConnectionString = "https://blobrecipeimages.blob.core.windows.net/";
+
+    public ResponseEntity<String> createRecipeBlob(RecipeRequest recipeRequest) {
+        if (recipeRequest.getIngredients() == null || recipeRequest.getTitle() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            // Create the blob client with SAS token
+            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString + sasToken);
+            CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+            CloudBlobContainer container = blobClient.getContainerReference(containerName);
+
+            // Open input stream to photo URL
+            URL photoUrl = new URL(recipeRequest.getPhotoPath());
+            InputStream photoStream = photoUrl.openStream();
+
+            // Get the file name from the photo path
+            String fileName = recipeRequest.getPhotoPath().substring(recipeRequest.getPhotoPath().lastIndexOf('/') + 1);
+
+            // Get reference to the blob
+            CloudBlockBlob blob = container.getBlockBlobReference(fileName);
+
+            // Upload the photo
+            blob.upload(photoStream, photoStream.available());
+
+            // Get the URL of the uploaded photo
+            String photoUrlString = blob.getUri().toString();
+
+            // Save recipe details to database
+            Recipe recipe = new Recipe();
+            recipe.setMeal(mealConverter(recipeRequest.getMeal()));
+            recipe.setCuisine(recipeRequest.getCuisine());
+            recipe.setTitle(recipeRequest.getTitle());
+            recipe.setIngredients(recipeRequest.getIngredients());
+            recipe.setDescription(recipeRequest.getDescription());
+            recipe.setPreparationTime(recipeRequest.getPreparationTime());
+            recipe.setPhotoPath(photoUrlString);
+            recipeRepository.save(recipe);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<Recipe> getAllRecipes(){
+
+        return recipeRepository.findAll();
+    }
+
+    public List<UserRecipeResponseFull> getCustomDataUserDashboard(User currentUser) {
+
+        List<UserRecipeResponseFull> customData = new ArrayList<>();
+        List<UserRecipes> allRecipes = userRecipeRepository.findByIsPublishTrue();
+      //  Set<Long> likedRecipeIds = favService.getUserLikedUserRecipeIds(currentUser);
+        Map<Long, Integer> userRatesByRecipeId = ratesService.getRatesByUserRecipeIds(currentUser, allRecipes);
+
+        for (UserRecipes userRecipes : allRecipes) {
+       //     boolean isLiked = likedRecipeIds.contains(userRecipes.getId());
+            boolean isLiked = favService.checkFavUserRecipes(currentUser,userRecipes);
+            int rate = userRatesByRecipeId.getOrDefault(userRecipes.getId(), 0);
+            double avgRate = ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId());
+
+            customData.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate));
+        }
+
+        return customData;
+    }
+
 
     private List<Meal> mealConverter(String meal)
     {
@@ -139,94 +228,75 @@ public class RecipeService {
     public List<Recipe> getRecipesByMeal(String mealType)
     {
         Meal meal = mealRepository.findByMealName(mealType);
-
         return recipeRepository.findByMeal(meal);
 
     }
 
-    public List<Recipe> getRecipesByCuisine(String cuisine)
-    {
-        //Baş harfi büyük yap
+    public List<Recipe> getRecipesByCuisine(String cuisine) {
+
         cuisine = cuisine.substring(0, 1).toUpperCase() + cuisine.substring(1).toLowerCase();
         return recipeRepository.findByCuisine(cuisine);
-    }
-
-    public Recipe getRecipeByID(long id) {
-        Optional<Recipe> recipe = recipeRepository.findById(id);
-        return recipe.orElse(null);
-    }
-
-    public List<Recipe> sortRecipesPrepTime() {
-
-        List<Recipe> recipes = recipeRepository.findAll();
-
-        // Sorting recipes based on preparation time
-        recipes.sort(Comparator.comparingInt(Recipe::getPreparationTime));
-
-        return recipes;
 
     }
 
-    public List<Recipe> sortRecipesAlph() {
+    public List<RecipeResponse> fillResponse( List<Recipe> filteredRecipes, User currentUser) {
 
-        List<Recipe> recipes = recipeRepository.findAll();
+        List<RecipeResponse> recipeResponses = new ArrayList<>();
 
-        // Sorting recipes alphabetically by name
-        recipes.sort(Comparator.comparing(Recipe::getTitle));
+        for (Recipe recipe : filteredRecipes) {
+            boolean isLiked = favService.checkFav(currentUser,recipe);
+            //  int rate = userRatesByRecipeId.getOrDefault(recipe.getId(), 0);
+            int rate = ratesService.getRateByRecipeAndUser(currentUser,recipe);
+            double avgRate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
 
-        return recipes;
+            recipeResponses.add(new RecipeResponse(recipe, isLiked, rate, avgRate));
+        }
+        return recipeResponses;
     }
+
+    public List<RecipeResponse> fillResponseDefaults( List<Recipe> filteredRecipes) {
+
+        List<RecipeResponse> recipeResponses = new ArrayList<>();
+
+        for (Recipe recipe : filteredRecipes) {
+            boolean isLiked = false;
+            //  int rate = userRatesByRecipeId.getOrDefault(recipe.getId(), 0);
+            int rate = 0;
+            double avgRate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
+
+            recipeResponses.add(new RecipeResponse(recipe, isLiked, rate, avgRate));
+        }
+        return recipeResponses;
+    }
+
+
 
     public List<String> getIngredientsList(Recipe recipe)
     {
         return Arrays.asList(recipe.getIngredients().split(","));
     }
-    public List<Recipe> sortRecipesIngCount() {
 
-        List<Recipe> recipes = recipeRepository.findAll();
-
-        Collections.sort(recipes, Comparator.comparingInt(recipe -> getIngredientsList(recipe).size()));
-      //  Collections.reverse(recipes);
+    public List<RecipeResponse> sortRecipesIngCount(List<RecipeResponse> recipes) {
+        recipes.sort(Comparator.comparingInt(r -> getIngredientsList(r.getRecipe()).size()));
         return recipes;
     }
 
-    public List<Recipe> sortRecipesRate() {
 
-        List<Recipe> sortedList = new ArrayList<>();
-        List<Long> ids = recipeRepository.findRecipesOrderByAvgRatings();
-
-        for (Long id : ids) {
-            Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-
-            if (optionalRecipe.isPresent()) {
-                sortedList.add(optionalRecipe.get());
-            }
-
-        }
-
-        return sortedList;
+    public List<RecipeResponse> sortRecipesAlph(List<RecipeResponse> recipes) {
+        recipes.sort(Comparator.comparing(r -> r.getRecipe().getTitle(), String.CASE_INSENSITIVE_ORDER));
+        return recipes;
     }
 
-    public ResponseEntity<List<String>> getRecipeWithRates()
-    {
-
-        List<String> recipeInfoRates = new ArrayList<>();
-
-        List<Recipe> recipes = recipeRepository.findAll();
-
-        for (Recipe recipe : recipes) {
-
-            double rate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
-                String rateString = String.valueOf(rate);
-                String str = recipe.getTitle() + "(" + recipe.getId() + ") Rate: " + rateString;
-                recipeInfoRates.add(str);
-
-
-        }
-        return ResponseEntity.ok(recipeInfoRates);
-
-
+    public List<RecipeResponse> sortRecipesRate(List<RecipeResponse> recipes) {
+        recipes.sort(Comparator.comparingDouble(RecipeResponse::getAvgRate));
+        return recipes;
     }
+
+    public List<RecipeResponse> sortRecipesPrepTime(List<RecipeResponse> recipes) {
+        recipes.sort(Comparator.comparingInt(r -> r.getRecipe().getPreparationTime()));
+        return recipes;
+    }
+
 
     public List<UserRecipeResponse> getPublishedUserRecipes()
     {
@@ -261,13 +331,9 @@ public class RecipeService {
         return recipes;
     }
 
-    public List<Recipe> BasicSearch(String targetWord) {
+    public List<Recipe> BasicSearch(String targetWord,User currentUser) {
 
-        List<Recipe>foundRecipes = recipeRepository.searchInTitleAndDescription(targetWord);
-        if (foundRecipes != null);
-        {
-              return foundRecipes;
-        }
+        return recipeRepository.searchInTitleAndDescription(targetWord);
 
     }
 
@@ -276,39 +342,29 @@ public class RecipeService {
         recipeRepository.lowerIngredients();
     }
 
-    public List<RecipeResponse> getCustomDataDashboard(User currentUser)
-    {
-        List<RecipeResponse> customData = new ArrayList<>();
-        List<Recipe> allRecipes = recipeRepository.findAll();
-        Set<Long> likedRecipeIds = favService.getUserLikedRecipeIds(currentUser);
-        Map<Long, Integer> userRatesByRecipeId = ratesService.getRatesByRecipeIds(currentUser, allRecipes);
 
-        for (Recipe recipe : allRecipes) {
-            boolean isLiked = likedRecipeIds.contains(recipe.getId());
-            int rate = userRatesByRecipeId.getOrDefault(recipe.getId(), 0);
-            double avgRate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
-
-            customData.add(new RecipeResponse(recipe, isLiked, rate, avgRate));
-        }
-
-        return customData;
+    public List<UserRecipeResponseFull> getUserRecipes() {
+        return userRecipeRepository.findByIsPublishTrue().stream()
+                .map(userRecipes -> new UserRecipeResponseFull(
+                        userRecipes,
+                        null, // isLiked
+                        0,    // rate
+                        ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId())
+                ))
+                .collect(Collectors.toList());
     }
 
-    public List<UserRecipeResponseFull> getCustomDataUserDashboard(User currentUser) {
 
-        List<UserRecipeResponseFull> customData = new ArrayList<>();
-        List<UserRecipes> allRecipes = userRecipeRepository.findByIsPublishTrue();
-        Set<Long> likedRecipeIds = favService.getUserLikedUserRecipeIds(currentUser);
-        Map<Long, Integer> userRatesByRecipeId = ratesService.getRatesByUserRecipeIds(currentUser, allRecipes);
 
-        for (UserRecipes userRecipes : allRecipes) {
-            boolean isLiked = likedRecipeIds.contains(userRecipes.getId());
-            int rate = userRatesByRecipeId.getOrDefault(userRecipes.getId(), 0);
-            double avgRate = ratesService.GetAvgRatesByRecipeId(userRecipes.getId());
+    public List<RecipeResponse> doPaging(List<RecipeResponse> cachedDataExtended, int key)
+    {
+        int pageSize = 6;
+        int fromIndex = key * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, cachedDataExtended.size());
+        if (fromIndex >= cachedDataExtended.size()) {
 
-            customData.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate));
+            return Collections.emptyList();
         }
-
-        return customData;
+        return cachedDataExtended.subList(fromIndex, toIndex);
     }
 }

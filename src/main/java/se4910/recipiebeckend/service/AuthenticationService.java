@@ -41,7 +41,6 @@ public class AuthenticationService {
 
 
     public AuthResponse loginUser(String username, String password,HttpServletResponse response){
-
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
             User user = userService.getOneUserByUsername(username);
@@ -66,31 +65,18 @@ public class AuthenticationService {
                         .refreshToken(refreshToken)
                         .build();
             } else {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value()); // Set HTTP 401 status
                 return AuthResponse.builder()
-                        .accessToken("invalid username or password")
+                        .message("Invalid username or password")
                         .build();
             }
         } catch (Exception e) {
-
-            return AuthResponse.builder().accessToken("Error: " + e.getMessage()).build();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value()); // Set HTTP 500 status
+            return AuthResponse.builder()
+                    .message("Error: " + e.getMessage())
+                    .build();
         }
-    }
 
-    public ResponseEntity<?> loginUser2(String username, String password)
-    {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
-            User user = userService.getOneUserByUsername(username);
-            if (user != null) {
-
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
     public ResponseEntity<?> register(NewUserRequest registerRequest) {

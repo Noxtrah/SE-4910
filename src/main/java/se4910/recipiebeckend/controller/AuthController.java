@@ -33,12 +33,6 @@ public class AuthController
         return authenticationService.loginUser(loginRequest.getUsername(), loginRequest.getPassword(), response);
     }
 
-    @PostMapping("/login2")
-    public ResponseEntity<?> login2(@RequestBody LoginRequest loginRequest) {
-        return authenticationService.loginUser2(loginRequest.getUsername(),loginRequest.getPassword());
-    }
-
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody NewUserRequest registerRequest) {
        return authenticationService.register(registerRequest);

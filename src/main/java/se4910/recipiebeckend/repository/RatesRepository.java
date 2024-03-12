@@ -22,6 +22,8 @@ public interface RatesRepository extends JpaRepository<Rates,Long>{
    @Query("SELECT AVG(r.rate) FROM rates r WHERE r.recipe.id = :recipeId")
     Double findByIdRecipeId(@Param("recipeId") Long recipeId);
 
+   @Query("SELECT AVG(r.rate) FROM rates r WHERE r.userRecipes.id = :userRecipeId")
+   Double findByIdUserRecipesId(@Param("userRecipeId") Long userRecipeId);
 
     List<Rates> findByUserAndRecipeIsNotNull(User user);
 

@@ -1,18 +1,21 @@
 package se4910.recipiebeckend.response;
 
+import lombok.Getter;
+import lombok.Setter;
 import se4910.recipiebeckend.entity.UserRecipes;
 
-public class UserRecipeResponseFull {
+@Getter
+@Setter
+public class UserRecipeResponseFull extends UserRecipeResponse{
 
 
-    UserRecipeResponse userRecipeResponse;
     Boolean isLiked;
     int rate;
     double avgRate;
 
 
     public UserRecipeResponseFull(UserRecipes userRecipes, Boolean isLiked, int rate, double avgRate) {
-        this.userRecipeResponse = new UserRecipeResponse(userRecipes);
+        super(userRecipes);
         this.isLiked = isLiked;
         this.rate = rate;
         this.avgRate = avgRate;

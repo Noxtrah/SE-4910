@@ -10,6 +10,7 @@ import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.response.RateResponse;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -51,10 +52,11 @@ public class RatesService
 
     public ResponseEntity<String> giveOneRateUserRecipe(int rate, long userRecipeId, User currentUser)
     {
-        UserRecipes userRecipe = userRecipeRepository.findById(userRecipeId).orElse(null);
-        if (userRecipe == null) {
+        Optional<UserRecipes> userRecipesOptional = userRecipeRepository.findById(userRecipeId);
+        if (userRecipesOptional.isEmpty()) {
             return new ResponseEntity<>("Recipe not found", HttpStatus.NOT_FOUND);
         }
+        UserRecipes userRecipe = userRecipesOptional.get();
         Rates existingRates = ratesRepository.findByUserRecipesAndUser(userRecipe, currentUser);
         if (existingRates == null) {
             Rates newRates = new Rates();
@@ -74,36 +76,25 @@ public class RatesService
 
 
     public double GetAvgRatesByRecipeId(Long id) {
+        Double avgRate = ratesRepository.findByIdRecipeId(id);
+        if (avgRate != null) {
+            DecimalFormat df = new DecimalFormat("#,#");
+            return Double.parseDouble(df.format(avgRate));
+        }
+        return 0;
+    }
 
-        if (ratesRepository.findByIdRecipeId(id) != null)
+
+
+    public double GetAvgRatesByUserRecipeId(Long id) {
+
+        if (ratesRepository.findByIdUserRecipesId(id) != null)
         {
-            return ratesRepository.findByIdRecipeId(id);
+            DecimalFormat df = new DecimalFormat("#.#");
+            return Double.parseDouble(df.format(ratesRepository.findByIdUserRecipesId(id)));
         }
-       return 0;
-    }
+        return 0;
 
-    public List<RateResponse> getOneUserRatesRecipe(User currentUser) {
-        List<Rates>userRates = ratesRepository.findByUserAndRecipeIsNotNull(currentUser);
-        List<RateResponse> rateResponseList = new ArrayList<>();
-        for (Rates oneRate:userRates) {
-            Long recipeId = oneRate.getRecipe().getId();
-            int rate = oneRate.getRate();
-            RateResponse response = new RateResponse(recipeId,rate);
-            rateResponseList.add(response);
-        }
-        return rateResponseList;
-    }
-
-    public List<RateResponse> getOneUserRatesUserRecipe(User currentUser) {
-        List<Rates>userRates = ratesRepository.findByUserAndUserRecipesIsNotNull(currentUser);
-        List<RateResponse> rateResponseList = new ArrayList<>();
-        for (Rates oneRate:userRates) {
-            Long recipeId = oneRate.getRecipe().getId();
-            int rate = oneRate.getRate();
-            RateResponse response = new RateResponse(recipeId,rate);
-            rateResponseList.add(response);
-        }
-        return rateResponseList;
     }
 
     public Map<Long, Integer> getRatesByRecipeIds(User currentUser, List<Recipe> allRecipes)
@@ -119,6 +110,11 @@ public class RatesService
 
     }
 
+    public int getRateByRecipeAndUser(User currentUser, Recipe recipe)
+    {
+       return  ratesRepository.findByRecipeAndUser(recipe,currentUser).getRate();
+    }
+
     public Map<Long, Integer> getRatesByUserRecipeIds(User currentUser, List<UserRecipes> allRecipes)
     {
 
@@ -132,6 +128,5 @@ public class RatesService
         return ratesByRecipeIds;
 
     }
-
 
 }
