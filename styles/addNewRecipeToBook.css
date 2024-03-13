@@ -14,9 +14,50 @@ body, label{
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: var(--background_color);
+    /* color: #333; */
 }
+
+header {
+    background-color: var(--dark_grey);
+    color: var(--light_purple);
+    text-align: center;
+    padding: 1em;
+  }
+  
+  #header-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  #back-arrow-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+  }
+  
+  .back-arrow {
+    font-size: 5em;
+    color: var(--light_purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -50%);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  #back-arrow-button:hover .back-arrow {
+    color: var(--purple);
+    /* Change the color on hover */
+    cursor: pointer;
+    /* Change the cursor on hover */
+  }
+
+  #my-recipe-book-title {
+    flex-grow: 1;
+    /* This will make the title take up the remaining space */
+  }
 
 .recipe-form-container,
 .recipe-book-container {
@@ -34,7 +75,7 @@ body {
     margin-top: 20px; /* Adjust the margin as needed */
 }
 
-h1, h2 {
+.form-header{
     color: #6a0572; /* Purple */
 }
 
@@ -143,7 +184,7 @@ textarea {
     position: absolute;
     opacity: 0;
     cursor: pointer;
-    top: 0;
-    left: 0;
+    width: 0;
+    height: 0;
 
   }

@@ -352,8 +352,9 @@ const createRecipeElement = async (recipe) => {
     const starContainer = document.createElement('div');
     starContainer.classList.add('rating');
 
-    const getCustomData = await getSelectedCustomDataOfDashboard(recipeIndex);
-    const rate = getCustomData.rate;
+    //const getCustomData = await getSelectedCustomDataOfDashboard(recipeIndex);
+    const rate = recipe.rate;
+    console.log("Rate değeri: " , rate)
 
     console.log("Star Info: " , rate);
 
@@ -371,7 +372,7 @@ const createRecipeElement = async (recipe) => {
         starContainer.appendChild(star);
     }
     // Create average star
-    const generalRateOfRecipe = getCustomData.avgRate;
+    const generalRateOfRecipe = recipe.avgRate;
     recipeIndex++;
 
     const averageRatingSpan = document.createElement('span');
@@ -399,7 +400,7 @@ const createRecipeElement = async (recipe) => {
     document.body.appendChild(heartContainer);
 
     heartContainer.classList.add('favorite-heart');
-    if(getCustomData.isLiked){
+    if(recipe.isLiked){
         heartContainer.style.color = 'red';
     }
     // heart.onclick = () => toggleFavorite(heart);
@@ -439,7 +440,7 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     try {
-        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-dashboard');
+        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/home');
         const data = await response.json();
 
 		console.log('Fetched Data:', data);
@@ -689,7 +690,7 @@ function basicSearch() {
 //     return starAndHeartInfoArray;
 // }
 async function getSelectedCustomDataOfDashboard(index) {
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-dashboard';
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     const response = await fetch(
         apiUrl,
@@ -711,13 +712,7 @@ async function getSelectedCustomDataOfDashboard(index) {
     if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
         console.log("Data: " , data);
-        // Check if the array has elements and if the specified index is valid
-        if (data.length > index) {
-            return data[index];
-        } else {
-            console.error('Index out of bounds or empty array');
-            return null; // or handle it according to your application's logic
-        }
+        return data[index];
     } else {
         // Handle non-JSON response or empty response
         console.error('Invalid or empty JSON response');
@@ -731,4 +726,138 @@ function openNewTab() {
 
     // Open a new tab with the constructed URL
     window.open(baseURL, '_blank');
+}
+
+// $(document).ready(function() {
+//     $('#pagination li a').on('click', function(e) {
+//         e.preventDefault();
+//     $('#next').on('click', function(e) {
+//         e.preventDefault();
+//         var currentPage = $('#pagination li.active').index() + 1;
+//         console.log("Current page: " , currentPage);
+//         var key = currentPage - 1;
+//         paging(key);
+//     });
+//     $('#prev').on('click', function(e) {
+//         e.preventDefault();
+//         var currentPage = $('#pagination li.active').index() + 1;
+//         var key = currentPage - 2;
+//         paging(key);
+//     });
+//         if (!$(this).is('#next, #prev')) {
+//             $('#pagination li').removeClass('active');
+//             $(this).parent().addClass('active');
+//             var key = parseInt($(this).text().trim()) - 1;
+//             paging(key);
+//         }
+//     });
+// });
+
+$(document).ready(function() {
+    var key; // Declare the key variable outside of the event handlers
+
+    // Add click event to pagination links
+    $('#pagination li a').on('click', function(e) {
+        e.preventDefault();
+
+        if (!$(this).is('#next, #prev')) {
+            // Remove active class from all pagination links
+            $('#pagination li').removeClass('active');
+
+            // Add active class to the clicked link
+            $(this).parent().addClass('active');
+
+            // Extract the key from the clicked pagination link and subtract 1
+            key = parseInt($(this).text().trim()) - 1;
+
+            // Call the paging function with the adjusted key
+            paging(key);
+        }
+    });
+
+    $(document).ready(function() {
+        var key = 0; // Declare the key variable outside of the event handlers
+    
+        // Add click event to pagination links
+        $('#pagination li a').on('click', function(e) {
+            e.preventDefault();
+    
+            if (!$(this).is('#next, #prev')) {
+                // Remove active class from all pagination links
+                $('#pagination li').removeClass('active');
+    
+                // Add active class to the clicked link
+                $(this).parent().addClass('active');
+    
+                // Extract the key from the clicked pagination link and subtract 1
+                key = parseInt($(this).text().trim()) - 1;
+                console.log("Key: " , key);
+                // Call the paging function with the adjusted key
+                paging(key);
+            }
+        });
+    
+        $('#next').on('click', function(e) {
+            e.preventDefault();
+        
+            // Get the current active page number
+            var currentPage = $('#pagination li.active').index() + 1;
+        
+            // If no page is active, default to the first page
+            if (currentPage === 0) {
+                currentPage = 1;
+            }
+        
+            // Calculate the key for the next page
+            var nextPageKey = currentPage % ($('#pagination li').length - 1);
+            if (nextPageKey === 0) {
+                nextPageKey = ($('#pagination li').length - 1);
+            } else {
+                nextPageKey -= 1;
+            }
+        
+            // Remove active class from all pagination links
+            $('#pagination li').removeClass('active');
+        
+            // Add active class to the next page
+            $('#pagination li:eq(' + nextPageKey + ')').addClass('active');
+        
+            // Call the paging function with the adjusted key
+            paging(nextPageKey);
+        });
+        // Prev button click event handler
+        $('#prev').on('click', function(e) {
+            e.preventDefault();
+    
+            // Get the current active page number
+            var currentPage = $('#pagination li.active').index() + 1;
+    
+ 
+            // Calculate the key for the previous page
+            var key = (currentPage - 2 + ($('#pagination li').length - 1)) % ($('#pagination li').length - 1); // Corrected the calculation
+            console.log("Key: " , key);
+            // Call the paging function with the adjusted key
+            paging(key);
+        });
+    });
+});
+
+    
+
+
+
+  function paging(key) {
+    //var targetWord = document.getElementById('.main-submit').value;
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayDashboard(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
 }

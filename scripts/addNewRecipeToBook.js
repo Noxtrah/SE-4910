@@ -115,3 +115,14 @@ const saveButton = document.getElementById("save-button");
         console.log(recipeData);
         saveRecipe(recipeData);
     });
+
+    function setupBackButton() {
+        const backButton = document.getElementById('back-arrow-button');
+
+        backButton.addEventListener('click', () => {
+            window.history.back();
+            // window.history.go(-1);
+        });
+}
+
+setupBackButton();
