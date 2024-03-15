@@ -753,101 +753,88 @@ function openNewTab() {
 //     });
 // });
 
-$(document).ready(function() {
-    var key; // Declare the key variable outside of the event handlers
+// $(document).ready(function() {
+//     var key;
 
-    // Add click event to pagination links
-    $('#pagination li a').on('click', function(e) {
-        e.preventDefault();
+//     $('#pagination li a').on('click', function(e) {
+//         e.preventDefault();
 
-        if (!$(this).is('#next, #prev')) {
-            // Remove active class from all pagination links
-            $('#pagination li').removeClass('active');
+//         if (!$(this).is('#next, #prev')) {
+//             $('#pagination li').removeClass('active');
 
-            // Add active class to the clicked link
-            $(this).parent().addClass('active');
+//             $(this).parent().addClass('active');
 
-            // Extract the key from the clicked pagination link and subtract 1
-            key = parseInt($(this).text().trim()) - 1;
+//             key = parseInt($(this).text().trim()) - 1;
 
-            // Call the paging function with the adjusted key
-            paging(key);
-        }
-    });
+//             paging(key);
+//         }
+//     });
 
-    $(document).ready(function() {
-        var key = 0; // Declare the key variable outside of the event handlers
+//     $(document).ready(function() {
+//         var key = 0;
+
+//         $('#pagination li a').on('click', function(e) {
+//             e.preventDefault();
     
-        // Add click event to pagination links
-        $('#pagination li a').on('click', function(e) {
-            e.preventDefault();
+//             if (!$(this).is('#next, #prev')) {
+//                 $('#pagination li').removeClass('active');
     
-            if (!$(this).is('#next, #prev')) {
-                // Remove active class from all pagination links
-                $('#pagination li').removeClass('active');
+//                 $(this).parent().addClass('active');
     
-                // Add active class to the clicked link
-                $(this).parent().addClass('active');
+//                 key = parseInt($(this).text().trim()) - 1;
+//                 console.log("Key: " , key);
+//                 paging(key);
+//             }
+//         });
     
-                // Extract the key from the clicked pagination link and subtract 1
-                key = parseInt($(this).text().trim()) - 1;
-                console.log("Key: " , key);
-                // Call the paging function with the adjusted key
-                paging(key);
-            }
-        });
-    
-        $('#next').on('click', function(e) {
-            e.preventDefault();
+//         $('#next').on('click', function(e) {
+//             e.preventDefault();
         
-            // Get the current active page number
-            var currentPage = $('#pagination li.active').index() + 1;
+//             var currentPage = $('#pagination li.active').index() + 1;
         
-            // If no page is active, default to the first page
-            if (currentPage === 0) {
-                currentPage = 1;
-            }
-        
-            // Calculate the key for the next page
-            var nextPageKey = currentPage % ($('#pagination li').length - 1);
-            if (nextPageKey === 0) {
-                nextPageKey = ($('#pagination li').length - 1);
-            } else {
-                nextPageKey -= 1;
-            }
-        
-            // Remove active class from all pagination links
-            $('#pagination li').removeClass('active');
-        
-            // Add active class to the next page
-            $('#pagination li:eq(' + nextPageKey + ')').addClass('active');
-        
-            // Call the paging function with the adjusted key
-            paging(nextPageKey);
-        });
-        // Prev button click event handler
-        $('#prev').on('click', function(e) {
-            e.preventDefault();
-    
-            // Get the current active page number
-            var currentPage = $('#pagination li.active').index() + 1;
-    
- 
-            // Calculate the key for the previous page
-            var key = (currentPage - 2 + ($('#pagination li').length - 1)) % ($('#pagination li').length - 1); // Corrected the calculation
-            console.log("Key: " , key);
-            // Call the paging function with the adjusted key
-            paging(key);
-        });
-    });
+//             if (currentPage === 0) {
+//                 currentPage = 1;
+//             }
+
+//             var nextPageKey = currentPage % ($('#pagination li').length - 1);
+//             if (nextPageKey === 0) {
+//                 nextPageKey = ($('#pagination li').length - 1);
+//             } else {
+//                 nextPageKey -= 1;
+//             }
+
+//             $('#pagination li').removeClass('active');
+
+//             $('#pagination li:eq(' + nextPageKey + ')').addClass('active');
+
+//             paging(nextPageKey);
+//         });
+//         $('#prev').on('click', function(e) {
+//             e.preventDefault();
+
+//             var currentPage = $('#pagination li.active').index() + 1;
+
+//             var key = (currentPage - 2 + ($('#pagination li').length - 1)) % ($('#pagination li').length - 1);
+//             console.log("Key: " , key);
+//             paging(key);
+//         });
+//     });
+// });
+
+$('#pagination-demo').twbsPagination({
+    totalPages: 16,
+    visiblePages: 5,
+    next: 'Next',
+    prev: 'Prev',
+    onPageClick: function (event, page) {
+        //fetch content and render here
+        console.log("Page: " , page);
+        paging(page)
+    }
 });
 
-    
-
-
-
   function paging(key) {
-    //var targetWord = document.getElementById('.main-submit').value;
+    key -= 1;
     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
     fetch(apiUrl)
     .then(response => {

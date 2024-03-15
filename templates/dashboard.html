@@ -9,6 +9,7 @@
   <!-- favicon -->
   <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.css">
   <link rel="icon"
     href="https://media.istockphoto.com/id/1206922898/tr/vekt%C3%B6r/pasta-simgesi-beyaz-arka-planda-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F-logo.jpg?s=612x612&w=is&k=20&c=eLmofEp6dL5d8uP3ks2VqjUSql-oWK2ITx0pQTOPBV0=">
   <link rel="stylesheet" href="../styles/dashboard.css">
@@ -265,7 +266,7 @@
         </div>
         <!-- end of recipes list -->
       </section>
-      <div class="paging-container">
+      <!-- <div class="paging-container">
         <ul class="pagination" id="pagination">
           <li><a href="#" id="prev">Prev</a></li>
           <li class="active"><a href="#">1</a></li>
@@ -275,7 +276,13 @@
           <li><a href="#">5</a></li>
           <li><a href="#" id="next">Next</a></li>
         </ul>
+      </div> -->
+      <div class="paging-container">
+        <ul class="pagination" id="pagination-demo">
+            <!-- Pagination links will be dynamically generated here -->
+        </ul>
       </div>
+    
     </main>
     <!-- end of main -->
     <!-- footer -->
@@ -284,6 +291,7 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
   <script src="../scripts/dashboard.js"></script>
 
   <body>

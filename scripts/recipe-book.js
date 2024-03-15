@@ -315,3 +315,31 @@ function handleDeleteClick() {
     alert('Delete button clicked!');
     // Add your logic for the Delete button here
 }
+
+$('#pagination-demo').twbsPagination({
+    totalPages: 16,
+    visiblePages: 5,
+    next: 'Next',
+    prev: 'Prev',
+    onPageClick: function (event, page) {
+        //fetch content and render here
+        console.log("Page: " , page);
+        paging(page)
+    }
+});
+
+  function paging(key) {
+    key -= 1;
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayDashboard(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+}
