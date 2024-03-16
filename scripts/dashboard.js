@@ -218,59 +218,188 @@ function giveLike(recipeId) {
     .catch(error => console.error('Error updating rating:', error));
 }
 
-  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-  let selectedDay = null;
+//   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+//   let selectedDay = null;
   
-  function selectDay(day) {
-	  selectedDay = day;
-	  const dayDivs = document.querySelectorAll('.day');
-	  dayDivs.forEach(div => {
-		  div.classList.remove('selected');
-	  });
-	  document.getElementById(day).classList.add('selected');
-  }
+//   function selectDay(day) {
+// 	  selectedDay = day;
+// 	  const dayDivs = document.querySelectorAll('.day');
+// 	  dayDivs.forEach(div => {
+// 		  div.classList.remove('selected');
+// 	  });
+// 	  document.getElementById(day).classList.add('selected');
+//   }
   
-  function addMeal() {
-	  const input = document.getElementById('searchMeal');
-	  const inputValue = input.value.trim();
+//   function addMeal() {
+// 	  const input = document.getElementById('searchMeal');
+// 	  const inputValue = input.value.trim();
   
-	  if (inputValue !== '' && selectedDay !== null) {
-		  const dayList = document.getElementById(`${selectedDay}List`);
+// 	  if (inputValue !== '' && selectedDay !== null) {
+// 		  const dayList = document.getElementById(`${selectedDay}List`);
   
-		  const listItem = document.createElement('li');
-		  listItem.textContent = inputValue;
+// 		  const listItem = document.createElement('li');
+// 		  listItem.textContent = inputValue;
   
-		  // Create a span to hold the delete button
-		  const deleteSpan = document.createElement('span');
-		  deleteSpan.classList.add('delete-button');
+// 		  // Create a span to hold the delete button
+// 		  const deleteSpan = document.createElement('span');
+// 		  deleteSpan.classList.add('delete-button');
   
-		  // Create the delete button
-		  const deleteButton = document.createElement('button1');
-		  deleteButton.textContent = ' ✖'; // You can use any text or icon for delete
-		  deleteButton.onclick = function() {
-			  dayList.removeChild(listItem);
-		  };
+// 		  // Create the delete button
+// 		  const deleteButton = document.createElement('button1');
+// 		  deleteButton.textContent = ' ✖'; // You can use any text or icon for delete
+// 		  deleteButton.onclick = function() {
+// 			  dayList.removeChild(listItem);
+// 		  };
   
-		  // Append the delete button to the span
-		  deleteSpan.appendChild(deleteButton);
+// 		  // Append the delete button to the span
+// 		  deleteSpan.appendChild(deleteButton);
   
-		  // Append the meal and delete button to the list item
-		  listItem.appendChild(deleteSpan);
-		  dayList.appendChild(listItem);
-		  input.value = '';
-	  }
+// 		  // Append the meal and delete button to the list item
+// 		  listItem.appendChild(deleteSpan);
+// 		  dayList.appendChild(listItem);
+// 		  input.value = '';
+// 	  }}
 
 	  
-  }
   
-  function saveMealPlan() {
-	const allDays = days.map(day => ({
-		day: day,
-		meals: Array.from(document.getElementById(`${day}List`).children).map(item => item.textContent)
-	}));
+  
+function saveMealPlan() {
+    // Her gün için ayrı bir dizi oluştur
+   
+    var mondayMeals = getMealList("monday");
+    var tuesdayMeals = getMealList("tuesday");
+    var wednesdayMeals = getMealList("wednesday");
+    var thursdayMeals = getMealList("thursday");
+    var fridayMeals = getMealList("friday");
+    var saturdayMeals = getMealList("saturday");
+    var sundayMeals = getMealList("sunday");
 
-	// Here you can perform actions with the 'allDays' array like saving it to a database or using it elsewhere
-	console.log(allDays); // For demonstration, it logs the meal plan to the console
+    // Tüm öğünleri birleştir
+    var allDaysMeals = [].concat(mondayMeals, tuesdayMeals, wednesdayMeals, thursdayMeals, fridayMeals, saturdayMeals, sundayMeals);
+    var jsonAllDaysMeals = JSON.stringify(allDaysMeals);
+
+    console.log("Meal plan allDays", jsonAllDaysMeals);
+
+//      const daysArray = [];
+
+// ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].forEach(day => {
+//     const mealList = getMealList(day);
+//     const stringMealList = mealList.join(","); // Convert array to comma-separated string
+//     daysArray.push(stringMealList); // Store the string in daysArray
+//   });
+  
+//   console.log(daysArray);
+
+    // POST isteği yapmak için fetch kullanarak sunucuya gönder
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    fetch('https://recipiebeckend.azurewebsites.net/planner/save-planner', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': JWTAccessToken,
+
+            // Eğer sunucu yetkilendirme gerektiriyorsa, bu kısıma token vb. ekleyebilirsin
+        },
+        body: JSON.stringify({
+           
+            plannerData: allDaysMeals
+            // Diğer günlerin dizilerini de ekleyebilirsin
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Meal plan saved:', data);
+        console.log('Meal plan body', body);
+
+        // Başarılı bir şekilde kaydedildiğine dair kullanıcıya geri bildirim verebilirsin
+    })
+    .catch(error => {
+        console.error('There was a problem saving the meal plan:', error);
+        // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
+    });
+}
+
+// function getMealList(day) {
+//     // Verilen günün öğün listesini al
+//     var dayList = document.getElementById(day + "List");
+//     var meals = [];
+//     // Tüm öğünleri al
+//     dayList.querySelectorAll("li").forEach(function(mealItem) {
+//         meals.push(mealItem.textContent.trim());
+//     });
+//     console.log('meals',meals);
+//     return meals;
+// }
+function getMealList(day) {
+    // Verilen günün öğün listesini al
+    var dayList = document.getElementById(day + "List");
+    var meals = [];
+
+    // Tüm öğünleri al
+    dayList.querySelectorAll("li").forEach(function(mealItem) {
+        var mealText = mealItem.textContent.trim();
+
+        // "X" işaretini listeden çıkar
+        mealText = mealText.replace(/\u2715/, '').trim(); // Unicode karakteri olan "✕" işaretini kaldırır
+
+        // Öğünler virgülle ayrılmış bir dize olarak girildiğinden, virgülle bölelim
+        var mealItems = mealText.split(",");
+
+        // Öğünleri meals dizisine ekleyelim
+        meals = meals.concat(mealItems.map(item => item.trim()));
+    });
+
+    console.log('meals',meals);
+
+    return meals;
+}
+
+
+// Sayfa yüklendiğinde önceden kaydedilmiş verileri getir
+window.addEventListener('DOMContentLoaded', function() {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    var headers = new Headers();
+    headers.append('Authorization', JWTAccessToken ); // Auth token burada belirtilmelidir
+
+    fetch('https://recipiebeckend.azurewebsites.net/planner/get-current-data', {
+        headers: headers
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Gelen verileri uygun şekilde işleyerek öğün listesine ekleyin
+        populateMealList(data);
+    })
+    .catch(error => {
+        console.error('There was a problem loading the meal plan:', error);
+        // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
+    });
+});
+
+// Önceden kaydedilmiş verileri kullanarak öğün listesini doldur
+function populateMealList(mealPlan) {
+    for (var day in mealPlan) {
+        if (mealPlan.hasOwnProperty(day)) {
+            var dayList = document.getElementById(day + "List");
+            mealPlan[day].forEach(function(meal) {
+                var listItem = document.createElement("li");
+                listItem.textContent = meal;
+                // Silme düğmesi ekleyebilirsiniz, ancak gerekirse ekleyin
+                dayList.appendChild(listItem);
+            });
+        }
+    }
 }
 
   //Call jQuery before below code
@@ -311,17 +440,17 @@ function giveLike(recipeId) {
 //   };
 //   replaceMatches();
 
-  function clearText(thefield) {
-	if (thefield.defaultValue == thefield.value) {
-	  thefield.value = ""
-	}
-  }
+//   function clearText(thefield) {
+// 	if (thefield.defaultValue == thefield.value) {
+// 	  thefield.value = ""
+// 	}
+//   }
 
-  function replaceText(thefield) {
-	if (thefield.value == "") {
-	  thefield.value = thefield.defaultValue
-	}
-  }
+//   function replaceText(thefield) {
+// 	if (thefield.value == "") {
+// 	  thefield.value = thefield.defaultValue
+// 	}
+//   }
 
 let recipeIndex = 0;
 

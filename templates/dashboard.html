@@ -300,12 +300,7 @@
       <div class="meal-planner">
         <h1 style="font-family: 'Courier New', Courier, monospace;">Meal Planner</h1>
         <div id="gradient"></div>
-        <div class="searchbox">
-          <input type="search" id="searchMeal" placeholder="Type meal">
-          <button class="addMealbutton" type="submit" onclick="addMeal()"></button>
-
-
-        </div>
+        
 
         <div>
 
@@ -329,43 +324,89 @@
 </div>
 
        -->
-
-          <div class="days">
-            <div class="day" onclick="selectDay('monday')">
-              <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;">Monday</h2>
-              <ul id="mondayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('tuesday')">
-              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Tuesday</h2>
-              <ul id="tuesdayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('wednesday')">
-              <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;">Wednesday</h2>
-              <ul id="wednesdayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('thursday')">
-              <h2 style="font-size: small;font-family: 'Courier New', Courier, monospace;">Thursday</h2>
-              <ul id="thursdayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('friday')">
-              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Friday</h2>
-              <ul id="fridayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('saturday')">
-              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Saturday</h2>
-              <ul id="saturdayList"></ul>
-            </div>
-            <div class="day" onclick="selectDay('sunday')">
-              <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Sunday</h2>
-              <ul id="sundayList"></ul>
-            </div>
-            <!-- Diğer günler için aynı yapıyı kopyalayabilirsiniz -->
-            <!-- Örnek olarak Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday ekleyebilirsiniz -->
-          </div>
+       <div class="days">
+        <div class="day" >
+          <h2 style="font-size:small; font-family: 'Courier New', Courier, monospace;">Monday</h2>
+          <ul id="mondayList"></ul>
+          <input type="text" id="mondayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('monday')"></button>
         </div>
+        <div class="day">
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Tuesday</h2>
+          <ul id="tuesdayList"></ul>
+          <input type="text" id="tuesdayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('tuesday')"></button>
+        </div>
+        <div class="day" >
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Wednesday</h2>
+          <ul id="wednesdayList"></ul>
+          <input type="text" id="wednesdayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('wednesday')"></button>
+        </div>
+        <div class="day">
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Thursday</h2>
+          <ul id="thursdayList"></ul>
+          <input type="text" id="thursdayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('thursday')"></button>
+        </div>
+        <div class="day">
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Friday</h2>
+          <ul id="fridayList"></ul>
+          <input type="text" id="fridayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('friday')"></button>
+        </div>
+        <div class="day">
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Saturday</h2>
+          <ul id="saturdayList"></ul>
+          <input type="text" id="saturdayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('saturday')"></button>
+        </div>
+        <div class="day">
+          <h2 style="font-size: small; font-family: 'Courier New', Courier, monospace;">Sunday</h2>
+          <ul id="sundayList"></ul>
+          <input type="text" id="sundayMeal" placeholder="Enter meal">
+          <button class="addMealbutton" onclick="addMeal('sunday')"></button>
+        </div>
+        <!-- Repeat similar structure for other days -->
+      </div>
+      <button class="saveButton" onclick="saveMealPlan()">Save</button>
+      
+      
 
+      
+      <script>
+        function addMeal(day) {
+          var mealInput = document.getElementById(day + "Meal");
+          var meal = mealInput.value.trim();
+          if (meal !== "") { // bunu göndercez
+            var dayList = document.getElementById(day + "List");
+            var listItem = document.createElement("li");
+            listItem.textContent = meal;
+            
+            console.log('MealInput',mealInput);
+            console.log('MealName',meal);
 
-
+            // Create a delete button
+            var deleteButton = document.createElement("PlannerDeletebutton");
+            deleteButton.textContent = " ✕";
+            deleteButton.className = "deleteMealButton";
+            deleteButton.onclick = function() {
+              dayList.removeChild(listItem);
+            };
+        
+            listItem.appendChild(deleteButton);
+            dayList.appendChild(listItem);
+            mealInput.value = ""; // Clear the input after adding meal
+          }
+        }
+        
+        // Rest of your JavaScript code, including selectDay() function if needed
+        
+        
+        // Rest of your JavaScript code, including selectDay() function if needed
+        
+              </script> 
+      
     </body>
 
 </html>
