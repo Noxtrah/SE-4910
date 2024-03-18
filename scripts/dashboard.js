@@ -835,6 +835,7 @@ $('#pagination-demo').twbsPagination({
 
   function paging(key) {
     key -= 1;
+    console.log("Key: " , key);
     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
     fetch(apiUrl)
     .then(response => {

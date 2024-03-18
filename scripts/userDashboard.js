@@ -237,7 +237,7 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     try {
-        const response = await fetch('https:recipiebeckend.azurewebsites.net/recipes/get-custom-data-userdashboard');
+        const response = await fetch('https:recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard');
         const data = await response.json();
 
 		console.log('Fetched Data:', data);
@@ -483,7 +483,7 @@ function basicSearch() {
 //     return starAndHeartInfoArray;
 // }
 async function getCustomDataOfUserDashboard(index) {
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-custom-data-userdashboard';
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     const response = await fetch(
         apiUrl,
