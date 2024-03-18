@@ -721,10 +721,12 @@ async function getSelectedCustomDataOfDashboard(index) {
 }
 
 function openNewTab() {
-    const baseURL = 'http://127.0.0.1:5500/templates/searchByIngredientTab.html';
-    // const urlToOpen = baseURL + '?query=' + encodeURIComponent(JSON.stringify(tagsArray));
+    const currentURL = window.location.href;
+    const url = new URL(currentURL);
+    const host = url.hostname;
+    const port = url.port || '80'; // Default to port 80 if no port is specified
 
-    // Open a new tab with the constructed URL
+    const baseURL = `http://${host}:${port}/templates/searchByIngredientTab.html`;
     window.open(baseURL, '_blank');
 }
 
