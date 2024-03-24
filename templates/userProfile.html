@@ -1,51 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="card-container">
     <link rel="stylesheet" href="../styles/userProfile.css">
-    <title>Document</title>
-</head>
-<body>
 
+	<span class="back-button">Back</span>
+	<img class="round" src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" alt="user" />
+	<h3>User</h3>
+	<h6>Hello, try my recipes!
+	</h6>
+	<p>user@user.com</p>
+	<div class="buttons">
+		<button id="editProfileButton" class="primary">
+			Edit Profile
+		</button>
 
-    <div class="profile-container">
-        <div class="section photo-edit-section">
-            <div class="section-header">Profile Photo Edit</div>
-            <input type="file" id="photo-upload" accept="image/*">
-            <div class="photo-frame" id="photo-frame"></div>
-        </div>
-    
-        <div class="section password-update-section">
-            <div class="section-header">Password Update</div>
-            <label for="new-password">New Password:</label>
-            <input type="password" id="new-password" name="new-password">
-    
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password">
-        </div>
-    
-        <div class="section bio-section">
-            <div class="section-header">Bio</div>
-            <textarea id="bio" name="bio" rows="4" placeholder="Write your bio here..."></textarea>
-        </div>
-    
-        <div class="section allergic-food-section">
-            <div class="section-header">Allergic Food</div>
-            <label for="allergic-food">Select Allergic Food:</label>
-            <select id="allergic-food" name="allergic-food"></select>
-    
-            <div class="other-input" style="display: none;">
-                <label for="other-food">Other Food:</label>
-                <input type="text" id="other-food" name="other-food">
-            </div>
-        </div>
-    
-        <button id="save-button">Save</button>
-    </div>
-    
+	</div>
+	<div class="skills">
+		  <link
+		   rel="stylesheet"
+		   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+		   integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+		   crossorigin="anonymous"
+		  />
+		 </head>
+		 <body>
+			<div class="container-wrapper">
+		  <div class="container" style="margin-top: 50px;">
+		   <img
+			src="https://cdn.tasteatlas.com//Images/Dishes/735a85b93fa942c49e22f101cba3397e.jpg?mw=660"
+		   />
+		   <div class="container__text">
+			<h1>Pastel de nata</h1>
+			<div class="container__text__star">
+			 <span class="fa fa-star checked"></span>
+			 <span class="fa fa-star checked"></span>
+			 <span class="fa fa-star checked"></span>
+			 <span class="fa fa-star checked"></span>
+			 <span class="fa fa-star checked"></span>
+			</div>
+			<p>
+				Pastel de nata is a traditional Portuguese egg custard tart that is popular throughout the world. It is believed that for the best result, the..
+			</p>
+			<div class="container__text__timing">
+			 <div class="container__text__timing_time">
+			  <h2>Ing Count</h2>
+			  <p>15</p>
+			 </div>
+			 <div class="container__text__timing_time">
+			  <h2>Prep Time</h2>
+			  <p>40 min</p>
+			 </div>
+			 <div class="container__text__timing_time">
+			  <h2>Serving</h2>
+			  <p>4</p>
+			 </div>
+			</div>
+			<button class="btn">view recipe <i class="fa fa-arrow-right"></i></button>
+		   </div>
+		  </div>
+		  <div class="container" style="margin-top: 50px;">
+			<img
+			 src="https://cdn.tasteatlas.com//Images/Dishes/126cfc45688546f19620ac483dfaecb7.jpg?mw=660"
+			/>
+			<div class="container__text">
+			 <h1>Tangbao</h1>
+			 <div class="container__text__star">
+			  <span class="fa fa-star checked"></span>
+			  <span class="fa fa-star checked"></span>
+			  <span class="fa fa-star checked"></span>
+			  <span class="fa fa-star checked"></span>
+			  <span class="fa fa-star checked"></span>
+			 </div>
+				The name tangbao or tangbaozi refers to a broad group of steamed Chinese soup-filled dumplings. Depending on the origin, dumplings...</p>
+			 <div class="container__text__timing">
+			  <div class="container__text__timing_time">
+				<h2>Ing Count</h2>
+				<p>20</p>
+			   </div>
+			   <div class="container__text__timing_time">
+				<h2>Prep Time</h2>
+				<p>50 min</p>
+			   </div>
+			   <div class="container__text__timing_time">
+				<h2>Serving</h2>
+				<p>3</p>
+			   </div>
+			 </div>
+			 <button class="btn">view recipe <i class="fa fa-arrow-right"></i></button>
+			</div>
+		   </div>
+		   </div>
+		 </body>
+		</html>
+		
+	</div>
+</div>
 
+<footer>
+	
+</footer>
+<script>
+	document.querySelector('.back-button').addEventListener('click', function() {
+    window.history.back();
+});
 
-    <script src="../scripts/userProfile.js"></script>
-</body>
-</html>
+    document.getElementById("editProfileButton").addEventListener("click", function() {
+        window.location.href = "userEditProfile.html";
+    });
+</script>
