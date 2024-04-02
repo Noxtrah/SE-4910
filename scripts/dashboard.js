@@ -351,17 +351,15 @@ function getMealList(day) {
         // "X" işaretini listeden çıkar
         mealText = mealText.replace(/\u2715/, '').trim(); // Unicode karakteri olan "✕" işaretini kaldırır
 
-        // Öğünler virgülle ayrılmış bir dize olarak girildiğinden, virgülle bölelim
-        var mealItems = mealText.split(",");
-
-        // Öğünleri meals dizisine ekleyelim
-        meals = meals.concat(mealItems.map(item => item.trim()));
+        // Öğünü meals dizisine ekleyelim
+        meals.push(mealText);
     });
 
-    console.log('meals',meals);
+    console.log('meals', meals);
 
     return meals;
 }
+
 
 
 // Sayfa yüklendiğinde önceden kaydedilmiş verileri getir
@@ -418,6 +416,49 @@ function populateMealList(mealPlan) {
         }
     }
 }
+
+function clearMealPlanner() {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    var headers = new Headers();
+    headers.append('Authorization', JWTAccessToken ); // Auth token burada belirtilmelidir
+
+    fetch('https://recipiebeckend.azurewebsites.net/planner/clear-meal-planner', {
+        method: 'DELETE',
+        headers: headers
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Clear Meal Planner Error');
+        }
+        // Temizleme işlemi başarılıysa, mevcut öğün planını temizle
+        clearMealPlannerUI();
+    })
+    .catch(error => {
+        console.error('There was a problem clearing the meal planner:', error);
+        // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
+    });
+}
+
+function clearMealPlannerUI() {
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+    // Her bir gün için listeyi temizle
+    for (let i = 0; i < days.length; i++) {
+        const day = days[i];
+        const dayList = document.getElementById(`${day}List`);
+        if (dayList) {
+            // Listeyi boşalt
+            dayList.innerHTML = '';
+        } else {
+            console.error(`List for ${day} not found`);
+        }
+    }
+}
+
+// clear-meal-planner endpointine istek gönder
+
+
 
   //Call jQuery before below code
 //   $('.search-description').hide();
