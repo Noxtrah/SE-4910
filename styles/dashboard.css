@@ -544,9 +544,9 @@ body {
     height:30px;
     margin:0 auto;
     border-radius:100%;
-    -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    /* -webkit-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
     -moz-box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
-    box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93);
+    box-shadow: 0 50px 200px 150px rgba(255, 255, 255, 0.93); */
 }
 .searchbox{
     background-color:#fffbf8;
@@ -612,7 +612,7 @@ input[type="search"]{
 }
 
   .meal-planner {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background-color: #938993;

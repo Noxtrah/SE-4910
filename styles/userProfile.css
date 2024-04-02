@@ -200,8 +200,8 @@ body {
 
 .container .btn {
     position: absolute;
-    bottom: 20;
-    right: 20;
+    bottom: 20px;
+    right: 20px;
     border: none;
     outline: none;
     display: flex;
