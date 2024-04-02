@@ -398,24 +398,18 @@ function populateMealList(mealPlan) {
             console.error(`List for ${day} not found`);
             continue;
         }
-        const dayIndex = i;
-        // Eğer gelen veri yoksa veya verinin uzunluğu günler dizisinin uzunluğundan kısa ise
-        if (!mealPlan || mealPlan.length <= dayIndex || !mealPlan[dayIndex] || mealPlan[dayIndex].length === 0) {
-            // Listeyi boşalt
-            dayList.innerHTML = '';
-            // Bir sonraki güne geç
-            continue;
-        }
 
-        const meals = mealPlan[dayIndex];
-        for (let j = 0; j < meals.length; j++) {
-            const meal = meals[j];
+        const meals = mealPlan[i] || []; // Günün öğün listesi
+        dayList.innerHTML = ''; // Gün listesini temizle
+
+        meals.forEach(function(meal) {
             const li = document.createElement('li');
             li.textContent = meal;
             dayList.appendChild(li);
-        }
+        });
     }
 }
+
 
 function clearMealPlanner() {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
