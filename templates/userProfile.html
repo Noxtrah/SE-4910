@@ -115,10 +115,10 @@
 
   
 	function fetchUserData() {
-    const JWTAccessToken = sessionStorage.getItem('accessToken');
-    
-    var headers = new Headers();
-    headers.append('Authorization', `Bearer ${JWTAccessToken}`);
+		const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+var headers = new Headers();
+headers.append('Authorization', JWTAccessToken ); // Auth token burada belirtilmelidir
     
     fetch('https://recipiebeckend.azurewebsites.net/user/user-profile-info', {
         method: 'GET',
