@@ -174,21 +174,26 @@ function setRating(rating, starContainer, recipe) {
     }
   }
 
-  function setLike(isClicked, heartContainer, recipe) {
-    if (isClicked) {
-        heartContainer.textContent = '♥';
-        heartContainer.style.color = 'red';
-    } else {
+  function setLike(heartContainer, recipe) {
+    if (heartContainer.style.color == 'red') {
         heartContainer.textContent = '♥';
         heartContainer.style.color = 'black';
     }
-
-    if (recipe && recipe.recipe.id) {
-        giveLike(recipe.recipe.id);
-    } else {
-        console.error('Recipe ID not found for the given recipe:', recipe);
-        // Handle the case where the recipe ID is not available
+    else if (heartContainer.style.color == 'black'){
+        heartContainer.textContent = '♥';
+        heartContainer.style.color = 'red';
     }
+    // else {
+    //     heartContainer.textContent = '♥';
+    //     heartContainer.style.color = 'black';
+    // }
+
+    // if (recipe && recipe.recipe.id) {
+    //     giveLike(recipe.recipe.id);
+    // } else {
+    //     console.error('Recipe ID not found for the given recipe:', recipe);
+    //     // Handle the case where the recipe ID is not available
+    // }
 }
 
 
@@ -218,7 +223,7 @@ function setRating(rating, starContainer, recipe) {
     .catch(error => console.error('Error updating rating:', error));
 }
 
-function giveLike(recipeId) {
+async function giveLike(recipeId) {
     const url = `https://recipiebeckend.azurewebsites.net/user/give-like?recipeId=${recipeId}`;
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
@@ -227,22 +232,28 @@ function giveLike(recipeId) {
         'Authorization': JWTAccessToken,
     };
 
-    fetch(url, {
-        method: 'POST',
-        headers: headers,
-    })
-    .then(response => {
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+        });
+
         if (!response.ok) {
             throw new Error(`Network response was not ok (status: ${response.status})`);
         }
-        return response.text(); // or response.blob(), response.json(), depending on the expected response type
-    })
-    .then(data => {
-        console.log('Response Data:', data);
-        // Continue handling the response as needed
-    })
-    .catch(error => console.error('Error updating rating:', error));
+
+        // Assuming the response contains plain text
+        const responseData = await response.text();
+
+        // Update the UI based on the response
+        console.log('Response Data:', responseData);
+
+    } catch (error) {
+        console.error('Error updating like:', error);
+    }
 }
+
+
 
 //   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 //   let selectedDay = null;
@@ -509,7 +520,12 @@ let recipeIndex = 0;
   // Function to create a recipe element based on the provided recipe data
 const createRecipeElement = async (recipe) => {
     // Create a new column for each recipe
+    // console.log("recipe: " , recipe.recipe.id);
+    // const recipeDiv = document.createElement('div');
+    // recipeDiv.classList.add('recipe-item');
     const recipeDiv = document.createElement('div');
+    const recipeId = `recipe-${recipe.recipe.id}`; // Unique ID for the recipe element
+    recipeDiv.id = recipeId; // Assign the ID to the recipeDiv
     recipeDiv.classList.add('recipe-item');
     const link = document.createElement('a');
 
@@ -535,9 +551,6 @@ const createRecipeElement = async (recipe) => {
 
     //const getCustomData = await getSelectedCustomDataOfDashboard(recipeIndex);
     const rate = recipe.rate;
-    console.log("Rate değeri: " , rate)
-
-    console.log("Star Info: " , rate);
 
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
@@ -586,8 +599,13 @@ const createRecipeElement = async (recipe) => {
     }
     // heart.onclick = () => toggleFavorite(heart);
 
-    const clickHandler = () => setLike(true, heartContainer, recipe);
-    heartContainer.onclick = clickHandler;
+    // const clickHandler = () => setLike(heartContainer, recipe);
+    // heartContainer.onclick = clickHandler;
+    heartContainer.addEventListener('click', async () => {
+        giveLike(recipe.recipe.id);
+        heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
+    });
+
 
 
     // Title
@@ -618,25 +636,35 @@ const displayDashboard = async (recipes) => {
 };
 
 // Function to fetch data from the API
-// This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
     try {
-        const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/home');
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: JWTAccessToken ? headers : {'Content-Type': 'application/json'},
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-
-		console.log('Fetched Data:', data);
-
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
     }
 };
 
+
 // Call fetchData to initiate the process
 fetchData();
-// let i = 1;
-// console.log("Fetch çalıştı " + i)
-// i+1;
 
 const fetchDataByMealType = async (mealType) => {
     try {
@@ -673,6 +701,7 @@ const openRecipeDetailPage = (id) => {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    //DROPDOWN BOX (SORTING)
     const optionsViewButton = document.getElementById('options-view-button');
     const selectedValue = document.getElementById('selected-value');
     const optionValue = document.querySelectorAll('.opt-val');
@@ -716,6 +745,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			isOptionSelected = true;
         });
     });
+
+    //LOG-IN, LOG-OUT
+    var logInLink = document.querySelector('a[href="logIn.html"]');
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    // Check if the anchor element exists
+    if (JWTAccessToken != null) {
+        // Change the text of the anchor element
+        logInLink.textContent = "Log-Out";
+    }
 });
 
 function fetchSortOperations(selectedValue) {
