@@ -216,6 +216,10 @@ a{
      position: absolute;
      color:#8d2a06;
   }
+
+  .buttons button {
+    margin-right: 10px; /* Adjust the value as needed */
+}
   
   /*Paging*/
 
@@ -258,4 +262,69 @@ a{
 .paging-container .pagination li a:hover,
 .paging-container .pagination li.active a {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* .delete-button{
+ 
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+  height: 38px;
+  padding: 8px 24px;
+  border-radius: 50px;
+  background-image: linear-gradient(180deg,#7c8aff,#3c4fe0);
+  box-shadow: 0 4px 11px 0 rgb(37 44 97 / 15%), 0 1px 3px 0 rgb(93 100 148 / 20%);
+  transition: all .2s ease-out;
+  :hover{
+      box-shadow: 0 8px 22px 0 rgb(37 44 97 / 15%), 0 4px 6px 0 rgb(93 100 148 / 20%);
+  }
+  
+} */
+
+.delete-button{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: var(--dark_purple);
+  transition: background-color .17s ease,color .17s ease;
+}
+
+.delete-button:hover{
+  background-color: var(--purple)
+}
+
+.publish-button{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: var(--purple);
+  transition: background-color .17s ease,color .17s ease;
+}
+
+.publish-button:hover{
+  background-color: var(--dark_purple);
 }

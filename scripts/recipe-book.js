@@ -1,21 +1,3 @@
-// Geçici veritabanı
-let recipes = [
-    {
-        title: "Spaghetti Bolognese",
-        ingredients: "Pasta, Ground Beef, Tomato Sauce, Onion, Garlic, Olive Oil, Salt, Pepper",
-        description: "Classic Italian dish with a rich meat sauce."
-    },
-    {
-        title: "Chicken Alfredo",
-        ingredients: "Fettuccine, Chicken Breast, Heavy Cream, Parmesan Cheese, Butter, Garlic, Salt, Pepper",
-        description: "Creamy pasta dish with grilled chicken."
-    },
-    {
-        title: "Vegetarian Stir-Fry",
-        ingredients: "Tofu, Broccoli, Bell Peppers, Carrots, Soy Sauce, Ginger, Garlic, Sesame Oil",
-        description: "Healthy and flavorful stir-fried vegetables with tofu."
-    }
-];
 let title;
 let ingredients;
 let description;
@@ -190,17 +172,20 @@ async function showRecipes() {
 
             // Create Publish button
             const publishButton = document.createElement("button");
+            publishButton.classList.add("publish-button");
             publishButton.textContent = "Publish";
             buttonsContainer.appendChild(publishButton);
 
             // Create Edit button
-            const editButton = document.createElement("button");
-            editButton.textContent = "Edit";
-            buttonsContainer.appendChild(editButton);
+            // const editButton = document.createElement("button");
+            // editButton.textContent = "Edit";
+            // buttonsContainer.appendChild(editButton);
 
             // Create Delete button
             const deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-button");
             deleteButton.textContent = "Delete";
+            
             buttonsContainer.appendChild(deleteButton);
 
             // Append buttons container to recipe item
@@ -235,6 +220,24 @@ async function showRecipes() {
 
                 // Call publishRecipe with local variables
                 publishRecipe(userRecipeId, recipeDetails);
+            });
+
+            deleteButton.addEventListener("click", async () => {
+                const userRecipeId = recipe.id;
+                try {
+                    // Call the delete fetch function
+                    await deleteRecipe(userRecipeId);
+                    
+                    // Optionally, remove the recipe element from the UI after deletion
+                    // For example, if your recipe element has an ID, you can remove it like this:
+                    // const recipeElement = document.getElementById("recipe-" + userRecipeId);
+                    // if (recipeElement) {
+                    //     recipeElement.remove();
+                    // }
+                } catch (error) {
+                    console.error("Error deleting recipe:", error);
+                    // Handle errors if necessary
+                }
             });
         });
     } catch (error) {
@@ -274,7 +277,6 @@ async function publishRecipe(userRecipeId, recipeDetails){
         const JWTAccessToken = sessionStorage.getItem('accessToken');
         const headers = {
             "Content-type": "application/json",
-            'Authorization': JWTAccessToken
         };
         const response = await fetch(apiURL, {
             method: 'POST',
@@ -342,4 +344,31 @@ $('#pagination-demo').twbsPagination({
         displayDashboard(data);
     })
     .catch(error => console.error('Error fetching data:', error));
+}
+
+async function deleteRecipe(userRecipeId) {
+    const apiUrl = `https://recipiebeckend.azurewebsites.net/user/delete-user-recipe?userRecipeId=${userRecipeId}`;
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': JWTAccessToken
+            }
+        });
+
+        if (!response.ok) {
+            // If response status is not OK, throw an error with the status and error message
+            const errorMessage = await response.text();
+            throw new Error(`Failed to delete recipe. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        // If deletion is successful, log success message
+        console.log('Recipe deleted successfully.');
+    } catch (error) {
+        // Catch any errors that occur during the fetch operation
+        console.error('Error deleting recipe:', error.message);
+        throw error;
+    }
 }
