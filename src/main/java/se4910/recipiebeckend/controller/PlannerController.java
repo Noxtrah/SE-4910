@@ -12,6 +12,7 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.service.PlannerService;
 import se4910.recipiebeckend.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,11 +47,12 @@ public class PlannerController {
            return plannerService.getCurrentData(currentUser);
         }
 
+
         return null;
     }
 
     @PostMapping("save-planner")
-    public ResponseEntity<?> savePlanner(@RequestBody List<String> plannerData , Authentication authentication)
+    public ResponseEntity<?> savePlanner(@RequestBody ArrayList<ArrayList<String>> plannerData , Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
@@ -61,10 +63,19 @@ public class PlannerController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("update-planner")
-    public ResponseEntity<?> updatePlanner(List<String> plannerData, MealPlanner mealPlanner)
+    @DeleteMapping("clear-meal-planner")
+    public ResponseEntity<String> clearMealPlanner(Authentication authentication)
     {
-        return plannerService.updatePlanner(plannerData,mealPlanner);
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return plannerService.clearMealPlanner(currentUser);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+
+
 
 }

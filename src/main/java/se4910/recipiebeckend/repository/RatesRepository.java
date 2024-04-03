@@ -29,7 +29,7 @@ public interface RatesRepository extends JpaRepository<Rates,Long>{
 
     List<Rates> findByUserAndUserRecipesIsNotNull(User user);
 
-    Rates findByRecipeAndUser(Recipe recipe, User user);
+    Optional<Rates>  findByRecipeAndUser(Recipe recipe, User user);
 
-    Rates findByUserRecipesAndUser(UserRecipes userRecipes, User user);
+    Optional<Rates>  findByUserRecipesAndUser(UserRecipes userRecipes, User user);
 }

@@ -33,8 +33,8 @@ public class RatesService
         }
 
         Recipe recipe = optionalRecipe.get();
-        Rates existingRates = ratesRepository.findByRecipeAndUser(recipe, currentUser);
-        if (existingRates == null) {
+        Optional<Rates> existingRates = ratesRepository.findByRecipeAndUser(recipe, currentUser);
+        if (existingRates.isEmpty()) {
             Rates newRates = new Rates();
             newRates.setRecipe(recipe);
             newRates.setRate(rate);
@@ -42,8 +42,8 @@ public class RatesService
             ratesRepository.save(newRates);
             return new ResponseEntity<>("New rate added for " + currentUser.getUsername() + " - " + recipe.getTitle(), HttpStatus.OK);
         } else {
-            existingRates.setRate(rate);
-            ratesRepository.save(existingRates);
+            existingRates.get().setRate(rate);
+            ratesRepository.save(existingRates.get());
             return new ResponseEntity<>("Rate updated for " + currentUser.getUsername() + " - " + recipe.getTitle(), HttpStatus.OK);
         }
 
@@ -57,8 +57,8 @@ public class RatesService
             return new ResponseEntity<>("Recipe not found", HttpStatus.NOT_FOUND);
         }
         UserRecipes userRecipe = userRecipesOptional.get();
-        Rates existingRates = ratesRepository.findByUserRecipesAndUser(userRecipe, currentUser);
-        if (existingRates == null) {
+        Optional<Rates> existingRates = ratesRepository.findByUserRecipesAndUser(userRecipe, currentUser);
+        if (existingRates.isEmpty()) {
             Rates newRates = new Rates();
             newRates.setUserRecipes(userRecipe);
             newRates.setRate(rate);
@@ -66,8 +66,8 @@ public class RatesService
             ratesRepository.save(newRates);
             return new ResponseEntity<>("New rate added for " + currentUser.getUsername() + " - " + userRecipe.getTitle(), HttpStatus.OK);
         } else {
-            existingRates.setRate(rate);
-            ratesRepository.save(existingRates);
+            existingRates.get().setRate(rate);
+            ratesRepository.save(existingRates.get());
             return new ResponseEntity<>("Rate updated for " + currentUser.getUsername() + " - " + userRecipe.getTitle(), HttpStatus.OK);
         }
 
@@ -112,8 +112,25 @@ public class RatesService
 
     public int getRateByRecipeAndUser(User currentUser, Recipe recipe)
     {
-       return  ratesRepository.findByRecipeAndUser(recipe,currentUser).getRate();
+        if (ratesRepository.findByRecipeAndUser(recipe,currentUser).isPresent())
+        {
+            int rate = ratesRepository.findByRecipeAndUser(recipe,currentUser).get().getRate();
+            return rate;
+        }
+        return 0;
+
     }
+
+    public int getRateByUserRecipeAndUser(User currentUser, UserRecipes recipe)
+    {
+        if (ratesRepository.findByUserRecipesAndUser(recipe,currentUser).isPresent())
+        {
+            int rate = ratesRepository.findByUserRecipesAndUser(recipe,currentUser).get().getRate();
+            return rate;
+        }
+        return 0;
+    }
+
 
     public Map<Long, Integer> getRatesByUserRecipeIds(User currentUser, List<UserRecipes> allRecipes)
     {

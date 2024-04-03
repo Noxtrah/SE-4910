@@ -4,27 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import se4910.recipiebeckend.entity.Favorites;
-import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
-import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.ProfileInfoRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
-import se4910.recipiebeckend.response.RateResponse;
+import se4910.recipiebeckend.response.UserFavoritesResponse;
 import se4910.recipiebeckend.response.UserInfoResponse;
 import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.service.FavService;
 import se4910.recipiebeckend.service.RatesService;
 import se4910.recipiebeckend.service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 
 
 @RequestMapping("/user")
 @RestController
-public class UserController {
+public class UserController extends ParentController {
 
     @Autowired
     UserService userService;
@@ -36,23 +33,9 @@ public class UserController {
     FavService favService;
 
 
-    public User getCurrentUser(Authentication authentication) {
-
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            return userService.getOneUserByUsername(username);
-
-        }
-        else {
-
-            return null;
-        }
-    }
 
     @PostMapping("/save-recipe")
-    public ResponseEntity<?> saveUserRecipe(@RequestBody UserRecipeRequest userRecipeRequest,Authentication authentication )
-    {
+    public ResponseEntity<?> saveUserRecipe(@RequestBody UserRecipeRequest userRecipeRequest,Authentication authentication ) throws IOException {
         User currentUser = getCurrentUser(authentication);
         return userService.saveUserRecipe(userRecipeRequest,currentUser);
     }
@@ -78,6 +61,17 @@ public class UserController {
         return userService.publishUserRecipe(userRecipeId);
     }
 
+    @PutMapping("/unpublish-recipe")
+    public ResponseEntity<String> unpublishUserRecipe(@RequestParam long userRecipeId)
+    {
+        return userService.unpublishUserRecipe(userRecipeId);
+    }
+
+    @DeleteMapping("/delete-user-recipe")
+    public ResponseEntity<String> deleteUserRecipe(@RequestParam long userRecipeId)
+    {
+        return userService.deleteUserRecipe(userRecipeId);
+    }
 
     @GetMapping("/all-users")
     public List<User> getAllUsers()
@@ -97,17 +91,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/give-rate-user-recipe")
-    public ResponseEntity<String> giveOneRateUserRecipe(@RequestParam int rate,@RequestParam long userRecipeId, Authentication authentication )
-    {
 
-        User currentUser = getCurrentUser(authentication);
-        if (currentUser != null)
-        {
-            return ratesService.giveOneRateUserRecipe(rate,userRecipeId, currentUser);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
     @GetMapping("/authHello")
     public ResponseEntity<String> authHello(Authentication authentication) {
@@ -134,20 +118,9 @@ public class UserController {
 
     }
 
-    @PostMapping("/give-like-user-recipes")
-    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long userReciceId, Authentication authentication)
-    {
-        User currentUser = getCurrentUser(authentication);
-        if (currentUser != null)
-        {
-            return favService.giveOneLikeUserRecipes(userReciceId,currentUser);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-    }
 
     @GetMapping("/user-favorites")
-    public ResponseEntity<List<Object>> getOneUserFavorites(Authentication authentication)
+    public ResponseEntity<List<UserFavoritesResponse>> getOneUserFavorites(Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
@@ -159,8 +132,7 @@ public class UserController {
     }
 
     @PutMapping("/save-user-profile")
-    public ResponseEntity<String> saveUserProfile(@RequestBody ProfileInfoRequest profileInfoRequest, Authentication authentication)
-    {
+    public ResponseEntity<String> saveUserProfile(@RequestBody ProfileInfoRequest profileInfoRequest, Authentication authentication) throws IOException {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {

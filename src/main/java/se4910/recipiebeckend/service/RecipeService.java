@@ -128,25 +128,6 @@ public class RecipeService {
         return recipeRepository.findAll();
     }
 
-    public List<UserRecipeResponseFull> getCustomDataUserDashboard(User currentUser) {
-
-        List<UserRecipeResponseFull> customData = new ArrayList<>();
-        List<UserRecipes> allRecipes = userRecipeRepository.findByIsPublishTrue();
-      //  Set<Long> likedRecipeIds = favService.getUserLikedUserRecipeIds(currentUser);
-        Map<Long, Integer> userRatesByRecipeId = ratesService.getRatesByUserRecipeIds(currentUser, allRecipes);
-
-        for (UserRecipes userRecipes : allRecipes) {
-       //     boolean isLiked = likedRecipeIds.contains(userRecipes.getId());
-            boolean isLiked = favService.checkFavUserRecipes(currentUser,userRecipes);
-            int rate = userRatesByRecipeId.getOrDefault(userRecipes.getId(), 0);
-            double avgRate = ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId());
-
-            customData.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate));
-        }
-
-        return customData;
-    }
-
 
     private List<Meal> mealConverter(String meal)
     {
@@ -245,11 +226,10 @@ public class RecipeService {
 
         for (Recipe recipe : filteredRecipes) {
             boolean isLiked = favService.checkFav(currentUser,recipe);
-            //  int rate = userRatesByRecipeId.getOrDefault(recipe.getId(), 0);
-            int rate = ratesService.getRateByRecipeAndUser(currentUser,recipe);
+            int rate = ratesService.getRateByRecipeAndUser(currentUser, recipe);
             double avgRate = ratesService.GetAvgRatesByRecipeId(recipe.getId());
 
-            recipeResponses.add(new RecipeResponse(recipe, isLiked, rate, avgRate));
+            recipeResponses.add(new RecipeResponse(recipe,isLiked,rate,avgRate));
         }
         return recipeResponses;
     }
@@ -288,7 +268,7 @@ public class RecipeService {
     }
 
     public List<RecipeResponse> sortRecipesRate(List<RecipeResponse> recipes) {
-        recipes.sort(Comparator.comparingDouble(RecipeResponse::getAvgRate));
+        recipes.sort(Comparator.comparingDouble(RecipeResponse::getAvgRate).reversed());
         return recipes;
     }
 

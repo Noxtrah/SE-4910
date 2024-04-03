@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -41,8 +42,8 @@ public class User implements UserDetails {
 
     private String allergicFoods;
 
-    private String ProfilePhoto;
-
+    @Lob
+    byte[] blobData;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

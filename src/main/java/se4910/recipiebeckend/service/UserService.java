@@ -19,6 +19,7 @@ import se4910.recipiebeckend.response.UserInfoResponse;
 import se4910.recipiebeckend.response.UserRecipeResponse;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,8 +51,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username);
     }
 
-    public ResponseEntity<?> saveUserRecipe(UserRecipeRequest userRecipeRequest,User user)
-    {
+    public ResponseEntity<?> saveUserRecipe(UserRecipeRequest userRecipeRequest,User user) throws IOException {
         if (userRecipeRequest.getTitle().isEmpty()|| userRecipeRequest.getIngredients().isEmpty())
         {
             return new ResponseEntity<>("title and getIngredients can not be empty",HttpStatus.BAD_REQUEST);
@@ -69,9 +69,9 @@ public class UserService implements UserDetailsService {
         {
           userRecipes.setMeal(userRecipeRequest.getMeal());
         }
-        if (userRecipeRequest.getPhotoPath() != null)
+        if (userRecipeRequest.getProfilePhoto()!= null)
         {
-            userRecipes.setPhotoPath(userRecipeRequest.getPhotoPath());
+            userRecipes.setBlobData(userRecipeRequest.getProfilePhoto().getBytes());
         }
 
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
@@ -129,6 +129,22 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public ResponseEntity<String> unpublishUserRecipe(long userRecipeId) {
+
+        UserRecipes targetRecipe;
+        if (userRecipeRepository.findById(userRecipeId).isPresent())
+        {
+            targetRecipe = userRecipeRepository.findById(userRecipeId).get();
+            if (targetRecipe.getIsPublish()){
+
+                targetRecipe.setIsPublish(false);
+                userRecipeRepository.save(targetRecipe);
+                return new ResponseEntity<>("recipe unpublished",HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     public List<UserRecipeResponse> getSavedRecipes(User currentUser)
     {
 
@@ -138,7 +154,7 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public ResponseEntity<String> saveUserProfile(ProfileInfoRequest profileInfoRequest, User currentUser) {
+    public ResponseEntity<String> saveUserProfile(ProfileInfoRequest profileInfoRequest, User currentUser) throws IOException {
 
         if (!profileInfoRequest.getPassword().isEmpty()) {
             currentUser.setPassword(profileInfoRequest.getPassword());
@@ -150,7 +166,7 @@ public class UserService implements UserDetailsService {
             currentUser.setAllergicFoods(profileInfoRequest.getAllergicFoods());
         }
         if (!profileInfoRequest.getProfilePhoto().isEmpty()) {
-            currentUser.setProfilePhoto(profileInfoRequest.getProfilePhoto());
+            currentUser.setBlobData(profileInfoRequest.getProfilePhoto().getBytes());
         }
 
         userRepository.save(currentUser);
@@ -164,5 +180,18 @@ public class UserService implements UserDetailsService {
         User targetUser = userRepository.findUserByUsername(username);
         List<UserRecipes> userRecipesList = recipeService.publishedRecipesOneUser(username);
         return new ResponseEntity<>(new UserInfoResponse(targetUser,userRecipesList),HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<String> deleteUserRecipe(long userRecipeId) {
+
+        UserRecipes targetRecipe;
+        if (userRecipeRepository.findById(userRecipeId).isPresent())
+        {
+            targetRecipe = userRecipeRepository.findById(userRecipeId).get();
+            userRecipeRepository.delete(targetRecipe);
+            return new ResponseEntity<>("recipe deleted",HttpStatus.OK);
+        }
+        return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

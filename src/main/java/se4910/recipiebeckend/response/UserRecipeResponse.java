@@ -19,7 +19,8 @@ public class UserRecipeResponse {
     private String cuisine;
     private String meal;
     private int preparationTime;
-    String photoPath;
+    private byte[] photoPath;
+    private Boolean isPublish;
     String username;
 
     public UserRecipeResponse(UserRecipes userRecipes) {
@@ -30,7 +31,8 @@ public class UserRecipeResponse {
         this.cuisine = userRecipes.getCuisine();
         this.meal = userRecipes.getMeal();
         this.preparationTime = userRecipes.getPreparationTime();
-        this.photoPath = userRecipes.getPhotoPath();
+        this.photoPath = userRecipes.getBlobData();
+        this.isPublish = userRecipes.getIsPublish();
         this.username = userRecipes.getUser().getUsername();
     }
 }

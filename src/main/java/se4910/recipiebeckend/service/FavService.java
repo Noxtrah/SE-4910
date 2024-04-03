@@ -11,11 +11,9 @@ import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.FavoritesRepository;
 import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
+import se4910.recipiebeckend.response.UserFavoritesResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,27 +25,41 @@ public class FavService {
     RecipeRepository recipeRepository;
 
     UserRecipeRepository userRecipeRepository;
-    public ResponseEntity<List<Object>> getOneUserFavorites(User currentUser)
+
+    public List<String> getIngredientsList(Recipe recipe)
     {
+        return Arrays.asList(recipe.getIngredients().split(","));
+    }
+
+    public List<String> getIngredientsListUR(UserRecipes recipe)
+    {
+        return Arrays.asList(recipe.getIngredients().split(","));
+    }
+
+
+    public ResponseEntity<List<UserFavoritesResponse>> getOneUserFavorites(User currentUser) {
         List<Favorites> favoriteRecipes = favoritesRepository.findByUserAndRecipeIsNotNull(currentUser);
         List<Favorites> favoriteUserRecipes = favoritesRepository.findByUserAndUserRecipesIsNotNull(currentUser);
 
+        List<Favorites> combinedList = new ArrayList<>();
+        combinedList.addAll(favoriteRecipes);
+        combinedList.addAll(favoriteUserRecipes);
 
-        List<Recipe> recipes = favoriteRecipes.stream()
-                .map(Favorites::getRecipe)
-                .toList();
+        List<UserFavoritesResponse> userFavoritesResponses = new ArrayList<>();
 
-        List<UserRecipes> userRecipes = favoriteUserRecipes.stream()
-                .map(Favorites::getUserRecipes)
-                .toList();
+        for (Favorites favorite : combinedList) {
+            if (favorite.getRecipe() != null) {
+                int ingCount = getIngredientsList(favorite.getRecipe()).size();
+                userFavoritesResponses.add(new UserFavoritesResponse(favorite,ingCount));
+            } else if (favorite.getUserRecipes() != null) {
+                int ingCount = getIngredientsListUR(favorite.getUserRecipes()).size();
+                userFavoritesResponses.add(new UserFavoritesResponse(favorite.getUserRecipes(),ingCount));
+            }
+        }
 
-        List<Object> combinedList = new ArrayList<>();
-        combinedList.addAll(recipes);
-        combinedList.addAll(userRecipes);
-
-        return ResponseEntity.ok(combinedList);
-
+        return ResponseEntity.ok(userFavoritesResponses);
     }
+
 
     public ResponseEntity<String> giveOneLike(long recipeId, User currentUser) {
 

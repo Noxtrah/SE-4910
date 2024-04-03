@@ -2,6 +2,7 @@ package se4910.recipiebeckend.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -13,12 +14,12 @@ public class ProfileInfoRequest {
 
     private String allergicFoods;
 
-    private String ProfilePhoto;
+    private MultipartFile profilePhoto;
 
-    public ProfileInfoRequest(String password, String bio, String allergicFoods, String profilePhoto) {
+    public ProfileInfoRequest(String password, String bio, String allergicFoods, MultipartFile profilePhoto) {
         this.password = password;
         this.bio = bio;
         this.allergicFoods = allergicFoods;
-        ProfilePhoto = profilePhoto;
+        this.profilePhoto = profilePhoto;
     }
 }

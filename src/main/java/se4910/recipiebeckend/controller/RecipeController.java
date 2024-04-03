@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/recipes", produces = MediaType.APPLICATION_JSON_VALUE)
 // @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class RecipeController {
+public class RecipeController extends ParentController{
 
     @Autowired
     RecipeService recipeService;
@@ -52,47 +52,21 @@ public class RecipeController {
     {
         return recipeService.getRecipeByID(id);
     }
-    public User getCurrentUser(Authentication authentication) {
 
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            return userService.getOneUserByUsername(username);
-        }
-        else {
-            return null;
-        }
-    }
-
-
-
-   /* public List<RecipeResponse> paging(List<Recipe> cachedData , User user , int key)
-    {
-        if (user != null) {
-            return recipeService.pagingWithUser(cachedData,key, user);
-        }
-        else {
-            System.out.println(cachedData);
-            return recipeService.paging(cachedData,key);
-        }
-
-    }*/
 
     @GetMapping("/paging")
     public List<RecipeResponse> paging( @RequestParam(name = "key", defaultValue = "0") int key)
     {
-        return recipeService.doPaging(cachedDataExtended,key);
-
+        return  recipeService.doPaging(cachedDataExtended,key);
     }
 
     private void updateCachedData(User currentUser) {
         if (currentUser != null) {
-            cachedDataExtended = recipeService.fillResponse(cachedData, currentUser);
+            cachedDataExtended = recipeService.fillResponse(getCachedData(), currentUser);
         } else {
-            cachedDataExtended = recipeService.fillResponseDefaults(cachedData);
+            cachedDataExtended = recipeService.fillResponseDefaults(getCachedData());
         }
     }
-
 
     //*************************************************************************
     @GetMapping("/home")
@@ -101,32 +75,10 @@ public class RecipeController {
             User currentUser = getCurrentUser(authentication);
             cachedData = recipeService.getAllRecipes();
             setCachedData(cachedData);
-            if (currentUser != null){
-
-               cachedDataExtended =  recipeService.fillResponse(cachedData,currentUser);
-            }
-            else {
-                cachedDataExtended = recipeService.fillResponseDefaults(cachedData);
-            }
-            setCachedDataExtended(cachedDataExtended);
-
+            updateCachedData(currentUser);
             return paging(0);
-
     }
 
-
-    @GetMapping("/get-custom-data-userdashboard")
-    public List<UserRecipeResponseFull> getCustomDataUserDashboard(Authentication authentication)
-    {
-        User currentUser = getCurrentUser(authentication);
-        if (currentUser != null)
-        {
-            return recipeService.getCustomDataUserDashboard(currentUser);
-        }
-        else {
-           return recipeService.getUserRecipes();
-        }
-    }
 
     @PostMapping("/create-recipe")
     public ResponseEntity<String> createRecipe(@RequestBody RecipeRequest recipeRequest)

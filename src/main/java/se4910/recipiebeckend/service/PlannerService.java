@@ -11,6 +11,7 @@ import se4910.recipiebeckend.repository.PlannerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,26 +21,30 @@ public class PlannerService {
 
     public List<String> getCurrentData(User currentUser)
     {
-       MealPlanner mealPlanner = plannerRepository.findByUser(currentUser);
-       List<String> currentPlanner = new ArrayList<>();
-        currentPlanner.add(mealPlanner.getMonday());
-        currentPlanner.add(mealPlanner.getTuesday());
-        currentPlanner.add(mealPlanner.getWednesday());
-        currentPlanner.add(mealPlanner.getThursday());
-        currentPlanner.add(mealPlanner.getFriday());
-        currentPlanner.add(mealPlanner.getSaturday());
-        currentPlanner.add(mealPlanner.getSunday());
+       Optional<MealPlanner> optionalMealPlanner = plannerRepository.findByUser(currentUser);
+       if (optionalMealPlanner.isPresent())
+       {
+           MealPlanner mealPlanner = optionalMealPlanner.get();
+           List<String> currentPlanner = new ArrayList<String>();
 
-        return currentPlanner;
-
+           currentPlanner.add(mealPlanner.getMonday());
+           currentPlanner.add(mealPlanner.getTuesday());
+           currentPlanner.add(mealPlanner.getWednesday());
+           currentPlanner.add(mealPlanner.getThursday());
+           currentPlanner.add(mealPlanner.getFriday());
+           currentPlanner.add(mealPlanner.getSaturday());
+           currentPlanner.add(mealPlanner.getSunday());
+           return currentPlanner;
+       }
+       return null;
     }
 
-    public ResponseEntity<?> savePlanner(User currentUser, List<String> plannerData)
+    public ResponseEntity<?> savePlanner(User currentUser, ArrayList<ArrayList<String>> plannerData)
     {
 
-        MealPlanner existingMealPlanner = plannerRepository.findByUser(currentUser);
+        Optional<MealPlanner> existingMealPlanner = plannerRepository.findByUser(currentUser);
 
-        if (existingMealPlanner == null)
+        if (existingMealPlanner.isEmpty())
         {
             MealPlanner mealPlanner = new MealPlanner();
             mealPlanner.setUser(currentUser);
@@ -48,26 +53,51 @@ public class PlannerService {
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
+        else {
 
-        return updatePlanner(plannerData,existingMealPlanner);
+            return updatePlanner(plannerData,existingMealPlanner.get());
+        }
+
 
     }
 
-    public ResponseEntity<?> updatePlanner(List<String> plannerData, MealPlanner mealPlanner)
+    public ResponseEntity<?> updatePlanner(ArrayList<ArrayList<String>> plannerData, MealPlanner mealPlanner)
     {
-         fillPlanner(mealPlanner,plannerData);
-        plannerRepository.save(mealPlanner);
-         return new ResponseEntity<>(HttpStatus.OK);
+        plannerRepository.save(fillPlanner(mealPlanner,plannerData));
+        return new ResponseEntity<>(mealPlanner,HttpStatus.OK);
     }
 
-    private void fillPlanner(MealPlanner mealPlanner, List<String> plannerData)
-    {   mealPlanner.setMonday(plannerData.get(0));
-        mealPlanner.setTuesday(plannerData.get(1));
-        mealPlanner.setWednesday(plannerData.get(2));
-        mealPlanner.setThursday(plannerData.get(3));
-        mealPlanner.setFriday(plannerData.get(4));
-        mealPlanner.setSaturday(plannerData.get(5));
-        mealPlanner.setSunday(plannerData.get(6));
+    private MealPlanner fillPlanner(MealPlanner mealPlanner,  ArrayList<ArrayList<String>> plannerData)
+    {
+        mealPlanner.setMonday(plannerData.get(0).toString());
+        mealPlanner.setTuesday(plannerData.get(1).toString());
+        mealPlanner.setWednesday(plannerData.get(2).toString());
+        mealPlanner.setThursday(plannerData.get(3).toString());
+        mealPlanner.setFriday(plannerData.get(4).toString());
+        mealPlanner.setSaturday(plannerData.get(5).toString());
+        mealPlanner.setSunday(plannerData.get(6).toString());
+        return mealPlanner;
 
     }
+
+    public ResponseEntity<String> clearMealPlanner(User currentUser) {
+        Optional<MealPlanner> optionalMealPlanner = plannerRepository.findByUser(currentUser);
+        if (optionalMealPlanner.isPresent()) {
+            MealPlanner mealPlanner = optionalMealPlanner.get();
+
+            // Set all days' planner data to empty strings
+            mealPlanner.setMonday("");
+            mealPlanner.setTuesday("");
+            mealPlanner.setWednesday("");
+            mealPlanner.setThursday("");
+            mealPlanner.setFriday("");
+            mealPlanner.setSaturday("");
+            mealPlanner.setSunday("");
+
+            plannerRepository.save(mealPlanner);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
