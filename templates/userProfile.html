@@ -5,10 +5,12 @@
 
 	<span style="cursor: pointer;" class="back-button">Back</span>
 	<img class="round" src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" alt="user" />
-	<h3>User</h3>
-	<h6>Hello, try my recipes!
-	</h6>
-	<p>user@user.com</p>
+	<div id="userInfo">
+		<div>
+			<h3 id="userName"></h3>
+			<p id="userEmail"></p>
+		</div>
+		</div>
 	<div class="buttons">
 		<button id="editProfileButton" class="primary" style="cursor: pointer;
 		">
@@ -110,4 +112,36 @@
     document.getElementById("editProfileButton").addEventListener("click", function() {
         window.location.href = "userEditProfile.html";
     });
+
+  
+	function fetchUserData() {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    
+    var headers = new Headers();
+    headers.append('Authorization', `Bearer ${JWTAccessToken}`);
+    
+    fetch('https://recipiebeckend.azurewebsites.net/user/user-profile-info', {
+        method: 'GET',
+        headers: headers
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Gelen verileri işleyin ve HTML içine yerleştirin
+        const userNameElement = document.getElementById('userName');
+        const userEmailElement = document.getElementById('userEmail');
+
+        userNameElement.textContent = data.name + ' ' + data.lastName;
+        userEmailElement.textContent = data.email;
+    })
+    .catch(error => console.error('Error fetching user data:', error));
+}
+
+// Sayfa yüklendiğinde kullanıcı bilgilerini al
+window.onload = fetchUserData;
+
 </script>

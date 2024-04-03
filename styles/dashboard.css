@@ -657,7 +657,15 @@ input[type="search"]{
     cursor: pointer;
   }
 
-
+  #saturdayList li,
+  #tuesdayList li,
+  #mondayList li,
+  #wednesdayList li,
+  #thursdayList li,
+  #fridayList li,
+  #sundayList li {
+      display: inline-block;
+  }
 
   html {
     border: 0;

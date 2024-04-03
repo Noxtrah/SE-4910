@@ -311,7 +311,7 @@ async function giveLike(recipeId) {
         var saturdayMeals = getMealList("saturday");
         var sundayMeals = getMealList("sunday");
     
-        var allDaysMeals = [].concat(mondayMeals, tuesdayMeals, wednesdayMeals, thursdayMeals, fridayMeals, saturdayMeals, sundayMeals);
+        var allDaysMeals = [mondayMeals, tuesdayMeals, wednesdayMeals, thursdayMeals, fridayMeals, saturdayMeals, sundayMeals];
         var jsonAllDaysMeals = JSON.stringify(allDaysMeals);
     
         console.log("Meal plan allDays", jsonAllDaysMeals);
@@ -337,8 +337,29 @@ async function giveLike(recipeId) {
             // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
         });
     }
+    // function clearMealPlan() {
+    //     const JWTAccessToken = sessionStorage.getItem('accessToken');
     
-
+    //     fetch('https://recipiebeckend.azurewebsites.net/planner/clear-meal-planner', {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': JWTAccessToken,
+    //         },
+    //     })
+    //     .then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         console.log('Meal plan cleared successfully.');
+    //         // İşlem başarılı olduğunda gerekli işlemler burada yapılabilir
+    //     })
+    //     .catch(error => {
+    //         console.error('There was a problem clearing the meal plan:', error);
+    //         // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
+    //     });
+    // }
+    
 // function getMealList(day) {
 //     // Verilen günün öğün listesini al
 //     var dayList = document.getElementById(day + "List");
@@ -390,6 +411,8 @@ window.addEventListener('DOMContentLoaded', function() {
         return response.json();
     })
     .then(data => {
+        console.log('Getmeals', data);
+
         // Gelen verileri uygun şekilde işleyerek öğün listesine ekleyin
         populateMealList(data);
     })
@@ -404,23 +427,23 @@ function populateMealList(mealPlan) {
 
     for (let i = 0; i < days.length; i++) {
         const day = days[i];
-        const dayList = document.getElementById(`${day}List`);
+        const dayList = document.getElementById(day + "List"); // Değişiklik: String birleştirme operatörünü kullanarak gün listesinin id'sini oluştur
         if (!dayList) {
-            console.error(`List for ${day} not found`);
+            console.error(`List for ${day} not found`); // Değişiklik: Geri tırnak içinde doğru dize dizgisi oluşturma
             continue;
         }
 
-        const meals = mealPlan[i] || []; // Günün öğün listesi
+        const meals = mealPlan[day.toLowerCase()] || []; // Günün öğün listesi
         dayList.innerHTML = ''; // Gün listesini temizle
 
-        meals.forEach(function(meal) {
+        for (let j = 0; j < meals.length; j++) {
+            const meal = meals[j];
             const li = document.createElement('li');
             li.textContent = meal;
             dayList.appendChild(li);
-        });
+        }
     }
 }
-
 
 function clearMealPlanner() {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
