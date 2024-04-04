@@ -976,7 +976,7 @@ $('#pagination-demo').twbsPagination({
     onPageClick: function (event, page) {
         //fetch content and render here
         const clickedPage = document.getElementById('pagination-demo');
-        clickedPage.onclick = function (event, page) {
+        clickedPage.onclick = function () {
             paging(page);
         }
     }
