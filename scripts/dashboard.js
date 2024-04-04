@@ -421,29 +421,34 @@ window.addEventListener('DOMContentLoaded', function() {
         // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
     });
 });
-
 function populateMealList(mealPlan) {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
     for (let i = 0; i < days.length; i++) {
         const day = days[i];
-        const dayList = document.getElementById(day + "List"); // Değişiklik: String birleştirme operatörünü kullanarak gün listesinin id'sini oluştur
-        if (!dayList) {
-            console.error(`List for ${day} not found`); // Değişiklik: Geri tırnak içinde doğru dize dizgisi oluşturma
-            continue;
-        }
+        const dayList = document.getElementById(day + "List");
+        const meals = mealPlan[i];
 
-        const meals = mealPlan[day.toLowerCase()] || []; // Günün öğün listesi
-        dayList.innerHTML = ''; // Gün listesini temizle
+        dayList.innerHTML = ''; // Her seferinde listeyi temizle
 
-        for (let j = 0; j < meals.length; j++) {
-            const meal = meals[j];
+        if (meals && meals.length > 0) { // Eğer günün öğün listesi varsa
+            for (let j = 0; j < meals.length; j++) {
+                const meal = meals[j];
+                const li = document.createElement('li');
+                li.className = "mealItem";
+                li.textContent = meal;
+                dayList.appendChild(li);
+            }
+        } else { // Eğer günün öğün listesi boşsa
             const li = document.createElement('li');
-            li.textContent = meal;
+            li.className = "mealItem";
+            li.textContent = "No meal planned";
             dayList.appendChild(li);
         }
     }
 }
+
+
 
 function clearMealPlanner() {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
@@ -661,7 +666,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+    //const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -933,7 +938,7 @@ function basicSearch() {
 //     return starAndHeartInfoArray;
 // }
 async function getSelectedCustomDataOfDashboard(index) {
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+  //  var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     const response = await fetch(
         apiUrl,

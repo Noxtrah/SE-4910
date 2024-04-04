@@ -638,10 +638,10 @@ input[type="search"]{
     margin-bottom: 20px;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-  }
+  .mealItem {
+    display: block;
+    list-style-type: disc;
+}
 
  .addMealbutton {
     color: rgb(242, 212, 240);
@@ -657,7 +657,7 @@ input[type="search"]{
     cursor: pointer;
   }
 
-  #saturdayList li,
+  /* #saturdayList li,
   #tuesdayList li,
   #mondayList li,
   #wednesdayList li,
@@ -665,7 +665,7 @@ input[type="search"]{
   #fridayList li,
   #sundayList li {
       display: inline-block;
-  }
+  } */
 
   html {
     border: 0;
