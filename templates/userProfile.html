@@ -1,147 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<div class="card-container">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
     <link rel="stylesheet" href="../styles/userProfile.css">
+</head>
+<body>
+    <div id="header-container">
+        <button id="back-arrow-button">
+          <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+        </button>
+        <h1 class="header-title" style="color: #c4bbf0;">MY PROFILE</h1>
+    </div>
+    <div class="card-container">
+       
+        <div id="userPersonal">
+            <img class="round" id="userPhoto" src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" alt="user" />
+            <div class="buttons">
+                <button id="editProfileButton" class="primary" style="cursor: pointer;">
+                    Edit Profile
+                </button>
+            </div>
+            <h3 id="userName"></h3>
+            <p id="userEmail"></p>
+            <p id="userBio"></p>
+        </div>
+        <div id="userPublishedRecipes" class="recipe-container">
+            <!-- Dynamically generated recipe cards will go here -->
+        </div>
+        
+    </div>
 
-	<span style="cursor: pointer;" class="back-button">Back</span>
-	<img class="round" src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" alt="user" />
-	<div id="userInfo">
-		<div>
-			<h3 id="userName"></h3>
-			<p id="userEmail"></p>
-		</div>
-		</div>
-	<div class="buttons">
-		<button id="editProfileButton" class="primary" style="cursor: pointer;
-		">
-			Edit Profile
-		</button>
+    <footer>
+        <!-- Footer content -->
+    </footer>
 
-	</div>
-	<head>
-	<div class="skills">
-		  <link
-		   rel="stylesheet"
-		   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-		   integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
-		   crossorigin="anonymous"
-		  />
-		 </head>
-		 <body>
-			<div class="container-wrapper">
-		  <div class="container" style="margin-top: 50px;">
-		   <img
-			src="https://cdn.tasteatlas.com//Images/Dishes/735a85b93fa942c49e22f101cba3397e.jpg?mw=660"
-		   />
-		   <div class="container__text">
-			<h1>Pastel de nata</h1>
-			<div class="container__text__star">
-			 <span class="fa fa-star checked"></span>
-			 <span class="fa fa-star checked"></span>
-			 <span class="fa fa-star checked"></span>
-			 <span class="fa fa-star checked"></span>
-			 <span class="fa fa-star checked"></span>
-			</div>
-			<p>
-				Pastel de nata is a traditional Portuguese egg custard tart that is popular throughout the world. It is believed that for the best result, the..
-			</p>
-			<div class="container__text__timing">
-			 <div class="container__text__timing_time">
-			  <h2>Ing Count</h2>
-			  <p>15</p>
-			 </div>
-			 <div class="container__text__timing_time">
-			  <h2>Prep Time</h2>
-			  <p>40 min</p>
-			 </div>
-			 <div class="container__text__timing_time">
-			  <h2>Serving</h2>
-			  <p>4</p>
-			 </div>
-			</div>
-			<button class="btn">view recipe <i class="fa fa-arrow-right"></i></button>
-		   </div>
-		  </div>
-		  <div class="container" style="margin-top: 50px;">
-			<img
-			 src="https://cdn.tasteatlas.com//Images/Dishes/126cfc45688546f19620ac483dfaecb7.jpg?mw=660"
-			/>
-			<div class="container__text">
-			 <h1>Tangbao</h1>
-			 <div class="container__text__star">
-			  <span class="fa fa-star checked"></span>
-			  <span class="fa fa-star checked"></span>
-			  <span class="fa fa-star checked"></span>
-			  <span class="fa fa-star checked"></span>
-			  <span class="fa fa-star checked"></span>
-			 </div>
-				The name tangbao or tangbaozi refers to a broad group of steamed Chinese soup-filled dumplings. Depending on the origin, dumplings...</p>
-			 <div class="container__text__timing">
-			  <div class="container__text__timing_time">
-				<h2>Ing Count</h2>
-				<p>20</p>
-			   </div>
-			   <div class="container__text__timing_time">
-				<h2>Prep Time</h2>
-				<p>50 min</p>
-			   </div>
-			   <div class="container__text__timing_time">
-				<h2>Serving</h2>
-				<p>3</p>
-			   </div>
-			 </div>
-			 <button class="btn">view recipe <i class="fa fa-arrow-right"></i></button>
-			</div>
-		   </div>
-		   </div>
-		 </body>
-		
-	</div>
-</div>
-
-<footer>
-	
-</footer>
+</body>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="../scripts/userProfile.js"></script>
 </html>
-
-<script>
-	document.querySelector('.back-button').addEventListener('click', function() {
-    window.history.back();
-});
-
-    document.getElementById("editProfileButton").addEventListener("click", function() {
-        window.location.href = "userEditProfile.html";
-    });
-
-  
-	function fetchUserData() {
-		const JWTAccessToken = sessionStorage.getItem('accessToken');
-
-var headers = new Headers();
-headers.append('Authorization', JWTAccessToken ); // Auth token burada belirtilmelidir
-    
-    fetch('https://recipiebeckend.azurewebsites.net/user/user-profile-info', {
-        method: 'GET',
-        headers: headers
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Gelen verileri işleyin ve HTML içine yerleştirin
-        const userNameElement = document.getElementById('userName');
-        const userEmailElement = document.getElementById('userEmail');
-
-        userNameElement.textContent = data.name + ' ' + data.lastName;
-        userEmailElement.textContent = data.email;
-    })
-    .catch(error => console.error('Error fetching user data:', error));
-}
-
-// Sayfa yüklendiğinde kullanıcı bilgilerini al
-window.onload = fetchUserData;
-
-</script>

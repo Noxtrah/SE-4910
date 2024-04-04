@@ -1,273 +1,156 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
+    --perspective: 1000px;
+    --link-color: #010790;
+}
+
 * {
-	box-sizing: border-box;
-}
-
-body {
-	background-color: #28223F;
-	font-family: Montserrat, sans-serif;
-	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-
-	min-height: 100vh;
-	margin: 0;
-}
-img{
-	margin: 10px;
-	height: 350px;
-    width: 350px;
-}
-h3 {
-	margin: 10px 0;
-    height: 20px;
-    font-size: 30px;
-
-}
-
-h6 {
-	margin: 5px 0;
-    font-size: 30px;
-	text-transform: uppercase;
-}
-
-p {
-	font-size: 30px;
-	line-height: 60px;
-}
-
-.card-container {
-	background-color: #231E39;
-	border-radius: 5px;
-	box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
-	color: #B3B8CD;
-	padding-top: 30px;
-	position: relative;
-    width: 1050px;
-    max-width: 100%;
-    text-align: center;
-    height: 1500px;
-}
-
-.card-container .pro {
-	color: #231E39;
-	background-color: #B3B8CD;
-	border-radius: 3px;
-	font-size: 14px;
-	font-weight: bold;
-	padding: 3px 7px;
-	position: absolute;
-	top: 30px;
-	left: 30px;
-}
-
-.card-container .round {
-	border: 1px solid #B3B8CD;
-	border-radius: 50%;
-	padding: 7px;
-}
-
-button.primary {
-	background-color: #B3B8CD;
-	border: 1px solid #B3B8CD;
-	border-radius: 3px;
-	color: #231E39;
-	font-family: Montserrat, sans-serif;
-	font-weight: 500;
-	padding: 10px 25px;
-}
-
-button.primary.ghost {
-	background-color: transparent;
-	color: #B3B8CD;
-}
-
-.skills {
-	background-color: #1F1A36;
-	text-align: left;
-	padding: 15px;
-	margin-top: 30px;
-}
-
-.skills ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-.skills ul li {
-	border: 1px solid #2D2747;
-	border-radius: 2px;
-	display: inline-block;
-	font-size: 12px;
-	margin: 0 7px 7px 0;
-	padding: 7px;
-}
-
-
-
-.back-button {
-	color: #231E39;
-	background-color: #B3B8CD;
-	border-radius: 3px;
-	font-size: 14px;
-	font-weight: bold;
-	padding: 3px 7px;
-	position: absolute;
-	top: 30px;
-	left: 30px;
-}
-
-.recipe-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.recipe-card h4 {
-    margin-top: 0;
-}
-
-.recipe-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.recipe-card p {
-    margin-bottom: 0;
-}
-
-/* Değişkenlerin değerleri doğrudan CSS kodunda kullanıldı */
-/* SCSS kodunda olduğu gibi değişkenler CSS'te kullanılamaz */
-
-/* Değişkenlerin kullanıldığı orijinal SCSS kodu: */
-/*
-$primary-color: #fff;
-$border-radius: 5px;
-$black-color: #351897;
-*/
-* {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    background-color: rgb(205, 199, 208);
-    font-family: Arial, Helvetica, sans-serif;
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background_color);
 }
 
-.container {
-    background-color: #fff;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-    border-radius: 10px; /* Kartın köşe yuvarlaklığını artır */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Gölgelendirme miktarını azalt */
-    max-width: 700px; /* Maksimum genişliği azalt */
-    margin: 0 auto;
-}
-
-.container2 {
-    background-color: #fff;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-    border-radius: 10px; /* Kartın köşe yuvarlaklığını artır */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Gölgelendirme miktarını azalt */
-    max-width: 700px; /* Maksimum genişliği azalt */
-    margin: 0 auto;
-}
-
-.container img {
-    width: 300px;
-    height: 250px;
-    border-top-left-radius: 10px; /* Sadece üst köşeleri yuvarlat */
-    border-top-right-radius: 10px;
-}
-
-
-.container .btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+#back-arrow-button {
+    background: transparent;
     border: none;
-    outline: none;
+    padding: 0;
+    position: relative;
+}
+
+.back-arrow {
+    font-size: 5em;
+    color: var(--light_purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: color 0.3s ease-in-out;
+}
+
+#back-arrow-button:hover .back-arrow {
+    color: var(--purple);
+    cursor: pointer;
+}
+
+.back-button {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--link-color);
+    cursor: pointer;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+#header-container {
+    background-color: var(--dark_purple);
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #964873;
-    color: #fff;
-    padding: 10px 20px; /* Buton boyutunu daha da küçült */
-    font-size: 0.8rem; /* Metin boyutunu küçült */
-    text-transform: uppercase;
-    border-radius: 0 0 10px 10px;
-    cursor: pointer;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+    color: white;
 }
 
-.container .btn i {
-    margin-left: 10px;
-    font-size: 1rem;
+.header-title {
+    margin: 0;
+    font-size: 24px;
+    margin-left: 50px;
 }
 
-.container .btn:hover {
-    background-color: #38052c;
-}
-
-.container__text {
+.card-container {
+    width: 80%;
+    margin: auto;
     padding: 20px;
+    border: 1px solid var(--dark_grey);
+    border-radius: 10px;
+    background-color: var(--light_purple);
 }
 
-.container__text h1 {
-    color: #351897;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+.round {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
 }
 
-.container__text .container__text__star span {
-    font-size: 0.8rem;
-    color: #ffa800;
-    margin: 5px 0 15px;
+#userPersonal {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #4f3b78;
+    color: #c4bbf0;
 }
 
-.container__text p {
-    font-size: 0.9rem;
-    line-height: 1.5;
+#userPersonal h3,
+#userPersonal p {
+    margin: 0;
 }
 
-.container__text .container__text__timing {
+#userPublishedRecipes {
     display: flex;
     flex-wrap: wrap;
-    margin: 20px 0;
+    justify-content: space-between;
 }
 
-.container__text .container__text__timing .container__text__timing_time {
-    margin-right: 40px;
+/* ------------------------------------------------------- */
+.recipe {
+    border: 1px solid var(--dark_grey);
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: var(--light_purple);
+    width: calc(50% - 10px);
+    height: 300px;
+    display: flex; /* Make the recipe container flex to align items */
 }
 
-.container__text .container__text__timing h2 {
-    margin-bottom: 5px;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #818189;
+/* Additional CSS for recipe layout adjustment */
+
+.recipe-left {
+   
+    display: flex;
+    align-items: flex-start; /* Align items at the start of the container */
+    width: min-content;
+    flex: 1; /* Take remaining space */
 }
 
-.container__text .container__text__timing p {
-    font-weight: bold;
-    font-size: 1rem; /* Zamanlama bilgisi metin boyutunu değiştir */
-    color: #351897;
+.recipe-photo {
+    width: 200px; /* Example width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 20px; /* Space between photo and details */
+}
+
+.photo-title-container {
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    align-items: center; /* Horizontally center items */
+    text-align: center; /* Center text */
+}
+
+.recipe-details {
+    background-color: #4f3b78;
+    color: #c4bbf0;
+    border-radius: 10px;
+    padding: 10px; /* Add padding to the details container */
+    flex: 1; /* Allow details to fill remaining space */
+}
+
+.recipe-details p {
+    margin: 5px 0; /* Adjust spacing between details */
+    word-wrap: break-word; /* Wrap long lines of text */
 }
