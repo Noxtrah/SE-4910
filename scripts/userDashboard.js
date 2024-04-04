@@ -606,20 +606,22 @@ window.onload = function () {
 };
 
 $('#pagination-demo').twbsPagination({
-    totalPages: 16,
-    visiblePages: 5,
+    totalPages: 2,
+    visiblePages: 2,
     next: 'Next',
     prev: 'Prev',
     onPageClick: function (event, page) {
         //fetch content and render here
-        console.log("Page: " , page);
-        paging(page)
+        const clickedPage = document.getElementById('pagination-demo');
+        clickedPage.onclick = function () {
+            paging(page);
+        }
     }
 });
 
   function paging(key) {
     key -= 1;
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
+    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/paging-user-dashboard?key=' + key;
     fetch(apiUrl)
     .then(response => {
         if (!response.ok) {

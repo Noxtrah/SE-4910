@@ -968,108 +968,17 @@ function openNewTab() {
     window.open(baseURL, '_blank');
 }
 
-// $(document).ready(function() {
-//     $('#pagination li a').on('click', function(e) {
-//         e.preventDefault();
-//     $('#next').on('click', function(e) {
-//         e.preventDefault();
-//         var currentPage = $('#pagination li.active').index() + 1;
-//         console.log("Current page: " , currentPage);
-//         var key = currentPage - 1;
-//         paging(key);
-//     });
-//     $('#prev').on('click', function(e) {
-//         e.preventDefault();
-//         var currentPage = $('#pagination li.active').index() + 1;
-//         var key = currentPage - 2;
-//         paging(key);
-//     });
-//         if (!$(this).is('#next, #prev')) {
-//             $('#pagination li').removeClass('active');
-//             $(this).parent().addClass('active');
-//             var key = parseInt($(this).text().trim()) - 1;
-//             paging(key);
-//         }
-//     });
-// });
-
-// $(document).ready(function() {
-//     var key;
-
-//     $('#pagination li a').on('click', function(e) {
-//         e.preventDefault();
-
-//         if (!$(this).is('#next, #prev')) {
-//             $('#pagination li').removeClass('active');
-
-//             $(this).parent().addClass('active');
-
-//             key = parseInt($(this).text().trim()) - 1;
-
-//             paging(key);
-//         }
-//     });
-
-//     $(document).ready(function() {
-//         var key = 0;
-
-//         $('#pagination li a').on('click', function(e) {
-//             e.preventDefault();
-    
-//             if (!$(this).is('#next, #prev')) {
-//                 $('#pagination li').removeClass('active');
-    
-//                 $(this).parent().addClass('active');
-    
-//                 key = parseInt($(this).text().trim()) - 1;
-//                 console.log("Key: " , key);
-//                 paging(key);
-//             }
-//         });
-    
-//         $('#next').on('click', function(e) {
-//             e.preventDefault();
-        
-//             var currentPage = $('#pagination li.active').index() + 1;
-        
-//             if (currentPage === 0) {
-//                 currentPage = 1;
-//             }
-
-//             var nextPageKey = currentPage % ($('#pagination li').length - 1);
-//             if (nextPageKey === 0) {
-//                 nextPageKey = ($('#pagination li').length - 1);
-//             } else {
-//                 nextPageKey -= 1;
-//             }
-
-//             $('#pagination li').removeClass('active');
-
-//             $('#pagination li:eq(' + nextPageKey + ')').addClass('active');
-
-//             paging(nextPageKey);
-//         });
-//         $('#prev').on('click', function(e) {
-//             e.preventDefault();
-
-//             var currentPage = $('#pagination li.active').index() + 1;
-
-//             var key = (currentPage - 2 + ($('#pagination li').length - 1)) % ($('#pagination li').length - 1);
-//             console.log("Key: " , key);
-//             paging(key);
-//         });
-//     });
-// });
-
 $('#pagination-demo').twbsPagination({
-    totalPages: 16,
-    visiblePages: 5,
+    totalPages: 2,
+    visiblePages: 2,
     next: 'Next',
     prev: 'Prev',
     onPageClick: function (event, page) {
         //fetch content and render here
-        console.log("Page: " , page);
-        paging(page)
+        const clickedPage = document.getElementById('pagination-demo');
+        clickedPage.onclick = function (event, page) {
+            paging(page);
+        }
     }
 });
 
