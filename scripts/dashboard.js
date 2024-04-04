@@ -421,6 +421,7 @@ window.addEventListener('DOMContentLoaded', function() {
         // Hata durumunda kullanıcıya bir hata mesajı gösterebilirsin
     });
 });
+
 function populateMealList(mealPlan) {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
@@ -666,7 +667,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+     const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
 
     const headers = {
         'Content-Type': 'application/json',

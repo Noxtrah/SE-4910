@@ -57,3 +57,17 @@ function truncateDescription(description) {
 
 // Display favorite recipes when the DOM content is loaded
 window.addEventListener('DOMContentLoaded', displayFavRecipes);
+
+
+
+function setupBackButton() {
+  const backButton = document.getElementById('back-arrow-button');
+
+  backButton.addEventListener('click', () => {
+      window.history.back();
+  });
+}
+// Call the function to generate user recipe boxes when the page loads
+window.onload = function () {
+  setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
+};
