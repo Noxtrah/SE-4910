@@ -18,13 +18,23 @@
         <div id="userPersonal">
             <img class="round" id="userPhoto" src="https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg" alt="user" />
             <div class="buttons">
-                <button id="editProfileButton" class="primary" style="cursor: pointer;">
+                <button  id="editProfileButton" class="primary" style="cursor: pointer; padding: 0.6rem;
+				outline: none;
+				border: none;
+				border-radius: 3px;
+				font-weight: bold;
+				font-size: large;
+				cursor: pointer;
+				transition: 0.4s ease;
+				transition: background 0.4s ease, color 0.4s ease;"
+					  onmouseover="this.style.background='rgb(147, 137, 147)'; this.style.color='white';"
+					  onmouseout="this.style.background='white'; this.style.color='black';     ">
                     Edit Profile
                 </button>
             </div>
-            <h3 id="userName"></h3>
-            <p id="userEmail"></p>
-            <p id="userBio"></p>
+            <h3  style="margin-top: 20px;" id="userName"></h3>
+            <p  style="margin-top: 15px;" id="userEmail"></p>
+            <p  style="margin-top: 20px;" id="userBio"></p>
         </div>
         <div id="userPublishedRecipes" class="recipe-container">
             <!-- Dynamically generated recipe cards will go here -->
