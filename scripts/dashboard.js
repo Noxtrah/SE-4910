@@ -183,17 +183,6 @@ function setRating(rating, starContainer, recipe) {
         heartContainer.textContent = '♥';
         heartContainer.style.color = 'red';
     }
-    // else {
-    //     heartContainer.textContent = '♥';
-    //     heartContainer.style.color = 'black';
-    // }
-
-    // if (recipe && recipe.recipe.id) {
-    //     giveLike(recipe.recipe.id);
-    // } else {
-    //     console.error('Recipe ID not found for the given recipe:', recipe);
-    //     // Handle the case where the recipe ID is not available
-    // }
 }
 
 
