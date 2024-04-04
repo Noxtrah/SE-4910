@@ -656,7 +656,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -967,34 +967,77 @@ function openNewTab() {
     const baseURL = `http://${host}:${port}/templates/searchByIngredientTab.html`;
     window.open(baseURL, '_blank');
 }
-
-$('#pagination-demo').twbsPagination({
-    totalPages: 2,
-    visiblePages: 2,
-    next: 'Next',
-    prev: 'Prev',
-    onPageClick: function (event, page) {
-        //fetch content and render here
-        const clickedPage = document.getElementById('pagination-demo');
-        clickedPage.onclick = function () {
+/*
+$(document).ready(function() {
+    $('#pagination-demo').twbsPagination({
+        totalPages: 2,
+        visiblePages: 2,
+        next: 'Next',
+        prev: 'Prev',
+        onPageClick: function (event, page) {
+            // Call the paging function directly with the clicked page
             paging(page);
         }
-    }
+    });
 });
 
-  function paging(key) {
+function paging(key) {
     key -= 1;
-    console.log("Key: " , key);
+    console.log("Key: ", key);
     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
     fetch(apiUrl)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        displayDashboard(data);
-    })
-    .catch(error => console.error('Error fetching data:', error));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayDashboard(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
 }
+*/
+document.addEventListener("DOMContentLoaded", function() {
+    const paginationContainer = document.getElementById('pagination-demo');
+    const totalPages = 3; // Toplam sayfa sayısı
+    const currentPage = 1; // Şu anki sayfa (başlangıç)
+  
+    // Pagination barını oluştur
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#';
+      a.textContent = i;
+      li.appendChild(a);
+      paginationContainer.appendChild(li);
+    }
+  
+    // Sayfa numaralarına tıklandığında
+    paginationContainer.addEventListener('click', function(event) {
+      if (event.target.tagName === 'A') {
+        event.preventDefault();
+        const page = parseInt(event.target.textContent);
+        paging(page);
+      }
+    });
+  
+    // Sayfa içeriğini yükle
+    function paging(page) {
+      const key = page - 1;
+      console.log("Key: ", key);
+      const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          displayDashboard(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+  });
+  

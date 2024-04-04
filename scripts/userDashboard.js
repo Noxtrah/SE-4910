@@ -295,7 +295,7 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -611,13 +611,11 @@ $('#pagination-demo').twbsPagination({
     next: 'Next',
     prev: 'Prev',
     onPageClick: function (event, page) {
-        //fetch content and render here
-        const clickedPage = document.getElementById('pagination-demo');
-        clickedPage.onclick = function () {
-            paging(page);
-        }
+        // Call the paging function directly with the clicked page
+        paging(page);
     }
 });
+
 
   function paging(key) {
     key -= 1;
