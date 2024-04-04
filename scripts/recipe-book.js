@@ -175,6 +175,9 @@ async function showRecipes() {
             publishButton.classList.add("publish-button");
             publishButton.textContent = "Publish";
             buttonsContainer.appendChild(publishButton);
+            if(recipe.isPublish){
+                publishButton.textContent = "Unpublish"
+            }
 
             // Create Edit button
             // const editButton = document.createElement("button");
@@ -185,7 +188,7 @@ async function showRecipes() {
             const deleteButton = document.createElement("button");
             deleteButton.classList.add("delete-button");
             deleteButton.textContent = "Delete";
-            
+
             buttonsContainer.appendChild(deleteButton);
 
             // Append buttons container to recipe item
