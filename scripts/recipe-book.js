@@ -178,7 +178,9 @@ async function showRecipes() {
             if(recipe.isPublish){
                 publishButton.textContent = "Unpublish"
             }
-
+            publishButton.onclick = function() {
+                publishButton.textContent = publishButton.textContent === "Publish" ? "Unpublish" : "Publish";
+            }
             // Create Edit button
             // const editButton = document.createElement("button");
             // editButton.textContent = "Edit";
@@ -222,7 +224,12 @@ async function showRecipes() {
                 console.log(recipeDetails);
 
                 // Call publishRecipe with local variables
-                publishRecipe(userRecipeId, recipeDetails);
+                if(publishButton.textContent == "Unpublish"){
+                    publishRecipe(userRecipeId, recipeDetails);
+                }
+                else if(publishButton.textContent == "Publish"){
+                    unpublishRecipe(userRecipeId, recipeDetails);
+                }
             });
 
             deleteButton.addEventListener("click", async () => {
@@ -230,7 +237,7 @@ async function showRecipes() {
                 try {
                     // Call the delete fetch function
                     await deleteRecipe(userRecipeId);
-                    
+
                     // Optionally, remove the recipe element from the UI after deletion
                     // For example, if your recipe element has an ID, you can remove it like this:
                     // const recipeElement = document.getElementById("recipe-" + userRecipeId);
@@ -300,6 +307,31 @@ async function publishRecipe(userRecipeId, recipeDetails){
     }
 }
 
+async function unpublishRecipe(userRecipeId, recipeDetails){
+    try {
+        const apiURL = `https://recipiebeckend.azurewebsites.net/user/unpublish-recipe?userRecipeId=${userRecipeId}`;
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
+        const headers = {
+            "Content-type": "application/json",
+        };
+        const response = await fetch(apiURL, {
+            method: 'PUT',
+            headers: headers,
+            // body: JSON.stringify({
+            //     recipeDetails: recipeDetails
+            //   }),
+        });
+        if (response.ok) {
+            alert('Recipe unpublished successfully!');
+            // Handle success scenario, if needed
+        } else {
+            alert('Failed to unpublish recipe!');
+            // Handle failure scenario, if needed
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 // const publishButton = document.getElementById("publishButton");
 
 // // Attach a click event listener
