@@ -135,15 +135,15 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.classList.add('recipe-item');
 
     const link = document.createElement('a');
-    //link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
-
+    link.style.display = 'block';
     link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
-    console.log("Recipe ID: " , recipe.id);
 
+    console.log("Recipe ID: " , recipe.id);
 
     // Image
     const imgDiv = document.createElement('div');
     imgDiv.classList.add('imgDiv');
+    imgDiv.style.cursor = 'pointer';
     const img = document.createElement('img');
     img.src = recipe.photoPath;
     img.alt = 'Recipe Photo';
@@ -152,7 +152,12 @@ const createRecipeElement = async (recipe) => {
     img.style.maxWidth = '100%'; // Adjust this value as needed
     img.style.height = '100%'; // Maintain aspect ratio
 
-    link.appendChild(img);
+    // Apply CSS to constrain image size
+    link.style.width = '100%'; // Adjust width as needed
+    link.style.height = '100%'; // Adjust height as needed
+    link.style.cursor = 'pointer';
+
+    // link.appendChild(img);
     imgDiv.appendChild(link);
 
     const starContainer = document.createElement('div');
@@ -345,7 +350,8 @@ const fetchDataByCuisine = async (cuisine) => {
 };
 
 const openRecipeDetailPage = (id) => {
-    const recipeDetailURL = `recipeDetail.html?id=${id}`;
+    const recipeDetailURL = `userRecipeDetail.html?id=${id}`;
+    console.log("Girdi");
     // Perform any additional actions before navigating, if needed
     // For example, you might want to validate the id or perform some asynchronous tasks
     window.location.href = recipeDetailURL;

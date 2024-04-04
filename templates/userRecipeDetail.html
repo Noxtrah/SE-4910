@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/userRecipeDetail.css">
+    <title>Recipe Detail</title>
+</head>
+<body>
+
+    <header>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+              </button>
+            <h1 id="recipe-title">Loading...</h1>
+        </div>
+    </header>
+
+    <div class="recipe-container">
+        <img src="recipe-photo.jpg" alt="Delicious Recipe" class="recipe-image">
+
+        <div class="recipe-ingredients" id="recipe-ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+            </ul>
+        </div>
+
+        <br>
+
+        <h2>Description</h2>
+        <div class="recipe-description" id="recipe-description">
+        </div>
+
+
+        <h2>Cuisine</h2>
+        <div class="recipe-cuisine" id="recipe-cuisine">
+        </div>
+
+        <h2>Meal</h2>
+        <div class="recipe-meal" id="recipe-meal">
+        </div>
+
+        <h2>Preperation Time</h2>
+        <div class="recipe-prep-time" id="recipe-prep-time">
+        </div>
+    </div>
+
+    <script src="../scripts/userRecipeDetail.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
