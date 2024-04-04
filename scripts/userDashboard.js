@@ -33,7 +33,7 @@ function setRating(rating, starContainer, recipe) {
   }
 
   function giveRating(newRating, recipeId) {
-    const url = `https://recipiebeckend.azurewebsites.net/user/give-rate-user-recipe?userRecipeId=${recipeId}&rate=${newRating}`;
+    const url = `https://recipiebeckend.azurewebsites.net/recipesUser/give-rate-user-recipe?userRecipeId=${recipeId}&rate=${newRating}`;
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
     const headers = {
@@ -158,10 +158,9 @@ const createRecipeElement = async (recipe) => {
     const starContainer = document.createElement('div');
     starContainer.classList.add('rating');
 
-    const getCustomData = await getCustomDataOfUserDashboard(recipeIndex);
-    const rate = getCustomData.rate;
-
-    console.log("Star Info: " , rate);
+    // const getCustomData = await getCustomDataOfUserDashboard(recipeIndex);
+    const rate = recipe.rate;
+    console.log("Rate: " , rate);
 
     for (let i = 1; i <= 5; i++) {
         const star = document.createElement('span');
@@ -177,7 +176,7 @@ const createRecipeElement = async (recipe) => {
         starContainer.appendChild(star);
     }
     // Create average star
-    const generalRateOfRecipe = getCustomData.avgRate;
+    const generalRateOfRecipe = recipe.avgRate;
     recipeIndex++;
 
     const averageRatingSpan = document.createElement('span');
@@ -198,13 +197,24 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(starContainer);
 
     // Create heart
-    const heart = document.createElement('span');
-    heart.classList.add('favorite-heart');
-    heart.src = 'Gifs/heart.gif'; // Replace with the actual path to your animated GIF
-    heart.alt = 'Animated Heart';
-    heart.onclick = () => toggleFavorite(heart);
-    heart.textContent = '♥';
-    heart.onclick = () => toggleFavorite(heart);
+    const heartContainer = document.createElement('span');
+    heartContainer.classList.add('heart-border'); 
+    heartContainer.textContent = '♥';
+
+    document.body.appendChild(heartContainer);
+
+    heartContainer.classList.add('favorite-heart');
+    if(recipe.isLiked){
+        heartContainer.style.color = 'red';
+    }
+    // heart.onclick = () => toggleFavorite(heart);
+
+    // const clickHandler = () => setLike(heartContainer, recipe);
+    // heartContainer.onclick = clickHandler;
+    heartContainer.addEventListener('click', async () => {
+        giveLike(recipe.id);
+        heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
+    });
 
     // Title
     const titleDiv = document.createElement('div');
@@ -215,10 +225,53 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
     recipeDiv.appendChild(starContainer);
-    recipeDiv.appendChild(heart);
+    recipeDiv.appendChild(heartContainer);
 
     return recipeDiv;
 };
+
+function setLike(heartContainer, recipe) {
+    if (heartContainer.style.color == 'red') {
+        heartContainer.textContent = '♥';
+        heartContainer.style.color = 'black';
+    }
+    else if (heartContainer.style.color == 'black'){
+        heartContainer.textContent = '♥';
+        heartContainer.style.color = 'red';
+    }
+}
+
+async function giveLike(recipeId) {
+    const url = `https://recipiebeckend.azurewebsites.net/recipesUser/give-like-user-recipes?userRecipeId=${recipeId}`;
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+
+        // Assuming the response contains plain text
+        const responseData = await response.text();
+
+        // Update the UI based on the response
+        console.log('Response Data:', responseData);
+
+    } catch (error) {
+        console.error('Error updating like:', error);
+    }
+}
+
+
 
 // Function to display recipes in the dashboard
 const displayDashboard = async (recipes) => {
@@ -236,12 +289,25 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
-    try {
-        const response = await fetch('https:recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard');
-        const data = await response.json();
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
 
-		console.log('Fetched Data:', data);
-        // Call displayDashboard to render the fetched data
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: JWTAccessToken ? headers : {'Content-Type': 'application/json'},
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
@@ -482,42 +548,43 @@ function basicSearch() {
 //     starAndHeartInfoArray.push(data);
 //     return starAndHeartInfoArray;
 // }
-async function getCustomDataOfUserDashboard(index) {
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
-    const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const response = await fetch(
-        apiUrl,
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': JWTAccessToken,
-            }
-        }
-    );
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+// async function getCustomDataOfUserDashboard(index) {
+//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+//     const response = await fetch(
+//         apiUrl,
+//         {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': JWTAccessToken,
+//             }
+//         }
+//     );
 
-    const contentType = response.headers.get('Content-Type');
+//     if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    if (contentType && contentType.includes('application/json')) {
-        const data = await response.json();
-        console.log("Data: " , data);
-        // Check if the array has elements and if the specified index is valid
-        if (data.length > index) {
-            return data[index];
-        } else {
-            console.error('Index out of bounds or empty array');
-            return null; // or handle it according to your application's logic
-        }
-    } else {
-        // Handle non-JSON response or empty response
-        console.error('Invalid or empty JSON response');
-        return null; // or handle it according to your application's logic
-    }
-}
+//     const contentType = response.headers.get('Content-Type');
+
+//     if (contentType && contentType.includes('application/json')) {
+//         const data = await response.json();
+//         console.log("Data: " , data);
+//         // Check if the array has elements and if the specified index is valid
+//         if (data.length > index) {
+//             return data[index];
+//         } else {
+//             console.error('Index out of bounds or empty array');
+//             return null; // or handle it according to your application's logic
+//         }
+//     } else {
+//         // Handle non-JSON response or empty response
+//         console.error('Invalid or empty JSON response');
+//         return null; // or handle it according to your application's logic
+//     }
+// }
 
 
 function setupBackButton() {
