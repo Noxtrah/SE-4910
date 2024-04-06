@@ -656,7 +656,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+//    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -928,7 +928,7 @@ function basicSearch() {
 //     return starAndHeartInfoArray;
 // }
 async function getSelectedCustomDataOfDashboard(index) {
-   var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+//    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     const response = await fetch(
         apiUrl,
@@ -1026,7 +1026,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function paging(page) {
       const key = page - 1;
       console.log("Key: ", key);
-      const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
+    //   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
       fetch(apiUrl)
         .then(response => {
           if (!response.ok) {

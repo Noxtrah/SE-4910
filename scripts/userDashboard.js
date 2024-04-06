@@ -212,14 +212,74 @@ const createRecipeElement = async (recipe) => {
     if(recipe.isLiked){
         heartContainer.style.color = 'red';
     }
-    // heart.onclick = () => toggleFavorite(heart);
 
-    // const clickHandler = () => setLike(heartContainer, recipe);
-    // heartContainer.onclick = clickHandler;
     heartContainer.addEventListener('click', async () => {
         giveLike(recipe.id);
         heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
+
+        if(!recipe.isLiked){
+            const numHearts = 5; // Number of hearts to create
+            for (let i = 0; i < numHearts; i++) {
+                createFlyingHeart(heartContainer);
+            }
+        }
     });
+
+    function createFlyingHeart(parentElement) {
+        const heart = document.createElement('span');
+        heart.classList.add('flying-heart');
+        heart.textContent = '♥';
+        document.body.appendChild(heart);
+    
+        const rect = parentElement.getBoundingClientRect();
+        const startX = rect.left + (rect.width / 2); // X coordinate of parent element
+        const startY = rect.top + (rect.height / 2); // Y coordinate of parent element
+    
+        // Randomize end coordinates within a range around the parent element
+        const endX = startX + Math.random() * 100 - 50;
+        const endY = startY + Math.random() * 100 - 90;
+    
+        // Set initial position of heart
+        heart.style.left = startX + 'px';
+        heart.style.top = startY + 'px';
+    
+        // Animate heart to fly to the end coordinates
+        heart.animate([
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px)` }
+        ], {
+            duration: 1000, // Animation duration in milliseconds
+            easing: 'ease-out', // Animation easing function
+            fill: 'forwards' // Keep heart at its final position after animation
+        });
+    
+        // Remove heart element after animation completes
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
+
+    // Create alert
+    const alertContainer = document.createElement('ion-icon');
+    alertContainer.classList.add('alert');
+    alertContainer.classList.add('alert-border');
+    alertContainer.setAttribute('name','alert-outline');
+
+    document.body.appendChild(alertContainer);
+
+    function handleAnimationDelay() {
+        if (!animationDelayActive) {
+          animationDelayActive = true;
+          alertContainer.classList.add('no-animation');
+          setTimeout(function() {
+            alertContainer.classList.remove('no-animation');
+            animationDelayActive = false;
+          }, 1000); // 1000 milliseconds = 1 second
+        }
+      }
+      
+      // Add click event listener to trigger animation and delay
+      alertContainer.addEventListener('click', handleAnimationDelay);
 
     // Title
     const titleDiv = document.createElement('div');
@@ -231,6 +291,7 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(titleDiv);
     recipeDiv.appendChild(starContainer);
     recipeDiv.appendChild(heartContainer);
+    recipeDiv.appendChild(alertContainer)
 
     return recipeDiv;
 };
@@ -295,7 +356,8 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+   //const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+   const apiUrl = 'https://run.mocky.io/v3/02b4eb52-ad5d-4638-bb35-19a136c1f4f1 ';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -313,6 +375,7 @@ const fetchData = async () => {
         }
 
         const data = await response.json();
+        console.log(data);
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
