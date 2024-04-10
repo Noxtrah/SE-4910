@@ -39,7 +39,7 @@ public class PlannerController {
         }
     }
     @GetMapping("/get-current-data")
-    public List<String> getCurrentData(Authentication authentication)
+    public ArrayList<ArrayList<String>> getCurrentData(Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)

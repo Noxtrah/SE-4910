@@ -9,6 +9,7 @@ import se4910.recipiebeckend.repository.FavoritesRepository;
 import se4910.recipiebeckend.repository.MealRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
+import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.response.UserRecipeResponseFull;
 
 import java.util.*;
@@ -23,7 +24,7 @@ public class UserRecipeService {
     FavService favService;
     UserRecipeRepository userRecipeRepository;
     UserRepository userRepository;
-
+    UserService userService;
     FavoritesRepository favoritesRepository;
 
 
@@ -51,10 +52,11 @@ public class UserRecipeService {
         for (UserRecipes userRecipes : cachedData) {
             //     boolean isLiked = likedRecipeIds.contains(userRecipes.getId());
             boolean isLiked = favService.checkFavUserRecipes(currentUser,userRecipes);
+            boolean isReported = userService.checkReport(currentUser,userRecipes);
             int rate = ratesService.getRateByUserRecipeAndUser(currentUser,userRecipes);
             double avgRate = ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId());
 
-            responseFull.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate));
+            responseFull.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate,isReported));
         }
         return responseFull;
     }
@@ -65,12 +67,23 @@ public class UserRecipeService {
         for (UserRecipes userRecipes : cachedData) {
             //     boolean isLiked = likedRecipeIds.contains(userRecipes.getId());
             boolean isLiked = false;
+            boolean isReported = false;
             int rate = 0;
             double avgRate = ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId());
-            responseFull.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate));
+            responseFull.add(new UserRecipeResponseFull(userRecipes, isLiked, rate, avgRate,isReported));
         }
         return responseFull;
     }
 
 
+    public UserRecipeResponse getUserRecipeInfo(long userRecipeId) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeId);
+        if (optionalUserRecipes.isPresent())
+        {
+            UserRecipes targetRecipe = optionalUserRecipes.get();
+            return new UserRecipeResponse(targetRecipe);
+        }
+        return null;
+    }
 }

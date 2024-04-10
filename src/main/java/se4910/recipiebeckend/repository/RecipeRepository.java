@@ -36,8 +36,8 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long>
     List<Long> findRecipesOrderByAvgRatings();
 
 
-    @Query("SELECT r FROM recipe r WHERE r.title LIKE %:targetWord% OR r.description LIKE %:targetWord%")
-    List<Recipe> searchInTitleAndDescription(String targetWord);
+    @Query("SELECT r FROM recipe r WHERE r.title LIKE %:targetWord% ")
+    List<Recipe> searchInTitle(String targetWord);
 
 
     List<Recipe> findAllBy(Pageable pageable);

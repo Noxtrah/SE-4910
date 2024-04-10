@@ -10,6 +10,7 @@ import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.repository.PlannerRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,25 +20,25 @@ public class PlannerService {
 
     PlannerRepository plannerRepository;
 
-    public List<String> getCurrentData(User currentUser)
-    {
-       Optional<MealPlanner> optionalMealPlanner = plannerRepository.findByUser(currentUser);
-       if (optionalMealPlanner.isPresent())
-       {
-           MealPlanner mealPlanner = optionalMealPlanner.get();
-           List<String> currentPlanner = new ArrayList<String>();
+    public ArrayList<ArrayList<String>> getCurrentData(User currentUser) {
+        Optional<MealPlanner> optionalMealPlanner = plannerRepository.findByUser(currentUser);
+        if (optionalMealPlanner.isPresent()) {
+            MealPlanner mealPlanner = optionalMealPlanner.get();
+            ArrayList<ArrayList<String>> currentPlanner = new ArrayList<>();
 
-           currentPlanner.add(mealPlanner.getMonday());
-           currentPlanner.add(mealPlanner.getTuesday());
-           currentPlanner.add(mealPlanner.getWednesday());
-           currentPlanner.add(mealPlanner.getThursday());
-           currentPlanner.add(mealPlanner.getFriday());
-           currentPlanner.add(mealPlanner.getSaturday());
-           currentPlanner.add(mealPlanner.getSunday());
-           return currentPlanner;
-       }
-       return null;
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getMonday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getTuesday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getWednesday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getThursday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getFriday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getSaturday().split(","))));
+            currentPlanner.add(new ArrayList<>(Arrays.asList(mealPlanner.getSunday().split(","))));
+
+            return currentPlanner;
+        }
+        return null;
     }
+
 
     public ResponseEntity<?> savePlanner(User currentUser, ArrayList<ArrayList<String>> plannerData)
     {
@@ -67,18 +68,17 @@ public class PlannerService {
         return new ResponseEntity<>(mealPlanner,HttpStatus.OK);
     }
 
-    private MealPlanner fillPlanner(MealPlanner mealPlanner,  ArrayList<ArrayList<String>> plannerData)
-    {
-        mealPlanner.setMonday(plannerData.get(0).toString());
-        mealPlanner.setTuesday(plannerData.get(1).toString());
-        mealPlanner.setWednesday(plannerData.get(2).toString());
-        mealPlanner.setThursday(plannerData.get(3).toString());
-        mealPlanner.setFriday(plannerData.get(4).toString());
-        mealPlanner.setSaturday(plannerData.get(5).toString());
-        mealPlanner.setSunday(plannerData.get(6).toString());
+    private MealPlanner fillPlanner(MealPlanner mealPlanner, ArrayList<ArrayList<String>> plannerData) {
+        mealPlanner.setMonday(String.join(",", plannerData.get(0)));
+        mealPlanner.setTuesday(String.join(",", plannerData.get(1)));
+        mealPlanner.setWednesday(String.join(",", plannerData.get(2)));
+        mealPlanner.setThursday(String.join(",", plannerData.get(3)));
+        mealPlanner.setFriday(String.join(",", plannerData.get(4)));
+        mealPlanner.setSaturday(String.join(",", plannerData.get(5)));
+        mealPlanner.setSunday(String.join(",", plannerData.get(6)));
         return mealPlanner;
-
     }
+
 
     public ResponseEntity<String> clearMealPlanner(User currentUser) {
         Optional<MealPlanner> optionalMealPlanner = plannerRepository.findByUser(currentUser);

@@ -17,6 +17,7 @@ import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.response.UserRecipeResponseFull;
 import se4910.recipiebeckend.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -41,14 +42,14 @@ public class UserRecipeController extends ParentController{
     @Autowired
     UserRecipeService userRecipeService;
 
-    private List<UserRecipes> cachedData;
+    private List<UserRecipes> cachedData = new ArrayList<>();
 
-    private List<UserRecipeResponseFull> cachedDataExtended;
-    @GetMapping("/paging-user-dashboard")
-    public List<UserRecipeResponseFull> paging(@RequestParam(name = "key", defaultValue = "0") int key)
+    private List<UserRecipeResponseFull> cachedDataExtended = new ArrayList<>();
+
+
+    public List<UserRecipeResponseFull> paging(int key)
     {
-        cachedDataExtended =  userRecipeService.doPagingUR(cachedDataExtended,key);
-        return cachedDataExtended;
+       return userRecipeService.doPagingUR(cachedDataExtended,key);
 
     }
 
@@ -60,14 +61,20 @@ public class UserRecipeController extends ParentController{
         }
     }
 
+    @GetMapping("/user-recipe-byID")
+    public UserRecipeResponse getUserRecipeInfo(@RequestParam long userRecipeId)
+    {
+       return userRecipeService.getUserRecipeInfo(userRecipeId);
+    }
+
     @GetMapping("/home-user-dashboard")
-    public List<UserRecipeResponseFull> getCustomDataUserDashboard(Authentication authentication)
+    public List<UserRecipeResponseFull> getCustomDataUserDashboard(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         cachedData = userRecipeService.getAllRecipesUR();
         setCachedData(cachedData);
         updateCachedData(currentUser);
-        return paging(0);
+        return paging(key);
 
     }
 
@@ -84,12 +91,12 @@ public class UserRecipeController extends ParentController{
     }
 
     @PostMapping("/give-like-user-recipes")
-    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long userReciceId, Authentication authentication)
+    public ResponseEntity<String> giveOneLikeUserRecipes(@RequestParam long userRecipeId, Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
-            return favService.giveOneLikeUserRecipes(userReciceId,currentUser);
+            return favService.giveOneLikeUserRecipes(userRecipeId,currentUser);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 

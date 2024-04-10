@@ -19,6 +19,7 @@ import se4910.recipiebeckend.response.UserRecipeResponseFull;
 import se4910.recipiebeckend.service.RecipeService;
 import se4910.recipiebeckend.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,9 +38,9 @@ public class RecipeController extends ParentController{
     UserService userService;
 
 
-    private List<Recipe> cachedData;
+    private List<Recipe> cachedData = new ArrayList<>();
 
-    private List<RecipeResponse> cachedDataExtended;
+    private List<RecipeResponse> cachedDataExtended = new ArrayList<>();
 
     @GetMapping("/all-recipes")
     public List<Recipe> getAllRecipes()
@@ -55,7 +56,7 @@ public class RecipeController extends ParentController{
 
 
     @GetMapping("/paging")
-    public List<RecipeResponse> paging( @RequestParam(name = "key", defaultValue = "0") int key)
+    public List<RecipeResponse> paging( @RequestParam(name = "key") int key)
     {
         return  recipeService.doPaging(cachedDataExtended,key);
     }

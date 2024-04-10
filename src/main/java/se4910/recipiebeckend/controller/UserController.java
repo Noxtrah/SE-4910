@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.request.ProfileInfoRequest;
+import se4910.recipiebeckend.request.ReportRecipeRequest;
 import se4910.recipiebeckend.request.UserRecipeRequest;
 import se4910.recipiebeckend.response.UserFavoritesResponse;
 import se4910.recipiebeckend.response.UserInfoResponse;
@@ -119,6 +120,18 @@ public class UserController extends ParentController {
     }
 
 
+    @PostMapping("/report-recipe")
+    public ResponseEntity<String> reportOneRecipe(@RequestBody ReportRecipeRequest reportRecipeRequest, Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return userService.reportOneRecipe(reportRecipeRequest.getUserRecipeId() , reportRecipeRequest.getReportCause() , currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @GetMapping("/user-favorites")
     public ResponseEntity<List<UserFavoritesResponse>> getOneUserFavorites(Authentication authentication)
     {
@@ -142,12 +155,20 @@ public class UserController extends ParentController {
 
     }
 
-    @GetMapping("/user-profile-info")
-    public ResponseEntity<UserInfoResponse> getUserInfo(@RequestParam String username)
-    {
 
-        return userService.getUserInfo(username);
+    @GetMapping("/user-profile-info")
+    public ResponseEntity<UserInfoResponse> getUserInfo(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return userService.getUserInfo(currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
+
+    //other users profile info
 
 
 

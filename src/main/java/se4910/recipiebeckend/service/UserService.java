@@ -8,9 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import se4910.recipiebeckend.entity.Report;
+import se4910.recipiebeckend.entity.ReportCause;
 import se4910.recipiebeckend.entity.User;
 
 import se4910.recipiebeckend.entity.UserRecipes;
+import se4910.recipiebeckend.repository.ReportRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
 import se4910.recipiebeckend.request.ProfileInfoRequest;
@@ -21,6 +24,7 @@ import se4910.recipiebeckend.response.UserRecipeResponse;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +36,8 @@ public class UserService implements UserDetailsService {
 
     RecipeService recipeService;
     UserRecipeRepository userRecipeRepository;
+
+    ReportRepository reportRepository;
     
 
     public List<User> getAllUsers() {
@@ -77,6 +83,7 @@ public class UserService implements UserDetailsService {
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
         userRecipes.setTitle(userRecipeRequest.getTitle());
         userRecipes.setUser(user);
+        userRecipes.setIsPublish(false);
 
         try {
             userRecipeRepository.save(userRecipes);
@@ -174,12 +181,10 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public ResponseEntity<UserInfoResponse> getUserInfo(String username)
+    public ResponseEntity<UserInfoResponse> getUserInfo(User currentUser)
     {
-
-        User targetUser = userRepository.findUserByUsername(username);
-        List<UserRecipes> userRecipesList = recipeService.publishedRecipesOneUser(username);
-        return new ResponseEntity<>(new UserInfoResponse(targetUser,userRecipesList),HttpStatus.OK);
+        List<UserRecipes> userRecipesList = recipeService.publishedRecipesOneUser(currentUser.getUsername());
+        return new ResponseEntity<>(new UserInfoResponse(currentUser,userRecipesList),HttpStatus.OK);
     }
 
 
@@ -193,5 +198,48 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>("recipe deleted",HttpStatus.OK);
         }
         return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<String> reportOneRecipe(long userRecipeId, ReportCause reportCause, User currentUser) {
+
+        Optional<UserRecipes> targetRecipe = userRecipeRepository.findById(userRecipeId);
+
+        if (targetRecipe.isPresent())
+        {
+            Optional<Report> optionalReport = reportRepository.findByUserAndUserRecipes(currentUser,targetRecipe.get());
+            if (optionalReport.isPresent())
+            {
+                return new ResponseEntity<>("You have already reported this recipe." , HttpStatus.ALREADY_REPORTED);
+            }
+            else {
+
+                if (isLimitExceed(targetRecipe.get(),reportCause))
+                {
+                     userRecipeRepository.delete(targetRecipe.get());
+                     return new ResponseEntity<>("This recipe has been removed because it reached the reporting limit",HttpStatus.OK);
+                }
+                else {
+                    Report report = new Report();
+                    report.setRepNum(report.getRepNum()+1);
+                    report.setUser(currentUser);
+                    report.setReportCause(reportCause);
+                    report.setUserRecipes(targetRecipe.get());
+                    reportRepository.save(report);
+                }
+
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    private Boolean isLimitExceed(UserRecipes userRecipes, ReportCause reportCause) {
+
+        return (reportRepository.findByUserRecipesAndReportCause(userRecipes, reportCause).size() + 1) >= reportCause.getLimit();
+    }
+
+    public boolean checkReport(User currentUser, UserRecipes userRecipes) {
+
+        return (reportRepository.findByUserAndUserRecipes(currentUser,userRecipes)).isPresent();
     }
 }

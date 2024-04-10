@@ -312,26 +312,12 @@ public class RecipeService {
     }
 
     public List<Recipe> BasicSearch(String targetWord,User currentUser) {
-
-        return recipeRepository.searchInTitleAndDescription(targetWord);
-
+        return recipeRepository.searchInTitle(targetWord);
     }
 
     public void lowerRecipe()
     {
         recipeRepository.lowerIngredients();
-    }
-
-
-    public List<UserRecipeResponseFull> getUserRecipes() {
-        return userRecipeRepository.findByIsPublishTrue().stream()
-                .map(userRecipes -> new UserRecipeResponseFull(
-                        userRecipes,
-                        null, // isLiked
-                        0,    // rate
-                        ratesService.GetAvgRatesByUserRecipeId(userRecipes.getId())
-                ))
-                .collect(Collectors.toList());
     }
 
 

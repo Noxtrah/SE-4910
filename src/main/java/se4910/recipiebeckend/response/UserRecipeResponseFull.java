@@ -10,14 +10,16 @@ public class UserRecipeResponseFull extends UserRecipeResponse{
 
 
     Boolean isLiked;
+    Boolean isReported;
     int rate;
     double avgRate;
 
 
-    public UserRecipeResponseFull(UserRecipes userRecipes, Boolean isLiked, int rate, double avgRate) {
+    public UserRecipeResponseFull(UserRecipes userRecipes, Boolean isLiked, int rate, double avgRate,Boolean isReported) {
         super(userRecipes);
         this.isLiked = isLiked;
         this.rate = rate;
         this.avgRate = avgRate;
+        this.isReported = isReported;
     }
 }
