@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Add JavaScript here
     var allergicFoods = [
+        "Nothing",
         "Egg",
         "Milk",
         "Peanut",
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Perform the fetch POST request to update the password
-        fetch('/update-password-endpoint', {
+      /*  fetch('/update-password-endpoint', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error updating password:', error);
         });
-
+    */
         // Perform the fetch POST request to update the user profile information
-        fetch('/update-profile-endpoint', {
-            method: 'POST',
+        fetch('https://recipiebeckend.azurewebsites.net/user/save-user-profile', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },

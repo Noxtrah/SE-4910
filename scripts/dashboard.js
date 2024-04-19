@@ -656,7 +656,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-//    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+   // const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
 
     const headers = {
         'Content-Type': 'application/json',

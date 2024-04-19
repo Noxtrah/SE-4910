@@ -83,9 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 
-
-
-
 async function getUserInfo() {
     try {
         const apiURL = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info';
@@ -120,3 +117,14 @@ function setupBackButton() {
   window.onload = function () {
     setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
   };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var editProfileButton = document.getElementById("editProfileButton");
+    
+    if (editProfileButton) {
+        editProfileButton.addEventListener("click", function () {
+            window.location.href = "userEditProfile.html";
+        });
+    }
+});
+
