@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/adminPanel.css">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="#" onclick="openTab('dashboard')">Dashboard</a></li>
+            <li><a href="#" onclick="openTab('reports')">Reports</a></li>
+            <li><a href="#" onclick="openTab('users')">Users</a></li>
+            <li><a href="#" onclick="openTab('settings')">Settings</a></li>
+        </ul>
+    </div>
+    
+    <div class="content-container">
+        <div class="content" id="dashboard">
+            <h2>Dashboard</h2>
+            <p>Welcome to the dashboard!</p>
+        </div>
+
+        <div class="content" id="reports">
+            <h2>Reports</h2>
+            <p>New reports will be displayed here.</p>
+            <div class="reports-grid-container">
+                <div class="reports-grid" id="reports-grid">
+                    <!-- Dynamic content will be added here -->
+                </div>
+            </div>
+        </div>
+    
+        <div class="content" id="users">
+            <h2>Users</h2>
+            <p>List of users will be displayed here.</p>
+        </div>
+    
+        <div class="content" id="settings">
+            <h2>Settings</h2>
+            <p>Admin settings will be shown here.</p>
+        </div>
+    </div>
+</body>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="../scripts/adminPanel.js"></script>
+</html>

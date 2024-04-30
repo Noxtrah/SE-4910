@@ -144,6 +144,7 @@ const createRecipeElement = async (recipe) => {
     const imgDiv = document.createElement('div');
     imgDiv.classList.add('imgDiv');
     imgDiv.style.cursor = 'pointer';
+    
     const img = document.createElement('img');
     img.src = recipe.photoPath;
     img.alt = 'Recipe Photo';
@@ -152,12 +153,7 @@ const createRecipeElement = async (recipe) => {
     img.style.maxWidth = '100%'; // Adjust this value as needed
     img.style.height = '100%'; // Maintain aspect ratio
 
-    // Apply CSS to constrain image size
-    link.style.width = '100%'; // Adjust width as needed
-    link.style.height = '100%'; // Adjust height as needed
-    link.style.cursor = 'pointer';
-
-    // link.appendChild(img);
+    link.appendChild(img);
     imgDiv.appendChild(link);
 
     const starContainer = document.createElement('div');
@@ -205,8 +201,6 @@ const createRecipeElement = async (recipe) => {
     const heartContainer = document.createElement('span');
     heartContainer.classList.add('heart-border'); 
     heartContainer.textContent = '♥';
-
-    document.body.appendChild(heartContainer);
 
     heartContainer.classList.add('favorite-heart');
     if(recipe.isLiked){
@@ -264,22 +258,11 @@ const createRecipeElement = async (recipe) => {
     alertContainer.classList.add('alert');
     alertContainer.classList.add('alert-border');
     alertContainer.setAttribute('name','alert-outline');
+    alertContainer.addEventListener('click', function() {
+        createPopup(recipe.title);
+    });
 
-    document.body.appendChild(alertContainer);
-
-    function handleAnimationDelay() {
-        if (!animationDelayActive) {
-          animationDelayActive = true;
-          alertContainer.classList.add('no-animation');
-          setTimeout(function() {
-            alertContainer.classList.remove('no-animation');
-            animationDelayActive = false;
-          }, 1000); // 1000 milliseconds = 1 second
-        }
-      }
-      
-      // Add click event listener to trigger animation and delay
-      alertContainer.addEventListener('click', handleAnimationDelay);
+    imgDiv.appendChild(alertContainer);
 
     // Title
     const titleDiv = document.createElement('div');
@@ -289,12 +272,116 @@ const createRecipeElement = async (recipe) => {
     // Append stars and heart to the recipeDiv
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
-    recipeDiv.appendChild(starContainer);
-    recipeDiv.appendChild(heartContainer);
-    recipeDiv.appendChild(alertContainer)
 
     return recipeDiv;
 };
+
+function createPopup(recipeName) {
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.id = 'popup1';
+    overlay.classList.add('overlay');
+
+    // Create pop-up element
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
+
+    const windowHeight = window.innerHeight;
+    const popupHeight = popup.offsetHeight;
+    const newTop = Math.max((windowHeight - popupHeight) / 2, 0);
+    popup.style.top = newTop + 'px';
+
+    // Pop-up title
+    const title = document.createElement('h2');
+    title.textContent = `Report '${recipeName}' Recipe`;
+
+    // Close button
+    const closeButton = document.createElement('a');
+    closeButton.classList.add('close');
+    closeButton.href = '#';
+    closeButton.textContent = '×'; // Close symbol
+    closeButton.addEventListener('click', function() {
+        overlay.remove(); // Remove overlay when close button is clicked
+    });
+
+    // Checkboxes
+    const checkboxContainer = document.createElement('div');
+    checkboxContainer.classList.add('report-checkbox');
+    
+    const labelArray = ['Inappropriate Content', 'Misleading Information', 'Safety Concerns'];
+    
+    for (let i = 0; i < 3; i++) {
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.classList.add('checkbox-container'); // Add class for positioning
+        const checkboxInput = document.createElement('input');
+        checkboxInput.type = 'checkbox';
+        checkboxInput.classList.add('checkbox');
+        checkboxDiv.appendChild(checkboxInput);
+    
+        const checkboxLabel = document.createElement('label');
+        checkboxLabel.classList.add('checkbox-label');
+        checkboxLabel.textContent = labelArray[i];
+        checkboxDiv.appendChild(checkboxLabel);
+    
+        checkboxContainer.appendChild(checkboxDiv); // Append the container div
+    }
+
+    // Pop-up content
+    const content = document.createElement('div');
+    content.classList.add('content');
+    content.textContent = "Please write below to provide any additional details or comments regarding your report";
+
+    const textboxContainer = document.createElement('div');
+    textboxContainer.classList.add('textbox-container');
+
+    // Create textarea element
+    const textarea = document.createElement('textarea');
+    textarea.id = 'additional-notes';
+    textarea.rows = 4;
+    textarea.cols = 50;
+    textarea.placeholder = 'Type your additional notes here...';
+
+    // Append textarea to the container
+    textboxContainer.appendChild(textarea);
+
+    const sendReportButton = document.createElement('button');
+    sendReportButton.textContent = 'Submit';
+
+    // Add classes to button (optional)
+    sendReportButton.classList.add('send-report-button');
+
+    // Add click event listener (optional)
+    sendReportButton.addEventListener('click', function() {
+        // Check if thank_content already exists
+        let thank_content = document.querySelector('.thank-content');
+    
+        // If thank_content exists, update its text content
+        if (thank_content) {
+            thank_content.textContent = "Your report has already been sent.";
+        } else {
+            // If thank_content doesn't exist, create and append it
+            thank_content = document.createElement('div');
+            thank_content.classList.add('thank-content');
+            thank_content.textContent = "Your report has been sent successfully.";
+            popup.appendChild(thank_content);
+        }
+    });
+
+
+    // Append elements to pop-up
+    popup.appendChild(title);
+    popup.appendChild(closeButton);
+    popup.appendChild(checkboxContainer);
+    popup.appendChild(content);
+    popup.appendChild(textboxContainer);
+    popup.appendChild(sendReportButton);
+
+    // Append pop-up to overlay
+    overlay.appendChild(popup);
+
+    // Append overlay to body
+    document.body.appendChild(overlay);
+}
 
 function setLike(heartContainer, recipe) {
     if (heartContainer.style.color == 'red') {

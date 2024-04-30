@@ -5,6 +5,7 @@
     --purple: #927fbf;
     --light_purple: #c4bbf0;
     --background_color: rgb(205, 199, 208);
+    --transparent_dark_grey: 54, 59, 78;
 }
 
 body {
@@ -125,67 +126,6 @@ header {
   .btn-block {
     width: 100%;
   }
-  
-  /* alerts */
-  .alert {
-    padding: 0.375rem 0.75rem;
-    margin-bottom: 1rem;
-    border-color: transparent;
-    border-radius: var(--borderRadius);
-  }
-  
-  .alert-danger {
-    color: var(--red-dark);
-    background: var(--red-light);
-  }
-  .alert-success {
-    color: var(--green-dark);
-    background: var(--green-light);
-  }
-  /* form */
-  
-  /* .form {
-    width: 90vw;
-    max-width: var(--fixed-width);
-    background: var(--white);
-    border-radius: var(--borderRadius);
-    box-shadow: var(--shadow-2);
-    padding: 2rem 2.5rem;
-    margin: 3rem auto;
-  }
-  .form-label {
-    display: block;
-    font-size: var(--smallText);
-    margin-bottom: 0.5rem;
-    text-transform: capitalize;
-    letter-spacing: var(--letterSpacing);
-  }
-  .form-input,
-  .form-textarea {
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    border-radius: var(--borderRadius);
-    background: var(--backgroundColor);
-    border: 1px solid var(--grey-200);
-  }
-  
-  .form-row {
-    margin-bottom: 1rem;
-  }
-  
-  .form-textarea {
-    height: 7rem;
-  }
-  ::placeholder {
-    font-family: inherit;
-    color: var(--grey-400);
-  }
-  .form-alert {
-    color: var(--red-dark);
-    letter-spacing: var(--letterSpacing);
-    text-transform: capitalize;
-  } */
-  /* alert */
   
   @keyframes spinner {
     to {
@@ -1985,6 +1925,136 @@ header {
 
   .no-animation {
     pointer-events: none;
+  }
+
+  .popup {
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(var(--transparent_dark_grey), 0.9);
+    /* background: var(--dark_grey); */
+    border-radius: 5px;
+    width: 30%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+    color: var(--light_purple);
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--light_purple);
+  }
+  .popup .close:hover {
+    color: var(--purple);
+  }
+  .popup .content {
+    max-height: 30%;
+    overflow: auto;
+  }
+
+  .content{
+    color: var(--light_purple);
+  }
+
+  .report-checkbox input[type="checkbox"] {
+    position: relative;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    color: black;
+    border: 1px solid var(--purple);
+    border-radius: 8px;
+    appearance: none;
+    outline: 0;
+    cursor: pointer;
+    transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+  }
+  
+  .report-checkbox input[type="checkbox"]::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 4px;
+    left: 8px;
+    width: 8px;
+    height: 14px;
+    border-style: solid;
+    border-color: var(--dark_grey);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+    opacity: 0;
+  }
+  
+  .report-checkbox input[type="checkbox"]:checked {
+    color: white;
+    border-color: var(--light_purple);
+    background: var(--purple);
+  }
+  
+  .report-checkbox input[type="checkbox"]:checked::before {
+    opacity: 1;
+  }
+
+  .checkbox-container {
+    position: relative; /* Make the container position relative */
+    margin-bottom: 10px; /* Add margin bottom to separate each checkbox-label pair */
+}
+
+  .checkbox-label {
+      color: var(--light_purple);
+      position: absolute; /* Position the label absolutely */
+      top: 50%; /* Move the label down by 50% of its container's height */
+      transform: translateY(-55%); /* Adjust the label upward by 50% of its own height */
+      margin-left: 5px; /* Adjust margin-left for spacing between checkbox and label */
+  }
+
+  .textbox-container {
+    margin-top: 20px;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+  }
+
+  .send-report-button {
+    padding: 10px 20px;
+    background-color: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: auto;
+    display: inline-block;
+    float: right;
+}
+
+/* Optional: Add hover effect */
+  .send-report-button:hover {
+      border: 2px solid var(--light_purple);
+      padding: 8px 18px;
+  }
+
+  .thank-content{
+    position: relative;
+    color: var(--light_purple);
+    margin-top: 20px;
+    width: 80%;
   }
 
   .imgDiv{
