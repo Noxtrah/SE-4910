@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Sortable.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Meal Planner</h1>
+    </header>
+    <main>
+        <h2>Weekly Meal Plan</h2>
+
+        <section class="meal-plan" id="sortable-section">
+            <div class="day" data-day="Monday">
+                <h3>Monday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="day" data-day="Tuesday">
+                <h3>Tuesday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <!-- Repeat for other days -->
+        </section>
+        
+        <section id="shopping-list">
+            <h2>Shopping List</h2>
+            <ul>
+                <!-- Shopping list items go here -->
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Meal Planner. All rights reserved.</p>
+    </footer>
+
+    <!-- Popup Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Course</h2>
+            <div>
+                <h3>Breakfast:</h3>
+                <input type="text" id="breakfastInput" placeholder="Enter breakfast...">
+            </div>
+            <div>
+                <h3>Lunch:</h3>
+                <input type="text" id="lunchInput" placeholder="Enter lunch...">
+            </div>
+            <div>
+                <h3>Dinner:</h3>
+                <input type="text" id="dinnerInput" placeholder="Enter dinner...">
+            </div>
+            <button id="saveBtn">Save</button>
+        </div>
+    </div>
+
+    <script>
+        var selectedDay; // To keep track of the selected day
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btns = document.getElementsByClassName("add-item");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].onclick = function() {
+                selectedDay = this.parentElement.parentElement.dataset.day;
+                modal.style.display = "block";
+
+                // If there are existing items, fill the input fields with existing values
+                var existingItems = document.querySelector(".day[data-day='" + selectedDay + "'] .items").getElementsByTagName("li");
+                for (var j = 0; j < existingItems.length; j++) {
+                    var text = existingItems[j].textContent;
+                    if (text.includes("Breakfast:")) {
+                        document.getElementById("breakfastInput").value = text.replace("Breakfast:", "").trim();
+                    } else if (text.includes("Lunch:")) {
+                        document.getElementById("lunchInput").value = text.replace("Lunch:", "").trim();
+                    } else if (text.includes("Dinner:")) {
+                        document.getElementById("dinnerInput").value = text.replace("Dinner:", "").trim();
+                    }
+                }
+            }
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks on Save, add the item to the list and close the modal
+        document.getElementById("saveBtn").onclick = function() {
+            var itemsList = document.querySelector(".day[data-day='" + selectedDay + "'] .items");
+            var breakfastInput = document.getElementById("breakfastInput").value;
+            var lunchInput = document.getElementById("lunchInput").value;
+            var dinnerInput = document.getElementById("dinnerInput").value;
+
+            // Clear existing items first
+            itemsList.innerHTML = "";
+
+            if (breakfastInput !== "") {
+                var liBreakfast = document.createElement("li");
+                liBreakfast.textContent = "Breakfast: " + breakfastInput;
+                itemsList.appendChild(liBreakfast);
+            }
+
+            if (lunchInput !== "") {
+                var liLunch = document.createElement("li");
+                liLunch.textContent = "Lunch: " + lunchInput;
+                itemsList.appendChild(liLunch);
+            }
+
+            if (dinnerInput !== "") {
+                var liDinner = document.createElement("li");
+                liDinner.textContent = "Dinner: " + dinnerInput;
+                itemsList.appendChild(liDinner);
+            }
+
+            modal.style.display = "none";
+        }
+
+        // Close the modal if the user clicks anywhere outside of the modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Enable sorting
+        Sortable.create(document.getElementById('sortable-section'), {
+            animation: 150,
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            handle: '.day'
+        });
+    </script>
+</body>
+<style>
+/* Reset default margin and padding */
+body, h1, h2, h3, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    margin-top: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.meal-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.day {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    cursor: move; /* Make it draggable */
+}
+
+.day h3 {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#saveBtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#saveBtn:hover {
+    background-color: #45a049;
+}
+
+/* Added Styles */
+.modal-content div {
+    margin-bottom: 10px;
+}
+
+.modal-content h3 {
+    margin-bottom: 5px;
+}
+</style>
+</html>
