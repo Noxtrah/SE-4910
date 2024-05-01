@@ -255,7 +255,7 @@ function createWarningPopup(reportedItem) {
 
     // Pop-up content
     const content = document.createElement('div');
-    content.classList.add('content');
+    // content.classList.add('content');
     content.textContent = "Are you sure you want to permanently delete the selected recipe from the database? No return!";
 
     const textboxContainer = document.createElement('div');
