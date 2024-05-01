@@ -2,6 +2,7 @@
     --dark_cyan: darkcyan;
     --white: white;
     --body_background_color:  rgba(0, 139, 139, 0.171);
+    --body_bakcground_color_no_transparency: rgb(130, 216, 216);
     --black: black;
     --border_color: #ddd;
     --grey_text_color: #777;
@@ -45,7 +46,7 @@ body {
 }
 
 .sidebar li {
-    padding: 10px 20px;
+    padding: 12px 20px;
 }
 
 .sidebar a {
@@ -55,8 +56,18 @@ body {
     transition: 0.3s;
 }
 
-.sidebar a:hover {
-    background-color: #424874;
+.sidebar li:hover {
+    background-color: var(--body_bakcground_color_no_transparency);
+}
+
+.users-icon{
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+.settings-icon{
+    vertical-align: -10%;
+    margin-right: 12px;
 }
 
 .detail-sidebar-wrapper{
