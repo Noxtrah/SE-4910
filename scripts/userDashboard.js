@@ -259,7 +259,7 @@ const createRecipeElement = async (recipe) => {
     alertContainer.classList.add('alert-border');
     alertContainer.setAttribute('name','alert-outline');
     alertContainer.addEventListener('click', function() {
-        createPopup(recipe.title);
+        createPopup(recipe);
     });
 
     imgDiv.appendChild(alertContainer);
@@ -276,7 +276,7 @@ const createRecipeElement = async (recipe) => {
     return recipeDiv;
 };
 
-function createPopup(recipeName) {
+function createPopup(recipe) {
     // Create overlay element
     const overlay = document.createElement('div');
     overlay.id = 'popup1';
@@ -293,7 +293,7 @@ function createPopup(recipeName) {
 
     // Pop-up title
     const title = document.createElement('h2');
-    title.textContent = `Report '${recipeName}' Recipe`;
+    title.textContent = `Report '${recipe.title}' Recipe`;
 
     // Close button
     const closeButton = document.createElement('a');
@@ -310,21 +310,37 @@ function createPopup(recipeName) {
     
     const labelArray = ['Inappropriate Content', 'Misleading Information', 'Safety Concerns'];
     
-    for (let i = 0; i < 3; i++) {
+    const checkboxes = []; // Array to hold checkbox elements
+
+    for (let i = 0; i < labelArray.length; i++) {
         const checkboxDiv = document.createElement('div');
         checkboxDiv.classList.add('checkbox-container'); // Add class for positioning
+
         const checkboxInput = document.createElement('input');
         checkboxInput.type = 'checkbox';
         checkboxInput.classList.add('checkbox');
+        checkboxInput.setAttribute('data-index', i); // Set data-index attribute for identifying checkbox
         checkboxDiv.appendChild(checkboxInput);
-    
+
         const checkboxLabel = document.createElement('label');
         checkboxLabel.classList.add('checkbox-label');
         checkboxLabel.textContent = labelArray[i];
         checkboxDiv.appendChild(checkboxLabel);
-    
+
         checkboxContainer.appendChild(checkboxDiv); // Append the container div
+        checkboxes.push(checkboxInput); // Push checkbox input to array
     }
+
+    // Add event listener to checkboxes to allow only one selection
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('click', function() {
+            checkboxes.forEach(function(cb) {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+        });
+    });
 
     // Pop-up content
     const content = document.createElement('div');
@@ -352,18 +368,47 @@ function createPopup(recipeName) {
 
     // Add click event listener (optional)
     sendReportButton.addEventListener('click', function() {
-        // Check if thank_content already exists
-        let thank_content = document.querySelector('.thank-content');
+        let selectedCause = null;
     
-        // If thank_content exists, update its text content
-        if (thank_content) {
-            thank_content.textContent = "Your report has already been sent.";
+        // Find the selected checkbox
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                // Map the selected checkbox label to the corresponding report cause
+                switch (checkbox.nextElementSibling.textContent) {
+                    case 'Inappropriate Content':
+                        selectedCause = 'INAPPROPRIATE_IMAGE';
+                        break;
+                    case 'Misleading Information':
+                        selectedCause = 'WRONG_INGREDIENT';
+                        break;
+                    case 'Safety Concerns':
+                        selectedCause = 'UNHEALTHY_RECIPE';
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    
+        // Check if a checkbox is selected
+        if (selectedCause) {
+            // Call reportRecipe function with the selected cause
+            reportRecipe(recipe.id, selectedCause);
+            let thank_content = document.querySelector('.thank-content');
+        
+            // If thank_content exists, update its text content
+            if (thank_content) {
+                thank_content.textContent = "Your report has already been sent.";
+            } else {
+                // If thank_content doesn't exist, create and append it
+                thank_content = document.createElement('div');
+                thank_content.classList.add('thank-content');
+                thank_content.textContent = "Your report has been sent successfully.";
+                popup.appendChild(thank_content);
+            }
         } else {
-            // If thank_content doesn't exist, create and append it
-            thank_content = document.createElement('div');
-            thank_content.classList.add('thank-content');
-            thank_content.textContent = "Your report has been sent successfully.";
-            popup.appendChild(thank_content);
+            // If no checkbox is selected, display an error message or handle it accordingly
+            console.error('Please select a report cause.');
         }
     });
 
@@ -443,8 +488,8 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   //const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
-   const apiUrl = 'https://run.mocky.io/v3/02b4eb52-ad5d-4638-bb35-19a136c1f4f1 ';
+   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+//    const apiUrl = 'https://run.mocky.io/v3/02b4eb52-ad5d-4638-bb35-19a136c1f4f1 ';
 
     const headers = {
         'Content-Type': 'application/json',
@@ -767,7 +812,7 @@ $('#pagination-demo').twbsPagination({
 });
 
 
-  function paging(key) {
+function paging(key) {
     key -= 1;
     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/paging-user-dashboard?key=' + key;
     fetch(apiUrl)
@@ -782,3 +827,36 @@ $('#pagination-demo').twbsPagination({
     })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+function reportRecipe(userRecipeId, reportCause) {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const url = 'https://recipiebeckend.azurewebsites.net/user/report-recipe';
+    const requestBody = {
+      userRecipeId: userRecipeId,
+      reportCause: reportCause
+    };
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+      },
+      body: JSON.stringify(requestBody)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to report recipe');
+      }
+      console.log("Response", response);
+      return response.json();
+    })
+    .then(data => {
+      console.log('Recipe reported successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error reporting recipe:', error);
+        console.error('Response status:', error.response.status);
+        console.error('Response body:', error.response.body);
+    });
+  }

@@ -1928,17 +1928,30 @@ header {
   }
 
   .popup {
-    margin: 0 auto;
+    margin: 0px auto;
     padding: 20px;
+    padding-top: 45px;
     background: rgba(var(--transparent_dark_grey), 0.9);
     /* background: var(--dark_grey); */
     border-radius: 5px;
     width: 30%;
+    min-width: 300px;
+    min-height: 520px;
+    /* height: 52%; */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);;
   }
+
+  @media screen and (min-device-width: 481px) and (max-device-width: 1369px) { 
+    
+    .popup{
+      min-width: 50%;
+      min-height: 50%;
+      padding-top: 65px;
+    }
+}
   
   .popup h2 {
     margin-top: 0;
