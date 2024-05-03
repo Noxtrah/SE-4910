@@ -194,8 +194,14 @@ const createRecipeElement = async (recipe) => {
     averageRatingSpan.appendChild(starSpan);
     averageRatingSpan.appendChild(rateSpan);
 
-    recipeDiv.appendChild(averageRatingSpan);
-    recipeDiv.appendChild(starContainer);
+    const ratingDiv = document.createElement('div');
+    ratingDiv.classList.add('rating-div');
+
+    ratingDiv.appendChild(averageRatingSpan);
+    ratingDiv.appendChild(starContainer);
+
+    // recipeDiv.appendChild(averageRatingSpan);
+    // recipeDiv.appendChild(starContainer);
 
     // Create heart
     const heartContainer = document.createElement('span');
@@ -272,6 +278,27 @@ const createRecipeElement = async (recipe) => {
     // Append stars and heart to the recipeDiv
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
+
+    // Create a div for user information
+    const userDiv = document.createElement('div');
+    userDiv.classList.add('user-info');
+
+    // User Image
+    const userImgDiv = document.createElement('ion-icon');
+    userImgDiv.classList.add('user-img');    
+    userImgDiv.setAttribute('name','person-circle-outline');
+
+    userDiv.appendChild(userImgDiv);
+
+    // Username
+    const usernameSpan = document.createElement('span');
+    usernameSpan.textContent = recipe.username;
+    usernameSpan.classList.add('username');
+    userDiv.appendChild(usernameSpan);
+
+    // Append userDiv to recipeDiv
+    recipeDiv.appendChild(userDiv);
+    recipeDiv.appendChild(ratingDiv);
 
     return recipeDiv;
 };
