@@ -130,7 +130,7 @@ body {
     border-radius: 10px;
 }
 
-.selected-report-reason{
+.selected-recipe-report{
     color: var(--black);
     margin: 10px 1vw;
 }

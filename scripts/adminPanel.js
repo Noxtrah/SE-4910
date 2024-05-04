@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     openTab('dashboard');
     // fetchReports();
-    displayReports(staticReports);
+    // displayReports(staticReports);
 
 });
 
@@ -13,109 +13,105 @@ function openTab(tabName) {
         tabContent[i].classList.remove('show');
     }
 
+    // If the tab being clicked is "reports", call the fetchReports function
+    if (tabName === 'reports') {
+        fetchReports();
+    }
+
     document.getElementById(tabName).classList.add('show');
 }
 
-function fetchReports() {
-    // Assuming the server endpoint to fetch reports is '/api/reports'
-    fetch('/api/reports')
-        .then(response => response.json())
-        .then(data => {
-            displayReports(data);
-        })
-        .catch(error => {
-            console.error('Error fetching reports:', error);
-        });
+async function fetchReports() {
+    //apiUrl = "https://recipiebeckend.azurewebsites.net/admin/getReportedRecipes";
+    const apiUrl = "https://run.mocky.io/v3/2f77995b-227c-4b12-8a3a-2bb5816a972b";
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        const data = await response.json();
+        console.log("Data: " , data);
+        displayReports(data);
+    } catch (error) {
+        console.error('Error fetching reports:', error);
+    }
 }
 
-const staticReports = [
-    {
-        recipe: {
-            id: 1,
-            title: "Delicious Cake",
-            image: "../Images/background2.jpg" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Wrong Ingredient"
-    },
-    {
-        recipe: {
-            id: 2,
-            title: "Delicious Pie",
-            image: "../Images/background3.jpg" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Inappropriate content"
-    },
-    {
-        recipe: {
-            id: 3,
-            title: "Delicious Cake",
-            image: "../Images/background2.jpg" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Unhealthy Recipe"
-    },
-    {
-        recipe: {
-            id: 4,
-            title: "Delicious Pie",
-            image: "../Images/background3.jpg" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Safety Concerns"
-    },
-    {
-        recipe: {
-            id: 5,
-            title: "Delicious Cake",
-            image: "../Images/background2.jpg" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Misleading Information"
-    },
-    {
-        recipe: {
-            id: 6,
-            title: "Delicious Pizza",
-            image: "../Images/pizza.png" // Assuming pasta_image.jpg is in the Images folder
-        },
-        reason: "Inappropriate content"
-    },
-    // Add more static reports as needed
-];
-
-function displayReports(reports) {
+async function displayReports(reports) {
     const reportsGrid = document.getElementById('reports-grid');
 
     // Clear existing content
     reportsGrid.innerHTML = '';
 
     // Loop through each report and create a report item
-    reports.forEach(report => {
-        const reportItem = createReportItem(report);
-        reportsGrid.appendChild(reportItem);
-    });
+    for (const report of reports) {
+        try {
+            console.log("Report: ", report);
+            const reportItem = await createReportItem(report);
+            reportsGrid.appendChild(reportItem);
+        } catch (error) {
+            console.error("Error creating report item:", error);
+        }
+    }
 }
 
-function createReportItem(report) {
-    const reportItem = document.createElement('div');
-    reportItem.classList.add('report-item');
-    reportItem.dataset.recipeId = report.recipe.id;
 
-    // Recipe image
-    const recipeImage = document.createElement('img');
-    recipeImage.src = report.recipe.image;
-    recipeImage.alt = report.recipe.title;
-    reportItem.appendChild(recipeImage);
+async function createReportItem(report) {
+    try {
+        // Create a report item container
+        const reportItemContainer = document.createElement('div');
 
-    // Recipe details
+        // Check if the report is an array
+        if (Array.isArray(report)) {
+            // Iterate over each report in the array
+            report.forEach(async (item) => {
+                // Create report item for each report
+                const reportItem = await createSingleReportItem(item);
+                reportItemContainer.appendChild(reportItem);
+            });
+        } else {
+            // If it's a single report, create report item directly
+            const reportItem = await createSingleReportItem(report);
+            reportItemContainer.appendChild(reportItem);
+        }
+
+        return reportItemContainer;
+    } catch(error) {
+        console.error("Error: ", error);
+    }
+}
+
+async function createSingleReportItem(report) {
+    // Extract data from the report
+    const { userRecipeResponse, reportDetail } = report;
+
+    // Create elements for recipe details
     const recipeDetails = document.createElement('div');
     recipeDetails.classList.add('recipe-details');
 
     const recipeTitle = document.createElement('h3');
-    recipeTitle.textContent = report.recipe.title;
+    recipeTitle.textContent = userRecipeResponse.title;
     recipeDetails.appendChild(recipeTitle);
 
     const reportReason = document.createElement('p');
     reportReason.classList.add('report-reason');
-    reportReason.innerHTML = '<b>Report Reason:</b> ' + report.reason;
+    if (reportDetail && reportDetail.length > 0 && reportDetail[0].length > 1) {
+        reportReason.innerHTML = '<b>Report Reason:</b> ' + reportDetail[0][1];
+    } else {
+        reportReason.textContent = 'No report reason provided';
+    }
     recipeDetails.appendChild(reportReason);
+
+    // Create the report item
+    const reportItem = document.createElement('div');
+    reportItem.classList.add('report-item');
+
+    // Create recipe image
+    const recipeImage = document.createElement('img');
+    recipeImage.src = userRecipeResponse.photoPath || ''; // Set a default value for photoPath if it's null
+    recipeImage.alt = userRecipeResponse.title;
+    reportItem.appendChild(recipeImage);
 
     // Action buttons
     const actionButtons = document.createElement('div');
@@ -144,8 +140,9 @@ function createReportItem(report) {
 
     recipeDetails.appendChild(actionButtons);
 
+    // Append recipe details
     reportItem.appendChild(recipeDetails);
-    console.log(reportItem);
+
     return reportItem;
 }
 
@@ -162,7 +159,8 @@ function discardRecipe(recipeId) {
 
 function detailRecipe(report) {
     console.log('Report:', report);
-    const reportItem = document.querySelector(`.report-item[data-recipe-id="${report.recipe.id}"]`);
+    const reportRecipeResponse = report.userRecipeResponse;
+    const reportItem = document.querySelector(`.report-item[data-recipe-id="${reportRecipeResponse.id}"]`);
     console.log("Report Item:", reportItem);
 
     const detailSideBarWrapper = document.createElement('div');
@@ -181,6 +179,9 @@ function detailRecipe(report) {
 }
 
 function fillDetailSideBar(reportedItem, detailSideBar){
+    const reportRecipeResponse = reportedItem.userRecipeResponse;
+    const reportDetail = reportedItem.reportDetail;
+
     const closeIcon = document.createElement('span');
     closeIcon.classList.add('close-icon');
     closeIcon.innerHTML = '<ion-icon name="close-outline"></ion-icon>'
@@ -197,19 +198,59 @@ function fillDetailSideBar(reportedItem, detailSideBar){
 
     const selectedReportTitle = document.createElement('h2');
     selectedReportTitle.classList.add('selected-report-title');
-    selectedReportTitle.textContent = reportedItem.recipe.title;
+    selectedReportTitle.textContent = reportRecipeResponse.title;
     detailSideBar.appendChild(selectedReportTitle);
 
     const selectedReportImage = document.createElement('img');
     selectedReportImage.classList.add('selected-report-image');
-    selectedReportImage.src = reportedItem.recipe.image;
+    selectedReportImage.src = reportRecipeResponse.image;
     selectedReportImage.alt = 'Selected Report Image';
     detailSideBar.appendChild(selectedReportImage);
 
     const selectedReportReason = document.createElement('p');
-    selectedReportReason.classList.add('selected-report-reason');
-    selectedReportReason.innerHTML = '<b>Report Reason: </b>' +reportedItem.reason;
+    selectedReportReason.classList.add('selected-recipe-report');
+    selectedReportReason.innerHTML = '<b>Report Reason: </b>' + reportDetail[0][1];
     detailSideBar.appendChild(selectedReportReason);
+
+    const selectedAdditionalReportNotes = document.createElement('p');
+    selectedAdditionalReportNotes.classList.add('selected-recipe-report');
+    selectedAdditionalReportNotes.innerHTML = '<b>Additional Report Notes : </b>' + reportDetail[0][0];
+    detailSideBar.appendChild(selectedAdditionalReportNotes);
+
+    const selectedReportingUser = document.createElement('p');
+    selectedReportingUser.classList.add('selected-recipe-report');
+    selectedReportingUser.innerHTML = '<b>Reporting User: </b>' + reportDetail[0][2];
+    detailSideBar.appendChild(selectedReportingUser);
+
+    const selectedPublisher = document.createElement('p');
+    selectedPublisher.classList.add('selected-recipe-report');
+    selectedPublisher.innerHTML = '<b>Publisher of the Recipe : </b>' + reportRecipeResponse.username;
+    detailSideBar.appendChild(selectedPublisher);
+
+    const selectedIngredients = document.createElement('p');
+    selectedIngredients.classList.add('selected-recipe-report');
+    selectedIngredients.innerHTML = '<b>Ingredientes of the Recipe : </b>' + reportRecipeResponse.ingredients;
+    detailSideBar.appendChild(selectedIngredients);
+
+    const selectedDescription = document.createElement('p');
+    selectedDescription.classList.add('selected-recipe-report');
+    selectedDescription.innerHTML = '<b>Description of the Recipe : </b>' + reportRecipeResponse.description;
+    detailSideBar.appendChild(selectedIngredients);
+
+    const selectedMeal = document.createElement('p');
+    selectedMeal.classList.add('selected-recipe-report');
+    selectedMeal.innerHTML = '<b>Meal of the Recipe : </b>' + reportRecipeResponse.meal;
+    detailSideBar.appendChild(selectedMeal);
+
+    const selectedCuisine = document.createElement('p');
+    selectedCuisine.classList.add('selected-recipe-report');
+    selectedCuisine.innerHTML = '<b>Cuisine of the Recipe : </b>' + reportRecipeResponse.cuisine;
+    detailSideBar.appendChild(selectedCuisine);
+
+    const selectedPrepTime = document.createElement('p');
+    selectedPrepTime.classList.add('selected-recipe-report');
+    selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + reportRecipeResponse.preparationTime;
+    detailSideBar.appendChild(selectedPrepTime);
 }
 
 function closeDetailSidebar() {
@@ -227,6 +268,7 @@ function deleteRecipe(report) {
 
 function createWarningPopup(reportedItem) {
     // Create overlay element
+    const reportRecipeResponse = reportedItem.userRecipeResponse;
     const overlay = document.createElement('div');
     overlay.id = 'popup1';
     overlay.classList.add('overlay');
@@ -242,7 +284,7 @@ function createWarningPopup(reportedItem) {
 
     // Pop-up title
     const title = document.createElement('h2');
-    title.textContent = `Delete '${reportedItem.recipe.title}' Recipe`;
+    title.textContent = `Delete '${reportRecipeResponse.title}' Recipe`;
 
     // Close button
     const closeButton = document.createElement('a');
