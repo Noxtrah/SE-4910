@@ -1,11 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    openTab('dashboard');
-    // fetchReports();
-    // displayReports(staticReports);
-
+    // openReportsTab('reports');
 });
 
-function openTab(tabName) {
+function openReportsTab(tabName) {
     var i, tabContent;
 
     tabContent = document.getElementsByClassName("content");

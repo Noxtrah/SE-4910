@@ -1,0 +1,18 @@
+.content {
+    display: none;
+}
+.show {
+    display: block;
+}
+/* Additional styling for user rows */
+.user-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.user-photo {
+    margin-right: 10px;
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border-radius: 50%; /* For rounded images */
+}
