@@ -18,9 +18,9 @@
                         class="dashboard-icon"></ion-icon>Dashboard</a></li>
             <li><a href="#" onclick="openTab('reports')" data-tab="reports"><ion-icon name="newspaper-outline"
                         class="reports-icon"></ion-icon>Reports</a></li>
-            <li><a href="#" onclick="openUsersTab('users')" data-tab="users"><ion-icon name="people-outline"
+            <li><a href="#" onclick="openTab('users')" data-tab="users"><ion-icon name="people-outline"
                         class="users-icon"></ion-icon>Users</a></li>
-            <li><a href="#" onclick="openSettingsTab('settings')" data-tab="settings"><ion-icon name="settings-outline"
+            <li><a href="#" onclick="openTab('settings')" data-tab="settings"><ion-icon name="settings-outline"
                         class="settings-icon"></ion-icon>Settings</a></li>
         </ul>
     </div>
@@ -43,7 +43,54 @@
 
         <div class="content" id="users">
             <h2>Users</h2>
-            <p>List of users will be displayed here.</p>
+            <!-- <div class="user-list-table">
+                <div class="table-column-headers">
+                    <div class="table-column-header">Name</div>
+                    <div class="table-column-header">Email</div>
+                    <div class="table-column-header">Role</div>
+                </div>
+                <div id="userList" class="user-list">
+                    
+            </div> -->
+            <dir class="board">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Title</td>
+                            <td>Status</td>
+                            <td>Role</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="people">
+                                <img src="../Images/pizza.png" alt="">
+                                <div class="people-de">
+                                    <h5>John Doe</h5>
+                                    <p>john@hotmail.com</p>
+                                </div>
+                            </td>
+
+                            <td class="people-des">
+                                <h5>Full Stack Developer</h5>
+                                <p>Web Developer</p>
+                            </td>
+
+                            <td class="active">
+                                <p>Active</p>
+                            </td>
+
+                            <td class="role">
+                                <p>Owner</p>
+                            </td>
+
+                            <td class="edit"><a href="#">Edit</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dir>
         </div>
 
         <div class="content" id="settings">
@@ -58,6 +105,7 @@
 <script src="../scripts/adminPanelDashboardTab.js"></script>
 <script src="../scripts/adminPanelReportsTab.js"></script>
 <script src="../scripts/adminPanelUsersTab.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars/dist/handlebars.min.js"></script>
 
 <script>
     // Show the content of the "Dashboard" tab initially

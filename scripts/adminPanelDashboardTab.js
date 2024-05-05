@@ -11,7 +11,7 @@ function openDashboardTab(tabName) {
     }
 
     // If the tab being clicked is "reports", call the fetchReports function
-    if (tabName === 'users') {
+    if (tabName === 'adminDashboard') {
         // fetchUsers();
     }
 

@@ -31,6 +31,7 @@ function openTab(tabName) {
         openReportsTab('reports');
     } else if (tabName === 'users') {
         adjustedTabName = 'adminPanelUsersTab';
+        openUsersTab('users');
     } else if (tabName === 'settings') {
         adjustedTabName = 'adminPanelSettingsTab';
     } else {
@@ -71,6 +72,25 @@ function openReportsTab(tabName) {
     // If the tab being clicked is "reports", call the fetchReports function
     if (tabName === 'reports') {
         fetchReports();
+    }
+
+    document.getElementById(tabName).classList.add('show');
+}
+
+function openUsersTab(tabName) {
+    var i, tabContent;
+    console.log(tabName);
+
+
+    tabContent = document.getElementsByClassName("content");
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].classList.remove('show');
+    }
+
+    // If the tab being clicked is "reports", call the fetchReports function
+    if (tabName === 'users') {
+        // fetchUsers();
+        displayStaticUsers();
     }
 
     document.getElementById(tabName).classList.add('show');
