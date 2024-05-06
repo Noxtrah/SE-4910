@@ -31,7 +31,7 @@ function openTab(tabName) {
         openReportsTab('reports');
     } else if (tabName === 'users') {
         adjustedTabName = 'adminPanelUsersTab';
-        openUsersTab('users');
+        // openUsersTab('users');
     } else if (tabName === 'settings') {
         adjustedTabName = 'adminPanelSettingsTab';
     } else {

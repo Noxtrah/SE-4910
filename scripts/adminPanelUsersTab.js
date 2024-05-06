@@ -21,7 +21,7 @@ function displayUsers(users) {
         nameEmailDiv.classList.add('people-de');
 
         var nameHeader = document.createElement('h5');
-        nameHeader.textContent = user.name;
+        nameHeader.textContent = user.username;
 
         var emailParagraph = document.createElement('p');
         emailParagraph.textContent = user.email;
@@ -110,7 +110,25 @@ var users = [
     }
 ];
 
-displayUsers(users);
+async function fetchAllUsers() {
+    const apiUrl = "https://run.mocky.io/v3/51147056-22c6-49f7-a26f-2ef61fd95e5a";
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        const data = await response.json();
+        console.log("Data: ", data);
+        displayUsers(data);
+    } catch (error) {
+        console.error('Error fetching reports:', error);
+    }
+}
+
+fetchAllUsers();
+
+fetchAllUsers();
 
 function fetchUserDetail(username){
     //apiUrl = "https://recipiebeckend.azurewebsites.net/user/visit-user?username=username";
