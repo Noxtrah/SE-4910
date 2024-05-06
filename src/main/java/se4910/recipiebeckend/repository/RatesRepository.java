@@ -32,4 +32,10 @@ public interface RatesRepository extends JpaRepository<Rates,Long>{
     Optional<Rates>  findByRecipeAndUser(Recipe recipe, User user);
 
     Optional<Rates>  findByUserRecipesAndUser(UserRecipes userRecipes, User user);
+
+    @Query("SELECT r.recipe FROM rates r GROUP BY r.recipe.id ORDER BY AVG(r.rate) DESC LIMIT 5")
+    List<Recipe> findTop5RateRecipe();
+
+    @Query("SELECT r.userRecipes FROM rates r GROUP BY r.userRecipes.id ORDER BY AVG(r.rate) DESC LIMIT 5")
+    List<UserRecipes> findTop5RateUserRecipe();
 }

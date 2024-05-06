@@ -17,16 +17,16 @@ public class UserRecipeRequest {
     private String cuisine;
     private String meal;
     private int preparationTime;
-    private MultipartFile ProfilePhoto;
+    private MultipartFile recipePhoto;
 
 
-    public UserRecipeRequest(String title, String ingredients, String description, String cuisine, String meal, int preparationTime, MultipartFile profilePhoto) {
+    public UserRecipeRequest(String title, String ingredients, String description, String cuisine, String meal, int preparationTime, MultipartFile recipePhoto) {
         this.title = title;
         this.ingredients = ingredients;
         this.description = description;
         this.cuisine = cuisine;
         this.meal = meal;
         this.preparationTime = preparationTime;
-        ProfilePhoto = profilePhoto;
+        this.recipePhoto = recipePhoto;
     }
 }

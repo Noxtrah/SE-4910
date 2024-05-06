@@ -1,12 +1,13 @@
 package se4910.recipiebeckend.service;
 
-import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.azure.storage.blob.BlobServiceClient;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
@@ -14,17 +15,13 @@ import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.*;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.*;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-
-import java.io.InputStream;
-import java.net.URL;
+import java.util.UUID;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+
 public class RecipeService {
 
     RecipeRepository recipeRepository;
@@ -33,8 +30,12 @@ public class RecipeService {
     FavService favService;
     UserRecipeRepository userRecipeRepository;
     UserRepository userRepository;
-
     FavoritesRepository favoritesRepository;
+
+
+    @Autowired
+    private BlobServiceClient blobServiceClient;
+
 
     public List<Recipe> getAllRecipesBasic()
     {
@@ -49,7 +50,7 @@ public class RecipeService {
 
     }
 
-    public ResponseEntity<String> createRecipe(RecipeRequest recipeRequest)
+   /* public ResponseEntity<String> createRecipe(RecipeRequest recipeRequest)
     {
 
         if (recipeRequest.getIngredients() == null || recipeRequest.getTitle() == null)
@@ -68,15 +69,12 @@ public class RecipeService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    */
+
     public Recipe getRecipeByID(long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         return recipe.orElse(null);
     }
-
-
-    private final String sasToken = "?sp=raw&st=2024-03-11T20:05:15Z&se=2024-03-12T04:05:15Z&sip=149.0.177.113&spr=https&sv=2022-11-02&sr=c&sig=dHa277%2BLK%2FPRcQZkelaJOrzfIPl8AvWB0qOxftVmZik%3D";
-    private final String containerName = "recipeimages";
-    private final String storageConnectionString = "https://blobrecipeimages.blob.core.windows.net/";
 
     public ResponseEntity<String> createRecipeBlob(RecipeRequest recipeRequest) {
         if (recipeRequest.getIngredients() == null || recipeRequest.getTitle() == null) {
@@ -84,27 +82,8 @@ public class RecipeService {
         }
 
         try {
-            // Create the blob client with SAS token
-            CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString + sasToken);
-            CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-            CloudBlobContainer container = blobClient.getContainerReference(containerName);
 
-            // Open input stream to photo URL
-            URL photoUrl = new URL(recipeRequest.getPhotoPath());
-            InputStream photoStream = photoUrl.openStream();
-
-            // Get the file name from the photo path
-            String fileName = recipeRequest.getPhotoPath().substring(recipeRequest.getPhotoPath().lastIndexOf('/') + 1);
-
-            // Get reference to the blob
-            CloudBlockBlob blob = container.getBlockBlobReference(fileName);
-
-            // Upload the photo
-            blob.upload(photoStream, photoStream.available());
-
-            // Get the URL of the uploaded photo
-            String photoUrlString = blob.getUri().toString();
-
+            String photoUrlString = uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
             // Save recipe details to database
             Recipe recipe = new Recipe();
             recipe.setMeal(mealConverter(recipeRequest.getMeal()));
@@ -181,9 +160,13 @@ public class RecipeService {
                 recipe.setPreparationTime(recipeRequest.getPreparationTime());
             }
             if (recipeRequest.getPhotoPath() != null) {
-                recipe.setPhotoPath(recipeRequest.getPhotoPath());
-            }
 
+                System.out.println("photo update işlemi");
+                // Blob depolama işlemini gerçekleştir ve elde edilen URL'i al
+                String photoUrl = uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
+                // Elde edilen URL'i photoPath alanına ata
+                recipe.setPhotoPath(photoUrl);
+            }
             recipeRepository.save(recipe);
 
             return ResponseEntity.ok("Recipe updated successfully!" );
@@ -193,6 +176,41 @@ public class RecipeService {
             return ResponseEntity.notFound().build(); // Eğer reçete bulunamazsa 404 döndür
         }
     }
+
+    public String uploadPhotoToBlobStorage(MultipartFile photo) {
+
+        if (photo == null || photo.isEmpty()) {
+            throw new IllegalArgumentException("Photo is null or empty");
+        }
+
+
+        String containerName = "recipeimages";
+        String fileExtension = getFileExtension(Objects.requireNonNull(photo.getOriginalFilename()));
+        String fileName = generateUniqueFileName(fileExtension);
+        try {
+            blobServiceClient.getBlobContainerClient(containerName)
+                    .getBlobClient(fileName)
+                    .upload(photo.getInputStream(), photo.getSize());
+            return blobServiceClient.getBlobContainerClient(containerName).getBlobClient(fileName).getBlobUrl();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload photo to Blob Storage", e);
+        }
+    }
+
+    public String generateUniqueFileName(String fileExtension) {
+        return UUID.randomUUID().toString() + "." + fileExtension;
+    }
+
+    public String getFileExtension(String filename) {
+        int lastIndexOf = filename.lastIndexOf(".");
+        if (lastIndexOf == -1 || lastIndexOf == filename.length() - 1) {
+            throw new IllegalArgumentException("Invalid filename: " + filename);
+        }
+        return filename.substring(lastIndexOf + 1);
+    }
+
+
+
 
     public ResponseEntity<String> deleteRecipe(Long id)
     {

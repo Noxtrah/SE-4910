@@ -1,4 +1,6 @@
 package se4910.recipiebeckend.request;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Date;
 
 public class NewUserRequest {
@@ -17,6 +19,7 @@ public class NewUserRequest {
     private String lastName;
     private String username;
     private String email;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthDay;
     private String password;
 

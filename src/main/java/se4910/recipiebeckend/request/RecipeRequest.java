@@ -1,6 +1,13 @@
 package se4910.recipiebeckend.request;
 
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+
+@Getter
+@Setter
 public class RecipeRequest {
 
     public Long getId() {
@@ -19,15 +26,9 @@ public class RecipeRequest {
     private String meal;
     private int preparationTime;
 
-    private String photoPath;
+    private MultipartFile photoPath;
 
-    public String getPhotoPath() {
-        return photoPath;
-    }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-    }
 
     public String getTitle() {
         return title;

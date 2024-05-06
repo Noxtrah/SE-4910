@@ -27,7 +27,7 @@ import java.util.List;
 @Setter
 @RestController
 @RequestMapping(value = "/recipes", produces = MediaType.APPLICATION_JSON_VALUE)
-// @CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RecipeController extends ParentController{
 
     @Autowired
@@ -55,7 +55,6 @@ public class RecipeController extends ParentController{
     }
 
 
-    @GetMapping("/paging")
     public List<RecipeResponse> paging( @RequestParam(name = "key") int key)
     {
         return  recipeService.doPaging(cachedDataExtended,key);
@@ -71,29 +70,29 @@ public class RecipeController extends ParentController{
 
     //*************************************************************************
     @GetMapping("/home")
-    public List<RecipeResponse> home(Authentication authentication)
+    public List<RecipeResponse> home(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication)
     {
             User currentUser = getCurrentUser(authentication);
             cachedData = recipeService.getAllRecipes();
             setCachedData(cachedData);
             updateCachedData(currentUser);
-            return paging(0);
+            return paging(key);
     }
 
 
-    @PostMapping("/create-recipe")
+ /*   @PostMapping("/create-recipe")
     public ResponseEntity<String> createRecipe(@RequestBody RecipeRequest recipeRequest)
     {
        return recipeService.createRecipe(recipeRequest);
-    }
+    }*/
 
     @PostMapping("/create-recipe-blob")
-    public ResponseEntity<String> createREcipeBlob(@RequestBody RecipeRequest recipeRequest)
+    public ResponseEntity<String> createRecipeBlob( @ModelAttribute RecipeRequest recipeRequest)
     {
         return recipeService.createRecipeBlob(recipeRequest);
     }
-    @PutMapping("/update-recipe")
-    public ResponseEntity<String> updateRecipebyID(@RequestBody RecipeRequest recipeRequest)
+    @PostMapping("/update-recipe")
+    public ResponseEntity<String> updateRecipebyID(@ModelAttribute RecipeRequest recipeRequest)
     {
         return recipeService.updateRecipe(recipeRequest);
     }

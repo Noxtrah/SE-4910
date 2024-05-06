@@ -126,10 +126,11 @@ public class UserController extends ParentController {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
-            return userService.reportOneRecipe(reportRecipeRequest.getUserRecipeId() , reportRecipeRequest.getReportCause() , currentUser);
+            return userService.reportOneRecipe(reportRecipeRequest.getUserRecipeId() , reportRecipeRequest.getReportCause(),reportRecipeRequest.getExtraNotes(), currentUser);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
 
     @GetMapping("/user-favorites")
@@ -170,7 +171,17 @@ public class UserController extends ParentController {
 
     //other users profile info
 
+    @GetMapping("/visit-profile")
+    public ResponseEntity<UserInfoResponse> getOtherUserInfo(@RequestParam String username)
+    {
+        User visit = userService.getOneUserByUsername(username);
+        if (visit != null)
+        {
+            return userService.getUserInfo(visit);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
 
 
 }

@@ -86,4 +86,11 @@ public class UserRecipeService {
         }
         return null;
     }
+
+    public UserRecipes getUserRecipeByID (long userRecipeId) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeId);
+        return optionalUserRecipes.orElse(null);
+    }
+
 }

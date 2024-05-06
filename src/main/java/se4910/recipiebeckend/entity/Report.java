@@ -19,7 +19,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int repNum = 0;
+    private String extraNotes;
 
     @Enumerated(EnumType.STRING)
     private ReportCause reportCause;

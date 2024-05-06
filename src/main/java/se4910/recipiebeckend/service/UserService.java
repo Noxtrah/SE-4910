@@ -1,13 +1,12 @@
 package se4910.recipiebeckend.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import se4910.recipiebeckend.entity.Report;
 import se4910.recipiebeckend.entity.ReportCause;
 import se4910.recipiebeckend.entity.User;
@@ -23,6 +22,7 @@ import se4910.recipiebeckend.response.UserRecipeResponse;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,9 +75,9 @@ public class UserService implements UserDetailsService {
         {
           userRecipes.setMeal(userRecipeRequest.getMeal());
         }
-        if (userRecipeRequest.getProfilePhoto()!= null)
+        if (userRecipeRequest.getRecipePhoto()!= null)
         {
-            userRecipes.setBlobData(userRecipeRequest.getProfilePhoto().getBytes());
+            userRecipes.setBlobData(userRecipeRequest.getRecipePhoto().getBytes());
         }
 
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
@@ -87,6 +87,7 @@ public class UserService implements UserDetailsService {
 
         try {
             userRecipeRepository.save(userRecipes);
+           // saveUserRecipeToDataset(userRecipeRequest);
             return ResponseEntity.ok("Recipe successfully added");
         }
         catch (Exception e)
@@ -95,6 +96,38 @@ public class UserService implements UserDetailsService {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+    }
+
+    private void saveUserRecipeToDataset(UserRecipeRequest userRecipeRequest) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Define the URL of your Python Flask application
+        String pythonUrl = "http://azure-python-project-url.com/add-recipe-to-dataset";
+
+        // Create headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Create request body
+        String requestBody = "{" +
+                "\"recipe_name\":\"" + userRecipeRequest.getTitle() + "\"," +
+                "\"prep_time\":\"" + userRecipeRequest.getPreparationTime() + "\"," +
+                // Add other fields similarly
+                "}";
+
+        // Create HttpEntity
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        // Make a POST request to the Python Flask endpoint
+        ResponseEntity<String> response = restTemplate.postForEntity(pythonUrl, entity, String.class);
+
+        // Handle the response
+        if (response.getStatusCode() == HttpStatus.OK) {
+            System.out.println("Recipe added to dataset successfully");
+        } else {
+            System.err.println("Failed to add recipe to dataset");
+        }
     }
 
     @Override
@@ -184,7 +217,12 @@ public class UserService implements UserDetailsService {
     public ResponseEntity<UserInfoResponse> getUserInfo(User currentUser)
     {
         List<UserRecipes> userRecipesList = recipeService.publishedRecipesOneUser(currentUser.getUsername());
-        return new ResponseEntity<>(new UserInfoResponse(currentUser,userRecipesList),HttpStatus.OK);
+        List<UserRecipeResponse> userPublishedRecipes = new ArrayList<>();
+        for (UserRecipes userRecipes : userRecipesList) {
+            UserRecipeResponse userRecipeResponse = new UserRecipeResponse(userRecipes);
+            userPublishedRecipes.add(userRecipeResponse);
+        }
+        return new ResponseEntity<>(new UserInfoResponse(currentUser,userPublishedRecipes),HttpStatus.OK);
     }
 
 
@@ -200,7 +238,7 @@ public class UserService implements UserDetailsService {
         return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<String> reportOneRecipe(long userRecipeId, ReportCause reportCause, User currentUser) {
+    public ResponseEntity<String> reportOneRecipe(long userRecipeId, ReportCause reportCause, String extraNotes, User currentUser) {
 
         Optional<UserRecipes> targetRecipe = userRecipeRepository.findById(userRecipeId);
 
@@ -213,29 +251,17 @@ public class UserService implements UserDetailsService {
             }
             else {
 
-                if (isLimitExceed(targetRecipe.get(),reportCause))
-                {
-                     userRecipeRepository.delete(targetRecipe.get());
-                     return new ResponseEntity<>("This recipe has been removed because it reached the reporting limit",HttpStatus.OK);
-                }
-                else {
-                    Report report = new Report();
-                    report.setRepNum(report.getRepNum()+1);
-                    report.setUser(currentUser);
-                    report.setReportCause(reportCause);
-                    report.setUserRecipes(targetRecipe.get());
-                    reportRepository.save(report);
-                }
+                Report report = new Report();
+                report.setExtraNotes(extraNotes);
+                report.setUser(currentUser);
+                report.setReportCause(reportCause);
+                report.setUserRecipes(targetRecipe.get());
+                reportRepository.save(report);
 
+                return new ResponseEntity<>(HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-    private Boolean isLimitExceed(UserRecipes userRecipes, ReportCause reportCause) {
-
-        return (reportRepository.findByUserRecipesAndReportCause(userRecipes, reportCause).size() + 1) >= reportCause.getLimit();
     }
 
     public boolean checkReport(User currentUser, UserRecipes userRecipes) {

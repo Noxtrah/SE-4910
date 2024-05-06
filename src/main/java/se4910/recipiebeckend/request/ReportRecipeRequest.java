@@ -14,5 +14,6 @@ public class ReportRecipeRequest {
 
     long userRecipeId;
     ReportCause reportCause;
+    String extraNotes;
 
 }

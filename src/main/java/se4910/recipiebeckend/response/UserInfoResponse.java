@@ -22,9 +22,9 @@ public class UserInfoResponse {
     private String allergicFoods;
     private byte[] userPhoto;
 
-    List<UserRecipes> userPublishedRecipes;
+    List<UserRecipeResponse> userPublishedRecipes;
 
-    public UserInfoResponse(User user, List<UserRecipes> userPublishedRecipes) {
+    public UserInfoResponse(User user, List<UserRecipeResponse> userPublishedRecipes) {
         this.name = user.getName();
         this.lastName = user.getLastName();
         this.username = user.getUsername();

@@ -36,5 +36,11 @@ public  interface FavoritesRepository extends JpaRepository<Favorites, Long>
     List<Favorites> findAllByUser(User user);
 
 
+    @Query("SELECT f.recipe.id, COUNT(*) FROM favorites f GROUP BY f.recipe.id ORDER BY COUNT(*) DESC")
+    List<Object[]> findMostLikedRecipes();
+
+    @Query("SELECT f.userRecipes.id, COUNT(*) FROM favorites f GROUP BY f.userRecipes.id ORDER BY COUNT(*) DESC")
+    List<Object[]> findMostLikedUserRecipes();
+
 
 }

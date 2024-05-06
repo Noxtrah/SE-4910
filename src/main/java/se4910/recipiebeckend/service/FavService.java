@@ -130,4 +130,16 @@ public class FavService {
     {
         return favoritesRepository.findByUserRecipesAndUser(userRecipes, currentUser) != null;
     }
+
+    public List<Object[]> findTop5MostRatedRecipesWithTotalFavorites() {
+        List<Object[]> result = favoritesRepository.findMostLikedRecipes();
+        // or any other default value you prefer
+        return Objects.requireNonNullElse(result, Collections.emptyList());
+    }
+
+    public List<Object[]> findTop5MostRatedUserRecipesWithTotalFavorites() {
+        List<Object[]> result = favoritesRepository.findMostLikedUserRecipes();
+        // or any other default value you prefer
+        return Objects.requireNonNullElse(result, Collections.emptyList());
+    }
 }

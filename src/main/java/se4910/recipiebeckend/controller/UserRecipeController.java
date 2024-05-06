@@ -67,6 +67,11 @@ public class UserRecipeController extends ParentController{
        return userRecipeService.getUserRecipeInfo(userRecipeId);
     }
 
+    public UserRecipes getUserRecipeByID(long userRecipeID)
+    {
+        return userRecipeService.getUserRecipeByID(userRecipeID);
+    }
+
     @GetMapping("/home-user-dashboard")
     public List<UserRecipeResponseFull> getCustomDataUserDashboard(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication)
     {
