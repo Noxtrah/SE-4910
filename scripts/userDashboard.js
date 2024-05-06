@@ -515,8 +515,8 @@ const displayDashboard = async (recipes) => {
 // This fetch method closed in order to reduce usage of database. Open before starting development
 const fetchData = async () => {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
-//    const apiUrl = 'https://run.mocky.io/v3/02b4eb52-ad5d-4638-bb35-19a136c1f4f1 ';
+//    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+   const apiUrl = 'https://run.mocky.io/v3/02b4eb52-ad5d-4638-bb35-19a136c1f4f1 ';
 
     const headers = {
         'Content-Type': 'application/json',

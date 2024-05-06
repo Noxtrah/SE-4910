@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/adminPanel.css">
     <link rel="stylesheet" href="../styles/adminPanelDashboardTab.css">
     <link rel="stylesheet" href="../styles/adminPanelReportsTab.css">
     <link rel="stylesheet" href="../styles/adminPanelUsersTab.css">
@@ -12,10 +13,11 @@
 
 <body>
     <div class="sidebar">
+        <ion-icon name="menu-outline" class="menu-icon" id="sidebarOpenCloseButton"></ion-icon>
         <h2>Admin Panel</h2>
         <ul>
-            <li><a href="#" onclick="openTab('adminDashboard')" class="active-tab" data-tab="adminDashboard"><ion-icon name="home-outline"
-                        class="dashboard-icon"></ion-icon>Dashboard</a></li>
+            <li><a href="#" onclick="openTab('adminDashboard')" class="active-tab" data-tab="adminDashboard"><ion-icon
+                        name="home-outline" class="dashboard-icon"></ion-icon>Dashboard</a></li>
             <li><a href="#" onclick="openTab('reports')" data-tab="reports"><ion-icon name="newspaper-outline"
                         class="reports-icon"></ion-icon>Reports</a></li>
             <li><a href="#" onclick="openTab('users')" data-tab="users"><ion-icon name="people-outline"
@@ -69,6 +71,7 @@
 </body>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="../scripts/adminPanel.js"></script>
 <script src="../scripts/adminPanelTabSelector.js"></script>
 <script src="../scripts/adminPanelDashboardTab.js"></script>
 <script src="../scripts/adminPanelReportsTab.js"></script>

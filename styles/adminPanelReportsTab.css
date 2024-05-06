@@ -1,5 +1,4 @@
-:root {
-    /* --dark_cyan: darkcyan; */
+/* :root {
     --dark_cyan: #698195;
     --white: white;
     --body_background_color:  rgba(0, 139, 139, 0.171);
@@ -12,11 +11,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
-    /* background-color: rgba(216, 227, 230, 0.301); */
-    /* background-color: aliceblue; */
     background-color: var(--body_background_color);
-    /* background-color: rgba(252, 240, 255, 0.295); */
 }
 
 .sidebar {
@@ -25,11 +20,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    /* background-color: #25274D; */
-    /* background-color: #574476;
-    background-color: white; */
     background-color: var(--dark_cyan);
-    /* background-color: rgb(189, 213, 234); */
     border: 1px solid var(--border_color);
     padding-top: 20px;
     overflow-y: auto;
@@ -79,7 +70,7 @@ body {
 .reports-icon{
     vertical-align: -10%;
     margin-right: 12px;
-}
+} */
 
 .detail-sidebar-wrapper{
     border-radius: 20px;
