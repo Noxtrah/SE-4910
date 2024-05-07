@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Get the selected file
         const file = fileInput.files[0];
 
+
         try {
             // Create FormData object
             const formData = new FormData();
@@ -24,10 +25,10 @@ document.addEventListener("DOMContentLoaded", function() {
             formData.append('cuisine', cuisine);
             formData.append('description', description);
             formData.append('preparationTime', preparationTime);
-            formData.append('photo', file);
+            formData.append('photoPath', file);
 
             // Send FormData to the server
-            const response = await fetch('https://recipiebeckend.azurewebsites.net/recipes/create-recipe-blob', {
+            const response = await fetch('http://localhost:8383/recipes/create-recipe-blob', {
                 method: 'POST',
                 body: formData
             });

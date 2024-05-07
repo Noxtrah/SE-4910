@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Recipe</title>
+</head>
+<body>
+
+    <form id="updateRecipeForm" enctype="multipart/form-data">
+
+        <label for="id">Recipe ID:</label>
+        <input type="number" id="id" name="id" required><br><br>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title"><br><br>
+
+        <label for="ingredients">Ingredients:</label>
+        <textarea id="ingredients" name="ingredients"></textarea><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea><br><br>
+
+        <label for="cuisine">Cuisine:</label>
+        <input type="text" id="cuisine" name="cuisine"><br><br>
+
+        <label for="meal">Meal:</label>
+        <input type="text" id="meal" name="meal"><br><br>
+
+        <label for="preparationTime">Preparation Time (minutes):</label>
+        <input type="number" id="preparationTime" name="preparationTime"><br><br>
+
+        <label for="photoPath">Photo:</label>
+        <input type="file" id="photoPath" name="photoPath"><br><br>
+
+        <input type="submit" value="Update Recipe">
+    </form>
+
+    <script src="../scripts/update_recipe.js"></script>
+
+</body>
+</html>

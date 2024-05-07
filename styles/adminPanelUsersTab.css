@@ -2,14 +2,21 @@ dir{
     padding: 0;
 }
 
-.board{
-    width: 100%;
-    margin: 30px 0 30px 30px;
-    margin: 0;
+.board {
+    /* width: calc(100% - (var(--sidebar-width) + var(--inactive_content_shift))); */
     overflow: auto;
     background-color: #fff;
     border-radius: 8px;
 }
+
+/* .sidebar.active .board {
+    width: calc(100% - (var(--active-sidebar-width) + var(--active_content_shift)));
+    background-color: red;
+} */
+
+/* .sidebar.active .content {
+    background-color: red;
+} */
 
 .board img{
     width: 45px;
