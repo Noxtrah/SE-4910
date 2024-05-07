@@ -126,11 +126,11 @@ body {
     margin: 10px 1vw;
 }
 
-.content-container {
+/* .content-container {
     margin-left: 250px;
     padding: 20px;
     transition: margin-left 0.3s;
-}
+} */
 
 .content {
     display: none;
