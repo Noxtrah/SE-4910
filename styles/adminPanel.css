@@ -6,6 +6,10 @@
     --black: black;
     --border_color: #ddd;
     --grey_text_color: #777;
+    --sidebar-width: 80px;
+    --active-sidebar-width: 250px;
+    --inactive_content_shift: 120px;
+    --active_content_shift: 290px
 }
 
 body {
@@ -253,4 +257,12 @@ body {
 
 .sidebar.active .sidebar-span {
     margin-left: 1vw;
+}
+
+.sidebar.active ~ .content-container .content {
+    width: calc(100% -  var(--active_content_shift));
+}
+
+.sidebar:not(.active) ~ .content-container .content {
+    width: calc(100% -  var(--inactive_content_shift));
 }

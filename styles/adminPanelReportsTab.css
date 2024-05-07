@@ -132,13 +132,13 @@ body {
     transition: margin-left 0.3s;
 } */
 
-.content {
+/* .content {
     display: none;
 }
 
 .content.show {
     display: block;
-}
+} */
 
 .reports-grid-container {
     width: 100%;
@@ -267,7 +267,7 @@ body {
     color: var(--white);
 }
 
-.popup .content {
+.popup {
     max-height: 30%;
     overflow: auto;
 }
