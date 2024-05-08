@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Sortable.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
     <header>
         <h1>Meal Planner</h1>
     </header>
     <main>
-        <h2>Weekly Meal Plan</h2>
+        <h2 style="margin: 60px;" >Weekly Meal Plan</h2>
 
         <section class="meal-plan" id="sortable-section">
             <div class="day" data-day="Monday">
@@ -28,25 +30,130 @@
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
+            <div class="day" data-day="Wednesday">
+                <h3>Wednesday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="day" data-day="Thursday">
+                <h3>Thursday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="day" data-day="Friday">
+                <h3>Friday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="day" data-day="Saturday">
+                <h3>Saturday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="day" data-day="Sunday">
+                <h3>Sunday <span class="add-item">+</span></h3>
+                <ul class="items">
+                    <!-- Items will be dynamically added here -->
+                </ul>
+            </div>
+<div>
+            <button style=" padding: 0.6rem;
+            outline: none;
+            border: none;
+            margin-top: 40px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: larger;
+            width: 100px;
+            margin-left: 35px;
+            cursor: pointer;
+            transition: 0.4s ease;
+            transition: background 0.4s ease, color 0.4s ease;"
+                  onmouseover="this.style.background='#363b4e'; this.style.color='white';"
+                  onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+            
+            
+                  <button style=" padding: 0.6rem;
+                  margin-left: 10px;
+                  outline:darkslateblue;
+                  border: none;
+                  margin-top: 40px;
+                  border-radius: 3px;
+                  font-weight: bold;
+                  font-size: larger;
+                  width: 100px;
+                  cursor: pointer;
+                  transition: 0.4s ease;
+                  transition: background 0.4s ease, color 0.4s ease;"
+                        onmouseover="this.style.background='#363b4e'; this.style.color='white';"
+                        onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="clearMealPlanner()">Clear All</button>
+                    </div>
+
+            
             <!-- Repeat for other days -->
         </section>
+
+        <div style="margin-top:70px;">
+      <button style=" padding: 0.6rem;
+        outline: none;
+        border: none;
+        margin-top: 40px;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: larger;
+        margin-left: 35px;
+        cursor: pointer;
+        transition: 0.4s ease;
+        transition: background 0.4s ease, color 0.4s ease;"
+              onmouseover="this.style.background='#363b4e'; this.style.color='white';"
+              onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save to Plans</button>
         
-        <section id="shopping-list">
-            <h2>Shopping List</h2>
-            <ul>
-                <!-- Shopping list items go here -->
-            </ul>
-        </section>
-    </main>
+              <button style=" padding: 0.6rem;
+              margin-left: 40px;
+              outline:darkslateblue;
+              border: none;
+              margin-top: 40px;
+              border-radius: 3px;
+              font-weight: bold;
+              font-size: larger;
+              cursor: pointer;
+              transition: 0.4s ease;
+              transition: background 0.4s ease, color 0.4s ease;"
+                    onmouseover="this.style.background='#363b4e'; this.style.color='white';"
+                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="fetchPlanListData()">See Previous Plans</button>
+                </div>
+
+                <div class="weekly-table-container" id="weekly_planner"></div>
+
+
+                <div class="container">
+                    <h1 style="margin-top: 60px;" class="header__title">Shopping List</h1>
+                </div>
+            
+                <div class="container">
+                    <!--  Input and "add" button  -->
+                    <input class="submission-line__input" type="text" maxlength="20" placeholder="Enter new item here...">
+                    <button class="submission-line__btn">Add</button>
+                    <!--  List, list items, and list item buttons  -->
+                    <ul class="list">
+                        <li class="list__item"><a class="list__delete-btn">X</a>Milk<a class="list__check-btn">✔</a></li>
+                        <li class="list__item"><a class="list__delete-btn">X</a>Eggs<a class="list__check-btn">✔</a></li>
+                        <li class="list__item list__item--checked"><a class="list__delete-btn list__delete-btn--checked">X</a>Bread<a class="list__check-btn list__check-btn--checked">✔</a></li>
+                    </ul>
+                </div>
+            
     <footer>
-        <p>&copy; 2024 Meal Planner. All rights reserved.</p>
     </footer>
 
     <!-- Popup Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Add Course</h2>
+            <h2>Add Meal</h2>
             <div>
                 <h3>Breakfast:</h3>
                 <input type="text" id="breakfastInput" placeholder="Enter breakfast...">
@@ -62,6 +169,8 @@
             <button id="saveBtn">Save</button>
         </div>
     </div>
+
+
 
     <script>
         var selectedDay; // To keep track of the selected day
@@ -146,6 +255,162 @@
             dragClass: 'sortable-drag',
             handle: '.day'
         });
+
+
+
+        $(document).ready(function(){
+
+// ADDING A NEW ITEM TO THE LIST
+
+  // Define the callback function
+  var addItem = function() {
+
+    // Declare a variable to capture the input text value
+    var $input = $('.submission-line__input').val();
+    // If the input text field isn't empty, add it to the list as a new item
+    if ($input) {
+      $('.list').prepend('<li class="list__item"><a class="list__delete-btn">X</a>' + $input + '<a class="list__check-btn">✔</a></li>');
+    }
+    // Clear the input text field
+    $('.submission-line__input').val("");
+  };
+
+  // Add a new item to the list by clicking "Add" button
+  $('.submission-line__btn').on('click', function(event){
+    // (prevents form submit button unwanted default action)
+    event.preventDefault();
+    // run the callback function
+    addItem();
+  });
+
+  // Add a new item to the list by hitting "Enter"
+  $('.submission-line__input').keypress(function(event){
+    if (event.which === 13) {
+      // run the callback function
+      addItem();
+    }
+  });
+
+// DELETING AN ITEM FROM THE LIST
+
+  // Clicking an item's delete button:
+  $('.list').on('click', '.list__delete-btn', function(){
+    // removes that item from the list
+    $(this).parent().fadeOut(300, function(){
+      $(this).remove();
+    });
+  });
+
+// CHECKING AN ITEM OFF FROM THE LIST
+
+  // Clicking an item's check button:
+  $('.list').on('click', '.list__check-btn', function(event){
+    // grays everything out
+    $(this).parent().toggleClass('list__item--checked');
+    $(this).siblings().toggleClass('list__delete-btn--checked');
+    $(this).toggleClass('list__check-btn--checked');
+
+    // moves the element to either the bottom or top of the list
+    var $listItem = $(this).parent();
+    if ($listItem.hasClass('list__item--checked')) {
+      $('.list').append($listItem);
+    } else {
+      $('.list').prepend($listItem);
+    }
+  });
+
+// MAKING LIST ITEMS SORTABLE
+
+  $('.list').sortable({
+      distance: 2,
+      revert: 300,
+      cancel: ".list__item--checked"
+  });
+
+});
+
+
+
+function createWeeklyPlannerTable(data) {
+    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var meals = ['Breakfast', 'Lunch', 'Dinner'];
+    var weeksData = data.split(';'); // Split data into weeks
+    var tableHtml = "";
+
+    for (var w = 0; w < weeksData.length - 1; w++) {
+        var daysData = weeksData[w].split(':'); // Split week into days
+        tableHtml += "<table class='weekly-table'><tr><th colspan='4'>Week " + (w + 1) + "<button class='use-week-button' data-week='" + (w + 1) + "' onclick='populateMealPlan(" + (w + 1) + ")'>Use this week</button></th></tr>";
+
+        tableHtml += "<tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>";
+
+        for (var i = 0; i < daysData.length; i++) {
+            var mealsList = daysData[i].split(',');
+            tableHtml += "<tr><td>" + days[i] + "</td>";
+            for (var j = 0; j < mealsList.length; j++) {
+                tableHtml += "<td>" + mealsList[j] + "</td>";
+            }
+            tableHtml += "</tr>";
+        }
+
+        tableHtml += "</table>";
+        if (w < weeksData.length - 2 && weeksData[w + 1].trim() !== "") {
+            tableHtml += "<div class='week-divider'></div>";
+        }
+    }
+
+    return tableHtml;
+}
+
+function fetchPlanListData() {
+    var url = "https://run.mocky.io/v3/fc122a69-8296-47be-9cc3-02564e0dfdf5"; // API'nin URL'sini buraya girin
+
+    fetch(url)
+    .then(response => response.text())
+    .then(data => {
+        var weeklyPlannerDiv = document.getElementById("weekly_planner");
+        weeklyPlannerDiv.innerHTML = createWeeklyPlannerTable(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+}
+
+
+
+// Sayfa yüklendiğinde veriyi çek
+function populateMealPlan(weekNumber) {
+            var weeklyTable = document.querySelector(".weekly-table:nth-of-type(" + weekNumber + ")");
+            var rows = weeklyTable.querySelectorAll("tr:not(:first-child)"); // Skip header row
+            var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+            rows.forEach(function(row, index) {
+                var cells = row.querySelectorAll("td");
+                var dayName = days[index-1];
+
+                cells.forEach(function(cell, cellIndex) {
+                    var mealType = '';
+                    if (cellIndex === 1) {
+                        mealType = 'Breakfast';
+                    } else if (cellIndex === 2) {
+                        mealType = 'Lunch';
+                    } else if (cellIndex === 3) {
+                        mealType = 'Dinner';
+                    }
+
+                    var dayElement = document.querySelector(".day[data-day='" + dayName + "']");
+if (dayElement) {
+    var itemsList = dayElement.querySelector(".items");
+    var itemText = cell.textContent.trim();
+    if (cellIndex !== 0 && itemText !== '') { // Gün adını eklememek için cellIndex'i kontrol et
+        var listItem = document.createElement("li");
+        listItem.textContent = itemText; // Sadece öğün metni eklendi, başlık olmadan.
+        itemsList.appendChild(listItem);
+                        }
+                    
+
+                    }
+                });
+            });
+        }
+
     </script>
 </body>
 <style>
@@ -220,7 +485,7 @@ footer {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 400px;
     border-radius: 5px;
 }
 
@@ -259,5 +524,129 @@ footer {
 .modal-content h3 {
     margin-bottom: 5px;
 }
+
+
+/* GLOBAL STYLES */
+
+
+
+
+.container{
+  margin: 0 auto;
+  max-width: 20em;
+}
+
+
+
+
+/* Input and "add" button */
+.submission-line__input {
+  padding-left: 10px;
+  height: 44px;
+  width: 66.6666%;
+  border: none;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.3rem;
+
+}
+
+.submission-line__input::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.submission-line__input:focus {
+  outline: none;
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+}
+
+.submission-line__btn {
+  float: right;
+  height: 46px;
+  width: 27.33333%;
+  background: #FFC107;
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  border: none;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.submission-line__input,
+.submission-line__btn {
+  margin-bottom: 16px;
+}
+
+/* List, list items, and list item buttons */
+
+.list {
+  padding: 0;
+  list-style-type: none;
+  clear: both;
+}
+
+.list__item {
+  font-size: 1.3rem;
+  width: 300px;
+  height: 30px;
+  padding: 10px;
+  text-align: center;
+}
+
+.list__item:nth-child(odd) {
+  background: #78aed2;
+}
+
+.list__item:nth-child(even) {
+  background: #88d8e5;
+}
+
+.list__delete-btn {
+  cursor: pointer;
+  float: left;
+  margin: -5px;
+  padding: 5px 9px;
+}
+
+.list__check-btn {
+  cursor: pointer;
+  float: right;
+  margin: -5px;
+  padding: 4px 8px;
+}
+
+/* Checked-off item list formatting */
+
+/* (Increased specificity to override the even/odd psuedoclasses) */
+.list .list__item--checked {
+  background: #5899c7;
+  color: rgba(0, 0, 0, 0.38);
+  text-decoration: line-through;
+}
+
+.list__delete-btn--checked,
+.list__check-btn--checked {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.weekly-table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+    .weekly-table th, .weekly-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    .weekly-table th {
+        background-color: #f2f2f2;
+    }
+    .week-divider {
+        border-top: 4px solid black;
+        margin: 40px auto;
+    }
 </style>
 </html>
