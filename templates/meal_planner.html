@@ -21,45 +21,68 @@
             <div class="day" data-day="Monday">
                 <h3>Monday <span class="add-item">+</span></h3>
                 <ul class="items" id="mondayItems">
-                    <!-- Items will be dynamically added here -->
+                 
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Tuesday">
                 <h3>Tuesday <span class="add-item">+</span></h3>
                 <ul class="items" id="tuesdayItems">
-                    <!-- Items will be dynamically added here -->
+                 
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Wednesday">
                 <h3>Wednesday <span class="add-item">+</span></h3>
                 <ul class="items" id="wednesdayItems">
-                    <!-- Items will be dynamically added here -->
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Thursday">
                 <h3>Thursday <span class="add-item">+</span></h3>
                 <ul class="items" id="thursdayItems">
-                    <!-- Items will be dynamically added here -->
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Friday">
                 <h3>Friday <span class="add-item">+</span></h3>
                 <ul class="items" id="fridayItems">
-                    <!-- Items will be dynamically added here -->
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Saturday">
                 <h3>Saturday <span class="add-item">+</span></h3>
                 <ul class="items" id="saturdayItems">
-                    <!-- Items will be dynamically added here -->
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
             <div class="day" data-day="Sunday">
                 <h3>Sunday <span class="add-item">+</span></h3>
                 <ul class="items" id="sundayItems">
-                    <!-- BREAKFAST LUNCH DİNNER Lİ Items will be dynamically added here -->
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
                 </ul>
             </div>
+        </section>
+        
 <div>
             <button style=" padding: 0.6rem;
             outline: none;
@@ -124,7 +147,7 @@
               transition: 0.4s ease;
               transition: background 0.4s ease, color 0.4s ease;"
                     onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="fetchPlanListData()">See Previous Plans</button>
+                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()">See Previous Plans</button>
                 </div>
 
                 <div class="weekly-table-container" id="weekly_planner"></div>
@@ -166,484 +189,14 @@
                 <h3>Dinner:</h3>
                 <input type="text" id="dinnerInput" placeholder="Enter dinner...">
             </div>
-            <button id="saveBtn" onclick="savePopUp()">Save</button>
+            <button id="saveBtn">Save</button>
         </div>
     </div>
 
 
 
-    <script>
-        var selectedDay; // To keep track of the selected day
-
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        var btns = document.getElementsByClassName("add-item");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].onclick = function() {
-                selectedDay = this.parentElement.parentElement.dataset.day;
-                modal.style.display = "block";
-
-                // If there are existing items, fill the input fields with existing values
-                var existingItems = document.querySelector(".day[data-day='" + selectedDay + "'] .items").getElementsByTagName("li");
-                for (var j = 0; j < existingItems.length; j++) {
-                    var text = existingItems[j].textContent;
-                    if (text.includes("Breakfast:")) {
-                        document.getElementById("breakfastInput").value = text.replace("Breakfast:", "").trim();
-                    } else if (text.includes("Lunch:")) {
-                        document.getElementById("lunchInput").value = text.replace("Lunch:", "").trim();
-                    } else if (text.includes("Dinner:")) {
-                        document.getElementById("dinnerInput").value = text.replace("Dinner:", "").trim();
-                    }
-                }
-            }
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function closePopUp() {
-            modal.style.display = "none";
-        }
-
-        var mealList = {
-    Monday: "",
-    Tuesday: "",
-    Wednesday: "",
-    Thursday: "",
-    Friday: "",
-    Saturday: "",
-    Sunday: ""
-};
-function savePopUp() {
-            var itemsList = document.querySelector(".day[data-day='" + selectedDay + "'] .items");
-            var breakfastInput = document.getElementById("breakfastInput").value;
-            var lunchInput = document.getElementById("lunchInput").value;
-            var dinnerInput = document.getElementById("dinnerInput").value;
-
-            // Clear existing items first
-            itemsList.innerHTML = "";
-
-            if (breakfastInput !== "") {
-                var liBreakfast = document.createElement("li");
-                liBreakfast.textContent = "Breakfast: " + breakfastInput;
-                itemsList.appendChild(liBreakfast);
-            }
-
-            if (lunchInput !== "") {
-                var liLunch = document.createElement("li");
-                liLunch.textContent = "Lunch: " + lunchInput;
-                itemsList.appendChild(liLunch);
-            }
-
-            if (dinnerInput !== "") {
-                var liDinner = document.createElement("li");
-                liDinner.textContent = "Dinner: " + dinnerInput;
-                itemsList.appendChild(liDinner);
-            }
-            var combinedData = combineData(breakfastInput, lunchInput, dinnerInput);
-            mealList[selectedDay] = combinedData;
-
-            modal.style.display = "none";
-        }
-
-
-
-// function saveMealPlan() {
-    // var itemsList = document.querySelector(".day[data-day='" + selectedDay + "'] .items");
-
-    // var breakfastInput = document.getElementById("breakfastInput").value;
-    // var lunchInput = document.getElementById("lunchInput").value;
-    // var dinnerInput = document.getElementById("dinnerInput").value;
-
-    // // Clear existing items first
-    // itemsList.innerHTML = "";
-
-    // if (breakfastInput !== "") {
-    //     var liBreakfast = document.createElement("li");
-    //     liBreakfast.textContent = breakfastInput;
-    //     itemsList.appendChild(liBreakfast);
-    // }
-
-    // if (lunchInput !== "") {
-    //     var liLunch = document.createElement("li");
-    //     liLunch.textContent = lunchInput;
-    //     itemsList.appendChild(liLunch);
-    // }
-
-    // if (dinnerInput !== "") {
-    //     var liDinner = document.createElement("li");
-    //     liDinner.textContent = dinnerInput;
-    //     itemsList.appendChild(liDinner);
-    // }
-
-    // modal.style.display = "none";
-
-    // // Prepare meal data
-    // var mealData = {
-    //     breakfast: breakfastInput,
-    //     lunch: lunchInput,
-    //     dinner: dinnerInput
-    // };
-
-    // // Prepare meal data without keys
-    // var mealDataWithoutKeys = [breakfastInput, lunchInput, dinnerInput];
-
-    // // Log the data before sending
-    // console.log("Meal Data with Keys:", mealData);
-    // console.log("Meal Data without Keys:", mealDataWithoutKeys);
-
-    // // Convert meal data to JSON string
-    // var jsonData = JSON.stringify(mealDataWithoutKeys);
-
-    // Send data to server
-
-// Kaydetme düğmesine tıklanınca
-
-async function saveMealPlan() {
-    var MealPlanFinalString = getWeeklyMealPlan();
-    console.log(MealPlanFinalString);
-
-    // Kullanıcı oturum açtığında veya kimlik doğrulama başarılı olduğunda alınan token
-    const JWTAccessToken = sessionStorage.getItem('accessToken');
-
-    // Token var mı kontrol edelim
-    if (!JWTAccessToken) {
-        console.error('Access token not found. Please log in first.');
-        return;
-    }
-
-    // Verileri sunucuya gönder
-    const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/save-planner';
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': JWTAccessToken
-
-            },
-            body: (MealPlanFinalString),
-
-        });
-
-        if (!response.ok) {
-            const errorMessage = await response.text();
-            throw new Error(`Failed to save meal plan. Status: ${response.status}. Message: ${errorMessage}`);
-        }
-
-        const responseBody = await response.text();
-        let responseData;
-       
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-}
-
-// get and fill
-document.addEventListener('DOMContentLoaded', function () {
-    getUserMealPlanAndFill(); // Sayfa yüklendiğinde hemen çalıştırılır
-});
-
-async function getUserMealPlanAndFill() {
-    const mealPlan = await getUserMealPlan();
-    if (mealPlan) {
-        fillMealPlan(mealPlan);
-    }
-}
-
-async function getUserMealPlan() {
-    const mealPlan = await getMealPlan();
-    if (mealPlan) {
-        return mealPlan;
-    } else {
-        console.error('Failed to get user meal plan.');
-        return null;
-    }
-}
-
-async function getMealPlan() {
-    // const JWTAccessToken = sessionStorage.getItem('accessToken');
-
-    // if (!JWTAccessToken) {
-    //     console.error('Access token not found. Please log in first.');
-    //     return null;
-    // }
-
-    const apiUrl = 'https://run.mocky.io/v3/0dd7136a-22da-45c2-8d93-e59c63069ab9';
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': JWTAccessToken
-            },
-        });
-
-        if (!response.ok) {
-            const errorMessage = await response.text();
-            throw new Error(`Failed to fetch meal plan. Status: ${response.status}. Message: ${errorMessage}`);
-        }
-
-        const mealPlanData = await response.json();
-        console.log('Meal plan fetched successfully:', mealPlanData);
-        return mealPlanData;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        return null;
-    }
-}
-
-function fillMealPlan(mealPlan) {
-    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+<script src="../scripts/meal_planner.js"></script>
     
-    daysOfWeek.forEach((day, index) => {
-        const dayElement = document.querySelector(`.day[data-day='${day}'] .items`);
-        if (dayElement) {
-            const meals = mealPlan[index];
-            meals.forEach(meal => {
-                const li = document.createElement('li');
-                li.textContent = meal;
-                dayElement.appendChild(li);
-            });
-        }
-    });
-}
-
-
-async function clearAll() {
-    const JWTAccessToken = sessionStorage.getItem('accessToken');
-
-    if (!JWTAccessToken) {
-        console.error('Access token not found. Please log in first.');
-        return;
-    }
-
-    const apiUrl = 'sunucu-url/clear-all';
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': JWTAccessToken
-            },
-        });
-
-        if (!response.ok) {
-            const errorMessage = await response.text();
-            throw new Error(`Failed to clear all data. Status: ${response.status}. Message: ${errorMessage}`);
-        }
-
-        console.log('All data cleared successfully');
-        // HTML'deki tüm yemek listelerini temizle
-        const itemsLists = document.querySelectorAll('.items');
-        itemsLists.forEach(itemsList => {
-            itemsList.innerHTML = '';
-        });
-    } catch (error) {
-        console.error('There was a problem with the clear operation:', error);
-    }
-}
-
-// Tüm mealleri birleştirerek bir string oluşturur
-function combineData(breakfast, lunch, dinner) {
-    var combinedString = "";
-    if (breakfast !== "") {
-        combinedString +=  breakfast + ", ";
-    }
-    if (lunch !== "") {
-        combinedString +=  lunch + ", ";
-    }
-    if (dinner !== "") {
-        combinedString +=  dinner ;
-    }
-    return combinedString;
-} 
-
-function getWeeklyMealPlan() {
-    var weeklyMealPlan = [];
-    for (var day in mealList) {
-        weeklyMealPlan.push(mealList[day] || " ");
-    }
-    return weeklyMealPlan.join(":");
-}
-
-
-        // Close the modal if the user clicks anywhere outside of the modal
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    // Enable sorting
-    Sortable.create(document.getElementById('sortable-section'), {
-        animation: 150,
-        chosenClass: 'sortable-chosen',
-        dragClass: 'sortable-drag',
-        handle: '.day'
-    });
-
-
-
-    $(document).ready(function(){
-
-// ADDING A NEW ITEM TO THE LIST
-
-  // Define the callback function
-  var addItem = function() {
-
-    // Declare a variable to capture the input text value
-    var $input = $('.submission-line__input').val();
-    // If the input text field isn't empty, add it to the list as a new item
-    if ($input) {
-      $('.list').prepend('<li class="list__item"><a class="list__delete-btn">X</a>' + $input + '<a class="list__check-btn">✔</a></li>');
-    }
-    // Clear the input text field
-    $('.submission-line__input').val("");
-  };
-
-  // Add a new item to the list by clicking "Add" button
-  $('.submission-line__btn').on('click', function(event){
-    // (prevents form submit button unwanted default action)
-    event.preventDefault();
-    // run the callback function
-    addItem();
-  });
-
-  // Add a new item to the list by hitting "Enter"
-  $('.submission-line__input').keypress(function(event){
-    if (event.which === 13) {
-      // run the callback function
-      addItem();
-    }
-  });
-
-// DELETING AN ITEM FROM THE LIST
-
-  // Clicking an item's delete button:
-  $('.list').on('click', '.list__delete-btn', function(){
-    // removes that item from the list
-    $(this).parent().fadeOut(300, function(){
-      $(this).remove();
-    });
-  });
-
-// CHECKING AN ITEM OFF FROM THE LIST
-
-  // Clicking an item's check button:
-  $('.list').on('click', '.list__check-btn', function(event){
-    // grays everything out
-    $(this).parent().toggleClass('list__item--checked');
-    $(this).siblings().toggleClass('list__delete-btn--checked');
-    $(this).toggleClass('list__check-btn--checked');
-
-    // moves the element to either the bottom or top of the list
-    var $listItem = $(this).parent();
-    if ($listItem.hasClass('list__item--checked')) {
-      $('.list').append($listItem);
-    } else {
-      $('.list').prepend($listItem);
-    }
-  });
-
-// MAKING LIST ITEMS SORTABLE
-
-  $('.list').sortable({
-      distance: 2,
-      revert: 300,
-      cancel: ".list__item--checked"
-  });
-
-});
-
-
-
-function createWeeklyPlannerTable(data) {
-    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    var meals = ['Breakfast', 'Lunch', 'Dinner'];
-    var weeksData = data.split(';'); // Split data into weeks
-    var tableHtml = "";
-
-    for (var w = 0; w < weeksData.length - 1; w++) {
-        var daysData = weeksData[w].split(':'); // Split week into days
-        tableHtml += "<table class='weekly-table'><tr><th colspan='4'>Week " + (w + 1) + "<button class='use-week-button' data-week='" + (w + 1) + "' onclick='populateMealPlan(" + (w + 1) + ")'>Use this week</button></th></tr>";
-
-        tableHtml += "<tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>";
-
-        for (var i = 0; i < daysData.length; i++) {
-            var mealsList = daysData[i].split(',');
-            tableHtml += "<tr><td>" + days[i] + "</td>";
-            for (var j = 0; j < mealsList.length; j++) {
-                tableHtml += "<td>" + mealsList[j] + "</td>";
-            }
-            tableHtml += "</tr>";
-        }
-
-        tableHtml += "</table>";
-        if (w < weeksData.length - 2 && weeksData[w + 1].trim() !== "") {
-            tableHtml += "<div class='week-divider'></div>";
-        }
-    }
-
-    return tableHtml;
-}
-
-function fetchPlanListData() {
-    var url = "https://run.mocky.io/v3/fc122a69-8296-47be-9cc3-02564e0dfdf5"; // API'nin URL'sini buraya girin
-
-    fetch(url)
-    .then(response => response.text())
-    .then(data => {
-        var weeklyPlannerDiv = document.getElementById("weekly_planner");
-        weeklyPlannerDiv.innerHTML = createWeeklyPlannerTable(data);
-    })
-    .catch(error => console.error('Error fetching data:', error));
-}
-
-
-
-// Sayfa yüklendiğinde veriyi çek
-function populateMealPlan(weekNumber) {
-            var weeklyTable = document.querySelector(".weekly-table:nth-of-type(" + weekNumber + ")");
-            var rows = weeklyTable.querySelectorAll("tr:not(:first-child)"); // Skip header row
-            var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-            rows.forEach(function(row, index) {
-                var cells = row.querySelectorAll("td");
-                var dayName = days[index-1];
-
-                cells.forEach(function(cell, cellIndex) {
-                    var mealType = '';
-                    if (cellIndex === 1) {
-                        mealType = 'Breakfast';
-                    } else if (cellIndex === 2) {
-                        mealType = 'Lunch';
-                    } else if (cellIndex === 3) {
-                        mealType = 'Dinner';
-                    }
-
-                    var dayElement = document.querySelector(".day[data-day='" + dayName + "']");
-if (dayElement) {
-    var itemsList = dayElement.querySelector(".items");
-    var itemText = cell.textContent.trim();
-    if (cellIndex !== 0 && itemText !== '') { // Gün adını eklememek için cellIndex'i kontrol et
-        var listItem = document.createElement("li");
-        listItem.textContent = itemText; // Sadece öğün metni eklendi, başlık olmadan.
-        itemsList.appendChild(listItem);
-                        }
-                    
-
-                    }
-                });
-            });
-        }
-
-    </script>
 </body>
 <style>
 /* Reset default margin and padding */
