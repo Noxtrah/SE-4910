@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import se4910.recipiebeckend.controller.ParentController;
 import se4910.recipiebeckend.entity.Report;
 import se4910.recipiebeckend.entity.ReportCause;
 import se4910.recipiebeckend.entity.User;
@@ -38,6 +39,7 @@ public class UserService implements UserDetailsService {
     UserRecipeRepository userRecipeRepository;
 
     ReportRepository reportRepository;
+    ParentController parentController;
     
 
     public List<User> getAllUsers() {
@@ -77,7 +79,8 @@ public class UserService implements UserDetailsService {
         }
         if (userRecipeRequest.getRecipePhoto()!= null)
         {
-            userRecipes.setBlobData(userRecipeRequest.getRecipePhoto().getBytes());
+            String photoUrlString = parentController.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
+            userRecipes.setPhotoPath(photoUrlString);
         }
 
         userRecipes.setIngredients(userRecipeRequest.getIngredients());
@@ -87,7 +90,6 @@ public class UserService implements UserDetailsService {
 
         try {
             userRecipeRepository.save(userRecipes);
-           // saveUserRecipeToDataset(userRecipeRequest);
             return ResponseEntity.ok("Recipe successfully added");
         }
         catch (Exception e)
@@ -206,7 +208,7 @@ public class UserService implements UserDetailsService {
             currentUser.setAllergicFoods(profileInfoRequest.getAllergicFoods());
         }
         if (!profileInfoRequest.getProfilePhoto().isEmpty()) {
-            currentUser.setBlobData(profileInfoRequest.getProfilePhoto().getBytes());
+            currentUser.setProfilePhotoPath(parentController.uploadPhotoToBlobStorage(profileInfoRequest.getProfilePhoto()));
         }
 
         userRepository.save(currentUser);

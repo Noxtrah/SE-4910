@@ -11,7 +11,6 @@ import se4910.recipiebeckend.repository.PlannerRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,8 +39,9 @@ public class PlannerService {
     }
 
 
-    public ResponseEntity<?> savePlanner(User currentUser, ArrayList<ArrayList<String>> plannerData)
+    public ResponseEntity<?> savePlanner(User currentUser,  String plannerData)
     {
+
 
         Optional<MealPlanner> existingMealPlanner = plannerRepository.findByUser(currentUser);
 
@@ -52,31 +52,60 @@ public class PlannerService {
             fillPlanner(mealPlanner,plannerData);
             plannerRepository.save(mealPlanner);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("planner created",HttpStatus.OK);
         }
         else {
 
-            return updatePlanner(plannerData,existingMealPlanner.get());
+           return updatePlanner(plannerData,existingMealPlanner.get());
         }
 
 
     }
 
-    public ResponseEntity<?> updatePlanner(ArrayList<ArrayList<String>> plannerData, MealPlanner mealPlanner)
+    public ResponseEntity<?> updatePlanner(String plannerData, MealPlanner mealPlanner)
     {
         plannerRepository.save(fillPlanner(mealPlanner,plannerData));
-        return new ResponseEntity<>(mealPlanner,HttpStatus.OK);
+        return new ResponseEntity<>("planner updated",HttpStatus.OK);
     }
 
-    private MealPlanner fillPlanner(MealPlanner mealPlanner, ArrayList<ArrayList<String>> plannerData) {
-        mealPlanner.setMonday(String.join(",", plannerData.get(0)));
-        mealPlanner.setTuesday(String.join(",", plannerData.get(1)));
-        mealPlanner.setWednesday(String.join(",", plannerData.get(2)));
-        mealPlanner.setThursday(String.join(",", plannerData.get(3)));
-        mealPlanner.setFriday(String.join(",", plannerData.get(4)));
-        mealPlanner.setSaturday(String.join(",", plannerData.get(5)));
-        mealPlanner.setSunday(String.join(",", plannerData.get(6)));
-        return mealPlanner;
+    private MealPlanner fillPlanner(MealPlanner mealPlanner, String plannerData) {
+        String[] daysAndMeals = plannerData.split(":");
+        if (daysAndMeals.length == 7) { // Assuming you have data for each day of the week
+            for (int i = 0; i < 7; i++) {
+                String[] meals = daysAndMeals[i].split(",");
+                String mealsString = String.join(",", meals); // Convert List<String> to String
+                // Assuming your MealPlanner has setters for each day's meals
+                switch (i) {
+                    case 0:
+                        mealPlanner.setMonday(mealsString);
+                        break;
+                    case 1:
+                        mealPlanner.setTuesday(mealsString);
+                        break;
+                    case 2:
+                        mealPlanner.setWednesday(mealsString);
+                        break;
+                    case 3:
+                        mealPlanner.setThursday(mealsString);
+                        break;
+                    case 4:
+                        mealPlanner.setFriday(mealsString);
+                        break;
+                    case 5:
+                        mealPlanner.setSaturday(mealsString);
+                        break;
+                    case 6:
+                        mealPlanner.setSunday(mealsString);
+                        break;
+                    default:
+                        return null;
+                }
+            }
+            return mealPlanner;
+        }
+        else {
+            return null;
+        }
     }
 
 
@@ -100,4 +129,13 @@ public class PlannerService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    public ResponseEntity<?> saveOneWeekPlanner(User currentUser, String plannerData) {
+
+        MealPlanner mealPlanner = new MealPlanner();
+        mealPlanner.setUser(currentUser);
+        mealPlanner.setSavedWeek(plannerData);
+        plannerRepository.save(mealPlanner);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

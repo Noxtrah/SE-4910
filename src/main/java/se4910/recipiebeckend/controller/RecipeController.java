@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
@@ -79,12 +80,6 @@ public class RecipeController extends ParentController{
             return paging(key);
     }
 
-
- /*   @PostMapping("/create-recipe")
-    public ResponseEntity<String> createRecipe(@RequestBody RecipeRequest recipeRequest)
-    {
-       return recipeService.createRecipe(recipeRequest);
-    }*/
 
     @PostMapping("/create-recipe-blob")
     public ResponseEntity<String> createRecipeBlob( @ModelAttribute RecipeRequest recipeRequest)
@@ -179,7 +174,6 @@ public class RecipeController extends ParentController{
         List<String> ingredientList = Arrays.asList(ingredientsArray);
         return recipeService.IngredientBasedSearch(ingredientList);
     }
-
 
 
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/planner", produces = MediaType.APPLICATION_JSON_VALUE)
-public class PlannerController {
+public class PlannerController extends ParentController{
 
 
 
@@ -27,17 +27,7 @@ public class PlannerController {
     @Autowired
     PlannerService plannerService;
 
-    public User getCurrentUser(Authentication authentication) {
 
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            return userService.getOneUserByUsername(username);
-        }
-        else {
-            return null;
-        }
-    }
     @GetMapping("/get-current-data")
     public ArrayList<ArrayList<String>> getCurrentData(Authentication authentication)
     {
@@ -46,13 +36,13 @@ public class PlannerController {
         {
            return plannerService.getCurrentData(currentUser);
         }
-
-
         return null;
     }
 
+
+
     @PostMapping("save-planner")
-    public ResponseEntity<?> savePlanner(@RequestBody ArrayList<ArrayList<String>> plannerData , Authentication authentication)
+    public ResponseEntity<?> savePlanner(@RequestBody String plannerData , Authentication authentication)
     {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
@@ -62,6 +52,19 @@ public class PlannerController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("save-one-week")
+    public ResponseEntity<?> savePlannerOneWeek(@RequestBody String plannerData , Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return plannerService.saveOneWeekPlanner(currentUser,plannerData);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
     @DeleteMapping("clear-meal-planner")
     public ResponseEntity<String> clearMealPlanner(Authentication authentication)
@@ -74,6 +77,8 @@ public class PlannerController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 

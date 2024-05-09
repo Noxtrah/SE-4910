@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import se4910.recipiebeckend.controller.ParentController;
 import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
@@ -31,10 +32,9 @@ public class RecipeService {
     UserRecipeRepository userRecipeRepository;
     UserRepository userRepository;
     FavoritesRepository favoritesRepository;
+    ParentController parentController;
 
 
-    @Autowired
-    private BlobServiceClient blobServiceClient;
 
 
     public List<Recipe> getAllRecipesBasic()
@@ -83,7 +83,7 @@ public class RecipeService {
 
         try {
 
-            String photoUrlString = uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
+            String photoUrlString = parentController.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
             // Save recipe details to database
             Recipe recipe = new Recipe();
             recipe.setMeal(mealConverter(recipeRequest.getMeal()));
@@ -163,7 +163,7 @@ public class RecipeService {
 
                 System.out.println("photo update işlemi");
                 // Blob depolama işlemini gerçekleştir ve elde edilen URL'i al
-                String photoUrl = uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
+                String photoUrl = parentController.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
                 // Elde edilen URL'i photoPath alanına ata
                 recipe.setPhotoPath(photoUrl);
             }
@@ -177,37 +177,7 @@ public class RecipeService {
         }
     }
 
-    public String uploadPhotoToBlobStorage(MultipartFile photo) {
 
-        if (photo == null || photo.isEmpty()) {
-            throw new IllegalArgumentException("Photo is null or empty");
-        }
-
-
-        String containerName = "recipeimages";
-        String fileExtension = getFileExtension(Objects.requireNonNull(photo.getOriginalFilename()));
-        String fileName = generateUniqueFileName(fileExtension);
-        try {
-            blobServiceClient.getBlobContainerClient(containerName)
-                    .getBlobClient(fileName)
-                    .upload(photo.getInputStream(), photo.getSize());
-            return blobServiceClient.getBlobContainerClient(containerName).getBlobClient(fileName).getBlobUrl();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to upload photo to Blob Storage", e);
-        }
-    }
-
-    public String generateUniqueFileName(String fileExtension) {
-        return UUID.randomUUID().toString() + "." + fileExtension;
-    }
-
-    public String getFileExtension(String filename) {
-        int lastIndexOf = filename.lastIndexOf(".");
-        if (lastIndexOf == -1 || lastIndexOf == filename.length() - 1) {
-            throw new IllegalArgumentException("Invalid filename: " + filename);
-        }
-        return filename.substring(lastIndexOf + 1);
-    }
 
 
 

@@ -28,6 +28,8 @@ public class MealPlanner {
     String saturday;
     String sunday;
 
+    String savedWeek;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="users_id", nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)

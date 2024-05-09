@@ -36,8 +36,7 @@ public class UserRecipes {
 
     private int preparationTime;
 
-    @Lob
-    byte[] blobData;
+    private String photoPath;
 
     private Boolean isPublish = false;
 

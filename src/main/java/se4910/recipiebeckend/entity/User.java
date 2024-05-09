@@ -42,8 +42,7 @@ public class User implements UserDetails {
 
     private String allergicFoods;
 
-    @Lob
-    byte[] blobData;
+    private String profilePhotoPath;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

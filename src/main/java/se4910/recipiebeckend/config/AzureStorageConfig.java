@@ -32,18 +32,5 @@ public class AzureStorageConfig {
                 .buildClient();
     }
 
-  /*  @Bean(name = "multipartResolver")
-    public StandardServletMultipartResolver resolver() {
-        return new StandardServletMultipartResolver();
-    }
 
-    @Bean
-    public FilterRegistrationBean<MultipartFilter> multipartFilterRegistrationBean() {
-        FilterRegistrationBean<MultipartFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(new MultipartFilter());
-        filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.setName("multipartFilter");
-        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return filterRegistrationBean;
-    }*/
 }
