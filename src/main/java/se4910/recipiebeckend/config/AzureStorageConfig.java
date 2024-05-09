@@ -11,6 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AzureStorageConfig {
 
+    @Value("${azure.storage.account-url}")
+    private String accountUrl;
+
+    @Value("${azure.storage.sas-token}")
+    private String sasToken;
+
+    @Value("${azure.storage.account-key}")
+    private String accountKey;
 
     @Bean
     public BlobServiceClient blobServiceClient() {
