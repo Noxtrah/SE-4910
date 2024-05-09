@@ -20,44 +20,44 @@
         <section class="meal-plan" id="sortable-section">
             <div class="day" data-day="Monday">
                 <h3>Monday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="mondayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Tuesday">
                 <h3>Tuesday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="tuesdayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Wednesday">
                 <h3>Wednesday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="wednesdayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Thursday">
                 <h3>Thursday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="thursdayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Friday">
                 <h3>Friday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="fridayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Saturday">
                 <h3>Saturday <span class="add-item">+</span></h3>
-                <ul class="items">
+                <ul class="items" id="saturdayItems">
                     <!-- Items will be dynamically added here -->
                 </ul>
             </div>
             <div class="day" data-day="Sunday">
                 <h3>Sunday <span class="add-item">+</span></h3>
-                <ul class="items">
-                    <!-- Items will be dynamically added here -->
+                <ul class="items" id="sundayItems">
+                    <!-- BREAKFAST LUNCH DİNNER Lİ Items will be dynamically added here -->
                 </ul>
             </div>
 <div>
@@ -90,7 +90,7 @@
                   transition: 0.4s ease;
                   transition: background 0.4s ease, color 0.4s ease;"
                         onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                        onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="clearMealPlanner()">Clear All</button>
+                        onmouseout="this.style.background='white'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
                     </div>
 
             
@@ -166,7 +166,7 @@
                 <h3>Dinner:</h3>
                 <input type="text" id="dinnerInput" placeholder="Enter dinner...">
             </div>
-            <button id="saveBtn">Save</button>
+            <button id="saveBtn" onclick="savePopUp()">Save</button>
         </div>
     </div>
 
@@ -206,12 +206,20 @@
         }
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span.onclick = function closePopUp() {
             modal.style.display = "none";
         }
 
-        // When the user clicks on Save, add the item to the list and close the modal
-        document.getElementById("saveBtn").onclick = function() {
+        var mealList = {
+    Monday: "",
+    Tuesday: "",
+    Wednesday: "",
+    Thursday: "",
+    Friday: "",
+    Saturday: "",
+    Sunday: ""
+};
+function savePopUp() {
             var itemsList = document.querySelector(".day[data-day='" + selectedDay + "'] .items");
             var breakfastInput = document.getElementById("breakfastInput").value;
             var lunchInput = document.getElementById("lunchInput").value;
@@ -237,28 +245,252 @@
                 liDinner.textContent = "Dinner: " + dinnerInput;
                 itemsList.appendChild(liDinner);
             }
+            var combinedData = combineData(breakfastInput, lunchInput, dinnerInput);
+            mealList[selectedDay] = combinedData;
 
             modal.style.display = "none";
         }
 
-        // Close the modal if the user clicks anywhere outside of the modal
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
 
-        // Enable sorting
-        Sortable.create(document.getElementById('sortable-section'), {
-            animation: 150,
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            handle: '.day'
+
+// function saveMealPlan() {
+    // var itemsList = document.querySelector(".day[data-day='" + selectedDay + "'] .items");
+
+    // var breakfastInput = document.getElementById("breakfastInput").value;
+    // var lunchInput = document.getElementById("lunchInput").value;
+    // var dinnerInput = document.getElementById("dinnerInput").value;
+
+    // // Clear existing items first
+    // itemsList.innerHTML = "";
+
+    // if (breakfastInput !== "") {
+    //     var liBreakfast = document.createElement("li");
+    //     liBreakfast.textContent = breakfastInput;
+    //     itemsList.appendChild(liBreakfast);
+    // }
+
+    // if (lunchInput !== "") {
+    //     var liLunch = document.createElement("li");
+    //     liLunch.textContent = lunchInput;
+    //     itemsList.appendChild(liLunch);
+    // }
+
+    // if (dinnerInput !== "") {
+    //     var liDinner = document.createElement("li");
+    //     liDinner.textContent = dinnerInput;
+    //     itemsList.appendChild(liDinner);
+    // }
+
+    // modal.style.display = "none";
+
+    // // Prepare meal data
+    // var mealData = {
+    //     breakfast: breakfastInput,
+    //     lunch: lunchInput,
+    //     dinner: dinnerInput
+    // };
+
+    // // Prepare meal data without keys
+    // var mealDataWithoutKeys = [breakfastInput, lunchInput, dinnerInput];
+
+    // // Log the data before sending
+    // console.log("Meal Data with Keys:", mealData);
+    // console.log("Meal Data without Keys:", mealDataWithoutKeys);
+
+    // // Convert meal data to JSON string
+    // var jsonData = JSON.stringify(mealDataWithoutKeys);
+
+    // Send data to server
+
+// Kaydetme düğmesine tıklanınca
+
+async function saveMealPlan() {
+    var MealPlanFinalString = getWeeklyMealPlan();
+    console.log(MealPlanFinalString);
+
+    // Kullanıcı oturum açtığında veya kimlik doğrulama başarılı olduğunda alınan token
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    // Token var mı kontrol edelim
+    if (!JWTAccessToken) {
+        console.error('Access token not found. Please log in first.');
+        return;
+    }
+
+    // Verileri sunucuya gönder
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/save-planner';
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken
+
+            },
+            body: (MealPlanFinalString),
+
         });
 
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Failed to save meal plan. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        const responseBody = await response.text();
+        let responseData;
+       
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
+}
+
+// get and fill
+document.addEventListener('DOMContentLoaded', function () {
+    getUserMealPlanAndFill(); // Sayfa yüklendiğinde hemen çalıştırılır
+});
+
+async function getUserMealPlanAndFill() {
+    const mealPlan = await getUserMealPlan();
+    if (mealPlan) {
+        fillMealPlan(mealPlan);
+    }
+}
+
+async function getUserMealPlan() {
+    const mealPlan = await getMealPlan();
+    if (mealPlan) {
+        return mealPlan;
+    } else {
+        console.error('Failed to get user meal plan.');
+        return null;
+    }
+}
+
+async function getMealPlan() {
+    // const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    // if (!JWTAccessToken) {
+    //     console.error('Access token not found. Please log in first.');
+    //     return null;
+    // }
+
+    const apiUrl = 'https://run.mocky.io/v3/0dd7136a-22da-45c2-8d93-e59c63069ab9';
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': JWTAccessToken
+            },
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Failed to fetch meal plan. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        const mealPlanData = await response.json();
+        console.log('Meal plan fetched successfully:', mealPlanData);
+        return mealPlanData;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+
+function fillMealPlan(mealPlan) {
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    
+    daysOfWeek.forEach((day, index) => {
+        const dayElement = document.querySelector(`.day[data-day='${day}'] .items`);
+        if (dayElement) {
+            const meals = mealPlan[index];
+            meals.forEach(meal => {
+                const li = document.createElement('li');
+                li.textContent = meal;
+                dayElement.appendChild(li);
+            });
+        }
+    });
+}
 
 
-        $(document).ready(function(){
+async function clearAll() {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    if (!JWTAccessToken) {
+        console.error('Access token not found. Please log in first.');
+        return;
+    }
+
+    const apiUrl = 'sunucu-url/clear-all';
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken
+            },
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Failed to clear all data. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        console.log('All data cleared successfully');
+        // HTML'deki tüm yemek listelerini temizle
+        const itemsLists = document.querySelectorAll('.items');
+        itemsLists.forEach(itemsList => {
+            itemsList.innerHTML = '';
+        });
+    } catch (error) {
+        console.error('There was a problem with the clear operation:', error);
+    }
+}
+
+// Tüm mealleri birleştirerek bir string oluşturur
+function combineData(breakfast, lunch, dinner) {
+    var combinedString = "";
+    if (breakfast !== "") {
+        combinedString +=  breakfast + ", ";
+    }
+    if (lunch !== "") {
+        combinedString +=  lunch + ", ";
+    }
+    if (dinner !== "") {
+        combinedString +=  dinner ;
+    }
+    return combinedString;
+} 
+
+function getWeeklyMealPlan() {
+    var weeklyMealPlan = [];
+    for (var day in mealList) {
+        weeklyMealPlan.push(mealList[day] || " ");
+    }
+    return weeklyMealPlan.join(":");
+}
+
+
+        // Close the modal if the user clicks anywhere outside of the modal
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Enable sorting
+    Sortable.create(document.getElementById('sortable-section'), {
+        animation: 150,
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        handle: '.day'
+    });
+
+
+
+    $(document).ready(function(){
 
 // ADDING A NEW ITEM TO THE LIST
 
