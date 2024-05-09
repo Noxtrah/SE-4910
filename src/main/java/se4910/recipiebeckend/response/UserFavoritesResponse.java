@@ -19,7 +19,7 @@ public class UserFavoritesResponse {
     String description;
     private int preparationTime;
     String photoPath;
-    private byte[] userRecipePhoto;
+    String userRecipePhoto;
 
 
     public UserFavoritesResponse(Favorites favorites, int ingredientCount) {
@@ -38,7 +38,7 @@ public class UserFavoritesResponse {
         this.ingredientCount = ingredientCount;
         this.description = userRecipe.getDescription();
         this.preparationTime = userRecipe.getPreparationTime();
-        this.userRecipePhoto = userRecipe.getBlobData();
+        this.userRecipePhoto = userRecipe.getPhotoPath();
     }
 
 

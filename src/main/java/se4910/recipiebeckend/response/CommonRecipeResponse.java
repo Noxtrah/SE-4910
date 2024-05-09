@@ -36,7 +36,7 @@ public class CommonRecipeResponse {
         this.ingredients = userRecipes.getIngredients();
         this.description = userRecipes.getDescription();
         this.preparationTime = userRecipes.getPreparationTime();
-        this.photoPath = Arrays.toString(userRecipes.getBlobData());
+        this.photoPath = userRecipes.getPhotoPath();
     }
 }
 

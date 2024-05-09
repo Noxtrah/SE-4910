@@ -20,7 +20,7 @@ public class UserInfoResponse {
     private Date birthDay;
     private String bio;
     private String allergicFoods;
-    private byte[] userPhoto;
+    private String userPhoto;
 
     List<UserRecipeResponse> userPublishedRecipes;
 
@@ -32,7 +32,7 @@ public class UserInfoResponse {
         this.birthDay = user.getBirthDay();
         this.bio = user.getBio();
         this.allergicFoods = user.getAllergicFoods();
-        this.userPhoto = user.getBlobData();
+        this.userPhoto = user.getProfilePhotoPath();
         this.userPublishedRecipes = userPublishedRecipes;
     }
 }
