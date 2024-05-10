@@ -139,6 +139,13 @@ async function saveRecipe(recipeData) {
     }
 }
 
+async function saveRecipetoAIdataSet(body){
+        
+         
+    photoPathURL // get Photo url JAVA fetch.
+    const new_body = oldbody + photoPathURL
+    //  /add-recipe-to-dataset pyhton fetch.
+}
 
 
 // const saveButton = document.getElementById("save-button");
@@ -160,8 +167,14 @@ const saveButton = document.getElementById("save-button");
         // addRecipe();
         console.log("Save button clicked");
         console.log(recipeData);
-        saveRecipe(recipeData);
+      
+        saveRecipe(recipeData); // önce bunun çalışıp bittiğinden emin olmalıyız. photo url almak için
+
+        saveRecipetoAIdataSet(recipeData);
     });
+
+
+  
 
     function setupBackButton() {
         const backButton = document.getElementById('back-arrow-button');
@@ -170,6 +183,10 @@ const saveButton = document.getElementById("save-button");
             window.history.back();
             // window.history.go(-1);
         });
+    
+  
+
+    
 }
 
 setupBackButton();
