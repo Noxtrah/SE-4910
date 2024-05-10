@@ -20,6 +20,7 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
+                    this.getRecommendations(data.ingredients,data.title)
                 })
                 .catch(error => {
                     console.error('Error fetching recipe data:', error);
@@ -97,6 +98,27 @@ class RecipeDetail {
         } else {
             prepTimeElement.innerHTML = '<p>No preparation time information available</p>';
         }
+    }
+
+    getRecommendations(ingredients,title) {
+        fetch(`/get-recommendations?ingredients=${ingredients}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(recommendations => {
+                // Önerileri kullanıcı arayüzüne göster
+                this.displayRecommendations(recommendations);
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+            });
+    }
+
+    displayRecommendations(recommendations) {
+        // Önerileri kullanıcı arayüzüne göster
     }
 
     setupBackButton() {
