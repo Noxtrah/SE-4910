@@ -2098,11 +2098,12 @@ header {
   .imgDiv{
     width: 100%;
     height: 70%;
+    object-fit: cover;
+    /* overflow-y: hidden; */
   }
   
   .imgDiv img{
     width: 100%;
-    object-fit:cover;
   }
   
   @media screen and (max-width: 691px){

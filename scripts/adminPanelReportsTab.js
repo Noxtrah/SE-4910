@@ -20,7 +20,7 @@ function openReportsTab(tabName) {
 
 async function fetchReports() {
     // apiUrl = "https://recipiebeckend.azurewebsites.net/admin/getReportedRecipes";
-    const apiUrl = "https://run.mocky.io/v3/2f77995b-227c-4b12-8a3a-2bb5816a972b";
+    const apiUrl = "https://run.mocky.io/v3/bccf30e6-fdb3-413c-b5bc-e0d56c1c71da";
 
     try {
         const response = await fetch(apiUrl);

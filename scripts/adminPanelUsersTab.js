@@ -111,7 +111,8 @@ var users = [
 ];
 
 async function fetchAllUsers() {
-    const apiUrl = "https://run.mocky.io/v3/51147056-22c6-49f7-a26f-2ef61fd95e5a";
+    //const apiUrl = "https://recipiebeckend.azurewebsites.net/user/all-users"
+    const apiUrl = "https://run.mocky.io/v3/0c51aa1f-9f67-431d-b245-5dcf57b30197";
 
     try {
         const response = await fetch(apiUrl);

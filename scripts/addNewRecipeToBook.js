@@ -96,57 +96,158 @@
 //     }
 // }
 
+// async function saveRecipe(recipeData) {
+//     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-recipe';
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     try {
+//         const response = await fetch(apiUrl, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': JWTAccessToken
+//             },
+//             body: JSON.stringify(recipeData),
+//         });
+
+//         if (!response.ok) {
+//             const errorMessage = await response.text();
+//             throw new Error(`Failed to save recipe. Status: ${response.status}. Message: ${errorMessage}`);
+//         }
+
+//         const responseBody = await response.text();
+
+//         const idMatch = responseBody.match(/id,(\d+),/);
+//         const id = idMatch ? idMatch[1] : null;
+
+//         console.log('id:', id);
+
+//         let responseData;
+//         try {
+//             responseData = JSON.parse(responseBody);
+//             console.log('Recipe saved successfully:', responseData);
+//         } catch (error) {
+//             console.error('Failed to parse response as JSON. Response:', responseBody);
+//             responseData = null;
+//         }
+
+//         if (id !== null) {
+//             await saveRecipetoAIdataSet(recipeData, id);
+//         }
+
+//         return responseData;
+//     } catch (error) {
+//         console.error('Error saving recipe:', error.message);
+//         throw error;
+//     }
+// }
+
 async function saveRecipe(recipeData) {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-recipe';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    
+
+    // Create a FormData object to append all properties of recipeData
+    const formData = new FormData();
+    for (const key in recipeData) {
+        formData.append(key, recipeData[key]);
+    }
+
+    console.log('formData: ', formData);
+
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': JWTAccessToken
             },
-            body: JSON.stringify(recipeData),
+            body: formData,
         });
 
         if (!response.ok) {
-            // If response status is not OK, throw an error with the status and error message
             const errorMessage = await response.text();
             throw new Error(`Failed to save recipe. Status: ${response.status}. Message: ${errorMessage}`);
         }
 
-        // Read response body as text and store it in a variable
         const responseBody = await response.text();
 
-        // Attempt to parse the response body as JSON
+        const idMatch = responseBody.match(/id,(\d+),/);
+        const id = idMatch ? idMatch[1] : null;
+
+        console.log('id:', id);
+
         let responseData;
         try {
             responseData = JSON.parse(responseBody);
             console.log('Recipe saved successfully:', responseData);
         } catch (error) {
-            // If parsing fails, log the response text and set responseData to null
             console.error('Failed to parse response as JSON. Response:', responseBody);
             responseData = null;
         }
 
-        // Return the response data, which may be null if parsing failed
+        if (id !== null) {
+            await saveRecipetoAIdataSet(recipeData, id);
+        }
+
         return responseData;
     } catch (error) {
-        // Catch any errors that occur during the fetch operation
         console.error('Error saving recipe:', error.message);
         throw error;
     }
 }
 
-async function saveRecipetoAIdataSet(body){
-        
-         
-    photoPathURL // get Photo url JAVA fetch.
-    const new_body = oldbody + photoPathURL
-    //  /add-recipe-to-dataset pyhton fetch.
+async function saveRecipetoAIdataSet(body, id) {
+    try {
+        const apiUrl = 'https://recipieai.azurewebsites.net/add-recipe-to-dataset';
+        const photoPathURL = await getPhotoPathURL(id);
+        const new_body = { ...body, photoPathURL };
+
+        console.log('new_body:', new_body);
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(new_body)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add recipe to AI dataset');
+        }
+
+        const data = await response.json();
+        console.log('Recipe added to AI dataset:', data);
+    } catch (error) {
+        console.error('Error adding recipe to AI dataset:', error);
+    }
 }
 
+async function getPhotoPathURL(id) {
+    try {
+        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipesUser/user-recipe-photoPath?userRecipeId=${id}`;
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Failed to fetch photo path URL');
+        }
+        console.log('Response: ', response);
+        const responseData = await response.text();
+        console.log('Response Data:', responseData);
+
+
+        // Check if response data is empty
+        if (!responseData.trim()) {
+            console.log('Empty response data');
+            return null; // or return a default value
+        }
+
+        const data = await response.json();
+        console.log('Photo Path URL:', data.photoPathURL);
+        return data.photoPathURL;
+    } catch (error) {
+        console.error('Error fetching photo path URL:', error);
+        throw error;
+    }
+}
 
 // const saveButton = document.getElementById("save-button");
 // saveButton.addEventListener("click", saveRecipe);
@@ -161,7 +262,7 @@ const saveButton = document.getElementById("save-button");
             meal: document.getElementById('recipe-meal').value,
             preparationTime: document.getElementById('recipe-prep-time').value,
             // photoPath: document.getElementById('photo').files[0] ? document.getElementById('photo').files[0].name : '',
-            photoPath: document.getElementById('photo').files[0]
+            recipePhoto: document.getElementById('photo').files[0]
           };
         event.preventDefault(); // Sayfanın yeniden yüklenmesini önle
         // addRecipe();
@@ -170,7 +271,7 @@ const saveButton = document.getElementById("save-button");
       
         saveRecipe(recipeData); // önce bunun çalışıp bittiğinden emin olmalıyız. photo url almak için
 
-        saveRecipetoAIdataSet(recipeData);
+        // saveRecipetoAIdataSet(recipeData);
     });
 
 

@@ -251,7 +251,7 @@ async function clearAll() {
 
 // önceki haftaları getir ve tablo yap
 function getPreWeeks() {
-    var url = "https://run.mocky.io/v3/fc122a69-8296-47be-9cc3-02564e0dfdf5"; // API'nin URL'sini buraya girin
+    var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4"; // API'nin URL'sini buraya girin
 
     fetch(url)
     .then(response => response.text())
