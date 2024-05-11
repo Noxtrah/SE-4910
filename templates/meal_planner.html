@@ -15,6 +15,9 @@
         <h1>Meal Planner</h1>
     </header>
     <main>
+        <table class="weekly-table">
+           
+          
         <h2 style="margin: 60px;" >Weekly Meal Plan</h2>
 
         <section class="meal-plan" id="sortable-section">
@@ -82,7 +85,8 @@
                 </ul>
             </div>
         </section>
-        
+    </table>
+
 <div>
             <button style=" padding: 0.6rem;
             outline: none;
@@ -133,7 +137,7 @@
         transition: 0.4s ease;
         transition: background 0.4s ease, color 0.4s ease;"
               onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-              onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save to Plans</button>
+              onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveToPlans()">Save to Plans</button>
         
               <button style=" padding: 0.6rem;
               margin-left: 40px;
@@ -147,7 +151,7 @@
               transition: 0.4s ease;
               transition: background 0.4s ease, color 0.4s ease;"
                     onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()">See Previous Plans</button>
+                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
                 </div>
 
                 <div class="weekly-table-container" id="weekly_planner"></div>

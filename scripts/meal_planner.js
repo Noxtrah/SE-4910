@@ -163,20 +163,20 @@ window.onload = function() {
 
 //çalışıyor get
 async function getMealPlan() {
-    // const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
 
-    // if (!JWTAccessToken) {
-    //     console.error('Access token not found. Please log in first.');
-    //     return null;
-    // }
+    if (!JWTAccessToken) {
+        console.error('Access token not found. Please log in first.');
+        return null;
+    }
 
-    const apiUrl = 'https://run.mocky.io/v3/048e441d-ae8a-4dc8-87c6-166487c34b77';
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/get-current-data';
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': JWTAccessToken
+                'Authorization': JWTAccessToken
             },
         });
 
@@ -209,10 +209,17 @@ function fillCurrentData(data) {
 
         // Fill the meals for the day
         items.forEach((item, i) => {
-            item.innerText = meals[i];
+            if (meals !== null && meals !== undefined && meals[i] !== null && meals[i] !== undefined) {
+                item.innerText = meals[i];
+            } else {
+                item.innerText = ""; // If value is null or undefined, leave inner text empty
+            }
         });
     });
 }
+
+
+
 
 
 async function clearAll() {
@@ -223,13 +230,13 @@ async function clearAll() {
         return;
     }
 
-    const apiUrl = 'sunucu-url/clear-all';
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/clear-meal-planner';
     try {
         const response = await fetch(apiUrl, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': JWTAccessToken
+                 'Authorization': JWTAccessToken
             },
         });
 
@@ -263,29 +270,36 @@ function getPreWeeks() {
 }
 
 
+var weeksData; // Global değişken olarak tanımlıyoruz
+
 function createWeeklyPlannerTable(data) {
     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     var meals = ['Breakfast', 'Lunch', 'Dinner'];
-    var weeksData = data.split(';'); // Split data into weeks
+    weeksData = data.split(';'); // Global weeksData değişkenini tanımlıyoruz
+
     var tableHtml = "";
 
-    for (var w = 0; w < weeksData.length - 1; w++) {
-        var daysData = weeksData[w].split(':'); // Split week into days
-        tableHtml += "<table class='weekly-table'><tr><th colspan='4'>Week " + (w + 1) + "<button class='use-week-button' data-week='" + (w + 1) + "' onclick='populateMealPlan(" + (w + 1) + ")'>Use this week</button></th></tr>";
-
-        tableHtml += "<tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr>";
+    for (var w = 0; w < weeksData.length-1 ; w++) {
+        var daysData = weeksData[w].split(':');
+        tableHtml += "<section class='meal-plan' id='sortable-section'>";
 
         for (var i = 0; i < daysData.length; i++) {
             var mealsList = daysData[i].split(',');
-            tableHtml += "<tr><td>" + days[i] + "</td>";
+            tableHtml += "<div class='day' data-day='" + days[i] + "'>";
+            tableHtml += "<h3>" + days[i] + " <span class='add-item'></span></h3>";
+            tableHtml += "<ul class='items' id='" + days[i].toLowerCase() + "Items'>";
+
             for (var j = 0; j < mealsList.length; j++) {
-                tableHtml += "<td>" + mealsList[j] + "</td>";
+                tableHtml += "<li class='" + meals[j].toLowerCase() + "'>" + mealsList[j] + "</li>";
             }
-            tableHtml += "</tr>";
+
+            tableHtml += "</ul></div>";
         }
 
-        tableHtml += "</table>";
-        if (w < weeksData.length - 2 && weeksData[w + 1].trim() !== "") {
+        tableHtml += "<button class='use-week-button' data-week='" + (w + 1) + "' onclick='populateMealPlan(" + (w + 1) + ")'>Use this week</button>";
+        tableHtml += "</section>";
+
+        if (w < weeksData.length - 1 && weeksData[w + 1].trim() !== "") {
             tableHtml += "<div class='week-divider'></div>";
         }
     }
@@ -293,36 +307,20 @@ function createWeeklyPlannerTable(data) {
     return tableHtml;
 }
 
-// tablo verilerini meal plan a yapıştır
 function populateMealPlan(weekNumber) {
     // Haftanın tablosunu seç
-    var weekTable = document.querySelectorAll('.weekly-table')[weekNumber - 1]; // weekNumber 1'den başladığı için 1 çıkarıyoruz
+    var mealPlanDays = document.querySelectorAll('.meal-plan .day');
 
-    // Haftanın tablosundaki verileri al
-    var rows = weekTable.querySelectorAll('tr');
+    mealPlanDays.forEach(function(day, index) {
+        var mealsList = weeksData[weekNumber - 1].split(':')[index].split(',');
 
-    // Meal plan içindeki uygun li elementlerine verileri yerleştir
-    rows.forEach(function(row, index) {
-        // İlk satır başlık olduğu için geç
-        if (index === 0) return;
+        var mealPlanItems = day.querySelectorAll('.items li');
 
-        var cells = row.querySelectorAll('td');
-        var day = cells[0].innerText;
-        var meals = Array.from(cells).slice(1).map(function(cell) {
-            return cell.innerText;
-        });
-
-        // Meal plan içindeki uygun li elementlerine verileri yerleştir
-        var mealPlanDay = document.querySelector(`[data-day="${day}"]`);
-        var mealPlanItems = mealPlanDay.querySelectorAll('.items li');
-
-        meals.forEach(function(meal, i) {
+        mealsList.forEach(function(meal, i) {
             mealPlanItems[i].innerText = meal;
         });
     });
 }
-
-
 
 $(document).ready(function(){
 
@@ -394,4 +392,60 @@ $(document).ready(function(){
     });
 
 });
+
+function saveToPlans() {
+    // Input değerlerini al
+    var breakfastValue = breakfastInput.value;
+    var lunchValue = lunchInput.value;
+    var dinnerValue = dinnerInput.value;
+
+    // Mevcut günü al
+    var dayElement = getCurrentDay();
+
+    // Eğer gün elementi bulunamazsa işlemi sonlandır
+    if (!dayElement) {
+        console.error("Mevcut gün bulunamadı.");
+        return;
+    }
+
+    var items = dayElement.querySelectorAll("li");
+    items[0].innerText = breakfastValue;
+    items[1].innerText = lunchValue;
+    items[2].innerText = dinnerValue;
+
+    // Modalı kapat
+    closeModal();
+
+    // Kaydedilen planı güncelle
+    savedMealPlan = combineData();
+}
+
+    // Mevcut günü dinamik olarak almak için bir fonksiyon
+function getCurrentDay() {
+    return document.querySelector('[data-day="' + new Date().toLocaleString('default', { weekday: 'long' }) + '"]');
+    
+}
+
+    // Post işlemi için veriyi hazırla
+    var postData = savedMealPlan.replace(/:/g, '\n');
+    // Post işlemi için fetch
+    fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: postData })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data sent successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error while sending data:', error);
+    });
 
