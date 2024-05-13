@@ -66,20 +66,57 @@ function loginUser() {
     })
     .then(data => {
         console.log(data.accessToken);
-    
+
         // Store tokens in sessionStorage
         sessionStorage.setItem('accessToken', data.accessToken);
         sessionStorage.setItem('refreshToken', data.refreshToken);
-    
+
         // Optionally, store user ID in sessionStorage
         sessionStorage.setItem('userId', data.userId);
-    
-        // Redirect to the dashboard or perform other actions
-        window.location.href = '../templates/dashboard.html';
+
+        let roles = data.role.split(','); // Split roles into an array
+
+        if (roles.length === 1 && roles[0] === "user") {
+            window.location.href = '../templates/dashboard.html';
+        } else if (roles.includes("admin")) {
+            askLoginType();
+        }
+
     })
     .catch(error => {
         console.error('Login failed:', error);
     });
+}
+
+function askLoginType() {
+    // Reset the content of the login-box
+    const loginBox = document.querySelector('.login-box');
+    loginBox.innerHTML = '';
+    loginBox.style.minHeight = '20vh';
+
+    // Create two buttons
+    const adminButton = document.createElement('button');
+    adminButton.textContent = 'Login as Admin';
+    adminButton.style.width = '80%';
+
+    const userButton = document.createElement('button');
+    userButton.textContent = 'Login as User';
+    userButton.style.marginTop = '10px';
+    userButton.style.width = '80%';
+
+
+    // Add event listeners to the buttons
+    adminButton.addEventListener('click', function() {
+        window.location.href = '../templates/adminPanel.html';
+    });
+
+    userButton.addEventListener('click', function() {
+        window.location.href = '../templates/dashboard.html';
+    });
+
+    // Append buttons to the login-box
+    loginBox.appendChild(adminButton);
+    loginBox.appendChild(userButton);
 }
 
 document.getElementById('login-button').addEventListener('click', function(event) {

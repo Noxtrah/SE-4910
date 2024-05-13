@@ -19,8 +19,8 @@ function openReportsTab(tabName) {
 }
 
 async function fetchReports() {
-    // apiUrl = "https://recipiebeckend.azurewebsites.net/admin/getReportedRecipes";
-    const apiUrl = "https://run.mocky.io/v3/bccf30e6-fdb3-413c-b5bc-e0d56c1c71da";
+    // apiUrl = "https://recipiebeckend.azurewebsites.net/admin/reported-recipes";
+    const apiUrl = "https://run.mocky.io/v3/18524b0e-7a6e-434c-b4cf-0b865a896383";
 
     try {
         const response = await fetch(apiUrl);
@@ -200,7 +200,7 @@ function fillDetailSideBar(reportedItem, detailSideBar){
 
     const selectedReportImage = document.createElement('img');
     selectedReportImage.classList.add('selected-report-image');
-    selectedReportImage.src = reportRecipeResponse.image;
+    selectedReportImage.src = reportRecipeResponse.photoPath;
     selectedReportImage.alt = 'Selected Report Image';
     detailSideBar.appendChild(selectedReportImage);
 
