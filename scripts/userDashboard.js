@@ -656,8 +656,8 @@ const displayDashboard = async (recipes) => {
 
 async function fetchData(key) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    let apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
-    // let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+    // let apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
+    let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
     if (key !== undefined) {
         apiUrl += `?key=${key}`;
     }
@@ -690,7 +690,6 @@ async function fetchData(key) {
 
 
 // Call fetchData to initiate the process
-fetchData(0);
 
 const fetchDataByMealType = async (mealType) => {
     try {
@@ -771,6 +770,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			isOptionSelected = true;
         });
     });
+    fetchData(0);
+
 });
 
 function fetchSortOperations(selectedValue) {
@@ -977,12 +978,13 @@ window.onload = function () {
 
 $('#pagination-demo').twbsPagination({
     totalPages: 2,
-    visiblePages: 2,
+    visiblePages: 3,
     next: 'Next',
     prev: 'Prev',
     onPageClick: function (event, page) {
         // Call the paging function directly with the clicked page
-        fetchData(page-1);
+        page = page -1 ;
+        fetchData(page);
         console.log("Page = " , page);
     }
 });

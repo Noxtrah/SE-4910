@@ -121,7 +121,8 @@ button{
     width: 100%;
     height: 5vh;
     border-radius: 40px;
-    background: white;
+    background: rgba(255, 255, 255, 0.822);
+    color: rgb(54, 3, 49);
     border: none;
     outline: none;
     cursor: pointer;

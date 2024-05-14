@@ -83,6 +83,9 @@ async function createSingleReportItem(report) {
     // Extract data from the report
     const { userRecipeResponse, reportDetail } = report;
 
+    const recipeDetailsContainer = document.createElement('div');
+    recipeDetailsContainer.classList.add('recipe-details-container');
+
     // Create elements for recipe details
     const recipeDetails = document.createElement('div');
     recipeDetails.classList.add('recipe-details');
@@ -99,6 +102,7 @@ async function createSingleReportItem(report) {
         reportReason.textContent = 'No report reason provided';
     }
     recipeDetails.appendChild(reportReason);
+    recipeDetailsContainer.appendChild(recipeDetails);
 
     // Create the report item
     const reportItem = document.createElement('div');
@@ -124,7 +128,6 @@ async function createSingleReportItem(report) {
     detailButton.addEventListener('click', function() {
         detailRecipe(report);
     });
-
     actionButtons.appendChild(detailButton);
 
     const deleteButton = createButton('Delete');
@@ -132,16 +135,17 @@ async function createSingleReportItem(report) {
     deleteButton.addEventListener('click', function() {
         deleteRecipe(report);
     });
-
     actionButtons.appendChild(deleteButton);
 
-    recipeDetails.appendChild(actionButtons);
+    // Append action buttons to report item
+    recipeDetailsContainer.appendChild(actionButtons);
 
-    // Append recipe details
-    reportItem.appendChild(recipeDetails);
+    // Append recipe details container to report item
+    reportItem.appendChild(recipeDetailsContainer);
 
     return reportItem;
 }
+
 
 function createButton(text) {
     const button = document.createElement('button');
@@ -248,6 +252,8 @@ function fillDetailSideBar(reportedItem, detailSideBar){
     selectedPrepTime.classList.add('selected-recipe-report');
     selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + reportRecipeResponse.preparationTime;
     detailSideBar.appendChild(selectedPrepTime);
+
+    // selectedPrepTime.style.marginBottom = '20px';
 }
 
 function closeDetailSidebar() {

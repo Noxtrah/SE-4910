@@ -61,7 +61,9 @@ class RecipeDetail {
 
         const mealElement = document.getElementById('recipe-meal');
         if (selectedRecipe.meal.length > 0) {
-            const mealName = selectedRecipe.meal[0].mealName;
+            const mealName = selectedRecipe.meal;
+            console.log("Selected recipe: " , selectedRecipe);
+            console.log("Meal name: " , mealName);
             const capitalizedMealName = mealName.charAt(0).toUpperCase() + mealName.slice(1);
             mealElement.innerHTML = `<p>${capitalizedMealName}</p>`;
         } else {
