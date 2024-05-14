@@ -1816,7 +1816,7 @@ header {
   .rating-div{
     position: relative;
     display: flex;
-    flex-direction: row-reverse;
+    /* flex-direction: row-reverse; */
     bottom: 1vh;
   }
 

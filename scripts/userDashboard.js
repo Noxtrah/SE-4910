@@ -350,6 +350,8 @@ const createRecipeElement = async (recipe) => {
         }
     });
 
+    imgDiv.appendChild(heartContainer);
+
     function createFlyingHeart(parentElement) {
         const heart = document.createElement('span');
         heart.classList.add('flying-heart');
