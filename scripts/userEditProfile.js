@@ -1,42 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Add JavaScript here
     var allergicFoods = [
-        "Nothing",
-        "Egg",
-        "Milk",
-        "Peanut",
-        "Tree nut",
-        "Soy",
-        "Wheat",
-        "Fish",
-        "Shellfish",
-        "Sesame",
-        "Mustard",
-        "Lupin",
-        "Mollusk",
-        "Celery",
-        "Sulfite",
-        "Other"
+        "Egg", "Milk", "Peanut", "Tree nut", "Soy", "Wheat", "Fish", "Shellfish", 
+        "Sesame", "Mustard", "Lupin", "Mollusk", "Celery", "Sulfite"
     ];
 
-    var selectElement = document.getElementById('allergic-food');
-    var otherInput = document.querySelector('.other-input');
+    var allergicFoodSection = document.querySelector('.allergic-food-section');
+    var otherFoodContainer = document.getElementById('other-food-container');
 
-    allergicFoods.forEach(function (food) {
-        var option = document.createElement('option');
-        option.value = food.toLowerCase();
-        option.textContent = food;
-        selectElement.appendChild(option);
+    // Checkboxları oluştur
+    allergicFoods.forEach(function(food) {
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'allergic-food';
+        checkbox.value = food;
+        allergicFoodSection.appendChild(checkbox);
+
+        var label = document.createElement('label');
+        label.textContent = food;
+        allergicFoodSection.appendChild(label);
+
+        allergicFoodSection.appendChild(document.createElement('br'));
     });
 
-    selectElement.addEventListener('change', function () {
-        if (this.value === 'other') {
-            otherInput.style.display = 'block';
-        } else {
-            otherInput.style.display = 'none';
-        }
-    });
-
+    // Diğer seçeneği için text kutusu oluştur
+    var otherInput = document.createElement('input');
+    otherInput.type = 'text';
+    otherInput.placeholder = 'Type: Allergy 1, Allergy 2';
+    otherInput.id = 'other-food-input';
+    otherFoodContainer.appendChild(otherInput);
+  
     var photoUpload = document.getElementById('photo-upload');
     var photoFrame = document.getElementById('photo-frame');
 
@@ -53,49 +45,88 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.readAsDataURL(file);
         }
     });
+});
 
-    var saveButton = document.getElementById('save-button');
-    saveButton.addEventListener('click', function () {
-        // Perform save actions here, such as sending data to the backend
-        var newPassword = document.getElementById('new-password').value;
-        var confirmPassword = document.getElementById('confirm-password').value;
-        var bio = document.getElementById('bio').value;
 
-        if (newPassword !== confirmPassword) {
-            alert('Passwords do not match. Please re-enter.');
-            return;
+const saveButton = document.getElementById("save-button");
+saveButton.addEventListener("click", async function (event) {
+    event.preventDefault(); // Sayfanın yeniden yüklenmesini önle
+
+    try {
+        // Kullanıcının girdiği bilgileri al
+        const bio = document.getElementById('bio').value;
+
+        // Seçilen alerjenleri al
+        const selectedFoods = [];
+        document.querySelectorAll('input[name="allergic-food"]:checked').forEach(function(checkbox) {
+            selectedFoods.push(checkbox.value);
+        });
+
+        // Diğer alerjeni al
+        let otherFoodInput = document.getElementById('other-food-input');
+        if (otherFoodInput) {
+            const otherFoodValue = otherFoodInput.value.trim();
+            if (otherFoodValue !== '') {
+                selectedFoods.push(otherFoodValue);
+            }
         }
 
-        // Perform the fetch POST request to update the password
-      /*  fetch('/update-password-endpoint', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ newPassword: newPassword }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Password update response:', data);
-        })
-        .catch(error => {
-            console.error('Error updating password:', error);
-        });
-    */
-        // Perform the fetch POST request to update the user profile information
-        fetch('https://recipiebeckend.azurewebsites.net/user/save-user-profile', {
+        // Boşlukları virgülle değiştir
+        const finalAllergiesString = selectedFoods.map(food => food.trim()).join(',');
+
+        // Kullanıcının girdiği diğer alanları al
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        // Kullanıcı fotoğrafını al
+        const photoUpload = document.getElementById('photo-upload');
+        const photoFile = photoUpload.files[0];
+
+        // Profil verilerini oluştur
+        const profileData = {
+            password: newPassword,
+            bio: bio,
+            allergicFoods: finalAllergiesString,
+            profilePhoto: photoFile
+        };
+
+        console.log(selectedFoods);
+        console.log('Final Allergic Foods String:', finalAllergiesString);
+
+        // Profil verilerini kaydetme fonksiyonunu çağır
+        await saveProfile(profileData);
+    } catch (error) {
+        console.error('Error saving profile:', error);
+        // Hata durumunda kullanıcıya bildirim gönderilebilir
+        // Örn: alert('Error saving profile: ' + error.message);
+    }
+});
+
+
+async function saveProfile(profileData) {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-user-profile';
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    try {
+        const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken,
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ bio: bio }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Profile update response:', data);
-        })
-        .catch(error => {
-            console.error('Error updating profile:', error);
+            body: JSON.stringify(profileData),
         });
-    });
-});
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Failed to update profile. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        const data = await response.json();
+        console.log('Profile update response:', data);
+        return data;
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        throw error;
+    }
+}

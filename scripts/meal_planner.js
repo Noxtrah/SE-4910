@@ -171,6 +171,7 @@ async function getMealPlan() {
     }
 
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/get-current-data';
+    
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -393,59 +394,116 @@ $(document).ready(function(){
 
 });
 
-function saveToPlans() {
-    // Input değerlerini al
-    var breakfastValue = breakfastInput.value;
-    var lunchValue = lunchInput.value;
-    var dinnerValue = dinnerInput.value;
+// function saveToPlans() {
+//     // Input değerlerini al
+//     var breakfastValue = breakfastInput.value;
+//     var lunchValue = lunchInput.value;
+//     var dinnerValue = dinnerInput.value;
 
-    // Mevcut günü al
-    var dayElement = getCurrentDay();
+//     // Mevcut günü al
+//     var dayElement = getCurrentDay();
 
-    // Eğer gün elementi bulunamazsa işlemi sonlandır
-    if (!dayElement) {
-        console.error("Mevcut gün bulunamadı.");
-        return;
-    }
+//     // Eğer gün elementi bulunamazsa işlemi sonlandır
+//     if (!dayElement) {
+//         console.error("Mevcut gün bulunamadı.");
+//         return;
+//     }
 
-    var items = dayElement.querySelectorAll("li");
-    items[0].innerText = breakfastValue;
-    items[1].innerText = lunchValue;
-    items[2].innerText = dinnerValue;
+//     var items = dayElement.querySelectorAll("li");
+//     items[0].innerText = breakfastValue;
+//     items[1].innerText = lunchValue;
+//     items[2].innerText = dinnerValue;
 
-    // Modalı kapat
-    closeModal();
+//     // Modalı kapat
+//     closeModal();
 
-    // Kaydedilen planı güncelle
-    savedMealPlan = combineData();
-}
+//     // Kaydedilen planı güncelle
+//     savedMealPlan = combineData();
+// }
 
-    // Mevcut günü dinamik olarak almak için bir fonksiyon
-function getCurrentDay() {
-    return document.querySelector('[data-day="' + new Date().toLocaleString('default', { weekday: 'long' }) + '"]');
+//     // Mevcut günü dinamik olarak almak için bir fonksiyon
+// function getCurrentDay() {
+//     return document.querySelector('[data-day="' + new Date().toLocaleString('default', { weekday: 'long' }) + '"]');
     
-}
+// }
 
-    // Post işlemi için veriyi hazırla
-    var postData = savedMealPlan.replace(/:/g, '\n');
-    // Post işlemi için fetch
-    fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ data: postData })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Data sent successfully:', data);
-    })
-    .catch(error => {
-        console.error('Error while sending data:', error);
-    });
+//     // Post işlemi için veriyi hazırla
+//     var postData = savedMealPlan.replace(/:/g, '\n');
+//     // Post işlemi için fetch
+//     fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ data: postData })
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         console.log('Data sent successfully:', data);
+//     })
+//     .catch(error => {
+//         console.error('Error while sending data:', error);
+//     });
 
+    function saveToPlans() {
+        // Haftanın günlerini bir diziye al
+        var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        
+        // Tüm günler için verileri topla
+        var allData = "";
+        days.forEach(function(day, index) {
+            // Gün elementini seç
+            var dayElement = document.querySelector('[data-day="' + day + '"]');
+            if (!dayElement) return; // Gün elementi bulunamazsa geç
+           
+            // Günün öğünlerini al
+            var breakfast = dayElement.querySelector('.breakfast').innerText.trim();
+            var lunch = dayElement.querySelector('.lunch').innerText.trim();
+            var dinner = dayElement.querySelector('.dinner').innerText.trim();
+            
+            // Veriyi oluştur ve tüm verilere ekle
+            var dayData = breakfast + ", " + lunch + ", " + dinner;
+        
+            // Son güne noktalı virgül eklenmeli
+            if (index === days.length - 1) {
+                dayData += ";";
+            } else {
+                dayData += ":\n";
+
+            }            
+            allData += dayData;
+           
+
+        })
+        
+        ;
+    
+        // Veriyi sunucuya göndermek için POST isteği yap
+        fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // body: JSON.stringify({ data: allData })
+            body: (allData),
+
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data successfully sent to server:', data);
+        })
+        .catch(error => {
+            console.error('Error sending data to server:', error);
+        });
+    }
+    
