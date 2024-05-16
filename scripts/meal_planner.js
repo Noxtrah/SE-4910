@@ -156,10 +156,83 @@ function combineData() {
     }
 }
 
+
 //çalışıyor
 window.onload = function() {
     getMealPlan();
 };
+
+
+
+async function saveToPlans() {
+    // Haftanın günlerini bir diziye al
+    var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    
+    // Tüm günler için verileri topla
+
+    //Kullanıcı oturum açtığında veya kimlik doğrulama başarılı olduğunda alınan token
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    // Token var mı kontrol edelim
+    if (!JWTAccessToken) {
+        console.error('Access token not found. Please log in first.');
+        return;
+    }
+
+    
+    var allData = "";
+    days.forEach(function(day, index) {
+        // Gün elementini seç
+        var dayElement = document.querySelector('[data-day="' + day + '"]');
+        if (!dayElement) return; // Gün elementi bulunamazsa geç
+       
+        // Günün öğünlerini al
+        var breakfast = dayElement.querySelector('.breakfast').innerText.trim();
+        var lunch = dayElement.querySelector('.lunch').innerText.trim();
+        var dinner = dayElement.querySelector('.dinner').innerText.trim();
+        
+        // Veriyi oluştur ve tüm verilere ekle
+        var dayData = breakfast + ", " + lunch + ", " + dinner;
+    
+        // Son güne noktalı virgül eklenmeli
+        if (index === days.length - 1) {
+            dayData += ";";
+        } else {
+            dayData += ": ";
+        }            
+        allData += dayData;
+    });
+
+    console.log(allData)
+
+    // Veriyi sunucuya göndermek için POST isteği yap
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/planner/save-one-week';
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JWTAccessToken
+
+            },
+            body: (allData),
+
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`Failed to save meal plan. Status: ${response.status}. Message: ${errorMessage}`);
+        }
+
+        const responseBody = await response.text();
+        let responseData;
+       
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
+}
+
 
 //çalışıyor get
 async function getMealPlan() {
@@ -259,9 +332,10 @@ async function clearAll() {
 
 // önceki haftaları getir ve tablo yap
 function getPreWeeks() {
-    var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4"; // API'nin URL'sini buraya girin
-
+    //var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4"; // API'nin URL'sini buraya girin
+     var url = "https://recipiebeckend.azurewebsites.net/planner/get-pre-weeks"
     fetch(url)
+    console.log(response)
     .then(response => response.text())
     .then(data => {
         var weeklyPlannerDiv = document.getElementById("weekly_planner");
@@ -323,187 +397,74 @@ function populateMealPlan(weekNumber) {
     });
 }
 
-$(document).ready(function(){
 
-// ADDING A NEW ITEM TO THE LIST
+// $(document).ready(function(){
 
-    // Define the callback function
-    var addItem = function() {
+// // ADDING A NEW ITEM TO THE LIST
 
-    // Declare a variable to capture the input text value
-    var $input = $('.submission-line__input').val();
-    // If the input text field isn't empty, add it to the list as a new item
-    if ($input) {
-        $('.list').prepend('<li class="list__item"><a class="list__delete-btn">X</a>' + $input + '<a class="list__check-btn">✔</a></li>');
-    }
-    // Clear the input text field
-    $('.submission-line__input').val("");
-    };
+//     // Define the callback function
+//     var addItem = function() {
 
-    // Add a new item to the list by clicking "Add" button
-    $('.submission-line__btn').on('click', function(event){
-    // (prevents form submit button unwanted default action)
-    event.preventDefault();
-    // run the callback function
-    addItem();
-    });
-
-    // Add a new item to the list by hitting "Enter"
-    $('.submission-line__input').keypress(function(event){
-    if (event.which === 13) {
-        // run the callback function
-        addItem();
-    }
-    });
-
-// DELETING AN ITEM FROM THE LIST
-
-    // Clicking an item's delete button:
-    $('.list').on('click', '.list__delete-btn', function(){
-    // removes that item from the list
-    $(this).parent().fadeOut(300, function(){
-        $(this).remove();
-    });
-    });
-
-// CHECKING AN ITEM OFF FROM THE LIST
-
-    // Clicking an item's check button:
-    $('.list').on('click', '.list__check-btn', function(event){
-    // grays everything out
-    $(this).parent().toggleClass('list__item--checked');
-    $(this).siblings().toggleClass('list__delete-btn--checked');
-    $(this).toggleClass('list__check-btn--checked');
-
-    // moves the element to either the bottom or top of the list
-    var $listItem = $(this).parent();
-    if ($listItem.hasClass('list__item--checked')) {
-        $('.list').append($listItem);
-    } else {
-        $('.list').prepend($listItem);
-    }
-    });
-
-// MAKING LIST ITEMS SORTABLE
-
-    $('.list').sortable({
-        distance: 2,
-        revert: 300,
-        cancel: ".list__item--checked"
-    });
-
-});
-
-// function saveToPlans() {
-//     // Input değerlerini al
-//     var breakfastValue = breakfastInput.value;
-//     var lunchValue = lunchInput.value;
-//     var dinnerValue = dinnerInput.value;
-
-//     // Mevcut günü al
-//     var dayElement = getCurrentDay();
-
-//     // Eğer gün elementi bulunamazsa işlemi sonlandır
-//     if (!dayElement) {
-//         console.error("Mevcut gün bulunamadı.");
-//         return;
+//     // Declare a variable to capture the input text value
+//     var $input = $('.submission-line__input').val();
+//     // If the input text field isn't empty, add it to the list as a new item
+//     if ($input) {
+//         $('.list').prepend('<li class="list__item"><a class="list__delete-btn">X</a>' + $input + '<a class="list__check-btn">✔</a></li>');
 //     }
+//     // Clear the input text field
+//     $('.submission-line__input').val("");
+//     };
 
-//     var items = dayElement.querySelectorAll("li");
-//     items[0].innerText = breakfastValue;
-//     items[1].innerText = lunchValue;
-//     items[2].innerText = dinnerValue;
-
-//     // Modalı kapat
-//     closeModal();
-
-//     // Kaydedilen planı güncelle
-//     savedMealPlan = combineData();
-// }
-
-//     // Mevcut günü dinamik olarak almak için bir fonksiyon
-// function getCurrentDay() {
-//     return document.querySelector('[data-day="' + new Date().toLocaleString('default', { weekday: 'long' }) + '"]');
-    
-// }
-
-//     // Post işlemi için veriyi hazırla
-//     var postData = savedMealPlan.replace(/:/g, '\n');
-//     // Post işlemi için fetch
-//     fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ data: postData })
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         console.log('Data sent successfully:', data);
-//     })
-//     .catch(error => {
-//         console.error('Error while sending data:', error);
+//     // Add a new item to the list by clicking "Add" button
+//     $('.submission-line__btn').on('click', function(event){
+//     // (prevents form submit button unwanted default action)
+//     event.preventDefault();
+//     // run the callback function
+//     addItem();
 //     });
 
-    function saveToPlans() {
-        // Haftanın günlerini bir diziye al
-        var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        
-        // Tüm günler için verileri topla
-        var allData = "";
-        days.forEach(function(day, index) {
-            // Gün elementini seç
-            var dayElement = document.querySelector('[data-day="' + day + '"]');
-            if (!dayElement) return; // Gün elementi bulunamazsa geç
-           
-            // Günün öğünlerini al
-            var breakfast = dayElement.querySelector('.breakfast').innerText.trim();
-            var lunch = dayElement.querySelector('.lunch').innerText.trim();
-            var dinner = dayElement.querySelector('.dinner').innerText.trim();
-            
-            // Veriyi oluştur ve tüm verilere ekle
-            var dayData = breakfast + ", " + lunch + ", " + dinner;
-        
-            // Son güne noktalı virgül eklenmeli
-            if (index === days.length - 1) {
-                dayData += ";";
-            } else {
-                dayData += ":\n";
+//     // Add a new item to the list by hitting "Enter"
+//     $('.submission-line__input').keypress(function(event){
+//     if (event.which === 13) {
+//         // run the callback function
+//         addItem();
+//     }
+//     });
 
-            }            
-            allData += dayData;
-           
+// // DELETING AN ITEM FROM THE LIST
 
-        })
-        
-        ;
-    
-        // Veriyi sunucuya göndermek için POST isteği yap
-        fetch('https://recipiebeckend.azurewebsites.net/planner/save-one-week', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // body: JSON.stringify({ data: allData })
-            body: (allData),
+//     // Clicking an item's delete button:
+//     $('.list').on('click', '.list__delete-btn', function(){
+//     // removes that item from the list
+//     $(this).parent().fadeOut(300, function(){
+//         $(this).remove();
+//     });
+//     });
 
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data successfully sent to server:', data);
-        })
-        .catch(error => {
-            console.error('Error sending data to server:', error);
-        });
-    }
-    
+// // CHECKING AN ITEM OFF FROM THE LIST
+
+//     // Clicking an item's check button:
+//     $('.list').on('click', '.list__check-btn', function(event){
+//     // grays everything out
+//     $(this).parent().toggleClass('list__item--checked');
+//     $(this).siblings().toggleClass('list__delete-btn--checked');
+//     $(this).toggleClass('list__check-btn--checked');
+
+//     // moves the element to either the bottom or top of the list
+//     var $listItem = $(this).parent();
+//     if ($listItem.hasClass('list__item--checked')) {
+//         $('.list').append($listItem);
+//     } else {
+//         $('.list').prepend($listItem);
+//     }
+//     });
+
+// // MAKING LIST ITEMS SORTABLE
+
+//     $('.list').sortable({
+//         distance: 2,
+//         revert: 300,
+//         cancel: ".list__item--checked"
+//     });
+
+// });
