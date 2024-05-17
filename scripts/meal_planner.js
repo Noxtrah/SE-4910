@@ -257,12 +257,39 @@ async function clearAll() {
 }
 
 // önceki haftaları getir ve tablo yap
-function getPreWeeks() {
-    var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4"; // API'nin URL'sini buraya girin
+// function getPreWeeks() {
+//     // var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4";
+//     var url = "https://recipiebeckend.azurewebsites.net/planner/get-pre-weeks";
 
-    fetch(url)
-    .then(response => response.text())
+//     fetch(url)
+//     .then(response => response.text())
+//     .then(data => {
+//         console.log("Data: " , data);
+//         var weeklyPlannerDiv = document.getElementById("weekly_planner");
+//         weeklyPlannerDiv.innerHTML = createWeeklyPlannerTable(data);
+//     })
+//     .catch(error => console.error('Error fetching data:', error));
+// }
+
+function getPreWeeks() {
+    var url = "https://recipiebeckend.azurewebsites.net/planner/get-pre-weeks";
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': JWTAccessToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.text(); // Assuming the response is JSON
+    })
     .then(data => {
+        console.log("Data:", data);
         var weeklyPlannerDiv = document.getElementById("weekly_planner");
         weeklyPlannerDiv.innerHTML = createWeeklyPlannerTable(data);
     })
@@ -402,6 +429,8 @@ function saveToPlans() {
     // Mevcut günü al
     var dayElement = getCurrentDay();
 
+    console.log("Day: " , dayElement);
+
     // Eğer gün elementi bulunamazsa işlemi sonlandır
     if (!dayElement) {
         console.error("Mevcut gün bulunamadı.");
@@ -420,10 +449,13 @@ function saveToPlans() {
     savedMealPlan = combineData();
 }
 
-    // Mevcut günü dinamik olarak almak için bir fonksiyon
+// Mevcut günü dinamik olarak almak için bir fonksiyon
 function getCurrentDay() {
-    return document.querySelector('[data-day="' + new Date().toLocaleString('default', { weekday: 'long' }) + '"]');
-    
+    const currentDay = new Date().toLocaleString('en-US', { weekday: 'long' });
+    console.log("Current day string:", currentDay); // Debugging line
+    const dayElement = document.querySelector('[data-day="' + currentDay + '"]');
+    console.log(dayElement); // Debugging line
+    return dayElement;
 }
 
     // Post işlemi için veriyi hazırla
