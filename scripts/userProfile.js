@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Sayfa yüklendiğinde çalışacak fonksiyon
     CreateUserInfoPage();
-});async function CreateUserInfoPage() {
+});
+
+async function CreateUserInfoPage() {
     try {
         // Kullanıcı bilgilerini al
         const userInfo = await getUserInfo();
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('userName').textContent = userInfo.name + ' ' + userInfo.lastName;
         document.getElementById('userEmail').textContent = userInfo.email;
         document.getElementById('userBio').textContent = userInfo.bio || "Type about yourself"; // Bio alanı boşsa "Type about yourself" yazısı
-        // document.getElementById('userPhoto').src = userInfo.userPhoto[0]; // Kullanıcı fotoğrafı
+        document.getElementById('userPhoto').src = userInfo.userPhoto; // Kullanıcı fotoğrafı
 
         // Kullanıcının yayınladığı tarifleri listele
         const userPublishedRecipesContainer = document.getElementById('userPublishedRecipes');
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Recipe Fotoğrafı
             const recipePhoto = document.createElement('img');
             recipePhoto.classList.add('recipe-photo');
-            recipePhoto.src = recipe.blobData && recipe.blobData.length > 0 ? recipe.blobData[0] : 'https://w7.pngwing.com/pngs/116/858/png-transparent-computer-icons-meal-food-meal-icon-food-logo-eating-thumbnail.png';
+            recipePhoto.src = recipe.photoPath || 'https://w7.pngwing.com/pngs/116/858/png-transparent-computer-icons-meal-food-meal-icon-food-logo-eating-thumbnail.png';
             photoTitleContainer.appendChild(recipePhoto);
 
             // Başlık
@@ -82,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 }
 
-
 async function getUserInfo() {
     try {
         const apiURL = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info';
@@ -112,13 +113,14 @@ function setupBackButton() {
     backButton.addEventListener('click', () => {
         window.history.back();
     });
-  }
-  // Call the function to generate user recipe boxes when the page loads
-  window.onload = function () {
-    setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
-  };
+}
 
-  document.addEventListener("DOMContentLoaded", function () {
+// Call the function to generate user recipe boxes when the page loads
+window.onload = function () {
+    setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
+};
+
+document.addEventListener("DOMContentLoaded", function () {
     var editProfileButton = document.getElementById("editProfileButton");
     
     if (editProfileButton) {
@@ -127,4 +129,3 @@ function setupBackButton() {
         });
     }
 });
-
