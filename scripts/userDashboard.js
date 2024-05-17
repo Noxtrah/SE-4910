@@ -654,7 +654,7 @@ const displayDashboard = async (recipes) => {
 //     }
 // };
 
-async function fetchData(key) {
+async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     // let apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
@@ -679,9 +679,14 @@ async function fetchData(key) {
 
         const data = await response.json();
         console.log(data);
-        const maxPage = getMaxPage() // Calculate max page number
-        // Update total pages in pagination plugin
-        $('#pagination-demo').twbsPagination({totalPages: maxPage});
+
+        const maxPage = await getMaxPage(); // Await the result of getMaxPage
+        if (maxPage !== null) {
+            displayPage(key, maxPage);
+        } else {
+            console.error('Failed to get the maximum number of pages.');
+        }
+
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
@@ -976,35 +981,30 @@ window.onload = function () {
     setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
 
-$('#pagination-demo').twbsPagination({
-    totalPages: 2,
-    visiblePages: 3,
-    next: 'Next',
-    prev: 'Prev',
-    onPageClick: function (event, page) {
-        // Call the paging function directly with the clicked page
-        page = page -1 ;
-        fetchData(page);
-        console.log("Page = " , page);
+function displayPage(startPage, total) {
+    if (typeof startPage !== 'number' || startPage < 0 || startPage >= total) {
+        console.error(`Invalid startPage value: ${startPage}`);
+        startPage = 0;  // Set a default valid startPage value
     }
-});
 
+    if (typeof total !== 'number' || total <= 0) {
+        console.error(`Invalid totalPages value: ${total}`);
+        total = 1;  // Set a default valid totalPages value
+    }
 
-// function paging(key) {
-//     key -= 1;
-//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/paging-user-dashboard?key=' + key;
-//     fetch(apiUrl)
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         displayDashboard(data);
-//     })
-//     .catch(error => console.error('Error fetching data:', error));
-// }
+    $('#pagination-demo').twbsPagination('destroy');
+    $('#pagination-demo').twbsPagination({
+        startPage: startPage + 1, // twbsPagination uses 1-based index
+        totalPages: total,
+        visiblePages: 5,
+        next: 'Next',
+        prev: 'Prev',
+        onPageClick: function (event, page) {
+            fetchData(page - 1); // Convert 1-based page number to 0-based index
+            console.log("Page =", page - 1);
+        }
+    });
+}
 
 async function getMaxPage() {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-max-page'; // Replace this URL with your actual API endpoint

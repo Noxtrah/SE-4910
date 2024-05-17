@@ -394,9 +394,12 @@ const displayDashboard = async (recipes) => {
 };
 
 // Function to fetch data from the API
-const fetchData = async () => {
+async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+    let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+    if (key !== undefined) {
+        apiUrl += `?key=${key}`;
+    }
 
     const headers = {
         'Content-Type': 'application/json',
@@ -406,7 +409,7 @@ const fetchData = async () => {
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
-            headers: JWTAccessToken ? headers : {'Content-Type': 'application/json'},
+            headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
         });
 
         if (!response.ok) {
@@ -414,15 +417,22 @@ const fetchData = async () => {
         }
 
         const data = await response.json();
+        console.log(data);
+
+        const maxPage = await getMaxPage(); // Await the result of getMaxPage
+        if (maxPage !== null) {
+            displayPage(key, maxPage);
+        } else {
+            console.error('Failed to get the maximum number of pages.');
+        }
+
         displayDashboard(data);
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
     }
-};
+}
 
 
-// Call fetchData to initiate the process
-fetchData();
 
 const fetchDataByMealType = async (mealType) => {
     try {
@@ -513,6 +523,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Change the text of the anchor element
         logInLink.textContent = "Log-Out";
     }
+
+    fetchData(0)
 });
 
 function fetchSortOperations(selectedValue) {
@@ -667,36 +679,37 @@ function basicSearch() {
 //     starAndHeartInfoArray.push(data);
 //     return starAndHeartInfoArray;
 // }
-async function getSelectedCustomDataOfDashboard(index) {
-   var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
-    const JWTAccessToken = sessionStorage.getItem('accessToken');
-    const response = await fetch(
-        apiUrl,
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': JWTAccessToken,
-            }
-        }
-    );
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+// async function getSelectedCustomDataOfDashboard(index) {
+//    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+//     const response = await fetch(
+//         apiUrl,
+//         {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': JWTAccessToken,
+//             }
+//         }
+//     );
 
-    const contentType = response.headers.get('Content-Type');
+//     if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    if (contentType && contentType.includes('application/json')) {
-        const data = await response.json();
-        console.log("Data: " , data);
-        return data[index];
-    } else {
-        // Handle non-JSON response or empty response
-        console.error('Invalid or empty JSON response');
-        return null; // or handle it according to your application's logic
-    }
-}
+//     const contentType = response.headers.get('Content-Type');
+
+//     if (contentType && contentType.includes('application/json')) {
+//         const data = await response.json();
+//         console.log("Data: " , data);
+//         return data[index];
+//     } else {
+//         // Handle non-JSON response or empty response
+//         console.error('Invalid or empty JSON response');
+//         return null; // or handle it according to your application's logic
+//     }
+// }
 
 function openNewTab() {
     const currentURL = window.location.href;
@@ -707,77 +720,49 @@ function openNewTab() {
     const baseURL = `http://${host}:${port}/templates/searchByIngredientTab.html`;
     window.open(baseURL, '_blank');
 }
-/*
-$(document).ready(function() {
+
+async function getMaxPage() {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-max-page'; // Replace this URL with your actual API endpoint
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Failed to fetch maximum page.');
+        }
+
+        const data = await response.json();
+        console.log(data);
+        const maxPage = data; // Assuming your API response contains a property named 'maxPage' with the total number of pages
+        console.log('Maximum Page:', maxPage);
+        return maxPage;
+    } catch (error) {
+        console.error('Error fetching maximum page:', error);
+        return null; // Return null in case of error
+    }
+}
+
+
+function displayPage(startPage, total) {
+    if (typeof startPage !== 'number' || startPage < 0 || startPage >= total) {
+        console.error(`Invalid startPage value: ${startPage}`);
+        startPage = 0;  // Set a default valid startPage value
+    }
+
+    if (typeof total !== 'number' || total <= 0) {
+        console.error(`Invalid totalPages value: ${total}`);
+        total = 1;  // Set a default valid totalPages value
+    }
+
+    $('#pagination-demo').twbsPagination('destroy');
     $('#pagination-demo').twbsPagination({
-        totalPages: 2,
-        visiblePages: 2,
+        startPage: startPage + 1, // twbsPagination uses 1-based index
+        totalPages: total,
+        visiblePages: 5,
         next: 'Next',
         prev: 'Prev',
         onPageClick: function (event, page) {
-            // Call the paging function directly with the clicked page
-            paging(page);
+            fetchData(page - 1); // Convert 1-based page number to 0-based index
+            console.log("Page =", page - 1);
         }
     });
-});
-
-function paging(key) {
-    key -= 1;
-    console.log("Key: ", key);
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayDashboard(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
 }
-*/
-document.addEventListener("DOMContentLoaded", function() {
-    const paginationContainer = document.getElementById('pagination-demo');
-    const totalPages = 3; // Toplam sayfa sayısı
-    const currentPage = 1; // Şu anki sayfa (başlangıç)
-  
-    // Pagination barını oluştur
-    for (let i = 1; i <= totalPages; i++) {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#';
-      a.textContent = i;
-      li.appendChild(a);
-      paginationContainer.appendChild(li);
-    }
-  
-    // Sayfa numaralarına tıklandığında
-    paginationContainer.addEventListener('click', function(event) {
-      if (event.target.tagName === 'A') {
-        event.preventDefault();
-        const page = parseInt(event.target.textContent);
-        paging(page);
-      }
-    });
-  
-    // Sayfa içeriğini yükle
-    function paging(page) {
-      const key = page - 1;
-      console.log("Key: ", key);
-      const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/paging?key=' + key;
-      fetch(apiUrl)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          displayDashboard(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-    }
-  });
-  

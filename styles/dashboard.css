@@ -2024,6 +2024,7 @@ input[type="radio"],
   justify-content: center;
   backdrop-filter: blur(3px);
   border-radius: 2px;
+  padding: 0;
 }
 
 .paging-container .pagination li {
