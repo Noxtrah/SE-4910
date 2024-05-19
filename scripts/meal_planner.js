@@ -346,7 +346,7 @@ async function clearAll() {
 // }
 
 function getPreWeeks() {
-    var url = "https://recipiebeckend.azurewebsites.net/planner/get-pre-weeks";
+    var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4";
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
     fetch(url, {

@@ -84,11 +84,45 @@
                     <li class="dinner"></li>
                 </ul>
             </div>
+            <div>
+                <button style=" padding: 0.6rem;
+                outline: none;
+                border: none;
+                margin-top: 40px;
+                border-radius: 3px;
+                font-weight: bold;
+                font-size: larger;
+                width: 100px;
+                margin-left: 85px;
+                margin-bottom: 33px;
+                cursor: pointer;
+                transition: 0.4s ease;
+                transition: background 0.4s ease, color 0.4s ease;"
+                      onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                      onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+                
+                
+                      <button style=" padding: 0.6rem;
+                      margin-left: 10px;
+                      outline:darkslateblue;
+                      border: none;
+                      margin-top: 40px;
+                      border-radius: 3px;
+                      font-weight: bold;
+                      font-size: larger;
+                      width: 100px;
+                      cursor: pointer;
+                      transition: 0.4s ease;
+                      transition: background 0.4s ease, color 0.4s ease;"
+                            onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                            onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
+                        </div>
+    
         </section>
     </table>
 
-<div>
-            <button style=" padding: 0.6rem;
+<!-- <div> 
+             <button style=" padding: 0.6rem;
             outline: none;
             border: none;
             margin-top: 40px;
@@ -100,8 +134,8 @@
             cursor: pointer;
             transition: 0.4s ease;
             transition: background 0.4s ease, color 0.4s ease;"
-                  onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                  onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+                  onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                  onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
             
             
                   <button style=" padding: 0.6rem;
@@ -116,13 +150,13 @@
                   cursor: pointer;
                   transition: 0.4s ease;
                   transition: background 0.4s ease, color 0.4s ease;"
-                        onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                        onmouseout="this.style.background='white'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
+                        onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                        onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
                     </div>
 
             
-            <!-- Repeat for other days -->
-        </section>
+             Repeat for other days -->
+        </section> 
 
         <div style="margin-top:70px; margin-bottom: 30px;">
       <button style=" padding: 0.6rem;
@@ -136,8 +170,8 @@
         cursor: pointer;
         transition: 0.4s ease;
         transition: background 0.4s ease, color 0.4s ease;"
-              onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-              onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="saveToPlans()">Save to Plans</button>
+              onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+              onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveToPlans()">Save to Plans</button>
         
               <button style=" padding: 0.6rem;
               margin-left: 40px;
@@ -150,8 +184,8 @@
               cursor: pointer;
               transition: 0.4s ease;
               transition: background 0.4s ease, color 0.4s ease;"
-                    onmouseover="this.style.background='#363b4e'; this.style.color='white';"
-                    onmouseout="this.style.background='white'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
+                    onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                    onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
                 </div>
 
                 <div class="weekly-table-container" id="weekly_planner"></div>
@@ -453,8 +487,8 @@ footer {
     height: 45px;
     width: 150px;
     cursor: pointer;
-    margin-left: 30px;
-    margin-top: 110px;
+    margin-left: 115px;
+    margin-top: 55px;
 }
 
 .use-week-button:hover {
