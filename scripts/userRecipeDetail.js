@@ -119,9 +119,37 @@ class RecipeDetail {
             });
     }
 
-    displayRecommendations(recommendations) {
-        // Önerileri kullanıcı arayüzüne göster
-    }
+  // Önerileri slider içeriğine ekle
+  displayRecommendations(recommendations) {
+    const slidesContainer = document.getElementById('slides');
+    slidesContainer.innerHTML = ''; // Slider içeriğini temizle
+
+    recommendations.recommendations.forEach((recommendation, index) => {
+        if (index % 3 === 0) {
+            // Her üç öneriden sonra yeni bir slide oluştur
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            slidesContainer.appendChild(slide);
+        }
+
+        // Resmi oluştur
+        const img = document.createElement('img');
+        img.src = recommendation.photoPathURL;
+        img.alt = recommendation.title;
+
+        // Başlığı oluştur
+        const title = document.createElement('div');
+        title.className = 'recommendation-title';
+        title.textContent = recommendation.title;
+
+        // Resmi ve başlığı slide içeriğine ekle
+        const currentSlide = slidesContainer.lastElementChild;
+        const slideContent = document.createElement('div');
+        slideContent.appendChild(img);
+        slideContent.appendChild(title);
+        currentSlide.appendChild(slideContent);
+    });
+}
 
     setupBackButton() {
         const backButton = document.getElementById('back-arrow-button');
@@ -132,5 +160,60 @@ class RecipeDetail {
         });
     }
 }
+let slideIndex = 0;
+const slidesContainer = document.getElementById('slides');
+
+// AI'dan gelen verileri burada tanımlayın
+const aiData = [
+    { img: "image1.jpg", alt: "AI verisi 1" },
+    { img: "image2.jpg", alt: "AI verisi 2" },
+    { img: "image3.jpg", alt: "AI verisi 3" },
+    { img: "image4.jpg", alt: "AI verisi 4" },
+    { img: "image5.jpg", alt: "AI verisi 5" },
+    { img: "image6.jpg", alt: "AI verisi 6" },
+    { img: "image7.jpg", alt: "AI verisi 7" },
+    { img: "image8.jpg", alt: "AI verisi 8" },
+    { img: "image9.jpg", alt: "AI verisi 9" }
+];
+
+// Verileri 3'erli gruplar halinde slider'a eklemek
+for (let i = 0; i < aiData.length; i += 3) {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    
+    for (let j = 0; j < 3; j++) {
+        if (aiData[i + j]) {
+            const img = document.createElement('img');
+            img.src = aiData[i + j].img;
+            img.alt = aiData[i + j].alt;
+            slide.appendChild(img);
+        }
+    }
+
+    slidesContainer.appendChild(slide);
+}
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    if (index >= slides.length) {
+        slideIndex = 0;
+    } else if (index < 0) {
+        slideIndex = slides.length - 1;
+    } else {
+        slideIndex = index;
+    }
+    slidesContainer.style.transform = `translateX(${-slideIndex * 100 / 3}%)`; // 3 slide olduğundan dolayı her biri container'ın 1/3'ü genişliğinde
+}
+
+function nextSlide() {
+    showSlide(slideIndex + 1);
+}
+
+function prevSlide() {
+    showSlide(slideIndex - 1);
+}
+
+// İlk slide'ı göster
+showSlide(slideIndex);
 
 const recipeDetailPage = new RecipeDetail();

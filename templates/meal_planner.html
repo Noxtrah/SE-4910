@@ -85,9 +85,11 @@
                 </ul>
             </div>
             <div>
+                <div>
                 <button style=" padding: 0.6rem;
                 outline: none;
                 border: none;
+                background: #698195; /* Varsayılan arka plan rengi */
                 margin-top: 40px;
                 border-radius: 3px;
                 font-weight: bold;
@@ -98,13 +100,13 @@
                 cursor: pointer;
                 transition: 0.4s ease;
                 transition: background 0.4s ease, color 0.4s ease;"
-                      onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                      onmouseover="this.style.background='black'; this.style.color='#698195';"
                       onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
                 
                 
                       <button style=" padding: 0.6rem;
                       margin-left: 10px;
-                      outline:darkslateblue;
+                      background: #698195; /* Varsayılan arka plan rengi */
                       border: none;
                       margin-top: 40px;
                       border-radius: 3px;
@@ -117,7 +119,7 @@
                             onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
                             onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
                         </div>
-    
+                    </div>
         </section>
     </table>
 
@@ -159,23 +161,28 @@
         </section> 
 
         <div style="margin-top:70px; margin-bottom: 30px;">
-      <button style=" padding: 0.6rem;
-        outline: none;
-        border: none;
-        margin-top: 40px;
-        border-radius: 3px;
-        font-weight: bold;
-        font-size: larger;
-        margin-left: 35px;
-        cursor: pointer;
-        transition: 0.4s ease;
-        transition: background 0.4s ease, color 0.4s ease;"
-              onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
-              onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveToPlans()">Save to Plans</button>
-        
+            <button style="
+            padding: 0.6rem;
+            outline: none;
+            border: none;
+            margin-top: 40px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: larger;
+            margin-left: 35px;
+            cursor: pointer;
+            background: #698195; /* Varsayılan arka plan rengi */
+            color: black; /* Varsayılan metin rengi */
+            transition: background 0.4s ease, color 0.4s ease;"
+        onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+        onmouseout="this.style.background='#698195'; this.style.color='black';"
+        class="saveButton"
+        onclick="saveToPlans()">Save to Plans
+    </button>
+    
               <button style=" padding: 0.6rem;
               margin-left: 40px;
-              outline:darkslateblue;
+              background: #698195; /* Varsayılan arka plan rengi */
               border: none;
               margin-top: 40px;
               border-radius: 3px;
@@ -250,7 +257,7 @@ body {
 }
 
 header, footer {
-    background-color: #333;
+    background-color:rgb(0, 139, 139, 0.171);;
     color: #fff;
     padding: 20px;
     text-align: center;

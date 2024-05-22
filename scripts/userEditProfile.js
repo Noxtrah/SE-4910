@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     var allergicFoodSection = document.querySelector('.allergic-food-section');
-    var otherFoodContainer = document.getElementById('other-food-container');
 
-    // Checkboxları oluştur
     allergicFoods.forEach(function(food) {
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -22,13 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
         allergicFoodSection.appendChild(document.createElement('br'));
     });
 
-    // Diğer seçeneği için text kutusu oluştur
-    var otherInput = document.createElement('input');
-    otherInput.type = 'text';
-    otherInput.placeholder = 'Type: Allergy 1, Allergy 2';
-    otherInput.id = 'other-food-input';
-    otherFoodContainer.appendChild(otherInput);
-  
     var photoUpload = document.getElementById('photo-upload');
     var photoFrame = document.getElementById('photo-frame');
 
@@ -47,23 +38,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
 const saveButton = document.getElementById("save-button");
 saveButton.addEventListener("click", async function (event) {
-    event.preventDefault(); // Sayfanın yeniden yüklenmesini önle
+    event.preventDefault();
 
     try {
-        // Kullanıcının girdiği bilgileri al
         const bio = document.getElementById('bio').value;
 
-        // Seçilen alerjenleri al
         const selectedFoods = [];
         document.querySelectorAll('input[name="allergic-food"]:checked').forEach(function(checkbox) {
             selectedFoods.push(checkbox.value);
         });
 
-        // Diğer alerjeni al
-        let otherFoodInput = document.getElementById('other-food-input');
+        const otherFoodInput = document.getElementById('other-food-input');
         if (otherFoodInput) {
             const otherFoodValue = otherFoodInput.value.trim();
             if (otherFoodValue !== '') {
@@ -71,39 +58,32 @@ saveButton.addEventListener("click", async function (event) {
             }
         }
 
-        // Boşlukları virgülle değiştir
         const finalAllergiesString = selectedFoods.map(food => food.trim()).join(',');
 
-        // Kullanıcının girdiği diğer alanları al
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
 
-        // Kullanıcı fotoğrafını al
         const photoUpload = document.getElementById('photo-upload');
         const photoFile = photoUpload.files[0];
 
-        // Profil verilerini oluştur
-        const profileData = {
-            password: newPassword,
-            bio: bio,
-            allergicFoods: finalAllergiesString,
-            profilePhoto: photoFile
-        };
+        const formData = new FormData();
+        formData.append('password', newPassword);
+        formData.append('bio', bio);
+        formData.append('allergicFoods', finalAllergiesString);
+        if (photoFile) {
+            formData.append('profilePhoto', photoFile);
+        }
 
-        console.log(selectedFoods);
+        console.log('Selected Allergies:', selectedFoods);
         console.log('Final Allergic Foods String:', finalAllergiesString);
 
-        // Profil verilerini kaydetme fonksiyonunu çağır
-        await saveProfile(profileData);
+        await saveProfile(formData);
     } catch (error) {
         console.error('Error saving profile:', error);
-        // Hata durumunda kullanıcıya bildirim gönderilebilir
-        // Örn: alert('Error saving profile: ' + error.message);
     }
 });
 
-
-async function saveProfile(profileData) {
+async function saveProfile(formData) {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/save-user-profile';
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
@@ -111,10 +91,9 @@ async function saveProfile(profileData) {
         const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
-                'Authorization': JWTAccessToken,
-                'Content-Type': 'application/json'
+                'Authorization': JWTAccessToken
             },
-            body: JSON.stringify(profileData),
+            body: formData
         });
 
         if (!response.ok) {
