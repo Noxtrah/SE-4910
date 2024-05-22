@@ -102,8 +102,8 @@ class RecipeDetail {
         }
     }
 
-    getRecommendations(ingredients,title) {
-        fetch(`/get-recommendations?ingredients=${ingredients}`)
+    getRecommendations(ingredients, title) {
+        fetch(`http://127.0.0.1:5000/get-recommendations?ingredients=${ingredients}&title=${title}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -118,7 +118,7 @@ class RecipeDetail {
                 console.error('Error fetching recommendations:', error);
             });
     }
-
+    
   // Önerileri slider içeriğine ekle
   displayRecommendations(recommendations) {
     const slidesContainer = document.getElementById('slides');

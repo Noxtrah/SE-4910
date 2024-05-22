@@ -20,6 +20,7 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
+                    this.getRecommendations(data.ingredients,data.title)
                 })
                 .catch(error => {
                     console.error('Error fetching recipe data:', error);
@@ -59,14 +60,14 @@ class RecipeDetail {
         }
 
         const mealElement = document.getElementById('recipe-meal');
-        if (selectedRecipe.meal.length > 0) {
-            const mealName = selectedRecipe.meal[0].mealName;
+        const mealName = selectedRecipe.recipe.meal?.[0]?.mealName; // Using optional chaining to safely access properties
+        if (mealName && mealName.length > 0) {
             const capitalizedMealName = mealName.charAt(0).toUpperCase() + mealName.slice(1);
             mealElement.innerHTML = `<p>${capitalizedMealName}</p>`;
         } else {
             mealElement.innerHTML = '<p>No meal information available</p>';
         }
-
+        
         if (selectedRecipe.photoPath) {
             document.querySelector('.recipe-image').src = selectedRecipe.photoPath;
         } else {
@@ -97,6 +98,24 @@ class RecipeDetail {
         } else {
             prepTimeElement.innerHTML = '<p>No preparation time information available</p>';
         }
+    }
+
+    
+    getRecommendations(ingredients, title) {
+        fetch(`http://127.0.0.1:5000/get-recommendations?ingredients=${ingredients}&title=${title}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(recommendations => {
+                // Önerileri kullanıcı arayüzüne göster
+                this.displayRecommendations(recommendations);
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+            });
     }
 
     setupBackButton() {
