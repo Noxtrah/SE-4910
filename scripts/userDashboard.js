@@ -339,18 +339,28 @@ userInfoDiv.appendChild(userImgDiv);
 
 // Username with link
 const usernameLink = document.createElement('a');
-usernameLink.href = `/profile?username=${encodeURIComponent(recipe.username)}`;
-usernameLink.classList.add('username-link'); // Optional: Add a class for styling the link
+usernameLink.href = `userViewProfile.html?username=${recipe.username}`;
+usernameLink.classList.add('username-link'); // İsteğe bağlı: Bağlantıya stil vermek için sınıf ekleyin
 
 const usernameSpan = document.createElement('span');
 usernameSpan.textContent = recipe.username;
 usernameSpan.classList.add('username');
 usernameLink.appendChild(usernameSpan);
 
+// Kullanıcı adına tıklanıldığında userViewProfile.html sayfasına yönlendirme ve openRecipeDetailPage fonksiyonunu çağırma
+usernameLink.addEventListener('click', () => {
+    // userViewProfile.html sayfasına yönlendirme
+    window.location.href = `userViewProfile.html?username=${recipe.username}`;
+    // openRecipeDetailPage fonksiyonunu çağırma
+    openRecipeDetailPage(recipe.id);
+});
+
+// Append usernameLink to userInfoDiv
 userInfoDiv.appendChild(usernameLink);
 
 // Append userInfoDiv to recipeDiv
 recipeDiv.appendChild(userInfoDiv);
+
 
     // Create heart
     const heartContainer = document.createElement('span');
