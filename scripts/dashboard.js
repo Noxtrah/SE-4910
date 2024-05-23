@@ -421,7 +421,7 @@ async function fetchData(key = 0) {
 
         const maxPage = await getMaxPage(); // Await the result of getMaxPage
         if (maxPage !== null) {
-            displayPage(key, maxPage);
+           // displayPage(key, maxPage);
         } else {
             console.error('Failed to get the maximum number of pages.');
         }
