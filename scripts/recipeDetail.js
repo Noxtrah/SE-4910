@@ -114,7 +114,10 @@ class RecipeDetail {
 
     
     getRecommendations(ingredients, title) {
-        fetch(`http://127.0.0.1:5000/get-recommendations?ingredients=${ingredients}&title=${title}`)
+        const url = `/get-recommendations?ingredients=${encodeURIComponent(ingredients)}&title=${encodeURIComponent(title)}`;
+        console.log('Fetching recommendations with URL:', url);
+    
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -161,6 +164,38 @@ class RecipeDetail {
         });
     }
 
+    displayRecommendations(recommendations) {
+        const slidesContainer = document.getElementById('slides');
+        slidesContainer.innerHTML = ''; // Slider içeriğini temizle
+    
+        recommendations.recommendations.forEach((recommendation, index) => {
+            if (index % 3 === 0) {
+                // Her üç öneriden sonra yeni bir slide oluştur
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slidesContainer.appendChild(slide);
+            }
+    
+            // Resmi oluştur
+            const img = document.createElement('img');
+            img.src = recommendation.photoPathURL;
+            img.alt = recommendation.title;
+    
+            // Başlığı oluştur
+            const title = document.createElement('div');
+            title.className = 'recommendation-title';
+            title.textContent = recommendation.title;
+    
+            // Resmi ve başlığı slide içeriğine ekle
+            const currentSlide = slidesContainer.lastElementChild;
+            const slideContent = document.createElement('div');
+            slideContent.appendChild(img);
+            slideContent.appendChild(title);
+            currentSlide.appendChild(slideContent);
+        });
+    }
+    
+    
     setupBackButton() {
         const backButton = document.getElementById('back-arrow-button');
 

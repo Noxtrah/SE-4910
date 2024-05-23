@@ -8,17 +8,26 @@
     <!-- Sortable.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
 
 </head>
 <body>
     <header>
-        <h1>Meal Planner</h1>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+            </button>
+            <h1 style="color: rgb(105, 129, 149);">Meal Planner</h1>         </div>
     </header>
+
     <main>
         <table class="weekly-table">
            
           
-        <h2 style="margin: 60px;" >Weekly Meal Plan</h2>
+        <!-- <h2 style="margin: 60px;" >Weekly Meal Plan</h2> -->
 
         <section class="meal-plan" id="sortable-section">
             <div class="day" data-day="Monday">
@@ -85,41 +94,14 @@
                 </ul>
             </div>
             <div>
-                <div>
-                <button style=" padding: 0.6rem;
-                outline: none;
-                border: none;
-                background: #698195; /* Varsayılan arka plan rengi */
-                margin-top: 40px;
-                border-radius: 3px;
-                font-weight: bold;
-                font-size: larger;
-                width: 100px;
-                margin-left: 85px;
-                margin-bottom: 33px;
-                cursor: pointer;
-                transition: 0.4s ease;
-                transition: background 0.4s ease, color 0.4s ease;"
-                      onmouseover="this.style.background='black'; this.style.color='#698195';"
-                      onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
-                
-                
-                      <button style=" padding: 0.6rem;
-                      margin-left: 10px;
-                      background: #698195; /* Varsayılan arka plan rengi */
-                      border: none;
-                      margin-top: 40px;
-                      border-radius: 3px;
-                      font-weight: bold;
-                      font-size: larger;
-                      width: 100px;
-                      cursor: pointer;
-                      transition: 0.4s ease;
-                      transition: background 0.4s ease, color 0.4s ease;"
-                            onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
-                            onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
-                        </div>
+                <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                    <div style="display: flex; gap: 10px;">
+                        <button style="padding: 0.6rem; margin-bottom: 20px; outline: none; border: none; background: #698195; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#698195';" onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+                        
+                        <button style="padding: 0.6rem; margin-bottom: 20px; background: #698195; border: none; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#698195';" onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
                     </div>
+                </div>
+                
         </section>
     </table>
 
@@ -198,21 +180,19 @@
                 <div class="weekly-table-container" id="weekly_planner"></div>
 
 
-                <div class="container">
+                <!-- <div class="container">
                     <h1 style="margin-top: 60px;" class="header__title">Shopping List</h1>
                 </div>
             
                 <div class="container">
-                    <!--  Input and "add" button  -->
                     <input class="submission-line__input" type="text" maxlength="20" placeholder="Enter new item here...">
                     <button class="submission-line__btn">Add</button>
-                    <!--  List, list items, and list item buttons  -->
                     <ul class="list">
                         <li class="list__item"><a class="list__delete-btn">X</a>Milk<a class="list__check-btn">✔</a></li>
                         <li class="list__item"><a class="list__delete-btn">X</a>Eggs<a class="list__check-btn">✔</a></li>
                         <li class="list__item list__item--checked"><a class="list__delete-btn list__delete-btn--checked">X</a>Bread<a class="list__check-btn list__check-btn--checked">✔</a></li>
                     </ul>
-                </div>
+                </div> -->
             
     <footer>
     </footer>
@@ -250,13 +230,48 @@ body, h1, h2, h3, ul, li {
     padding: 0;
 }
 
+#back-arrow-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  margin-right: 1400px;
+}
+
+.back-arrow {
+  font-size: 5em;
+  color: rgb(105, 129, 149);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, -50%);
+  transition: color 0.3s ease-in-out;
+  margin-top: 30px;
+
+}
+
+#back-arrow-button:hover .back-arrow {
+  color: var(--purple);
+  /* Change the color on hover */
+  cursor: pointer;
+  /* Change the cursor on hover */
+}
+
 /* Basic styling */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
 }
 
-header, footer {
+header {
+    background-color:rgb(0, 139, 139, 0.171);;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    height: 100px;
+}
+
+footer {
     background-color:rgb(0, 139, 139, 0.171);;
     color: #fff;
     padding: 20px;
@@ -294,7 +309,7 @@ ul {
 }
 
 footer {
-    margin-top: 20px;
+    margin-top: 250px;
 }
 .meal-plan {
   display: grid;
@@ -503,4 +518,5 @@ footer {
 }
 
 </style>
+
 </html>

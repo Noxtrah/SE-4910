@@ -16,14 +16,6 @@
                 <div class="photo-frame" id="photo-frame"></div>
             </div>
         
-            <div class="section password-update-section">
-                <div class="section-header">Password Update</div>
-                <label for="new-password">New Password:</label>
-                <input type="password" id="new-password" name="new-password">
-        
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="confirm-password">
-            </div>
         
             <div class="section bio-section">
                 <div class="section-header">Bio</div>
@@ -32,10 +24,19 @@
         
             <div class="section allergic-food-section">
                 <!-- Other allergic food input -->
+                <div>
                 <label for="other-food-input">Other Allergic Food:</label>
                 <input type="text" id="other-food-input" name="other-food-input" placeholder="Type: Allergy 1, Allergy 2">
+                </div>
             </div>
-        
+            <form>
+                <div class="form-group">
+                    <div id="checkboxAllergy">
+                    <label for="checkbox"></label>
+                    <input type="checkbox" id="checkbox" name="checkbox">
+                    </div>
+                </div>
+            </form>
             <button type="submit" id="save-button">Save</button>
         </div>
     </form>

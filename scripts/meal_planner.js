@@ -423,6 +423,18 @@ function populateMealPlan(weekNumber) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    setupBackButton();
+});
+
+function setupBackButton() {
+    const backButton = document.getElementById('back-arrow-button');
+
+    backButton.addEventListener('click', () => {
+        window.history.back();
+        // window.history.go(-1);
+    });
+}
 
 // $(document).ready(function(){
 
