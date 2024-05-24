@@ -32,7 +32,8 @@ public class RecipeService {
     UserRecipeRepository userRecipeRepository;
     UserRepository userRepository;
     FavoritesRepository favoritesRepository;
-    ParentController parentController;
+    AzurePhotoService azurePhotoService;
+
 
 
 
@@ -83,7 +84,7 @@ public class RecipeService {
 
         try {
 
-            String photoUrlString = parentController.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
+            String photoUrlString = azurePhotoService.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
             // Save recipe details to database
             Recipe recipe = new Recipe();
             recipe.setMeal(mealConverter(recipeRequest.getMeal()));
@@ -163,7 +164,7 @@ public class RecipeService {
 
                 System.out.println("photo update işlemi");
                 // Blob depolama işlemini gerçekleştir ve elde edilen URL'i al
-                String photoUrl = parentController.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
+                String photoUrl = azurePhotoService.uploadPhotoToBlobStorage(recipeRequest.getPhotoPath());
                 // Elde edilen URL'i photoPath alanına ata
                 recipe.setPhotoPath(photoUrl);
             }
@@ -266,16 +267,6 @@ public class RecipeService {
     }
 
 
-    public List<UserRecipeResponse> getPublishedUserRecipes()
-    {
-        List<UserRecipes> userRecipesList = userRecipeRepository.findByIsPublishTrue();
-
-        return userRecipesList.stream()
-                .map(UserRecipeResponse::new) // Using constructor reference to create UserRecipeResponse
-                .collect(Collectors.toList());
-
-    }
-
     public List<UserRecipes> publishedRecipesOneUser(String username) {
 
         User user = userRepository.findUserByUsername(username);
@@ -320,5 +311,47 @@ public class RecipeService {
             return Collections.emptyList();
         }
         return cachedDataExtended.subList(fromIndex, toIndex);
+    }
+
+    public int getMaxPage() {
+        int totalItem = recipeRepository.findAll().size();
+        int maxPage = totalItem /6;
+
+        if (totalItem % 6 >= 1) {
+            maxPage++;
+        }
+        return maxPage;
+
+    }
+
+    public RecipeDetailResponse getRecipeDetails(long id, User currentUser) {
+
+        String matchingAllergicFoods = "";
+        ArrayList<String> allergicFoodList = getAllergicFoods(currentUser.getAllergicFoods());
+        Optional<Recipe> targetRecipe = recipeRepository.findById(id);
+        if (targetRecipe.isPresent()) {
+            for (String allergicFood : allergicFoodList) {
+                if (targetRecipe.get().getIngredients().contains(allergicFood)) {
+                    matchingAllergicFoods += allergicFood + ", ";
+                }
+            }
+
+            return new RecipeDetailResponse(targetRecipe.get(),matchingAllergicFoods);
+        }
+        return null;
+    }
+
+    public ArrayList<String> getAllergicFoods(String foods) {
+        ArrayList<String> allergicFoodList = new ArrayList<>();
+        if (foods != null && !foods.isEmpty()) {
+            String[] allergicFoodsArray = foods.split(",");
+            allergicFoodList.addAll(Arrays.asList(allergicFoodsArray));
+        }
+        return allergicFoodList;
+    }
+
+    public RecipeDetailResponse getRecipeDetailsSimple(long id) {
+        Optional<Recipe> recipe = recipeRepository.findById(id);
+        return recipe.map(value -> new RecipeDetailResponse(value, "")).orElse(null);
     }
 }

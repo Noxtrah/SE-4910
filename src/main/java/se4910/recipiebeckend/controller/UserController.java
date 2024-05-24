@@ -36,10 +36,11 @@ public class UserController extends ParentController {
 
 
     @PostMapping("/save-recipe")
-    public ResponseEntity<?> saveUserRecipe(@RequestBody UserRecipeRequest userRecipeRequest,Authentication authentication ) throws IOException {
+    public ResponseEntity<?> saveUserRecipe(@ModelAttribute  UserRecipeRequest userRecipeRequest,Authentication authentication ) throws IOException {
         User currentUser = getCurrentUser(authentication);
         return userService.saveUserRecipe(userRecipeRequest,currentUser);
     }
+
 
     @GetMapping("/get-saved-recipes")
     public List<UserRecipeResponse> getSavedRecipes(Authentication authentication)
@@ -146,7 +147,7 @@ public class UserController extends ParentController {
     }
 
     @PutMapping("/save-user-profile")
-    public ResponseEntity<String> saveUserProfile(@RequestBody ProfileInfoRequest profileInfoRequest, Authentication authentication) throws IOException {
+    public ResponseEntity<String> saveUserProfile(@ModelAttribute ProfileInfoRequest profileInfoRequest, Authentication authentication) throws IOException {
         User currentUser = getCurrentUser(authentication);
         if (currentUser != null)
         {
@@ -155,7 +156,6 @@ public class UserController extends ParentController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
-
 
     @GetMapping("/user-profile-info")
     public ResponseEntity<UserInfoResponse> getUserInfo(Authentication authentication)

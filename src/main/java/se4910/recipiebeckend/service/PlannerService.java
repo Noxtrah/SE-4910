@@ -64,49 +64,75 @@ public class PlannerService {
 
     public ResponseEntity<?> updatePlanner(String plannerData, MealPlanner mealPlanner)
     {
-        plannerRepository.save(fillPlanner(mealPlanner,plannerData));
-        return new ResponseEntity<>("planner updated",HttpStatus.OK);
+
+        MealPlanner updatedMealPlanner = fillPlanner(mealPlanner, plannerData);
+        plannerRepository.save(updatedMealPlanner);
+        return new ResponseEntity<>("Planner updated", HttpStatus.OK);
     }
 
+
     private MealPlanner fillPlanner(MealPlanner mealPlanner, String plannerData) {
-        String[] daysAndMeals = plannerData.split(":");
-        if (daysAndMeals.length == 7) { // Assuming you have data for each day of the week
-            for (int i = 0; i < 7; i++) {
-                String[] meals = daysAndMeals[i].split(",");
-                String mealsString = String.join(",", meals); // Convert List<String> to String
-                // Assuming your MealPlanner has setters for each day's meals
-                switch (i) {
-                    case 0:
-                        mealPlanner.setMonday(mealsString);
-                        break;
-                    case 1:
-                        mealPlanner.setTuesday(mealsString);
-                        break;
-                    case 2:
-                        mealPlanner.setWednesday(mealsString);
-                        break;
-                    case 3:
-                        mealPlanner.setThursday(mealsString);
-                        break;
-                    case 4:
-                        mealPlanner.setFriday(mealsString);
-                        break;
-                    case 5:
-                        mealPlanner.setSaturday(mealsString);
-                        break;
-                    case 6:
-                        mealPlanner.setSunday(mealsString);
-                        break;
-                    default:
-                        return null;
-                }
+        String[] daysAndFoods = plannerData.split(":"); // Split by ":" to separate days
+
+        // Iterate through each day and its foods
+        for (int i = 0; i < daysAndFoods.length; i++) {
+            String[] foods = daysAndFoods[i].split(","); // Split by "," to get individual foods
+            String day = getDayOfWeek(i); // Get the corresponding day of the week
+
+            // Set the foods for the corresponding day
+            switch (day) {
+                case "Monday":
+                    mealPlanner.setMonday(String.join(",", foods));
+                    break;
+                case "Tuesday":
+                    mealPlanner.setTuesday(String.join(",", foods));
+                    break;
+                case "Wednesday":
+                    mealPlanner.setWednesday(String.join(",", foods));
+                    break;
+                case "Thursday":
+                    mealPlanner.setThursday(String.join(",", foods));
+                    break;
+                case "Friday":
+                    mealPlanner.setFriday(String.join(",", foods));
+                    break;
+                case "Saturday":
+                    mealPlanner.setSaturday(String.join(",", foods));
+                    break;
+                case "Sunday":
+                    mealPlanner.setSunday(String.join(",", foods));
+                    break;
+                default:
+                    // Handle if necessary
+                    break;
             }
-            return mealPlanner;
         }
-        else {
-            return null;
+
+        return mealPlanner;
+    }
+
+    // Helper method to get the day of the week based on index
+    private String getDayOfWeek(int index) {
+        switch (index) {
+            case 0:
+                return "Monday";
+            case 1:
+                return "Tuesday";
+            case 2:
+                return "Wednesday";
+            case 3:
+                return "Thursday";
+            case 4:
+                return "Friday";
+            case 5:
+                return "Saturday";
+            case 6:
+                return "Sunday";
+            default:
+                return ""; // Handle if necessary
         }
     }
+
 
 
     public ResponseEntity<String> clearMealPlanner(User currentUser) {
@@ -131,11 +157,34 @@ public class PlannerService {
 
     public ResponseEntity<?> saveOneWeekPlanner(User currentUser, String plannerData) {
 
-        MealPlanner mealPlanner = new MealPlanner();
-        mealPlanner.setUser(currentUser);
-        mealPlanner.setSavedWeek(plannerData);
-        plannerRepository.save(mealPlanner);
+        Optional<MealPlanner> mealPlanner = plannerRepository.findByUser(currentUser);
+        if (mealPlanner.isPresent())
+        {
+            mealPlanner.get().setSavedWeek(mealPlanner.get().getSavedWeek() + plannerData);
+            plannerRepository.save(mealPlanner.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<String> getPreWeeks(User currentUser) {
+
+        Optional<MealPlanner> mealPlanner = plannerRepository.findByUser(currentUser);
+        return mealPlanner.map(planner -> new ResponseEntity<>(planner.getSavedWeek(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    public ResponseEntity<String> removeWeeklyPlans(User currentUser) {
+
+        Optional<MealPlanner> mealPlanner = plannerRepository.findByUser(currentUser);
+        MealPlanner targetPlanner = mealPlanner.get();
+        targetPlanner.setSavedWeek(null);
+        plannerRepository.save(targetPlanner);
+        if (targetPlanner.getSavedWeek().isEmpty())
+        {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else return new ResponseEntity<>(HttpStatus.CONFLICT);
+
     }
 }

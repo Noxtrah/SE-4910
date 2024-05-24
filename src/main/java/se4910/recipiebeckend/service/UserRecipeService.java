@@ -2,13 +2,18 @@ package se4910.recipiebeckend.service;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.FavoritesRepository;
 import se4910.recipiebeckend.repository.MealRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.repository.UserRepository;
+import se4910.recipiebeckend.response.RecipeDetailResponse;
+import se4910.recipiebeckend.response.UserRecipeDetailResponse;
 import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.response.UserRecipeResponseFull;
 
@@ -76,21 +81,56 @@ public class UserRecipeService {
     }
 
 
-    public UserRecipeResponse getUserRecipeInfo(long userRecipeId) {
-
-        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeId);
-        if (optionalUserRecipes.isPresent())
-        {
-            UserRecipes targetRecipe = optionalUserRecipes.get();
-            return new UserRecipeResponse(targetRecipe);
-        }
-        return null;
-    }
-
     public UserRecipes getUserRecipeByID (long userRecipeId) {
 
         Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeId);
         return optionalUserRecipes.orElse(null);
     }
 
+    public String getUserRecipePhotoByID(long userRecipeId) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeId);
+        if (optionalUserRecipes.isPresent()) {
+            return optionalUserRecipes.get().getPhotoPath();
+        } else return HttpStatus.NOT_FOUND.name();
+    }
+
+    public int getMaxPage() {
+        int totalItem = userRecipeRepository.findAll().size();
+        int maxPage = totalItem /6;
+
+        if (totalItem % 6 >= 1) {
+            maxPage++;
+        }
+        return maxPage;
+
+    }
+
+    public UserRecipeDetailResponse getRecipeDetails(long id, User currentUser) {
+
+        StringBuilder matchingAllergicFoods = new StringBuilder();
+        ArrayList<String> allergicFoodList = getAllergicFoods(currentUser.getAllergicFoods());
+        Optional<UserRecipes> targetRecipe = userRecipeRepository.findById(id);
+        for (String allergicFood : allergicFoodList) {
+            if (targetRecipe.get().getIngredients().contains(allergicFood)) {
+                matchingAllergicFoods.append(allergicFood).append(", ");
+            }
+        }
+        return new UserRecipeDetailResponse(targetRecipe.get(), matchingAllergicFoods.toString());
+    }
+
+    public ArrayList<String> getAllergicFoods(String foods) {
+        ArrayList<String> allergicFoodList = new ArrayList<>();
+        if (foods != null && !foods.isEmpty()) {
+            String[] allergicFoodsArray = foods.split(",");
+            allergicFoodList.addAll(Arrays.asList(allergicFoodsArray));
+        }
+        return allergicFoodList;
+    }
+
+    public UserRecipeDetailResponse getRecipeDetailsSimple(long id) {
+        Optional<UserRecipes> recipe = userRecipeRepository.findById(id);
+        return recipe.map(userRecipes -> new UserRecipeDetailResponse(userRecipes, "")).orElse(null);
+
+    }
 }

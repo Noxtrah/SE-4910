@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class ProfileInfoRequest {
 
-    private String password;
 
     private String bio;
 
@@ -16,8 +15,8 @@ public class ProfileInfoRequest {
 
     private MultipartFile profilePhoto;
 
-    public ProfileInfoRequest(String password, String bio, String allergicFoods, MultipartFile profilePhoto) {
-        this.password = password;
+    public ProfileInfoRequest( String bio, String allergicFoods, MultipartFile profilePhoto) {
+
         this.bio = bio;
         this.allergicFoods = allergicFoods;
         this.profilePhoto = profilePhoto;

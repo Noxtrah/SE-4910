@@ -14,6 +14,7 @@ import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.RecipeRequest;
+import se4910.recipiebeckend.response.RecipeDetailResponse;
 import se4910.recipiebeckend.response.RecipeResponse;
 import se4910.recipiebeckend.response.UserRecipeResponse;
 import se4910.recipiebeckend.response.UserRecipeResponseFull;
@@ -43,17 +44,7 @@ public class RecipeController extends ParentController{
 
     private List<RecipeResponse> cachedDataExtended = new ArrayList<>();
 
-    @GetMapping("/all-recipes")
-    public List<Recipe> getAllRecipes()
-    {
-        return recipeService.getAllRecipesBasic();
-    }
 
-    @GetMapping("/recipe-by-id")
-    public Recipe getRecipeById(@RequestParam long id)
-    {
-        return recipeService.getRecipeByID(id);
-    }
 
 
     public List<RecipeResponse> paging( @RequestParam(name = "key") int key)
@@ -80,13 +71,37 @@ public class RecipeController extends ParentController{
             return paging(key);
     }
 
+    @GetMapping("/get-max-page")
+    public int getMaxPage()
+    {
+       return recipeService.getMaxPage();
+    }
+
+    @GetMapping("/all-recipes")
+    public List<Recipe> getAllRecipes()
+    {
+        return recipeService.getAllRecipesBasic();
+    }
+
+    @GetMapping("/recipe-by-id")
+    public RecipeDetailResponse getRecipeById(@RequestParam long id, Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return recipeService.getRecipeDetails(id,currentUser);
+        }
+        return recipeService.getRecipeDetailsSimple(id);
+
+    }
+
 
     @PostMapping("/create-recipe-blob")
     public ResponseEntity<String> createRecipeBlob( @ModelAttribute RecipeRequest recipeRequest)
     {
         return recipeService.createRecipeBlob(recipeRequest);
     }
-    @PostMapping("/update-recipe")
+    @PutMapping("/update-recipe")
     public ResponseEntity<String> updateRecipebyID(@ModelAttribute RecipeRequest recipeRequest)
     {
         return recipeService.updateRecipe(recipeRequest);
@@ -142,11 +157,6 @@ public class RecipeController extends ParentController{
         cachedDataExtended = recipeService.sortRecipesIngCount(cachedDataExtended);
         return paging(0);
 
-    }
-    @GetMapping("/user-recipe-dashboard")
-    public List<UserRecipeResponse> userRecipes()
-    {
-        return recipeService.getPublishedUserRecipes();
     }
 
     @GetMapping("/one-user-published-recipes")

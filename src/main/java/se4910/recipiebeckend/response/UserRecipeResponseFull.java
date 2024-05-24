@@ -21,5 +21,6 @@ public class UserRecipeResponseFull extends UserRecipeResponse{
         this.rate = rate;
         this.avgRate = avgRate;
         this.isReported = isReported;
+
     }
 }

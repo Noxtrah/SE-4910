@@ -13,6 +13,7 @@ public class AuthResponse {
 	Long userId;
 	String accessToken;
 	String refreshToken;
+	String role;
 
 
 	public String getMessage() {

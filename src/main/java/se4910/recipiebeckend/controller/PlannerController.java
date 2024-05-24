@@ -39,6 +39,13 @@ public class PlannerController extends ParentController{
         return null;
     }
 
+    @PutMapping("/remove-weekly-plans")
+    public ResponseEntity<String> removeWeeklyPlans(@RequestParam String username)
+    {
+
+        User currentUser = userService.getOneUserByUsername(username);
+        return plannerService.removeWeeklyPlans(currentUser);
+    }
 
 
     @PostMapping("save-planner")
@@ -62,10 +69,22 @@ public class PlannerController extends ParentController{
             return plannerService.saveOneWeekPlanner(currentUser,plannerData);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
+
+    @GetMapping("/get-pre-weeks")
+    public ResponseEntity<String> getPreWeeks(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return plannerService.getPreWeeks(currentUser);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     @DeleteMapping("clear-meal-planner")
     public ResponseEntity<String> clearMealPlanner(Authentication authentication)
     {

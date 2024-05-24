@@ -34,5 +34,6 @@ public class UserRecipeResponse {
         this.photoPath = userRecipes.getPhotoPath();
         this.isPublish = userRecipes.getIsPublish();
         this.username = userRecipes.getUser().getUsername();
+
     }
 }

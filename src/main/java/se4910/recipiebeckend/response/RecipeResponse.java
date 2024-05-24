@@ -13,7 +13,6 @@ public class RecipeResponse {
     Recipe recipe;
     Boolean isLiked;
     int rate;
-
     double avgRate;
 
     public RecipeResponse(Recipe recipe, Boolean isLiked, int rate, double avgRate) {

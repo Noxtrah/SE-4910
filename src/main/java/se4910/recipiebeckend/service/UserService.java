@@ -5,6 +5,7 @@ import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import se4910.recipiebeckend.controller.ParentController;
@@ -39,8 +40,10 @@ public class UserService implements UserDetailsService {
     UserRecipeRepository userRecipeRepository;
 
     ReportRepository reportRepository;
-    ParentController parentController;
-    
+
+    AzurePhotoService azurePhotoService;
+
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -79,7 +82,8 @@ public class UserService implements UserDetailsService {
         }
         if (userRecipeRequest.getRecipePhoto()!= null)
         {
-            String photoUrlString = parentController.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
+            String photoUrlString = azurePhotoService.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
+            System.out.println(photoUrlString);
             userRecipes.setPhotoPath(photoUrlString);
         }
 
@@ -90,7 +94,7 @@ public class UserService implements UserDetailsService {
 
         try {
             userRecipeRepository.save(userRecipes);
-            return ResponseEntity.ok("Recipe successfully added");
+            return ResponseEntity.ok("id,"+ userRecipes.getId()+ ",Recipe successfully added");
         }
         catch (Exception e)
         {
@@ -198,22 +202,19 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<String> saveUserProfile(ProfileInfoRequest profileInfoRequest, User currentUser) throws IOException {
 
-        if (!profileInfoRequest.getPassword().isEmpty()) {
-            currentUser.setPassword(profileInfoRequest.getPassword());
-        }
-        if (!profileInfoRequest.getBio().isEmpty()) {
-            currentUser.setBio(profileInfoRequest.getBio());
-        }
-        if (!profileInfoRequest.getAllergicFoods().isEmpty()) {
-            currentUser.setAllergicFoods(profileInfoRequest.getAllergicFoods());
-        }
-        if (!profileInfoRequest.getProfilePhoto().isEmpty()) {
-            currentUser.setProfilePhotoPath(parentController.uploadPhotoToBlobStorage(profileInfoRequest.getProfilePhoto()));
-        }
+            if (profileInfoRequest.getBio() != null && !profileInfoRequest.getBio().isEmpty()) {
+                currentUser.setBio(profileInfoRequest.getBio());
+            }
+            if (profileInfoRequest.getAllergicFoods() != null && !profileInfoRequest.getAllergicFoods().isEmpty()) {
+                currentUser.setAllergicFoods(profileInfoRequest.getAllergicFoods());
+            }
+            if (profileInfoRequest.getProfilePhoto() != null && !profileInfoRequest.getProfilePhoto().isEmpty()) {
+                currentUser.setProfilePhotoPath(azurePhotoService.uploadPhotoToBlobStorage(profileInfoRequest.getProfilePhoto()));
+            }
 
-        userRepository.save(currentUser);
-        return new ResponseEntity<>("User updated", HttpStatus.OK);
+            return new ResponseEntity<>("user updated", HttpStatus.OK);
     }
+
 
 
     public ResponseEntity<UserInfoResponse> getUserInfo(User currentUser)
@@ -263,11 +264,85 @@ public class UserService implements UserDetailsService {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         }
-          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     public boolean checkReport(User currentUser, UserRecipes userRecipes) {
 
         return (reportRepository.findByUserAndUserRecipes(currentUser,userRecipes)).isPresent();
+    }
+
+    public ResponseEntity<String> editUserRecipe(UserRecipeRequest userRecipeRequest, User currentUser) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeRequest.getId());
+        if (optionalUserRecipes.isPresent())
+        {
+            UserRecipes targetRecipe = optionalUserRecipes.get();
+            return editRecipe(targetRecipe,userRecipeRequest);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    private ResponseEntity<String> editRecipe(UserRecipes userRecipes,UserRecipeRequest userRecipeRequest) {
+
+
+        if(userRecipeRequest.getTitle() != null)
+        {
+            userRecipes.setTitle(userRecipeRequest.getTitle());
+        }
+        if(userRecipeRequest.getIngredients() != null)
+        {
+            userRecipes.setIngredients(userRecipeRequest.getIngredients());
+        }
+        if(userRecipeRequest.getCuisine() !=null)
+        {
+            userRecipes.setCuisine(userRecipeRequest.getCuisine());
+        }
+        if (userRecipeRequest.getDescription() != null)
+        {
+            userRecipes.setDescription(userRecipeRequest.getDescription());
+        }
+        if (userRecipeRequest.getMeal() !=null)
+        {
+            userRecipes.setMeal(userRecipeRequest.getMeal());
+        }
+        if (userRecipeRequest.getRecipePhoto()!= null)
+        {
+            String photoUrlString = azurePhotoService.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
+            userRecipes.setPhotoPath(photoUrlString);
+        }
+        if (userRecipeRequest.getPreparationTime() != null ) {
+            userRecipes.setPreparationTime(Integer.parseInt(userRecipeRequest.getPreparationTime()));
+
+        }
+
+        try {
+            userRecipeRepository.save(userRecipes);
+            return ResponseEntity.ok("id,"+ userRecipes.getId()+ ",Recipe successfully edited");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<String> editUserRecipeNoAuth(UserRecipeRequest userRecipeRequest) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeRequest.getId());
+        if (optionalUserRecipes.isPresent())
+        {
+            UserRecipes targetRecipe = optionalUserRecipes.get();
+            return editRecipe(targetRecipe,userRecipeRequest);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

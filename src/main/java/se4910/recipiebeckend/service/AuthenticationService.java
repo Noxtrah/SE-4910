@@ -20,6 +20,7 @@ import se4910.recipiebeckend.response.NewUserResponse;
 import se4910.recipiebeckend.security.JwtUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -59,9 +60,14 @@ public class AuthenticationService {
                 refreshTokenCookie.setSecure(true);
                 response.addCookie(refreshTokenCookie);
 
+                String rolesAsString = user.getRoles().stream()
+                        .map(Role::getName) // Get the name of each role
+                        .collect(Collectors.joining(","));
+
                 // Access token ve refresh token birlikte döndürülür
                 return AuthResponse.builder()
                         .accessToken("Bearer " + jwt)
+                        .role(rolesAsString)
                         .refreshToken(refreshToken)
                         .build();
             } else {

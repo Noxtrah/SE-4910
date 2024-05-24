@@ -76,14 +76,6 @@ public class AdminController {
             result.add(commonRecipeResponse);
         }
 
-      /*  // Process top rated user recipes
-        for (Object[] userRecipeInfo : topUserRecipes) {
-            Long userRecipeId = (Long) userRecipeInfo[0]; // Assuming ID is the first element
-            UserRecipes userRecipe = userRecipeService.getUserRecipeByID(userRecipeId); // Fetch user recipe details
-            CommonRecipeResponse commonRecipeResponse = new CommonRecipeResponse(userRecipe);
-            result.add(commonRecipeResponse);
-        }*/
-
         return result;
     }
 
