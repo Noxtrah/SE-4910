@@ -69,14 +69,10 @@ saveButton.addEventListener("click", async function (event) {
 
         const finalAllergiesString = selectedFoods.map(food => food.trim()).join(',');
 
-        const newPassword = document.getElementById('new-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-
         const photoUpload = document.getElementById('photo-upload');
         const photoFile = photoUpload.files[0];
 
         const formData = new FormData();
-        formData.append('password', newPassword);
         formData.append('bio', bio);
         formData.append('allergicFoods', finalAllergiesString);
         if (photoFile) {
