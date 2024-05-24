@@ -20,7 +20,7 @@
             <button id="back-arrow-button">
                 <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
             </button>
-            <h1 style="color: rgb(105, 129, 149);">Meal Planner</h1>         </div>
+            <h1 style="color: #c4bbf0;">Meal Planner</h1>         </div>
     </header>
 
     <main>
@@ -96,9 +96,9 @@
             <div>
                 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
                     <div style="display: flex; gap: 10px;">
-                        <button style="padding: 0.6rem; margin-bottom: 20px; outline: none; border: none; background: #698195; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#698195';" onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+                        <button style="padding: 0.6rem; margin-bottom: 20px; outline: none; border: none; background: #c4bbf0; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';" onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
                         
-                        <button style="padding: 0.6rem; margin-bottom: 20px; background: #698195; border: none; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#698195';" onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
+                        <button style="padding: 0.6rem; margin-bottom: 20px; background:#c4bbf0; border: none; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';" onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
                     </div>
                 </div>
                 
@@ -153,18 +153,18 @@
             font-size: larger;
             margin-left: 35px;
             cursor: pointer;
-            background: #698195; /* Varsayılan arka plan rengi */
+            background: #c4bbf0; /* Varsayılan arka plan rengi */
             color: black; /* Varsayılan metin rengi */
             transition: background 0.4s ease, color 0.4s ease;"
-        onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
-        onmouseout="this.style.background='#698195'; this.style.color='black';"
+        onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';"
+        onmouseout="this.style.background='#c4bbf0'; this.style.color='black';"
         class="saveButton"
         onclick="saveToPlans()">Save to Plans
     </button>
     
               <button style=" padding: 0.6rem;
               margin-left: 40px;
-              background: #698195; /* Varsayılan arka plan rengi */
+              background:#c4bbf0; /* Varsayılan arka plan rengi */
               border: none;
               margin-top: 40px;
               border-radius: 3px;
@@ -173,8 +173,8 @@
               cursor: pointer;
               transition: 0.4s ease;
               transition: background 0.4s ease, color 0.4s ease;"
-                    onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
-                    onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
+                    onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';"
+                    onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
                 </div>
 
                 <div class="weekly-table-container" id="weekly_planner"></div>
@@ -224,6 +224,13 @@
     
 </body>
 <style>
+    :root {
+  --dark_grey: #363b4e;
+  --dark_purple: #4f3b78;
+  --purple: #927fbf;
+  --light_purple: #c4bbf0;
+  --background_color: rgb(205, 199, 208);
+}
 /* Reset default margin and padding */
 body, h1, h2, h3, ul, li {
     margin: 0;
@@ -240,7 +247,7 @@ body, h1, h2, h3, ul, li {
 
 .back-arrow {
   font-size: 5em;
-  color: rgb(105, 129, 149);
+  color:#c4bbf0;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -264,17 +271,17 @@ body {
 }
 
 header {
-    background-color:rgb(0, 139, 139, 0.171);;
-    color: #fff;
+    background-color: #363b4e;
+    color: #c4bbf0;
     padding: 20px;
     text-align: center;
     height: 100px;
 }
 
 footer {
-    background-color:rgb(0, 139, 139, 0.171);;
+    background-color:#363b4e;
     color: #fff;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
 }
 
@@ -316,7 +323,25 @@ footer {
   grid-template-columns: repeat(4, 1fr); /* 3 sütunlu bir grid oluşturuyoruz */
   /* grid-gap: 20px;  */
 }
+@media (max-width: 1024px) {
+  .meal-plan {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
+/* Küçük boyutlu ekranlar için (telefonlar) 2 sütun */
+@media (max-width: 768px) {
+  .meal-plan {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Çok küçük boyutlu ekranlar için (küçük telefonlar) 1 sütun */
+@media (max-width: 480px) {
+  .meal-plan {
+    grid-template-columns: 1fr;
+  }
+}
 /* Modal Styles */
 .modal {
     display: none;

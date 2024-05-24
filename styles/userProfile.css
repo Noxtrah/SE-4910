@@ -192,3 +192,39 @@ body {
     margin: 5px 0; /* Adjust spacing between details */
     word-wrap: break-word; /* Wrap long lines of text */
 }
+  
+  /* Orta boyutlu ekranlar için (tabletler) */
+  @media (max-width: 1024px) {
+    #userPublishedRecipes {
+      justify-content: space-around; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 calc(33.333% - 20px); /* 3 sütun */
+      margin: 10px;
+    }
+  }
+  
+  /* Küçük boyutlu ekranlar için (telefonlar) */
+  @media (max-width: 768px) {
+    #userPublishedRecipes {
+      justify-content: center; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 calc(50% - 20px); /* 2 sütun */
+      margin: 10px;
+    }
+  }
+  
+  /* Çok küçük boyutlu ekranlar için (küçük telefonlar) */
+  @media (max-width: 480px) {
+    #userPublishedRecipes {
+      justify-content: center; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 100%; /* 1 sütun */
+      margin: 10px 0;
+    }
+  }
