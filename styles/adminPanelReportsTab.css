@@ -1,0 +1,365 @@
+/* :root {
+    --dark_cyan: #698195;
+    --white: white;
+    --body_background_color:  rgba(0, 139, 139, 0.171);
+    --body_bakcground_color_no_transparency: rgb(130, 216, 216);
+    --black: black;
+    --border_color: #ddd;
+    --grey_text_color: #777;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--body_background_color);
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--dark_cyan);
+    border: 1px solid var(--border_color);
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px 20px;
+}
+
+.sidebar a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar li:hover {
+    background-color: var(--body_bakcground_color_no_transparency);
+}
+
+.users-icon{
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+.settings-icon{
+    vertical-align: -10%;
+    margin-right: 12px;
+}
+
+.dashboard-icon{
+    vertical-align: -10%;
+    margin-right: 12px;
+}
+
+.reports-icon{
+    vertical-align: -10%;
+    margin-right: 12px;
+} */
+
+.detail-sidebar-wrapper{
+    border-radius: 20px;
+    background-color: var(--white);
+    height: 98%;
+    width: 20vw;
+    position: fixed;
+    top: 0;
+    right: 0.1vw;
+    margin: 1vh;
+    border: 1px solid var(--border_color);
+    overflow-y: scroll;
+}
+
+.detail-sidebar{
+    height: 98%;
+    width: 20vw;
+    position: fixed;
+    top: 0;
+    right: 0.1vw;
+    margin: 1vh;
+    /* background-color: #25274D; */
+    padding-top: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* text-align: center; */
+}
+
+.close-icon{
+    position: absolute;;
+    right: 1vw;
+    top: 1vw;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.selected-report-title{
+    color:var(--black);
+    margin: 10px 1vw;
+}
+
+.selected-report-image{
+    width: 90%;
+    height: 38%;
+    object-fit: cover;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.selected-recipe-report{
+    color: var(--black);
+    margin: 10px 1vw;
+}
+
+.selected-recipe-report:last-child {
+    margin-bottom: 5vh;
+}
+
+/* .content-container {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s;
+} */
+
+/* .content {
+    display: none;
+}
+
+.content.show {
+    display: block;
+} */
+
+.reports-grid-container {
+    width: 100%;
+    overflow: hidden; /* Ensures overflowed content is hidden */
+}
+
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(328px, 1fr)); /* Adjust item width based on container width */
+    grid-gap: 20px;
+    overflow: hidden; /* Ensures overflowed content is hidden */
+}
+
+.report-item {
+    border: 1px solid var(--border_color);
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding doesn't affect item width */
+    display: inline-flex;
+    transition: width 0.3s;
+    background-color: var(--white);
+    border-radius: 10px;
+
+    /* Add fixed size for consistent grid layout */
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    
+}
+
+.report-item img {
+    max-width: 116.72px;
+    height: 100%;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 6px;
+}
+
+.recipe-details {
+    flex-grow: 1;
+    margin-bottom: auto;
+}
+
+.recipe-details h3 {
+    margin-top: 0;
+}
+
+.report-reason {
+    margin-bottom: 10px;
+    font-size: 14px;
+    /* min-height: 38px; */
+    color: var(--grey_text_color);
+}
+
+.action-buttons {
+    display: flex;
+    align-self: flex-end;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.action-buttons button {
+    /* margin-left: 10px; */
+    padding: 5px 10px;
+    /* background-color: #25274D; */
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 3px;
+}
+
+
+@media only screen and (max-width: 1500px) {
+    .action-buttons {
+        gap: 5px;
+    }
+    .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); /* Adjust item width based on container width */
+        grid-gap: 20px;
+        overflow: hidden; /* Ensures overflowed content is hidden */
+    }
+}
+
+@media only screen and (max-width: 535px){
+    .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adjust item width based on container width */
+        grid-gap: 20px;
+        overflow: hidden;
+        text-align: center;
+    }
+    .report-item {
+        border: 1px solid var(--border_color);
+        padding: 20px;
+        box-sizing: border-box;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        transition: width 0.3s;
+        background-color: var(--white);
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
+    .report-item img {
+        max-width: 100%;
+        width: 80%;
+        object-fit: cover;
+        margin-right: 0px;
+        border-radius: 6px;
+    }
+    .action-buttons {
+        display: flex;
+        /* align-self: center; */
+        gap: 10px;
+        margin-top: auto;
+    }
+    .action-buttons button {
+        padding: 5px 3vw;
+    }
+}
+
+.discard-button{
+    background-color: rgb(23, 179, 23);
+}
+
+.discard-button:hover {
+    background-color: #048524;
+}
+
+.detail-button{
+    background-color: rgb(255, 166, 0);
+}
+
+.detail-button:hover {
+    background-color: #e19302;
+}
+
+.delete-button{
+    background-color: red;
+}
+
+.delete-button:hover {
+    background-color: #ba0101;
+}
+
+.popup {
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--dark_cyan);
+    /* background: var(--dark_grey); */
+    border: 1px solid var(--border_color);
+    border-radius: 5px;
+    width: 30%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+.popup h2 {
+    margin-top: 0;
+    color: var(--black);
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.popup .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--black);
+}
+
+.popup .close:hover {
+    color: var(--white);
+}
+
+.popup {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.content{
+    color: var(--black);
+}
+
+.textbox-container {
+    margin-top: 20px;
+}
+
+.popup-delete-button {
+    padding: 10px 20px;
+    background-color: var(--white);
+    color: var(--black);
+    font-weight: 600;
+    border-radius: 5px;
+    border-right: 4px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: auto;
+    display: inline-block;
+    float: right;
+}
+
+/* Optional: Add hover effect */
+.popup-delete-button:hover {
+    border: 1px solid var(--black);
+    border-right: 2px solid var(--black);
+    border-bottom: 1.5px solid var(--black);
+    border-left: 1.5px solid var(--black);
+    border-top: 1.5px solid var(--black);
+    padding: 10px 20px;
+    margin-bottom: 1px;
+}

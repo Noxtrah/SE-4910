@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
+    --perspective: 1000px;
+    --link-color: #010790;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background_color);
+}
+
+#userPersonal {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--dark_grey);
+    color: var(--background_color);
+}
+
+#userPersonal h3,
+#userPersonal p {
+    margin-top: 10px;
+}
+
+.buttons button {
+    padding: 0.6rem;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: large;
+    cursor: pointer;
+    transition: 0.4s ease;
+}
+
+.buttons button:hover {
+    background: rgb(147, 137, 147);
+    color: white;
+}
+
+.buttons button:hover {
+    background: white;
+    color: black;
+}
+
+#back-arrow-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+}
+
+.back-arrow {
+    font-size: 5em;
+    color: var(--light_purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: color 0.3s ease-in-out;
+}
+
+#back-arrow-button:hover .back-arrow {
+    color: var(--purple);
+    cursor: pointer;
+}
+
+.back-button {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--link-color);
+    cursor: pointer;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+#header-container {
+    background-color: var(--dark_grey);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 24px;
+    margin-left: 50px;
+}
+
+.card-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid var(--dark_grey);
+    border-radius: 10px;
+    background-color: #938993;
+}
+
+.round {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+#userPersonal {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color:var(--dark_grey);
+    color: var(--background_color);
+}
+
+#userPersonal h3,
+#userPersonal p {
+    margin: 0;
+}
+
+#userPublishedRecipes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* ------------------------------------------------------- */
+.recipe {
+    border: 1px solid var(--dark_grey);
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: var(--background_color);
+    width: calc(50% - 10px);
+    height: 300px;
+    display: flex; /* Make the recipe container flex to align items */
+}
+
+/* Additional CSS for recipe layout adjustment */
+
+.recipe-left {
+   
+    display: flex;
+    align-items: flex-start; /* Align items at the start of the container */
+    width: min-content;
+    flex: 1; /* Take remaining space */
+}
+
+.recipe-photo {
+    width: 200px; /* Example width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 20px; /* Space between photo and details */
+}
+
+.photo-title-container {
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    align-items: center; /* Horizontally center items */
+    text-align: center; /* Center text */
+}
+
+.recipe-details {
+    background-color: var(--dark_grey);
+    color: var(--background_color);
+    border-radius: 10px;
+    padding: 10px; /* Add padding to the details container */
+    flex: 1; /* Allow details to fill remaining space */
+    overflow-y: auto;
+
+}
+
+.recipe-details p {
+    margin: 5px 0; /* Adjust spacing between details */
+    word-wrap: break-word; /* Wrap long lines of text */
+}
+
+
+  
+  /* Orta boyutlu ekranlar için (tabletler) */
+  @media (max-width: 1024px) {
+    #userPublishedRecipes {
+      justify-content: space-around; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 calc(33.333% - 20px); /* 3 sütun */
+      margin: 10px;
+    }
+  }
+  
+  /* Küçük boyutlu ekranlar için (telefonlar) */
+  @media (max-width: 768px) {
+    #userPublishedRecipes {
+      justify-content: center; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 calc(50% - 20px); /* 2 sütun */
+      margin: 10px;
+    }
+  }
+  
+  /* Çok küçük boyutlu ekranlar için (küçük telefonlar) */
+  @media (max-width: 480px) {
+    #userPublishedRecipes {
+      justify-content: center; /* Ekran boyutuna göre hizalama değiştirilebilir */
+    }
+  
+    #userPublishedRecipes > div {
+      flex: 1 1 100%; /* 1 sütun */
+      margin: 10px 0;
+    }
+  }

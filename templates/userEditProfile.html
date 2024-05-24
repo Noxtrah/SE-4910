@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/userEditProfile.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <form id="profile-form" enctype="multipart/form-data">
+        <div class="profile-container">
+            <div class="section photo-edit-section">
+                <div class="section-header">Profile Photo Edit</div>
+                <input type="file" id="photo-upload" accept="image/*">
+                <div class="photo-frame" id="photo-frame"></div>
+            </div>
+        
+        
+            <div class="section bio-section">
+                <div class="section-header">Bio</div>
+                <textarea id="bio" name="bio" rows="4" placeholder="Write your bio here..."></textarea>
+            </div>
+        
+            <div class="section allergic-food-section">
+                <!-- Other allergic food input -->
+                <div>
+                <label for="other-food-input">Other Allergic Food:</label>
+                <input type="text" id="other-food-input" name="other-food-input" placeholder="Type: Allergy 1, Allergy 2">
+                </div>
+            </div>
+            <form>
+                <div class="form-group">
+                    <div id="checkboxAllergy">
+                    <label for="checkbox"></label>
+                    <input type="checkbox" id="checkbox" name="checkbox">
+                    </div>
+                </div>
+            </form>
+            <button type="submit" id="save-button">Save</button>
+        </div>
+    </form>
+    
+
+    <script src="../scripts/userEditProfile.js"></script>
+</body>
+</html>

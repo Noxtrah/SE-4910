@@ -1,0 +1,86 @@
+dir{
+    padding: 0;
+}
+
+.board {
+    /* width: calc(100% - (var(--sidebar-width) + var(--inactive_content_shift))); */
+    overflow: auto;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* .sidebar.active .board {
+    width: calc(100% - (var(--active-sidebar-width) + var(--active_content_shift)));
+    background-color: red;
+} */
+
+/* .sidebar.active .content {
+    background-color: red;
+} */
+
+.board img{
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.board h5{
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.board p{
+    font-weight: 400;
+    font-size: 13px;
+    color: #787d8d;
+
+}
+
+.board .people{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: start;
+}
+
+table{
+    border-collapse: collapse;
+    /* margin-left: -40px; */
+}
+
+thead{
+    width: 100%;
+}
+
+tr{
+    border-bottom: 1px solid #eef0f3;
+    width: 100%;
+}
+
+thead td{
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 400;
+    background: #F9FAFB;
+    text-align: start;
+    padding: 15px;
+    padding-left: 30px;;
+}
+
+tbody tr td{
+    padding: 0px 30px;
+} 
+
+.people-de{
+    margin-bottom: 10px;
+}
+
+.people-de p {
+    margin-top: -20px; /* Adjust the value as needed */
+}
+
+.people-des p {
+    margin-top: -20px; /* Adjust the value as needed */
+}

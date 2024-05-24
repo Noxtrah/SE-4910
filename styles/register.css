@@ -1,0 +1,120 @@
+.back-arrow{
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    font-size: 2em;
+    color: white;
+}
+.register-box{
+    position: relative;
+    width: 90%;
+    max-width: 520px;
+    height: 80vh;
+    min-height: 70vh;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.register-value{
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.privacy-policy{
+    margin: 1vw 0;
+    min-width: 100%;
+    width: 22vw;
+}
+.privacy-policy label input{
+    margin-right: 3px;
+}
+/* .icon-input::placeholder {
+    padding-left: 19px;
+} */
+.icon-input{
+    margin-left: 1%;
+}
+
+.birthday-input {
+    display: flex;
+    flex-direction: row;
+    /* gap: 1%; */
+    align-items: center;
+    color: black;
+    margin-top: 1vh;
+}
+.birthday{
+    margin-bottom: 1vh;
+    color: white;
+}
+.icon-input{
+    padding: 0px 0.1vw;
+}
+.day{
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    width: 12%;
+    text-align: right;
+}
+.month {
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 18px; /* Adjust the size as needed */
+    width: 13%;
+    text-align: right;
+}
+.year {
+    background-image: url('Icons/calendar-outline.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 18px; /* Adjust the size as needed */
+    width: 15%;
+    text-align: right;
+}
+.day-label, .month-label, .year-label{
+    margin-left: 0.8vw;
+}
+@media (max-width: 768px) {
+    .register-box {
+        width: 70%; /* Adjust the width for smaller screens (e.g., 95% of the parent container) */
+        height: 100%;
+    }
+    .icon-input::-webkit-inner-spin-button,
+    .icon-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}
+@media (max-width: 480px) {
+    .register-box {
+        width: 80%; /* Adjust the width for even smaller screens (100% of the parent container) */
+        height: 100%;
+    }
+    .icon-input::-webkit-inner-spin-button,
+    .icon-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}
+@media (max-width: 400px) {
+    .register-box {
+        width: 90%; /* Adjust the width for even smaller screens (100% of the parent container) */
+        height: 100%;
+    }
+    .icon-input::-webkit-inner-spin-button,
+    .icon-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}

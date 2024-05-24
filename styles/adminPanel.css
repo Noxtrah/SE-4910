@@ -1,0 +1,268 @@
+:root {
+    --dark_cyan: #698195;
+    --white: white;
+    --body_background_color: rgba(0, 139, 139, 0.171);
+    --body_bakcground_color_no_transparency: rgb(130, 216, 216);
+    --black: black;
+    --border_color: #ddd;
+    --grey_text_color: #777;
+    --sidebar-width: 80px;
+    --active-sidebar-width: 250px;
+    --inactive_content_shift: 120px;
+    --active_content_shift: 290px
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--body_background_color);
+}
+
+/*
+.sidebar {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--dark_cyan);
+    border: 1px solid var(--border_color);
+    padding-top: 20px;
+    overflow-y: auto;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .content-container{
+    left: 250px;
+    width: calc(96% - 250px);
+}
+
+.sidebar.active{
+    width: 250px;
+}
+
+.sidebar #sidebarOpenCloseButton{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.sidebar.active #sidebarOpenCloseButton {
+    left:90%;
+}
+
+.sidebar h2 {
+    display: none;
+}
+
+.sidebar.active h2{
+    display: block;
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px 20px;
+}
+
+.sidebar a {
+    color: black;
+    text-decoration: none;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar ul li a{
+    display: flex;
+    align-items: center;
+}
+
+.sidebar ul li a ion-icon{
+    text-align: center;
+    border-radius: 12px;
+}
+
+.sidebar:not(.active) ul li a ion-icon {
+    font-size: 26px;
+    justify-content: center;
+    width: 100%;
+}
+
+.sidebar .sidebar-span{
+    opacity: 0;
+}
+
+.sidebar.active .sidebar-span{
+    opacity: 1;
+}
+
+.sidebar li:hover {
+    background-color: var(--body_bakcground_color_no_transparency);
+}
+
+.users-icon {
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+.settings-icon {
+    vertical-align: -10%;
+    margin-right: 12px;
+}
+
+.dashboard-icon {
+    vertical-align: -10%;
+    margin-right: 12px;
+}
+
+.reports-icon {
+    vertical-align: -10%;
+    margin-right: 12px;
+} */
+
+.sidebar {
+    height: 100%;
+    width: 80px; /* Set initial width */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--dark_cyan);
+    border: 1px solid var(--border_color);
+    overflow-y: auto;
+    transition: width 0.5s ease; /* Only transition width */
+    z-index: 1; /* Ensure sidebar stays above other content */
+}
+
+.sidebar.active {
+    width: 250px; /* Expanded width when active */
+}
+
+.sidebar #sidebarOpenCloseButton {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    font-size: 24px;
+    transition: width 0.5s ease;;
+}
+
+.sidebar.active #sidebarOpenCloseButton {
+    left: calc(100% - 30px); /* Adjusted position when active */
+}
+
+.sidebar h2 {
+    display: none;
+}
+
+.sidebar.active h2 {
+    display: block;
+    color: black;
+    text-align: center;
+    margin-top: 6vh;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px 20px;
+}
+
+.sidebar.active li {
+    padding: 12px 2px;
+}
+
+.sidebar a {
+    color: black;
+    text-decoration: none;
+    transition: 0.3s;
+    display: flex;
+}
+
+.sidebar ul li a ion-icon {
+    font-size: 28px;
+}
+
+.sidebar:not(.active) {
+}
+
+.sidebar:not(.active) ul li a ion-icon {
+    font-size: 40px; /* Increase icon size */
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Expand the icon's container to full width */
+}
+
+.sidebar .sidebar-span {
+    display: none;
+}
+
+.sidebar.active .sidebar-span {
+    display: block;
+}
+
+.sidebar li:hover {
+    background-color: var(--body_bakcground_color_no_transparency);
+}
+
+.sidebar:not(.active) .users-icon,
+.sidebar:not(.active) .settings-icon,
+.sidebar:not(.active) .dashboard-icon,
+.sidebar:not(.active) .reports-icon {
+    vertical-align: middle;
+    width: 100%;
+}
+
+.sidebar.active .sidebar-span {
+    margin-top: 0.4vh;
+}
+
+/* .sidebar:not(.active) .dashboard-icon{
+    margin-top: 7vh;
+} */
+
+.sidebar:not(.active) li:first-child {
+    margin-top: 12vh;
+}
+
+.content-container {
+    position: relative;
+    padding: 20px;
+    top: 0;
+    left: 0;
+    transition: left 0.5s ease; /* Transition left position */
+}
+
+.sidebar.active ~ .content-container {
+    left: 270px; /* Shift content to the right when sidebar is active */
+}
+
+.sidebar:not(.active) ~ .content-container {
+    left: 100px; /* Shift content to the left when sidebar is not active */
+}
+
+.sidebar.active ul li a {
+    margin-left: 2vw;
+    margin-inline: 2vw;
+}
+
+.sidebar.active .sidebar-span {
+    margin-left: 1vw;
+}
+
+.sidebar.active ~ .content-container .content {
+    width: calc(100% -  var(--active_content_shift));
+}
+
+.sidebar:not(.active) ~ .content-container .content {
+    width: calc(100% -  var(--inactive_content_shift));
+}

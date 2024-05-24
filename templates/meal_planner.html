@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Sortable.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
+
+</head>
+<body>
+    <header>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+            </button>
+            <h1 style="color: #c4bbf0;">Meal Planner</h1>         </div>
+    </header>
+
+    <main>
+        <table class="weekly-table">
+           
+          
+        <!-- <h2 style="margin: 60px;" >Weekly Meal Plan</h2> -->
+
+        <section class="meal-plan" id="sortable-section">
+            <div class="day" data-day="Monday">
+                <h3>Monday <span class="add-item">+</span></h3>
+                <ul class="items" id="mondayItems">
+                 
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Tuesday">
+                <h3>Tuesday <span class="add-item">+</span></h3>
+                <ul class="items" id="tuesdayItems">
+                 
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Wednesday">
+                <h3>Wednesday <span class="add-item">+</span></h3>
+                <ul class="items" id="wednesdayItems">
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Thursday">
+                <h3>Thursday <span class="add-item">+</span></h3>
+                <ul class="items" id="thursdayItems">
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Friday">
+                <h3>Friday <span class="add-item">+</span></h3>
+                <ul class="items" id="fridayItems">
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Saturday">
+                <h3>Saturday <span class="add-item">+</span></h3>
+                <ul class="items" id="saturdayItems">
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div class="day" data-day="Sunday">
+                <h3>Sunday <span class="add-item">+</span></h3>
+                <ul class="items" id="sundayItems">
+                   
+                    <li class="breakfast"></li>
+                    <li class="lunch"></li>
+                    <li class="dinner"></li>
+                </ul>
+            </div>
+            <div>
+                <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                    <div style="display: flex; gap: 10px;">
+                        <button style="padding: 0.6rem; margin-bottom: 20px; outline: none; border: none; background: #c4bbf0; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';" onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+                        
+                        <button style="padding: 0.6rem; margin-bottom: 20px; background:#c4bbf0; border: none; margin-top: 40px; border-radius: 3px; font-weight: bold; font-size: larger; width: 100px; cursor: pointer; transition: background 0.4s ease, color 0.4s ease; color: black;" onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';" onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
+                    </div>
+                </div>
+                
+        </section>
+    </table>
+
+<!-- <div> 
+             <button style=" padding: 0.6rem;
+            outline: none;
+            border: none;
+            margin-top: 40px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: larger;
+            width: 100px;
+            margin-left: 35px;
+            cursor: pointer;
+            transition: 0.4s ease;
+            transition: background 0.4s ease, color 0.4s ease;"
+                  onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                  onmouseout="this.style.background='#698195'; this.style.color='black';" class="saveButton" onclick="saveMealPlan()">Save</button>
+            
+            
+                  <button style=" padding: 0.6rem;
+                  margin-left: 10px;
+                  outline:darkslateblue;
+                  border: none;
+                  margin-top: 40px;
+                  border-radius: 3px;
+                  font-weight: bold;
+                  font-size: larger;
+                  width: 100px;
+                  cursor: pointer;
+                  transition: 0.4s ease;
+                  transition: background 0.4s ease, color 0.4s ease;"
+                        onmouseover="this.style.background='#363b4e'; this.style.color='#698195';"
+                        onmouseout="this.style.background='#698195'; this.style.color='black';" class="clearButton" onclick="clearAll()">Clear All</button>
+                    </div>
+
+            
+             Repeat for other days -->
+        </section> 
+
+        <div style="margin-top:70px; margin-bottom: 30px;">
+            <button style="
+            padding: 0.6rem;
+            outline: none;
+            border: none;
+            margin-top: 40px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: larger;
+            margin-left: 35px;
+            cursor: pointer;
+            background: #c4bbf0; /* Varsayılan arka plan rengi */
+            color: black; /* Varsayılan metin rengi */
+            transition: background 0.4s ease, color 0.4s ease;"
+        onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';"
+        onmouseout="this.style.background='#c4bbf0'; this.style.color='black';"
+        class="saveButton"
+        onclick="saveToPlans()">Save to Plans
+    </button>
+    
+              <button style=" padding: 0.6rem;
+              margin-left: 40px;
+              background:#c4bbf0; /* Varsayılan arka plan rengi */
+              border: none;
+              margin-top: 40px;
+              border-radius: 3px;
+              font-weight: bold;
+              font-size: larger;
+              cursor: pointer;
+              transition: 0.4s ease;
+              transition: background 0.4s ease, color 0.4s ease;"
+                    onmouseover="this.style.background='#363b4e'; this.style.color='#c4bbf0';"
+                    onmouseout="this.style.background='#c4bbf0'; this.style.color='black';" class="saveButton" onclick="getPreWeeks()" onclick="populatePreviousPlans()">See Previous Plans</button>
+                </div>
+
+                <div class="weekly-table-container" id="weekly_planner"></div>
+
+
+                <!-- <div class="container">
+                    <h1 style="margin-top: 60px;" class="header__title">Shopping List</h1>
+                </div>
+            
+                <div class="container">
+                    <input class="submission-line__input" type="text" maxlength="20" placeholder="Enter new item here...">
+                    <button class="submission-line__btn">Add</button>
+                    <ul class="list">
+                        <li class="list__item"><a class="list__delete-btn">X</a>Milk<a class="list__check-btn">✔</a></li>
+                        <li class="list__item"><a class="list__delete-btn">X</a>Eggs<a class="list__check-btn">✔</a></li>
+                        <li class="list__item list__item--checked"><a class="list__delete-btn list__delete-btn--checked">X</a>Bread<a class="list__check-btn list__check-btn--checked">✔</a></li>
+                    </ul>
+                </div> -->
+            
+    <footer>
+    </footer>
+
+    <!-- Popup Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Meal</h2>
+            <div>
+                <h3>Breakfast:</h3>
+                <input type="text" id="breakfastInput" placeholder="Enter breakfast...">
+            </div>
+            <div>
+                <h3>Lunch:</h3>
+                <input type="text" id="lunchInput" placeholder="Enter lunch...">
+            </div>
+            <div>
+                <h3>Dinner:</h3>
+                <input type="text" id="dinnerInput" placeholder="Enter dinner...">
+            </div>
+            <button id="saveBtn">Add</button>
+        </div>
+    </div>
+
+
+
+<script src="../scripts/meal_planner.js"></script>
+    
+</body>
+<style>
+    :root {
+  --dark_grey: #363b4e;
+  --dark_purple: #4f3b78;
+  --purple: #927fbf;
+  --light_purple: #c4bbf0;
+  --background_color: rgb(205, 199, 208);
+}
+/* Reset default margin and padding */
+body, h1, h2, h3, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+#back-arrow-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  margin-right: 1400px;
+}
+
+.back-arrow {
+  font-size: 5em;
+  color:#c4bbf0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, -50%);
+  transition: color 0.3s ease-in-out;
+  margin-top: 30px;
+
+}
+
+#back-arrow-button:hover .back-arrow {
+  color: var(--purple);
+  /* Change the color on hover */
+  cursor: pointer;
+  /* Change the cursor on hover */
+}
+
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #363b4e;
+    color: #c4bbf0;
+    padding: 20px;
+    text-align: center;
+    height: 100px;
+}
+
+footer {
+    background-color:#363b4e;
+    color: #fff;
+    padding: 25px;
+    text-align: center;
+}
+
+main {
+    margin-top: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.meal-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.day {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    cursor: move; /* Make it draggable */
+}
+
+.day h3 {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+footer {
+    margin-top: 250px;
+}
+.meal-plan {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 3 sütunlu bir grid oluşturuyoruz */
+  /* grid-gap: 20px;  */
+}
+@media (max-width: 1024px) {
+  .meal-plan {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Küçük boyutlu ekranlar için (telefonlar) 2 sütun */
+@media (max-width: 768px) {
+  .meal-plan {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Çok küçük boyutlu ekranlar için (küçük telefonlar) 1 sütun */
+@media (max-width: 480px) {
+  .meal-plan {
+    grid-template-columns: 1fr;
+  }
+}
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+#saveBtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#saveBtn:hover {
+    background-color: #45a049;
+}
+
+/* Added Styles */
+.modal-content div {
+    margin-bottom: 10px;
+}
+
+.modal-content h3 {
+    margin-bottom: 5px;
+}
+
+
+/* GLOBAL STYLES */
+
+
+
+
+.container{
+  margin: 0 auto;
+  max-width: 20em;
+}
+
+
+
+
+/* Input and "add" button */
+.submission-line__input {
+  padding-left: 10px;
+  height: 44px;
+  width: 66.6666%;
+  border: none;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.3rem;
+
+}
+
+.submission-line__input::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.submission-line__input:focus {
+  outline: none;
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+}
+
+.submission-line__btn {
+  float: right;
+  height: 46px;
+  width: 27.33333%;
+  background: #FFC107;
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.2);
+  border: none;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.submission-line__input,
+.submission-line__btn {
+  margin-bottom: 16px;
+}
+
+/* List, list items, and list item buttons */
+
+.list {
+  padding: 0;
+  list-style-type: none;
+  clear: both;
+}
+
+.list__item {
+  font-size: 1.3rem;
+  width: 300px;
+  height: 30px;
+  padding: 10px;
+  text-align: center;
+}
+
+.list__item:nth-child(odd) {
+  background: #78aed2;
+}
+
+.list__item:nth-child(even) {
+  background: #88d8e5;
+}
+
+.list__delete-btn {
+  cursor: pointer;
+  float: left;
+  margin: -5px;
+  padding: 5px 9px;
+}
+
+.list__check-btn {
+  cursor: pointer;
+  float: right;
+  margin: -5px;
+  padding: 4px 8px;
+}
+
+/* Checked-off item list formatting */
+
+/* (Increased specificity to override the even/odd psuedoclasses) */
+.list .list__item--checked {
+  background: #5899c7;
+  color: rgba(0, 0, 0, 0.38);
+  text-decoration: line-through;
+}
+
+.list__delete-btn--checked,
+.list__check-btn--checked {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.weekly-table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+    .weekly-table th, .weekly-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    .weekly-table th {
+        background-color: #f2f2f2;
+    }
+    .week-divider {
+        border-top: 4px solid black;
+        margin: 40px auto;
+    }
+
+    .use-week-button {
+    /* Buraya istediğiniz stil özelliklerini ekleyin */
+    background-color: #4c93af;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    height: 45px;
+    width: 150px;
+    cursor: pointer;
+    margin-left: 115px;
+    margin-top: 55px;
+}
+
+.use-week-button:hover {
+    background-color: #4597a0;
+}
+
+</style>
+
+</html>

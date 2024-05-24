@@ -1,0 +1,331 @@
+:root {
+    --dark_grey: #363b4e;
+    --dark_purple: #4f3b78;
+    --purple: #927fbf;
+    --light_purple: #c4bbf0;
+    --background_color: rgb(205, 199, 208);
+    --perspective: 1000px;
+    --link-color:#010790;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: larger;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background_color);
+}
+
+header {
+  background-color: var(--dark_grey);
+  color: var(--light_purple);
+  text-align: center;
+  padding: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+
+#header-container {
+  display: flex;
+  align-items: center;
+}
+
+#back-arrow-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+}
+
+.back-arrow {
+  font-size: 5em;
+  color: var(--light_purple);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, -50%);
+  transition: color 0.3s ease-in-out;
+}
+
+#back-arrow-button:hover .back-arrow {
+  color: var(--purple);
+  /* Change the color on hover */
+  cursor: pointer;
+  /* Change the cursor on hover */
+}
+
+#my-recipe-book-title {
+  flex-grow: 1;
+  /* This will make the title take up the remaining space */
+}
+
+.add-recipe-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#addrecipebtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6a0572; /* Purple */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#addrecipebtn:hover {
+    background-color: #9e579d; /* Hover color */
+}
+
+.grid-container {
+    color: #ccc;
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-content: center; /* Center vertically */
+}
+
+a{
+    color:var(--link-color);
+    font-weight:bold;
+  }
+  
+  /* h1{
+    font-family: 'Stint Ultra Expanded', cursive;
+    font-size: 1.5em;
+    text-align: center;
+    max-width:30vw;
+    word-wrap: break-word;
+  } */
+  
+  .book {
+    display: block;
+    position: relative;
+    width: 20vw;
+    height:40vh;
+    margin:0 auto;
+    margin-top: 5rem;
+    margin-inline: 5vw;
+  }
+  
+  .gloss{
+    position: absolute;
+    top:0;
+    z-index:200;
+    overflow: hidden;
+    width:20%;
+    height:100%;
+    opacity:0.5;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+    transition:all .5s;
+    transform: translateX(50%) rotateY(0deg);
+    transform-origin: left center;
+  }
+  
+  .cover {
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index:100;
+    border: solid 1px grey;
+    transition:transform .5s;
+    transform: translateX(0);
+    transform-origin: left center;
+    backface-visibility: hidden;
+  }
+  
+  .description{
+    position: absolute;
+    left:0;
+    top:0;
+    width:inherit;
+    height:inherit;
+    border: solid 1px grey;
+    background:white;
+    transition: all .3s;
+    padding: 10% 10%;
+    padding-top:5%;
+    z-index:1;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    color: black;
+  }
+  
+  .description h1{
+    font-family: 'Pontano Sans', sans-serif;
+    font-size: calc(0.75em + .1vw);
+    text-align: center;
+    line-height: 1.25em;
+  }
+  
+  .recipe-title{
+    /* max-width: 10vw;
+    word-wrap: break-word;
+    color:#010790 */
+    color: var(--dark_grey);
+    font-family: 'Stint Ultra Expanded', cursive;
+    font-size: 1.5em;
+    text-align: center;
+    max-width:30vw;
+    word-wrap: break-word;
+  }
+
+  .book:hover{
+    cursor: pointer;
+  }
+  
+  .book:hover .cover {
+    transform: perspective(var(--perspective)) rotateY(-80deg);
+  }
+  
+  .book:hover .gloss {
+    transform: perspective(var(--perspective)) rotateY(-80deg) translateX(100%) scaleX(5);
+  }
+  
+  .book:hover .description {
+    transform: translateX(20%);
+  }
+  
+  .buttons {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    height:2em;
+    margin:0 auto;
+    color:grey;
+  }
+  
+  .buttons > span {
+    display: inline-block;
+    position: relative;
+    font-size: 1.75em;
+    margin-right:.2em;
+  }
+  
+  .buttons > span ~ span:before {
+     content: "\2605";
+     position: absolute;
+     color:#8d2a06;
+  }
+
+  .buttons button {
+    margin-right: 10px; /* Adjust the value as needed */
+}
+  
+  /*Paging*/
+
+.paging-container {
+  position: relative;
+  /* height: 100vh; */
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paging-container .pagination {
+  position: relative;
+  height: 60px;
+  background: #8a6d8d81;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+  border-radius: 2px;
+}
+
+.paging-container .pagination li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.paging-container .pagination li a {
+  position: relative;
+  padding: 20px 25px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+
+.paging-container .pagination li a:hover,
+.paging-container .pagination li.active a {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* .delete-button{
+ 
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+  height: 38px;
+  padding: 8px 24px;
+  border-radius: 50px;
+  background-image: linear-gradient(180deg,#7c8aff,#3c4fe0);
+  box-shadow: 0 4px 11px 0 rgb(37 44 97 / 15%), 0 1px 3px 0 rgb(93 100 148 / 20%);
+  transition: all .2s ease-out;
+  :hover{
+      box-shadow: 0 8px 22px 0 rgb(37 44 97 / 15%), 0 4px 6px 0 rgb(93 100 148 / 20%);
+  }
+  
+} */
+
+.delete-button{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: var(--dark_grey);
+  transition: background-color .17s ease,color .17s ease;
+}
+
+.delete-button:hover{
+  background-color: var(--purple)
+}
+
+.publish-button{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: var(--purple);
+  transition: background-color .17s ease,color .17s ease;
+}
+
+.publish-button:hover{
+  background-color: var(--dark_purple);
+}
