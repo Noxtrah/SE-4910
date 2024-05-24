@@ -20,7 +20,9 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
-                    this.getRecommendations(data.ingredients,data.title)
+                    setTimeout(() => {
+                        this.getRecommendations(data.ingredients,data.title);
+                    }, 2000);
                 })
                 .catch(error => {
                     console.error('Error fetching recipe data:', error);

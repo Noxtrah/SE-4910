@@ -23,7 +23,7 @@ class RecipeDetail {
                     const mealNames = this.getMealNames(data.recipe.meal);
                     setTimeout(() => {
                         this.getRecommendations(data.recipe.ingredients, data.recipe.title, mealNames);
-                    }, 2000); // Örneğin, 1 saniye bekleyebiliriz
+                    }, 2000); // Örneğin, 2 saniye bekleyebiliriz
                 })
                 .catch(error => {
                     console.error('Error fetching recipe data:', error);
