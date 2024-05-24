@@ -7,15 +7,24 @@ document.addEventListener('DOMContentLoaded', function () {
     var allergicFoodSection = document.querySelector('.allergic-food-section');
 
     allergicFoods.forEach(function(food) {
+
+        var checkboxAndDivLabel = document.createElement('div');
+        checkboxAndDivLabel.classList.add('checkbox-and-div-label');
+
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.name = 'allergic-food';
         checkbox.value = food;
-        allergicFoodSection.appendChild(checkbox);
+        checkboxAndDivLabel.appendChild(checkbox);
+        // allergicFoodSection.appendChild(checkbox);
 
         var label = document.createElement('label');
         label.textContent = food;
-        allergicFoodSection.appendChild(label);
+        checkboxAndDivLabel.appendChild(label);
+        // allergicFoodSection.appendChild(label);
+
+        allergicFoodSection.appendChild(checkboxAndDivLabel);
+
 
         allergicFoodSection.appendChild(document.createElement('br'));
     });

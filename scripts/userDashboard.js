@@ -315,18 +315,52 @@ const createRecipeElement = async (recipe) => {
     userDiv.classList.add('user-info');
 
     // User Image
-    const userImgDiv = document.createElement('ion-icon');
-    userImgDiv.classList.add('user-img');
-    userImgDiv.setAttribute('name', 'person-circle-outline');
-    userDiv.appendChild(userImgDiv);
+    // const userImgDiv = document.createElement('ion-icon');
+    // userImgDiv.classList.add('user-img');
+    // userImgDiv.setAttribute('name', 'person-circle-outline');
+    // userDiv.appendChild(userImgDiv);
 
-    // Username
-    const usernameSpan = document.createElement('span');
-    usernameSpan.textContent = recipe.username;
-    usernameSpan.classList.add('username');
-    userDiv.appendChild(usernameSpan);
+    // // Username
+    // const usernameSpan = document.createElement('span');
+    // usernameSpan.textContent = recipe.username;
+    // usernameSpan.classList.add('username');
+    // userDiv.appendChild(usernameSpan);
 
-    recipeDiv.appendChild(userDiv);
+    // recipeDiv.appendChild(userDiv);
+// Create a container for user information
+const userInfoDiv = document.createElement('div');
+userInfoDiv.classList.add('user-info');
+
+// User Image
+const userImgDiv = document.createElement('ion-icon');
+userImgDiv.classList.add('user-img');
+userImgDiv.setAttribute('name', 'person-circle-outline');
+userInfoDiv.appendChild(userImgDiv);
+
+// Username with link
+const usernameLink = document.createElement('a');
+usernameLink.href = `userViewProfile.html?username=${recipe.username}`;
+usernameLink.classList.add('username-link'); // İsteğe bağlı: Bağlantıya stil vermek için sınıf ekleyin
+
+const usernameSpan = document.createElement('span');
+usernameSpan.textContent = recipe.username;
+usernameSpan.classList.add('username');
+usernameLink.appendChild(usernameSpan);
+
+// Kullanıcı adına tıklanıldığında userViewProfile.html sayfasına yönlendirme ve openRecipeDetailPage fonksiyonunu çağırma
+usernameLink.addEventListener('click', () => {
+    // userViewProfile.html sayfasına yönlendirme
+    window.location.href = `userViewProfile.html?username=${recipe.username}`;
+    // openRecipeDetailPage fonksiyonunu çağırma
+    openRecipeDetailPage(recipe.id);
+});
+
+// Append usernameLink to userInfoDiv
+userInfoDiv.appendChild(usernameLink);
+
+// Append userInfoDiv to recipeDiv
+recipeDiv.appendChild(userInfoDiv);
+
 
     // Create heart
     const heartContainer = document.createElement('span');

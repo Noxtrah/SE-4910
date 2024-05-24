@@ -346,7 +346,7 @@ async function clearAll() {
 // }
 
 function getPreWeeks() {
-    var url = "https://run.mocky.io/v3/16b0da6a-962a-427e-a721-78ac82870cb4";
+    var url = "https://recipiebeckend.azurewebsites.net/planner/get-pre-weeks";
     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
     fetch(url, {
@@ -423,6 +423,18 @@ function populateMealPlan(weekNumber) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    setupBackButton();
+});
+
+function setupBackButton() {
+    const backButton = document.getElementById('back-arrow-button');
+
+    backButton.addEventListener('click', () => {
+        window.history.back();
+        // window.history.go(-1);
+    });
+}
 
 // $(document).ready(function(){
 

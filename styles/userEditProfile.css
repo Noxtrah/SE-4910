@@ -6,6 +6,75 @@
     --background_color: rgb(205, 199, 208);
 }
 
+/* Checkbox input */
+/* Checkbox container */
+.allergic-food-section {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+.allergic-food-section input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 5px;
+    margin-bottom: 5px; 
+    cursor: pointer;
+    margin-left: 250px;
+    vertical-align:middle;
+    margin-bottom:10px;
+}
+
+/* Checkbox input - checked state */
+.allergic-food-section input[type="checkbox"]:checked {
+    background-color:#4f3b78;
+    border-color:#363b4e;
+}
+
+
+/* Checkbox label */
+.allergic-food-section label {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Hide default checkbox */
+.allergic-food-section input[type="checkbox"]::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url('checkmark.png') center/contain no-repeat; /* You can replace 'checkmark.png' with your own image */
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* Show checkmark when checkbox is checked */
+.allergic-food-section input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
+#allergicFoodSection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.checkbox-and-div-label {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-and-div-label label {
+    margin-left: 8px;
+}
+
 
 body {
     font-family: Arial, sans-serif;
