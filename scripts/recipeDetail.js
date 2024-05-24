@@ -20,7 +20,10 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
-                    this.getRecommendations(data.recipe.ingredients,data.recipe.title)
+                    const mealNames = this.getMealNames(data.recipe.meal);
+                    setTimeout(() => {
+                        this.getRecommendations(data.recipe.ingredients, data.recipe.title, mealNames);
+                    }, 2000); // Örneğin, 1 saniye bekleyebiliriz
                 })
                 .catch(error => {
                     console.error('Error fetching recipe data:', error);
@@ -29,8 +32,13 @@ class RecipeDetail {
             console.error('Recipe ID not provided in the URL.');
         }
     }
+
+
+
     displayRecipeDetails(data) {
         const selectedRecipe = data.recipe;
+
+    
     
         // Update recipe title
         document.getElementById('recipe-title').textContent = selectedRecipe.title;
@@ -66,13 +74,8 @@ class RecipeDetail {
     
         // Update meal information
         const mealElement = document.getElementById('recipe-meal');
-        if (selectedRecipe.meal && selectedRecipe.meal.length > 0) {
-            const mealName = selectedRecipe.meal[0].mealName;
-            const capitalizedMealName = mealName.charAt(0).toUpperCase() + mealName.slice(1);
-            mealElement.innerHTML = `<p>${capitalizedMealName}</p>`;
-        } else {
-            mealElement.innerHTML = '<p>No meal information available</p>';
-        }
+        const mealNames = this.getMealNames(selectedRecipe.meal);
+        mealElement.innerHTML = mealNames.map(meal => `<p>${meal}</p>`).join('');
     
         // Update photo
         const recipeImage = document.querySelector('.recipe-image');
@@ -110,14 +113,21 @@ class RecipeDetail {
             prepTimeElement.innerHTML = '<p>No preparation time information available</p>';
         }
     }
-    
 
     
-    getRecommendations(ingredients, title) {
-        const url = `/get-recommendations?ingredients=${encodeURIComponent(ingredients)}&title=${encodeURIComponent(title)}`;
-        console.log('Fetching recommendations with URL:', url);
+    getMealNames(meals) {
+        if (!meals || meals.length === 0) {
+            return ['No meal information available'];
+        }
+        return meals.map(meal => {
+            return meal.mealName.charAt(0).toUpperCase() + meal.mealName.slice(1);
+        });
+
+    }
     
-        fetch(url)
+
+    getRecommendations(ingredients, title, mealNames ) {
+        fetch(`http://127.0.0.1:5000/get-recommendations?ingredients=${ingredients}&title=${title}&mealNames=${mealNames}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -133,68 +143,41 @@ class RecipeDetail {
             });
     }
 
-    displayRecommendations(recommendations) {
-        const slidesContainer = document.getElementById('slides');
-        slidesContainer.innerHTML = ''; // Slider içeriğini temizle
-    
-        recommendations.recommendations.forEach((recommendation, index) => {
-            if (index % 3 === 0) {
-                // Her üç öneriden sonra yeni bir slide oluştur
-                const slide = document.createElement('div');
-                slide.className = 'slide';
-                slidesContainer.appendChild(slide);
-            }
-    
-            // Resmi oluştur
-            const img = document.createElement('img');
-            img.src = recommendation.photoPathURL;
-            img.alt = recommendation.title;
-    
-            // Başlığı oluştur
-            const title = document.createElement('div');
-            title.className = 'recommendation-title';
-            title.textContent = recommendation.title;
-    
-            // Resmi ve başlığı slide içeriğine ekle
-            const currentSlide = slidesContainer.lastElementChild;
-            const slideContent = document.createElement('div');
-            slideContent.appendChild(img);
-            slideContent.appendChild(title);
-            currentSlide.appendChild(slideContent);
-        });
-    }
 
     displayRecommendations(recommendations) {
         const slidesContainer = document.getElementById('slides');
         slidesContainer.innerHTML = ''; // Slider içeriğini temizle
     
-        recommendations.recommendations.forEach((recommendation, index) => {
-            if (index % 3 === 0) {
-                // Her üç öneriden sonra yeni bir slide oluştur
-                const slide = document.createElement('div');
-                slide.className = 'slide';
-                slidesContainer.appendChild(slide);
-            }
+        if (recommendations && recommendations.recommendations) {
+            recommendations.recommendations.forEach((recommendation, index) => {
+                if (index % 3 === 0) {
+                    // Her üç öneriden sonra yeni bir slide oluştur
+                    const slide = document.createElement('div');
+                    slide.className = 'slide';
+                    slidesContainer.appendChild(slide);
+                }
     
-            // Resmi oluştur
-            const img = document.createElement('img');
-            img.src = recommendation.photoPathURL;
-            img.alt = recommendation.title;
+                // Resmi oluştur
+                const img = document.createElement('img');
+                img.src = recommendation.photoPathURL;
+                img.alt = recommendation.title;
     
-            // Başlığı oluştur
-            const title = document.createElement('div');
-            title.className = 'recommendation-title';
-            title.textContent = recommendation.title;
+                // Başlığı oluştur
+                const title = document.createElement('div');
+                title.className = 'recommendation-title';
+                title.textContent = recommendation.title;
     
-            // Resmi ve başlığı slide içeriğine ekle
-            const currentSlide = slidesContainer.lastElementChild;
-            const slideContent = document.createElement('div');
-            slideContent.appendChild(img);
-            slideContent.appendChild(title);
-            currentSlide.appendChild(slideContent);
-        });
+                // Resmi ve başlığı slide içeriğine ekle
+                const currentSlide = slidesContainer.lastElementChild;
+                const slideContent = document.createElement('div');
+                slideContent.appendChild(img);
+                slideContent.appendChild(title);
+                currentSlide.appendChild(slideContent);
+            });
+        } else {
+            console.error('Error fetching recommendations: Recommendations object is undefined or empty.');
+        }
     }
-    
     
     setupBackButton() {
         const backButton = document.getElementById('back-arrow-button');
