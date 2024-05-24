@@ -654,74 +654,100 @@ const displayDashboard = async (recipes) => {
 //     }
 // };
 
+// async function fetchData(key = 0) {
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+//     // let apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
+//     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+//     if (key !== undefined) {
+//         apiUrl += `?key=${key}`;
+//     }
+
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Authorization': JWTAccessToken,
+//     };
+
+//     try {
+//         const response = await fetch(apiUrl, {
+//             method: 'GET',
+//             headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
+//         });
+
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+
+//         const data = await response.json();
+//         console.log(data);
+
+//         const maxPage = await getMaxPage();
+//         if (maxPage !== null) {
+//             displayPage(key, maxPage);
+//         } else {
+//             console.error('Failed to get the maximum number of pages.');
+//         }
+
+//         displayDashboard(data);
+//     } catch (error) {
+//         console.error('Error fetching or displaying data:', error);
+//     }
+// }
+
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    // let apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
     if (key !== undefined) {
-        apiUrl += `?key=${key}`;
+      apiUrl += `?key=${key}`;
     }
-
+  
     const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': JWTAccessToken,
+      'Content-Type': 'application/json',
+      'Authorization': JWTAccessToken,
     };
-
+  
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+  
+      displayDashboard(data);
+      displayPagination(data);
+    } catch (error) {
+      console.error('Error fetching or displaying data:', error);
+    }
+  }
+
+  let isPaginationInitialized = false; // Flag to track pagination initialization
+
+  async function displayPagination(data) {
+    if (!isPaginationInitialized) { // Check if pagination is already initialized
+      const maxPage = await getMaxPage(data);
+      if (maxPage !== null) {
+        $('#pagination-demo').twbsPagination('destroy'); // Clear previous pagination
+        $('#pagination-demo').twbsPagination({
+          startPage: 1, // Assuming page starts from 1 (adjust if needed)
+          totalPages: maxPage,
+          visiblePages: 5,
+          next: 'Next',
+          prev: 'Prev',
+          onPageClick: function (event, page) {
+            fetchData(page - 1); // Call fetchData with the selected page number
+          }
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-
-        const maxPage = await getMaxPage(); // Await the result of getMaxPage
-        if (maxPage !== null) {
-            displayPage(key, maxPage);
-        } else {
-            console.error('Failed to get the maximum number of pages.');
-        }
-
-        displayDashboard(data);
-    } catch (error) {
-        console.error('Error fetching or displaying data:', error);
+        isPaginationInitialized = true; // Set flag to prevent re-initialization
+      } else {
+        console.error('Failed to get the maximum number of pages.');
+      }
     }
-}
-
-
-// Call fetchData to initiate the process
-
-const fetchDataByMealType = async (mealType) => {
-    try {
-        // Modify the endpoint based on the mealType parameter
-        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByMeal?mealType=${mealType}`;
-
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        displayDashboard(data);
-    } catch (error) {
-        console.error('Error fetching or displaying data:', error);
-    }
-};
-
-const fetchDataByCuisine = async (cuisine) => {
-    try {
-        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByCuisine?cuisine=${cuisine}`;
-        console.log(apiUrl);
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        displayDashboard(data);
-    } catch (error) {
-        console.error('Error fetching or displaying data:', error);
-    }
-};
+  }
 
 const openRecipeDetailPage = (id) => {
     const recipeDetailURL = `userRecipeDetail.html?id=${id}`;
@@ -776,90 +802,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     fetchData(0);
-
 });
-
-function fetchSortOperations(selectedValue) {
-    switch (selectedValue) {
-        case 'time':
-            fetchSortByTime();
-            break;
-        case 'alphabet':
-            fetchSortByAlphabet();
-            break;
-        case 'rate':
-            fetchSortByRate();
-            break;
-        case 'ingrCount':
-            fetchSortByIngrCount();
-            break;
-        default:
-            console.log("Invalid option selected");
-    }
-}
-
-function fetchSortByTime() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime')
-        .then(response => response.json())
-        .then(data => {
-            displayDashboard(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-// Function to fetch and display recipes sorted alphabetically
-function fetchSortByAlphabet() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-alph')
-        .then(response => {
-            if (!response.ok) {
-                console.log('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                displayDashboard(data);
-            } else {
-                console.error('Invalid data format:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-
-// Function to fetch and display recipes sorted by rate
-function fetchSortByRate() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-rate')
-        .then(response => {
-            if (!response.ok) {
-                console.log('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                displayDashboard(data);
-            } else {
-                console.error('Invalid data format:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-// Function to fetch and display recipes sorted by ingredient count
-function fetchSortByIngrCount() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-ingCount')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        displayDashboard(data);
-    })
-    .catch(error => console.error('Error fetching data:', error));
-}
 
 document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', function () {
@@ -884,91 +827,6 @@ function toggleAndCloseDropdown(dropdown) {
     }
 }
 
-function basicSearch() {
-    var targetWord = document.querySelector('.main-name').value;
-    //var targetWord = document.getElementById('.main-submit').value;
-    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/basic-search?targetWord=' + encodeURIComponent(targetWord);
-    fetch(apiUrl)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(targetWord);
-        console.log(data);
-        displayDashboard(data);
-    })
-    .catch(error => console.error('Error fetching data:', error));
-}
-//https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info
-// async function getStarsAndHeart(index) {
-//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
-
-//     // const headers = {
-//     //     'Content-Type': 'application/json',
-//     //     'Authorization': JWTAccessToken,
-//     // };
-//     const response = await fetch(
-// 		apiUrl,
-// 		{
-// 			method: 'GET',
-// 			headers: {
-// 				'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-// 			}
-// 		}
-// 	);
-// 	if (!response.ok) {
-// 		throw new Error(`HTTP error! status: ${response.status}`);
-// 	}
-// 	const data = await response.json();
-//     console.log(data);
-//     var starAndHeartInfoArray = []
-//     starAndHeartInfoArray.push(data);
-//     return starAndHeartInfoArray;
-// }
-
-// async function getCustomDataOfUserDashboard(index) {
-//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
-//     const response = await fetch(
-//         apiUrl,
-//         {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-//             }
-//         }
-//     );
-
-//     if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const contentType = response.headers.get('Content-Type');
-
-//     if (contentType && contentType.includes('application/json')) {
-//         const data = await response.json();
-//         console.log("Data: " , data);
-//         // Check if the array has elements and if the specified index is valid
-//         if (data.length > index) {
-//             return data[index];
-//         } else {
-//             console.error('Index out of bounds or empty array');
-//             return null; // or handle it according to your application's logic
-//         }
-//     } else {
-//         // Handle non-JSON response or empty response
-//         console.error('Invalid or empty JSON response');
-//         return null; // or handle it according to your application's logic
-//     }
-// }
-
-
 function setupBackButton() {
     const backButton = document.getElementById('back-arrow-button');
 
@@ -981,30 +839,35 @@ window.onload = function () {
     setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
 
-function displayPage(startPage, total) {
-    if (typeof startPage !== 'number' || startPage < 0 || startPage >= total) {
-        console.error(`Invalid startPage value: ${startPage}`);
-        startPage = 0;  // Set a default valid startPage value
-    }
 
-    if (typeof total !== 'number' || total <= 0) {
-        console.error(`Invalid totalPages value: ${total}`);
-        total = 1;  // Set a default valid totalPages value
-    }
+// async function displayPage(startPage) {
+//     const maxPage = await getMaxPage();
+//     if (typeof startPage !== 'number' || startPage < 0 || startPage >= maxPage) {
+//         console.error(`Invalid startPage value: ${startPage}`);
+//         startPage = 0;  // Set a default valid startPage value
+//     }
 
-    $('#pagination-demo').twbsPagination('destroy');
-    $('#pagination-demo').twbsPagination({
-        startPage: startPage + 1, // twbsPagination uses 1-based index
-        totalPages: total,
-        visiblePages: 5,
-        next: 'Next',
-        prev: 'Prev',
-        onPageClick: function (event, page) {
-            fetchData(page - 1); // Convert 1-based page number to 0-based index
-            console.log("Page =", page - 1);
-        }
-    });
-}
+//     if (typeof maxPage !== 'number' || maxPage <= 0) {
+//         console.error(`Invalid maxPagePages value: ${maxPage}`);
+//         maxPage = 1;  // Set a default valid maxPagePages value
+//     }
+
+//     $('#pagination-demo').twbsPagination('destroy');
+//     $('#pagination-demo').twbsPagination({
+//         startPage: startPage + 1, // twbsPagination uses 1-based index
+//         totalPages: maxPage,
+//         visiblePages: 5,
+//         next: 'Next',
+//         prev: 'Prev',
+//         onPageClick: function (event, page) {
+//             fetchData(page - 1);
+//             console.log("Page =", page - 1);
+//         }
+//     });
+// }
+
+// displayPage(0, 2);
+
 
 async function getMaxPage() {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-max-page'; // Replace this URL with your actual API endpoint
