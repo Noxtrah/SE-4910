@@ -1,4 +1,3 @@
-
 // const placeholder = '<span class="searchPlaceholder">Search...</span>'
 
 // //The tags currently displayed
@@ -398,40 +397,57 @@ async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     if (key !== undefined) {
-        apiUrl += `?key=${key}`;
+      apiUrl += `?key=${key}`;
     }
-
+  
     const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': JWTAccessToken,
+      'Content-Type': 'application/json',
+      'Authorization': JWTAccessToken,
     };
-
+  
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-
-        const maxPage = await getMaxPage(); // Await the result of getMaxPage
-        if (maxPage !== null) {
-           // displayPage(key, maxPage);
-        } else {
-            console.error('Failed to get the maximum number of pages.');
-        }
-
-        displayDashboard(data);
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+  
+      displayDashboard(data);
+      displayPagination(data);
     } catch (error) {
-        console.error('Error fetching or displaying data:', error);
+      console.error('Error fetching or displaying data:', error);
     }
-}
+  }
 
+  let isPaginationInitialized = false; // Flag to track pagination initialization
+
+  async function displayPagination(data) {
+    if (!isPaginationInitialized) { // Check if pagination is already initialized
+      const maxPage = await getMaxPage(data);
+      if (maxPage !== null) {
+        $('#pagination-demo').twbsPagination('destroy'); // Clear previous pagination
+        $('#pagination-demo').twbsPagination({
+          startPage: 1, // Assuming page starts from 1 (adjust if needed)
+          totalPages: maxPage,
+          visiblePages: 5,
+          next: 'Next',
+          prev: 'Prev',
+          onPageClick: function (event, page) {
+            fetchData(page - 1); // Call fetchData with the selected page number
+          }
+        });
+        isPaginationInitialized = true; // Set flag to prevent re-initialization
+      } else {
+        console.error('Failed to get the maximum number of pages.');
+      }
+    }
+  }
 
 
 const fetchDataByMealType = async (mealType) => {
@@ -739,30 +755,4 @@ async function getMaxPage() {
         console.error('Error fetching maximum page:', error);
         return null; // Return null in case of error
     }
-}
-
-
-function displayPage(startPage, total) {
-    if (typeof startPage !== 'number' || startPage < 0 || startPage >= total) {
-        console.error(`Invalid startPage value: ${startPage}`);
-        startPage = 0;  // Set a default valid startPage value
-    }
-
-    if (typeof total !== 'number' || total <= 0) {
-        console.error(`Invalid totalPages value: ${total}`);
-        total = 1;  // Set a default valid totalPages value
-    }
-
-    $('#pagination-demo').twbsPagination('destroy');
-    $('#pagination-demo').twbsPagination({
-        startPage: startPage + 1, // twbsPagination uses 1-based index
-        totalPages: total,
-        visiblePages: 5,
-        next: 'Next',
-        prev: 'Prev',
-        onPageClick: function (event, page) {
-            fetchData(page - 1); // Convert 1-based page number to 0-based index
-            console.log("Page =", page - 1);
-        }
-    });
 }
