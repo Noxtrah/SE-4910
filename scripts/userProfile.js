@@ -11,23 +11,16 @@ async function CreateUserInfoPage() {
         // Kullanıcı bilgilerini yerleştir
         document.getElementById('userName').textContent = userInfo.name + ' ' + userInfo.lastName;
         document.getElementById('userEmail').textContent = userInfo.email;
-        document.getElementById('userBio').textContent = userInfo.bio || "Type about yourself"; // Bio alanı boşsa "Type about yourself" yazısı
-        const userPhoto = userInfo.userPhoto;
-        const profilePhotoContainer = document.getElementById('profilePhotoContainer');
-
-        if (userPhoto) {
-            const imageElement = document.createElement('img');
-            imageElement.src = userPhoto;
-            imageElement.alt = "User Photo";
-            imageElement.id = "userPhoto";
-            profilePhotoContainer.appendChild(imageElement);
-        } else {
-            const iconElement = document.createElement('ion-icon');
-            iconElement.setAttribute('name', 'person-circle-outline');
-            iconElement.style.fontSize = '48px'; // Adjust size as needed
-            profilePhotoContainer.appendChild(iconElement);
+        if(userInfo.userPhoto)
+        {
+                document.getElementById('userPhoto').src = userInfo.userPhoto; 
+        }
+        else{
+            document.getElementById('userPhoto').src = "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
         }
 
+        // document.getElementById('userPhoto').src = userInfo.userPhoto; 
+        document.getElementById('userBio').textContent = userInfo.bio || "Type about yourself"; // Bio alanı boşsa "Type about yourself" yazısı
         // Kullanıcının yayınladığı tarifleri listele
         const userPublishedRecipesContainer = document.getElementById('userPublishedRecipes');
         userInfo.userPublishedRecipes.forEach(recipe => {
@@ -118,8 +111,9 @@ async function getUserInfo() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-
+        console.log(data)
         return data;
+    
     } catch (error) {
         console.error('Error fetching or displaying data:', error);
         return {};

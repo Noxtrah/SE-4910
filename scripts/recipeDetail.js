@@ -20,6 +20,7 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
+                    console.log(data)
                     const mealNames = this.getMealNames(data.recipe.meal);
                     setTimeout(() => {
                         this.getRecommendations(data.recipe.ingredients, data.recipe.title, mealNames);
