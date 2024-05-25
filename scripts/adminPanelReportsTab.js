@@ -19,8 +19,8 @@ function openReportsTab(tabName) {
 }
 
 async function fetchReports() {
-    // apiUrl = "https://recipiebeckend.azurewebsites.net/admin/reported-recipes";
-    const apiUrl = "https://run.mocky.io/v3/18524b0e-7a6e-434c-b4cf-0b865a896383";
+    apiUrl = "https://recipiebeckend.azurewebsites.net/admin/reported-recipes";
+    // const apiUrl = "https://run.mocky.io/v3/18524b0e-7a6e-434c-b4cf-0b865a896383";
 
     try {
         const response = await fetch(apiUrl);
@@ -161,8 +161,6 @@ function discardRecipe(recipeId) {
 function detailRecipe(report) {
     console.log('Report:', report);
     const reportRecipeResponse = report.userRecipeResponse;
-    const reportItem = document.querySelector(`.report-item[data-recipe-id="${reportRecipeResponse.id}"]`);
-    console.log("Report Item:", reportItem);
 
     const detailSideBarWrapper = document.createElement('div');
     detailSideBarWrapper.classList.add('detail-sidebar-wrapper');
@@ -210,7 +208,7 @@ function fillDetailSideBar(reportedItem, detailSideBar){
 
     const selectedReportReason = document.createElement('p');
     selectedReportReason.classList.add('selected-recipe-report');
-    selectedReportReason.innerHTML = '<b>Report Reason: </b>' + reportDetail[0][1];
+    selectedReportReason.innerHTML = '<b>Report Reason : </b>' + reportDetail[0][1];
     detailSideBar.appendChild(selectedReportReason);
 
     const selectedAdditionalReportNotes = document.createElement('p');
@@ -220,7 +218,7 @@ function fillDetailSideBar(reportedItem, detailSideBar){
 
     const selectedReportingUser = document.createElement('p');
     selectedReportingUser.classList.add('selected-recipe-report');
-    selectedReportingUser.innerHTML = '<b>Reporting User: </b>' + reportDetail[0][2];
+    selectedReportingUser.innerHTML = '<b>Reporting User : </b>' + reportDetail[0][2];
     detailSideBar.appendChild(selectedReportingUser);
 
     const selectedPublisher = document.createElement('p');

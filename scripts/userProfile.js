@@ -12,7 +12,21 @@ async function CreateUserInfoPage() {
         document.getElementById('userName').textContent = userInfo.name + ' ' + userInfo.lastName;
         document.getElementById('userEmail').textContent = userInfo.email;
         document.getElementById('userBio').textContent = userInfo.bio || "Type about yourself"; // Bio alanı boşsa "Type about yourself" yazısı
-        document.getElementById('userPhoto').src = userInfo.userPhoto; // Kullanıcı fotoğrafı
+        const userPhoto = userInfo.userPhoto;
+        const profilePhotoContainer = document.getElementById('profilePhotoContainer');
+
+        if (userPhoto) {
+            const imageElement = document.createElement('img');
+            imageElement.src = userPhoto;
+            imageElement.alt = "User Photo";
+            imageElement.id = "userPhoto";
+            profilePhotoContainer.appendChild(imageElement);
+        } else {
+            const iconElement = document.createElement('ion-icon');
+            iconElement.setAttribute('name', 'person-circle-outline');
+            iconElement.style.fontSize = '48px'; // Adjust size as needed
+            profilePhotoContainer.appendChild(iconElement);
+        }
 
         // Kullanıcının yayınladığı tarifleri listele
         const userPublishedRecipesContainer = document.getElementById('userPublishedRecipes');
@@ -30,7 +44,12 @@ async function CreateUserInfoPage() {
             // Recipe Fotoğrafı
             const recipePhoto = document.createElement('img');
             recipePhoto.classList.add('recipe-photo');
-            recipePhoto.src = recipe.photoPath || 'https://w7.pngwing.com/pngs/116/858/png-transparent-computer-icons-meal-food-meal-icon-food-logo-eating-thumbnail.png';
+            if(recipe.photoPath != null){
+                recipePhoto.src = recipe.photoPath
+            }
+            else{
+                recipePhoto.src = 'https://w7.pngwing.com/pngs/116/858/png-transparent-computer-icons-meal-food-meal-icon-food-logo-eating-thumbnail.png'
+            }
             photoTitleContainer.appendChild(recipePhoto);
 
             // Başlık

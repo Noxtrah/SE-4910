@@ -13,9 +13,18 @@ function displayUsers(users) {
         nameCell.classList.add('people');
 
         var image = document.createElement('img');
-        image.src = '../Images/pizza.png'; // Replace with actual image URL
+        if (user.profilePhotoPath) {
+            var image = document.createElement('img');
+            image.src = user.profilePhotoPath;
+            nameCell.appendChild(image);
+        } else {
+            var icon = document.createElement('ion-icon');
+            icon.classList.add('person-circle-outline');
+            icon.setAttribute('name', 'person-circle-outline');
+            nameCell.appendChild(icon);
+        }
         image.alt = 'User Image';
-        nameCell.appendChild(image);
+        // nameCell.appendChild(image);
 
         var nameEmailDiv = document.createElement('div');
         nameEmailDiv.classList.add('people-de');
@@ -44,10 +53,17 @@ function displayUsers(users) {
         userRow.appendChild(titleCell);
 
         // Create cell for status
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
         var statusCell = document.createElement('td');
         statusCell.classList.add('active');
         var statusParagraph = document.createElement('p');
-        statusParagraph.textContent = user.status;
+        if (JWTAccessToken) {
+            // statusCell.classList.add('active');
+            statusParagraph.textContent = "Active";
+        } else {
+            // statusCell.classList.add('inactive');
+            statusParagraph.textContent = "Inactive";
+        }
         statusCell.appendChild(statusParagraph);
         userRow.appendChild(statusCell);
 
@@ -55,7 +71,7 @@ function displayUsers(users) {
         var roleCell = document.createElement('td');
         roleCell.classList.add('role');
         var roleParagraph = document.createElement('p');
-        roleParagraph.textContent = user.role;
+        roleParagraph.textContent = user.roles.map(role => role.name);
         roleCell.appendChild(roleParagraph);
         userRow.appendChild(roleCell);
 
@@ -77,7 +93,7 @@ function displayUsers(users) {
         const deleteButton = createButton('Delete');
         deleteButton.classList.add('delete-button');
         deleteButton.addEventListener('click', function() {
-            deleteRecipe(report);
+            userDeleteWarnPopup(user);
         });
 
         actionButtons.appendChild(deleteButton);
@@ -90,29 +106,9 @@ function displayUsers(users) {
     });
 }
 
-// Example usage
-var users = [
-    {
-        name: 'John Doe',
-        email: 'john@example.com',
-        title: 'Full Stack Developer',
-        subTitle: 'Web Developer',
-        status: 'Active',
-        role: 'Owner'
-    },
-    {
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        title: 'Frontend Developer',
-        subTitle: 'UI/UX Designer',
-        status: 'Inactive',
-        role: 'Admin'
-    }
-];
-
 async function fetchAllUsers() {
-    //const apiUrl = "https://recipiebeckend.azurewebsites.net/user/all-users"
-    const apiUrl = "https://run.mocky.io/v3/0c51aa1f-9f67-431d-b245-5dcf57b30197";
+    const apiUrl = "https://recipiebeckend.azurewebsites.net/user/all-users"
+    // const apiUrl = "https://run.mocky.io/v3/0c51aa1f-9f67-431d-b245-5dcf57b30197";
 
     try {
         const response = await fetch(apiUrl);
@@ -120,7 +116,7 @@ async function fetchAllUsers() {
             throw new Error(`Network response was not ok (status: ${response.status})`);
         }
         const data = await response.json();
-        console.log("Data: ", data);
+        console.log("All Data: ", data);
         displayUsers(data);
     } catch (error) {
         console.error('Error fetching reports:', error);
@@ -129,29 +125,25 @@ async function fetchAllUsers() {
 
 fetchAllUsers();
 
-fetchAllUsers();
+// function fetchUserDetail(username){
+//     apiUrl = `https://recipiebeckend.azurewebsites.net/user/visit-user?username=${username}`;
+//     // const apiUrl = "https://run.mocky.io/v3/7dbf5932-96b9-40b5-92b2-81c65a26c832";
 
-function fetchUserDetail(username){
-    //apiUrl = "https://recipiebeckend.azurewebsites.net/user/visit-user?username=username";
-    const apiUrl = "https://run.mocky.io/v3/7dbf5932-96b9-40b5-92b2-81c65a26c832";
-
-    try {
-        const response = fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Network response was not ok (status: ${response.status})`);
-        }
-        const data = response.json();
-        console.log("Data: " , data);
-        userDetail(data);
-    } catch (error) {
-        console.error('Error fetching reports:', error);
-    }
-}
+//     try {
+//         const response = fetch(apiUrl);
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok (status: ${response.status})`);
+//         }
+//         const data = response.json();
+//         console.log("Data: " , data);
+//         userDetail(data);
+//     } catch (error) {
+//         console.error('Error fetching reports:', error);
+//     }
+// }
 
 function userDetail(userData){
     console.log('User:', userData);
-    const selectedUser = document.querySelector(`.people-de h5:contains('${userData.username}')`).closest('.people');
-    console.log("Selected User:", selectedUser);
 
     const detailSideBarWrapper = document.createElement('div');
     detailSideBarWrapper.classList.add('detail-sidebar-wrapper');
@@ -163,8 +155,158 @@ function userDetail(userData){
     detailSideBar.style.display = "flex";
     detailSideBarWrapper.appendChild(detailSideBar);
 
-    fillUserDetailSideBar(selectedUser, detailSideBar);
+    fillUserDetailSideBar(userData, detailSideBar);
 }
 
 function fillUserDetailSideBar(selectedUser, detailSideBar){
+    const usersResponse = selectedUser;
+    console.log("Users Response: ", usersResponse);
+
+
+    const closeIcon = document.createElement('span');
+    closeIcon.classList.add('close-icon');
+    closeIcon.innerHTML = '<ion-icon name="close-outline"></ion-icon>'
+    detailSideBar.appendChild(closeIcon);
+    closeIcon.addEventListener('click', () => {
+        closeDetailSidebar();
+    });
+
+    const usersGrid = document.querySelector('.reports-grid-container');
+    if (detailSideBar) {
+        usersGrid.style.width = '75%';
+        console.log("Width value: ", usersGrid.style.width);
+    }
+
+    const selectedUserUsername = document.createElement('h2');
+    selectedUserUsername.classList.add('selected-report-title');
+    selectedUserUsername.textContent = usersResponse.username;
+    detailSideBar.appendChild(selectedUserUsername);
+
+    const selectedReportImage = document.createElement('img');
+    selectedReportImage.classList.add('selected-report-image');
+    selectedReportImage.src = usersResponse.photoPath;
+    selectedReportImage.alt = 'Selected User Image';
+    detailSideBar.appendChild(selectedReportImage);
+
+    const selectedUserEmail = document.createElement('p');
+    selectedUserEmail.classList.add('selected-recipe-report');
+    selectedUserEmail.innerHTML = '<b>E-mail : </b>' + usersResponse.email;
+    detailSideBar.appendChild(selectedUserEmail);
+
+    const selectedUserName = document.createElement('p');
+    selectedUserName.classList.add('selected-recipe-report');
+    selectedUserName.innerHTML = '<b>Name : </b>' + usersResponse.name;
+    detailSideBar.appendChild(selectedUserName);
+
+    const selectedUserLastname = document.createElement('p');
+    selectedUserLastname.classList.add('selected-recipe-report');
+    selectedUserLastname.innerHTML = '<b>Lastname : </b>' + usersResponse.lastName;
+    detailSideBar.appendChild(selectedUserLastname);
+
+    const selectedUserBirthday = document.createElement('p');
+    selectedUserBirthday.classList.add('selected-recipe-report');
+    selectedUserBirthday.innerHTML = '<b>Birthday : </b>' + usersResponse.birthDay;
+    detailSideBar.appendChild(selectedUserBirthday);
+
+    const selectedUserAllergicFoods = document.createElement('p');
+    selectedUserAllergicFoods.classList.add('selected-recipe-report');
+    selectedUserAllergicFoods.innerHTML = '<b>Allergic Foods : </b>' + usersResponse.allergicFoods;
+    detailSideBar.appendChild(selectedUserAllergicFoods);
+
+    const selectedUserBio = document.createElement('p');
+    selectedUserBio.classList.add('selected-recipe-report');
+    selectedUserBio.innerHTML = '<b>Bio : </b>' + usersResponse.bio;
+    detailSideBar.appendChild(selectedUserBio);
+
+    const selectedUserRoles = document.createElement('p');
+    selectedUserRoles.classList.add('selected-recipe-report');
+    selectedUserRoles.innerHTML = '<b>Roles : </b>' + usersResponse.roles.map(role => role.name);
+    detailSideBar.appendChild(selectedUserRoles);
+
+    // const selectedCuisine = document.createElement('p');
+    // selectedCuisine.classList.add('selected-recipe-report');
+    // selectedCuisine.innerHTML = '<b>Cuisine of the Recipe : </b>' + usersResponse.cuisine;
+    // detailSideBar.appendChild(selectedCuisine);
+
+    // const selectedPrepTime = document.createElement('p');
+    // selectedPrepTime.classList.add('selected-recipe-report');
+    // selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + usersResponse.preparationTime;
+    // detailSideBar.appendChild(selectedPrepTime);
+}
+
+function userDeleteWarnPopup(user){
+    const overlay = document.createElement('div');
+    overlay.id = 'popup1';
+    overlay.classList.add('overlay');
+
+    // Create pop-up element
+    const popup = document.createElement('div');
+    popup.classList.add('popup');
+
+    const windowHeight = window.innerHeight;
+    const popupHeight = popup.offsetHeight;
+    const newTop = Math.max((windowHeight - popupHeight) / 2, 0);
+    popup.style.top = newTop + 'px';
+
+    // Pop-up title
+    const title = document.createElement('h2');
+    title.textContent = `Delete '${user.username}' User`;
+
+    // Close button
+    const closeButton = document.createElement('a');
+    closeButton.classList.add('close');
+    closeButton.href = '#';
+    closeButton.textContent = '×'; // Close symbol
+    closeButton.addEventListener('click', function() {
+        overlay.remove(); // Remove overlay when close button is clicked
+    });
+
+    // Pop-up content
+    const content = document.createElement('div');
+    // content.classList.add('content');
+    content.textContent = "Are you sure you want to permanently delete the selected user from the database? No return!";
+
+    const textboxContainer = document.createElement('div');
+    textboxContainer.classList.add('textbox-container');
+
+    const sendReportButton = document.createElement('button');
+    sendReportButton.textContent = 'Submit';
+
+    sendReportButton.classList.add('popup-delete-button');
+
+    sendReportButton.addEventListener('click', function() {
+        //Delete Fetch
+    });
+
+
+    // Append elements to pop-up
+    popup.appendChild(title);
+    popup.appendChild(closeButton);
+    popup.appendChild(content);
+    popup.appendChild(textboxContainer);
+    popup.appendChild(sendReportButton);
+
+    // Append pop-up to overlay
+    overlay.appendChild(popup);
+
+    // Append overlay to body
+    document.body.appendChild(overlay);
+    deleteUser(user.id);
+}
+
+async function deleteUser(userID) {
+    const apiUrl = `https://recipiebeckend.azurewebsites.net/auth/delete-user?id=${userID}`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        const data = await response.json();
+        console.log('User deleted successfully:', data);
+    } catch (error) {
+        console.error('Error deleting user:', error);
+    }
 }
