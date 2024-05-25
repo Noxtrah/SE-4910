@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="../styles/userEditProfile.css">
     <title>Document</title>
 </head>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<div class="header">
+    <header>
+      <div id="header-container">
+        <button id="back-arrow-button">
+          <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+        </button>
+      </div>
+  </div>
+</header>
+
 <body>
 
     <form id="profile-form" enctype="multipart/form-data">
@@ -32,12 +44,13 @@
             <form>
                 <div class="form-group">
                     <div id="checkboxAllergy">
-                    <label for="checkbox"></label>
-                    <input type="checkbox" id="checkbox" name="checkbox">
+
                     </div>
                 </div>
             </form>
             <button type="submit" id="save-button">Save</button>
+            <div id="saved-popup">Profile Saved</div>
+        
         </div>
     </form>
     

@@ -395,7 +395,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-    let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+   // let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     if (key !== undefined) {
       apiUrl += `?key=${key}`;
     }
