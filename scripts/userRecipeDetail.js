@@ -166,17 +166,17 @@ let slideIndex = 0;
 const slidesContainer = document.getElementById('slides');
 
 // AI'dan gelen verileri burada tanımlayın
-const aiData = [
-    { img: "image1.jpg", alt: "AI verisi 1" },
-    { img: "image2.jpg", alt: "AI verisi 2" },
-    { img: "image3.jpg", alt: "AI verisi 3" },
-    { img: "image4.jpg", alt: "AI verisi 4" },
-    { img: "image5.jpg", alt: "AI verisi 5" },
-    { img: "image6.jpg", alt: "AI verisi 6" },
-    { img: "image7.jpg", alt: "AI verisi 7" },
-    { img: "image8.jpg", alt: "AI verisi 8" },
-    { img: "image9.jpg", alt: "AI verisi 9" }
-];
+// const aiData = [
+//     { img: "image1.jpg", alt: "AI verisi 1" },
+//     { img: "image2.jpg", alt: "AI verisi 2" },
+//     { img: "image3.jpg", alt: "AI verisi 3" },
+//     { img: "image4.jpg", alt: "AI verisi 4" },
+//     { img: "image5.jpg", alt: "AI verisi 5" },
+//     { img: "image6.jpg", alt: "AI verisi 6" },
+//     { img: "image7.jpg", alt: "AI verisi 7" },
+//     { img: "image8.jpg", alt: "AI verisi 8" },
+//     { img: "image9.jpg", alt: "AI verisi 9" }
+// ];
 
 // Verileri 3'erli gruplar halinde slider'a eklemek
 for (let i = 0; i < aiData.length; i += 3) {

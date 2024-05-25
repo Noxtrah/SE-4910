@@ -167,10 +167,12 @@ body {
 }
 
 .recipe-photo {
-    width: 200px; /* Example width */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 20px; /* Space between photo and details */
+    width: 200px; /* Sabit genişlik */
+    height: 200px; /* Sabit yükseklik */
+    object-fit: cover; /* Fotoğrafı kırparak sabit boyuta sığdır */
+    margin-right: 20px; /* Fotoğraf ile detaylar arasında boşluk */
 }
+
 @media only screen and (max-width: 600px) {
     .recipe-photo {
         width: 100%;
