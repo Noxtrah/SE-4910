@@ -31,47 +31,48 @@ async function displayFavRecipes() {
       const cardDiv = document.createElement('div');
       cardDiv.classList.add('card');
       const truncatedDescription = truncateDescription(item.description);
-      const cardContent = `
-      <img src="${item.photoPath ? item.photoPath : (item.userRecipePhoto ? item.userRecipePhoto : 'default/path/to/image.jpg')}" alt="${item.title}">
 
+      let isUserRecipe;
+      if (item.userRecipePhoto) {
+        isUserRecipe = true;
+      } else {
+        isUserRecipe = false;
+      }
+
+      const cardContent = `
+        <img src="${isUserRecipe ? item.userRecipePhoto : (item.photoPath || 'default/path/to/image.jpg')}" alt="${item.title}">
         <div class="info">
           <h1>${item.title}</h1>
           <p>${truncatedDescription}</p>
-          <button class="read-more-btn" ">Read More</button>
+          <button class="read-more-btn" data-id="${item.id}" data-is-user-recipe="${isUserRecipe}">Read More</button>
         </div>
       `;
       cardDiv.innerHTML = cardContent;
       cardsContainer.appendChild(cardDiv);
     });
-
-    const openRecipeDetailPage = (id) => {
-      const recipeDetailURL = `recipeDetail.html?id=${id}`;
-      // Perform any additional actions before navigating, if needed
-      // For example, you might want to validate the id or perform some asynchronous tasks
-      window.location.href = recipeDetailURL;
-  };
-  
-  // Adding event listeners to the "Read More" buttons
-  document.querySelectorAll('.read-more-btn').forEach(button => {
-      button.addEventListener('click', () => {
-          const recipeId = button.getAttribute('data-id');
-          openRecipeDetailPage(recipeId);
+    
+    
+    document.querySelectorAll('.read-more-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const id = event.target.getAttribute('data-id');
+        const isUserRecipe = event.target.getAttribute('data-is-user-recipe') === 'true';
+        goRecipeDetailPage(id, isUserRecipe);
       });
-  });
-  
-  // Assuming you have an element with class "link" for the event listener
-  const link = document.querySelector('.link');
-  // Adding event listener to the link
-  link.addEventListener('click', () => {
-      // Here you should get the ID from your data, in this example let's assume you have it as "recipeId"
-      const recipeId = recipe.recipe.id; // Adjust this according to your data structure
-      openRecipeDetailPage(recipeId);
-  });
-
+    });
   } catch (error) {
     console.error('Error displaying favorite recipes:', error);
   }
 }
+
+  function goRecipeDetailPage(id, isUserRecipe) {
+    const recipeDetailURL = isUserRecipe 
+      ? `userRecipeDetail.html?id=${id}` 
+      : `recipeDetail.html?id=${id}`;
+    window.location.href = recipeDetailURL;
+  }
+  
+ 
+
 
 function truncateDescription(description) {
   const maxLength = 100; // Maksimum karakter sayısı
@@ -97,3 +98,4 @@ function setupBackButton() {
 window.onload = function () {
   setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
+
