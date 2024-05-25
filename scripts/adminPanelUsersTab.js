@@ -42,30 +42,24 @@ function displayUsers(users) {
         userRow.appendChild(nameCell);
 
         // Create cell for title
-        var titleCell = document.createElement('td');
-        titleCell.classList.add('people-des');
-        var titleHeader = document.createElement('h5');
-        titleHeader.textContent = user.title;
-        var subTitleParagraph = document.createElement('p');
-        subTitleParagraph.textContent = user.subTitle;
-        titleCell.appendChild(titleHeader);
-        titleCell.appendChild(subTitleParagraph);
-        userRow.appendChild(titleCell);
+        var nameLastnameCell = document.createElement('td');
+        nameLastnameCell.classList.add('people-des');
+        var nameLastnameHeader = document.createElement('p');
+        nameLastnameHeader.textContent = user.name;
+        var subnameLastnameParagraph = document.createElement('p');
+        subnameLastnameParagraph.textContent = user.lastName;
+        nameLastnameCell.appendChild(nameLastnameHeader);
+        nameLastnameCell.appendChild(subnameLastnameParagraph);
+        userRow.appendChild(nameLastnameCell);
 
         // Create cell for status
-        const JWTAccessToken = sessionStorage.getItem('accessToken');
-        var statusCell = document.createElement('td');
-        statusCell.classList.add('active');
-        var statusParagraph = document.createElement('p');
-        if (JWTAccessToken) {
-            // statusCell.classList.add('active');
-            statusParagraph.textContent = "Active";
-        } else {
-            // statusCell.classList.add('inactive');
-            statusParagraph.textContent = "Inactive";
-        }
-        statusCell.appendChild(statusParagraph);
-        userRow.appendChild(statusCell);
+        var ageCell = document.createElement('td');
+        ageCell.classList.add('active');
+        const ageParagraph = document.createElement('p');
+        const age = calculateAge(user.birthDay);
+        ageParagraph.textContent = `${age}`;
+        ageCell.appendChild(ageParagraph);
+        userRow.appendChild(ageCell);
 
         // Create cell for role
         var roleCell = document.createElement('td');
@@ -104,6 +98,28 @@ function displayUsers(users) {
         // Append the user row to the user list container
         userListContainer.appendChild(userRow);
     });
+}
+
+// Function to calculate age from birth date
+function calculateAge(birthDateString) {
+    const birthDate = new Date(birthDateString);
+
+    if(birthDateString == undefined){
+        return undefined;
+    }
+
+    const currentDate = new Date();
+    
+    let age = currentDate.getFullYear() - birthDate.getFullYear();
+    const monthDifference = currentDate.getMonth() - birthDate.getMonth();
+    const dayDifference = currentDate.getDate() - birthDate.getDate();
+    
+    // Adjust age if the current date is before the birth date in the current year
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+    }
+
+    return age;
 }
 
 async function fetchAllUsers() {
@@ -184,7 +200,7 @@ function fillUserDetailSideBar(selectedUser, detailSideBar){
 
     const selectedReportImage = document.createElement('img');
     selectedReportImage.classList.add('selected-report-image');
-    selectedReportImage.src = usersResponse.photoPath;
+    selectedReportImage.src = usersResponse.profilePhotoPath;
     selectedReportImage.alt = 'Selected User Image';
     detailSideBar.appendChild(selectedReportImage);
 

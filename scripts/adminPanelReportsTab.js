@@ -206,20 +206,38 @@ function fillDetailSideBar(reportedItem, detailSideBar){
     selectedReportImage.alt = 'Selected Report Image';
     detailSideBar.appendChild(selectedReportImage);
 
-    const selectedReportReason = document.createElement('p');
-    selectedReportReason.classList.add('selected-recipe-report');
-    selectedReportReason.innerHTML = '<b>Report Reason : </b>' + reportDetail[0][1];
-    detailSideBar.appendChild(selectedReportReason);
+    const reportInformation = document.createElement('h2');
+    reportInformation.classList.add('report-recipe-information');
+    reportInformation.textContent = "Report Information";
+    detailSideBar.appendChild(reportInformation);
 
-    const selectedAdditionalReportNotes = document.createElement('p');
-    selectedAdditionalReportNotes.classList.add('selected-recipe-report');
-    selectedAdditionalReportNotes.innerHTML = '<b>Additional Report Notes : </b>' + reportDetail[0][0];
-    detailSideBar.appendChild(selectedAdditionalReportNotes);
+    reportDetail.forEach((report, index) => {
+        const selectedReportReason = document.createElement('p');
+        selectedReportReason.classList.add('selected-recipe-report');
+        selectedReportReason.innerHTML = '<b>Report Reason </b><b>' + (index + 1) + '</b><b> : </b>' + report[0];
+        detailSideBar.appendChild(selectedReportReason);
 
-    const selectedReportingUser = document.createElement('p');
-    selectedReportingUser.classList.add('selected-recipe-report');
-    selectedReportingUser.innerHTML = '<b>Reporting User : </b>' + reportDetail[0][2];
-    detailSideBar.appendChild(selectedReportingUser);
+        const selectedAdditionalReportNotes = document.createElement('p');
+        selectedAdditionalReportNotes.classList.add('selected-recipe-report');
+        selectedAdditionalReportNotes.innerHTML = '<b>Additional Report Notes </b><b>' + (index + 1) + '</b><b> : </b>' + report[1];
+        detailSideBar.appendChild(selectedAdditionalReportNotes);
+
+        const selectedReportingUser = document.createElement('p');
+        selectedReportingUser.classList.add('selected-recipe-report');
+        selectedReportingUser.innerHTML = '<b>Reporting User </b><b>' + (index + 1) + '</b><b> : </b>' + report[2];
+        detailSideBar.appendChild(selectedReportingUser);
+
+        if(index !=(reportDetail.length - 1)){
+            const seperator = document.createElement('hr');
+            seperator.classList.add('seperator');
+            detailSideBar.appendChild(seperator);
+        }
+    });
+
+    const recipeInformation = document.createElement('h2');
+    recipeInformation.classList.add('report-recipe-information');
+    recipeInformation.textContent = "Recipe Information";
+    detailSideBar.appendChild(recipeInformation);
 
     const selectedPublisher = document.createElement('p');
     selectedPublisher.classList.add('selected-recipe-report');
