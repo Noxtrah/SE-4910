@@ -30,7 +30,7 @@ async function CreateUserInfoPage() {
             // Recipe Fotoğrafı
             const recipePhoto = document.createElement('img');
             recipePhoto.classList.add('recipe-photo');
-            recipePhoto.src = recipe.photoPath || 'https://w7.pngwing.com/pngs/116/858/png-transparent-computer-icons-meal-food-meal-icon-food-logo-eating-thumbnail.png';
+            recipePhoto.src = recipe.photoPath || '../Images/RecipeIcon4.png';
             photoTitleContainer.appendChild(recipePhoto);
 
             // Başlık
@@ -56,9 +56,17 @@ async function CreateUserInfoPage() {
                 recipeDetails.appendChild(meal);
             }
 
+            function convertToHourMinuteFormat(totalMinutes) {
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                const hoursText = hours === 1 ? 'hour' : 'hours';
+                const minutesText = minutes === 1 ? 'minute' : 'minutes';
+                return `${hours} ${hoursText} ${minutes} ${minutesText}`;
+            }
+
             if (recipe.preparationTime !== undefined && recipe.preparationTime !== null) {
                 const preparationTime = document.createElement('p');
-                preparationTime.textContent = 'Preparation Time: ' + recipe.preparationTime + ' minutes';
+                preparationTime.textContent = 'Preparation Time: ' + convertToHourMinuteFormat(recipe.preparationTime);
                 recipeDetails.appendChild(preparationTime);
             }
 

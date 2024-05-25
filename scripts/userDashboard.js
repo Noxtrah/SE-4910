@@ -255,7 +255,7 @@ const createRecipeElement = async (recipe) => {
     link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
 
     const img = document.createElement('img');
-    img.src = recipe.photoPath;
+    img.src = recipe.photoPath ? recipe.photoPath : '../Images/RecipeIcon4.png';
     img.alt = 'Recipe Photo';
     img.style.maxWidth = '100%'; // Adjust this value as needed
     img.style.maxHeight = '100%'; // Maintain aspect ratio
@@ -263,6 +263,7 @@ const createRecipeElement = async (recipe) => {
     link.appendChild(img);
     imgDiv.appendChild(link);
     recipeDiv.appendChild(imgDiv);
+
 
     // Title
     const titleDiv = document.createElement('div');

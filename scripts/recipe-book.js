@@ -199,13 +199,21 @@ async function showRecipes() {
             // Append recipe item to recipe container
             recipeContainer.appendChild(recipeItem);
 
+            function convertToHourMinuteFormat(totalMinutes) {
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                const hoursText = hours === 1 ? 'hour' : 'hours';
+                const minutesText = minutes === 1 ? 'minute' : 'minutes';
+                return `${hours} ${hoursText} ${minutes} ${minutesText}`;
+            }
+
             // Set content for each element based on the recipe data
             recipeName.textContent = recipe.title;
             recipeDescription.textContent = "Description: " + recipe.description;
             recipeIngredients.textContent = "Ingredients: " + recipe.ingredients;
             recipeCuisine.textContent = "Cuisine: " + recipe.cuisine;
             recipeMeal.textContent = "Meal: " + recipe.meal;
-            recipePrepTime.textContent = "Preparation Time: " + recipe.preparationTime;
+            recipePrepTime.textContent = "Preparation Time: " + convertToHourMinuteFormat(recipe.preparationTime);
             recipeTitle.textContent = recipe.title;
 
             // const publishButton = document.getElementById("publishButton");

@@ -72,10 +72,16 @@ class RecipeDetail {
             mealElement.innerHTML = '<p>No meal information available</p>';
         }
 
+        const recipeImage = document.querySelector('.recipe-image');
+
         if (selectedRecipe.photoPath) {
-            document.querySelector('.recipe-image').src = selectedRecipe.photoPath;
+            recipeImage.src = selectedRecipe.photoPath;
         } else {
-            '<p>No recipe photo available</p>';
+            recipeImage.src = '../Images/RecipeIcon4.png';
+            recipeImage.style.height = '40vh';
+            recipeImage.style.display = 'block'; // Change display to block to ensure the image is centered within its container
+            recipeImage.style.margin = 'auto';
+
         }
 
         const prepTimeElement = document.getElementById('recipe-prep-time');
@@ -179,21 +185,21 @@ const slidesContainer = document.getElementById('slides');
 // ];
 
 // Verileri 3'erli gruplar halinde slider'a eklemek
-for (let i = 0; i < aiData.length; i += 3) {
-    const slide = document.createElement('div');
-    slide.className = 'slide';
+// for (let i = 0; i < aiData.length; i += 3) {
+//     const slide = document.createElement('div');
+//     slide.className = 'slide';
     
-    for (let j = 0; j < 3; j++) {
-        if (aiData[i + j]) {
-            const img = document.createElement('img');
-            img.src = aiData[i + j].img;
-            img.alt = aiData[i + j].alt;
-            slide.appendChild(img);
-        }
-    }
+//     for (let j = 0; j < 3; j++) {
+//         if (aiData[i + j]) {
+//             const img = document.createElement('img');
+//             img.src = aiData[i + j].img;
+//             img.alt = aiData[i + j].alt;
+//             slide.appendChild(img);
+//         }
+//     }
 
-    slidesContainer.appendChild(slide);
-}
+//     slidesContainer.appendChild(slide);
+// }
 
 function showSlide(index) {
     const slides = document.querySelectorAll('.slide');

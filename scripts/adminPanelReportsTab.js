@@ -288,9 +288,17 @@ function fillDetailSideBar(reportedItem, detailSideBar){
     selectedCuisine.innerHTML = '<b>Cuisine of the Recipe : </b>' + reportRecipeResponse.cuisine;
     detailSideBar.appendChild(selectedCuisine);
 
+    function convertToHourMinuteFormat(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        const hoursText = hours === 1 ? 'hour' : 'hours';
+        const minutesText = minutes === 1 ? 'minute' : 'minutes';
+        return `${hours} ${hoursText} ${minutes} ${minutesText}`;
+    }
+
     const selectedPrepTime = document.createElement('p');
     selectedPrepTime.classList.add('selected-recipe-report');
-    selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + reportRecipeResponse.preparationTime;
+    selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + convertToHourMinuteFormat(reportRecipeResponse.preparationTime);
     detailSideBar.appendChild(selectedPrepTime);
 
     // selectedPrepTime.style.marginBottom = '20px';
