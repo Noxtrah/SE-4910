@@ -160,6 +160,36 @@ textarea {
     color: var(--purple); /* Hover color */
 }
 
+/* CSS for the prep-time-container */
+.prep-time-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.prep-time-container select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+.prep-time-container select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.prep-time-container label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+
 .custom-file-input {
     display: block;
     max-width: 120px;
@@ -177,6 +207,7 @@ textarea {
   .file-name {
     display: inline-block;
     margin-left: 10px;
+    margin-top: 20px;
   }
 
   /* Hide the default file input styling */

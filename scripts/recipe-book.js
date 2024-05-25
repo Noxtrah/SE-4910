@@ -104,7 +104,7 @@ async function showRecipes() {
             const coverImage = document.createElement("img");
             coverImage.classList.add("cover");
             // coverImage.src = "../Images/background.png";
-            coverImage.src = recipe.photoPath;
+            coverImage.src = recipe.photoPath ? recipe.photoPath : "../Images/RecipeIcon2.webp";
             bookContainer.appendChild(coverImage);
 
             // Create description container

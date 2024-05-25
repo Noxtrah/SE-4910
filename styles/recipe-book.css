@@ -157,7 +157,7 @@ a{
     padding-top:5%;
     z-index:1;
     word-wrap: break-word;
-    overflow-y: scroll;
+    overflow-y: auto;
     color: black;
   }
   
