@@ -95,7 +95,7 @@ body {
 
 .section {
     margin-bottom: 20px;
-    background-color: var(--light_purple);
+    background-color: rgb(198, 189, 202);
     padding: 15px;
     border-radius: 10px;
 }
@@ -148,4 +148,42 @@ select {
 
 #save-button:hover {
     background-color: var(--dark_purple);
+}
+
+#back-arrow-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+    margin: 35px;
+  }
+  
+  .back-arrow {
+    font-size: 5em;
+    color: var(--purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -50%);
+    transition: color 0.3s ease-in-out;
+  }
+  
+  #back-arrow-button:hover .back-arrow {
+    color: var(--dark_purple);
+    /* Change the color on hover */
+    cursor: pointer;
+    /* Change the cursor on hover */
+  }
+  
+  #saved-popup {
+    display: none; /* Başlangıçta gizli */
+    position: fixed; /* Ekranın belirli bir konumunda kalacak */
+    top: 50%; /* Ortada yerleştirme */
+    left: 50%; /* Ortada yerleştirme */
+    transform: translate(-50%, -50%); /* Ortada yerleştirme */
+    padding: 20px; /* İç boşluk */
+    background-color: rgb(185, 174, 190); /* Arkaplan rengi */
+    border: 2px solid #5a4c79; /* Sınır */
+    box-shadow: 0 0 10px rgba(140, 53, 177, 0.5); /* Gölge efekti */
+    z-index: 1000; /* Diğer öğelerin üstünde olacak */
 }
