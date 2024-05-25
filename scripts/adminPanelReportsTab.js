@@ -120,7 +120,7 @@ async function createSingleReportItem(report) {
 
     const discardButton = createButton('Discard');
     discardButton.classList.add('discard-button');
-    discardButton.addEventListener('click', () => discardRecipe(report.recipe.id));
+    discardButton.addEventListener('click', () => discardRecipe(report.userRecipeResponse.id));
     actionButtons.appendChild(discardButton);
 
     const detailButton = createButton('Detail');
@@ -137,7 +137,7 @@ async function createSingleReportItem(report) {
     const deleteButton = createButton('Delete');
     deleteButton.classList.add('delete-button');
     deleteButton.addEventListener('click', function() {
-        deleteRecipe(report);
+        createWarningPopup(report);
     });
     actionButtons.appendChild(deleteButton);
 
@@ -159,6 +159,26 @@ function createButton(text) {
 
 function discardRecipe(recipeId) {
     // Implement discard logic
+    apiUrl = `https://recipiebeckend.azurewebsites.net/admin/discard-report?id=${recipeId}`
+    try{
+        fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Discard recipe response:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    catch(error){
+        console.log(error);
+    }
+
     console.log('Discard recipe with ID:', recipeId);
 }
 
@@ -285,10 +305,6 @@ function closeDetailSidebar() {
     detailSideBarWrapper.remove();
 }
 
-function deleteRecipe(report) {
-    createWarningPopup(report);
-}
-
 function createWarningPopup(reportedItem) {
     // Create overlay element
     const reportRecipeResponse = reportedItem.userRecipeResponse;
@@ -332,7 +348,8 @@ function createWarningPopup(reportedItem) {
     sendReportButton.classList.add('popup-delete-button');
 
     sendReportButton.addEventListener('click', function() {
-        //Delete Fetch
+        deleteRecipe(reportRecipeResponse.id);
+        overlay.remove();
     });
 
 
@@ -348,4 +365,21 @@ function createWarningPopup(reportedItem) {
 
     // Append overlay to body
     document.body.appendChild(overlay);
+}
+
+async function deleteRecipe(recipeID){
+    apiUrl = `https://recipiebeckend.azurewebsites.net/admin/delete-recipe?id=${recipeID}`
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        const data = await response.json();
+        console.log('User deleted successfully:', data);
+        location.reload();
+    } catch (error) {
+        console.error('Error deleting user:', error);
+    }
 }

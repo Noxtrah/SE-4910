@@ -41,15 +41,15 @@ function displayUsers(users) {
 
         userRow.appendChild(nameCell);
 
-        // Create cell for title
         var nameLastnameCell = document.createElement('td');
-        nameLastnameCell.classList.add('people-des');
         var nameLastnameHeader = document.createElement('p');
-        nameLastnameHeader.textContent = user.name;
-        var subnameLastnameParagraph = document.createElement('p');
-        subnameLastnameParagraph.textContent = user.lastName;
+        var nameSpan = document.createElement('span');
+        nameSpan.textContent = user.name;
+        var lastNameSpan = document.createElement('span');
+        lastNameSpan.textContent = ' ' + user.lastName; // Add a space between name and last name
+        nameLastnameHeader.appendChild(nameSpan);
+        nameLastnameHeader.appendChild(lastNameSpan);
         nameLastnameCell.appendChild(nameLastnameHeader);
-        nameLastnameCell.appendChild(subnameLastnameParagraph);
         userRow.appendChild(nameLastnameCell);
 
         // Create cell for status
@@ -308,6 +308,7 @@ function userDeleteWarnPopup(user){
     // Append overlay to body
     document.body.appendChild(overlay);
     deleteUser(user.id);
+    overlay.remove();
 }
 
 async function deleteUser(userID) {
