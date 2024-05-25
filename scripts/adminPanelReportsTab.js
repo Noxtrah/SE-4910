@@ -126,6 +126,10 @@ async function createSingleReportItem(report) {
     const detailButton = createButton('Detail');
     detailButton.classList.add('detail-button');
     detailButton.addEventListener('click', function() {
+        const detailSideBarWrapper = document.querySelector('.detail-sidebar-wrapper');
+        if(detailSideBarWrapper) {
+            closeDetailSidebar();
+        }
         detailRecipe(report);
     });
     actionButtons.appendChild(detailButton);
