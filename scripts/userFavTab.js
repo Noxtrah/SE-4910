@@ -32,16 +32,42 @@ async function displayFavRecipes() {
       cardDiv.classList.add('card');
       const truncatedDescription = truncateDescription(item.description);
       const cardContent = `
-        <img src="${item.photoPath}" alt="${item.title}">
+      <img src="${item.photoPath ? item.photoPath : (item.userRecipePhoto ? item.userRecipePhoto : 'default/path/to/image.jpg')}" alt="${item.title}">
+
         <div class="info">
           <h1>${item.title}</h1>
           <p>${truncatedDescription}</p>
-          <button>Read More</button>
+          <button class="read-more-btn" ">Read More</button>
         </div>
       `;
       cardDiv.innerHTML = cardContent;
       cardsContainer.appendChild(cardDiv);
     });
+
+    const openRecipeDetailPage = (id) => {
+      const recipeDetailURL = `recipeDetail.html?id=${id}`;
+      // Perform any additional actions before navigating, if needed
+      // For example, you might want to validate the id or perform some asynchronous tasks
+      window.location.href = recipeDetailURL;
+  };
+  
+  // Adding event listeners to the "Read More" buttons
+  document.querySelectorAll('.read-more-btn').forEach(button => {
+      button.addEventListener('click', () => {
+          const recipeId = button.getAttribute('data-id');
+          openRecipeDetailPage(recipeId);
+      });
+  });
+  
+  // Assuming you have an element with class "link" for the event listener
+  const link = document.querySelector('.link');
+  // Adding event listener to the link
+  link.addEventListener('click', () => {
+      // Here you should get the ID from your data, in this example let's assume you have it as "recipeId"
+      const recipeId = recipe.recipe.id; // Adjust this according to your data structure
+      openRecipeDetailPage(recipeId);
+  });
+
   } catch (error) {
     console.error('Error displaying favorite recipes:', error);
   }

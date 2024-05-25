@@ -169,6 +169,12 @@ body {
     height: auto; /* Maintain aspect ratio */
     margin-right: 20px; /* Space between photo and details */
 }
+@media only screen and (max-width: 600px) {
+    .recipe-photo {
+        width: 100%;
+        margin-right: 10px;
+    }
+}
 
 .photo-title-container {
     display: flex;

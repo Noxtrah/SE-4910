@@ -785,7 +785,7 @@ async function fetchData(key = 0) {
 
 const openRecipeDetailPage = (id) => {
     const recipeDetailURL = `userRecipeDetail.html?id=${id}`;
-    console.log("Girdi");
+    console.log("Girdi");    
     // Perform any additional actions before navigating, if needed
     // For example, you might want to validate the id or perform some asynchronous tasks
     window.location.href = recipeDetailURL;

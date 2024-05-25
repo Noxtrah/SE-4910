@@ -25,9 +25,10 @@
     border-radius: 5px;
     margin-bottom: 5px; 
     cursor: pointer;
-    margin-left: 250px;
+    margin-top: 15px;
     vertical-align:middle;
     margin-bottom:10px;
+
 }
 
 /* Checkbox input - checked state */
