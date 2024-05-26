@@ -182,9 +182,11 @@ async function showRecipes() {
                 publishButton.textContent = publishButton.textContent === "Publish" ? "Unpublish" : "Publish";
             }
             // Create Edit button
-            // const editButton = document.createElement("button");
-            // editButton.textContent = "Edit";
-            // buttonsContainer.appendChild(editButton);
+            
+            const editRecipeBtn = document.createElement("button");
+            editRecipeBtn.classList.add("edit-recipe-btn");
+            editRecipeBtn.textContent = "Edit Recipe";
+            buttonsContainer.appendChild(editRecipeBtn);
 
             // Create Delete button
             const deleteButton = document.createElement("button");
@@ -238,6 +240,23 @@ async function showRecipes() {
                 else if(publishButton.textContent == "Publish"){
                     unpublishRecipe(userRecipeId, recipeDetails);
                 }
+            });
+
+            // ********************EDIT RECIPE************************************
+            editRecipeBtn.addEventListener("click", function() {
+                const recipeId = recipe.id;
+                const urlParams = new URLSearchParams();
+                urlParams.append("id", recipeId);
+                urlParams.append("title", recipe.title);
+                urlParams.append("description", recipe.description);
+                urlParams.append("ingredients", recipe.ingredients);
+                urlParams.append("cuisine", recipe.cuisine);
+                urlParams.append("meal", recipe.meal);
+                urlParams.append("preparationTime", recipe.preparationTime);
+                urlParams.append("photoPath", recipe.photoPath);
+
+                const editRecipeUrl = `editUserRecipe.html?${urlParams.toString()}`;
+                window.open(editRecipeUrl, "_self");
             });
 
             deleteButton.addEventListener("click", async () => {

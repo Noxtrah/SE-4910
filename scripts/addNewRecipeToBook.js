@@ -145,10 +145,7 @@ const saveButton = document.getElementById("save-button");
             window.history.back();
             // window.history.go(-1);
         });
-    
-  
-
-    
+      
 }
 
 setupBackButton();
