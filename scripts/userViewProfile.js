@@ -12,8 +12,14 @@ async function CreateUserInfoPage() {
         document.getElementById('userName').textContent = userInfo.name + ' ' + userInfo.lastName;
         document.getElementById('userEmail').textContent = userInfo.email;
         document.getElementById('userBio').textContent = userInfo.bio || "Type about yourself"; // Bio alanı boşsa "Type about yourself" yazısı
-        document.getElementById('userPhoto').src = userInfo.userPhoto; // Kullanıcı fotoğrafı
-
+        if(userInfo.userPhoto)
+            {
+                    document.getElementById('userPhoto').src = userInfo.userPhoto; 
+            }
+            else{
+                document.getElementById('userPhoto').src = "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+            }
+            
         // Kullanıcının yayınladığı tarifleri listele
         const userPublishedRecipesContainer = document.getElementById('userPublishedRecipes');
         userInfo.userPublishedRecipes.forEach(recipe => {
