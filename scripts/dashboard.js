@@ -538,6 +538,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (JWTAccessToken != null) {
         // Change the text of the anchor element
         logInLink.textContent = "Log-Out";
+        logInLink.addEventListener('click', function(event) {
+            // Prevent default action
+            event.preventDefault();
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('refreshToken');
+            window.location.href = 'logIn.html';
+        });
     }
 
     fetchData(0)
@@ -756,3 +763,61 @@ async function getMaxPage() {
         return null; // Return null in case of error
     }
 }
+
+// Function to fetch user data
+function fetchUserData() {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
+    return fetch(apiUrl, { // Return the fetch promise
+        method: 'GET',
+        headers: headers,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        return response.json(); // Assuming the response is JSON
+    });
+}
+
+
+function updateUserProfileLink(userPhotoUrl, userName) {
+    const iconElements = document.getElementsByClassName('profile-icon');
+    if (iconElements.length > 0) {
+        const iconElement = iconElements[0]; // Get the first element in the collection
+
+        // Create a new img element
+        const imgElement = document.createElement('img');
+        imgElement.setAttribute('src', userPhotoUrl);
+        imgElement.setAttribute('alt', userName);
+        imgElement.classList.add('profile-photo');
+
+        // Replace the ion-icon element with the new img element
+        iconElement.replaceWith(imgElement);
+    }
+}
+
+
+function initUserProfileUpdate() {
+    function handleError(error) {
+        console.error('Error fetching user data:', error);
+    }
+    
+    fetchUserData()
+        .then(data => {
+            const userPhotoUrl = data.userPhoto;
+            const userName = `${data.name} ${data.lastName}`;
+            updateUserProfileLink(userPhotoUrl, userName);
+        })
+        .catch(handleError);
+}
+
+initUserProfileUpdate();
+

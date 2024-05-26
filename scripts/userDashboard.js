@@ -288,6 +288,9 @@ const createRecipeElement = async (recipe) => {
         } else {
             star.textContent = '☆';
         }
+        star.onmouseover = () => hoverStar(star);
+        const clickHandler = () => setRating(i, starContainer, recipe);
+        star.onclick = clickHandler;
         starContainer.appendChild(star);
     }
     ratingDiv.appendChild(starContainer);
@@ -731,9 +734,10 @@ const displayDashboard = async (recipes) => {
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
-    if (key !== undefined) {
-      apiUrl += `?key=${key}`;
-    }
+    // const apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
+    // if (key !== undefined) {
+    //   apiUrl += `?key=${key}`;
+    // }
   
     const headers = {
       'Content-Type': 'application/json',
@@ -873,36 +877,6 @@ function setupBackButton() {
 window.onload = function () {
     setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
-
-
-// async function displayPage(startPage) {
-//     const maxPage = await getMaxPage();
-//     if (typeof startPage !== 'number' || startPage < 0 || startPage >= maxPage) {
-//         console.error(`Invalid startPage value: ${startPage}`);
-//         startPage = 0;  // Set a default valid startPage value
-//     }
-
-//     if (typeof maxPage !== 'number' || maxPage <= 0) {
-//         console.error(`Invalid maxPagePages value: ${maxPage}`);
-//         maxPage = 1;  // Set a default valid maxPagePages value
-//     }
-
-//     $('#pagination-demo').twbsPagination('destroy');
-//     $('#pagination-demo').twbsPagination({
-//         startPage: startPage + 1, // twbsPagination uses 1-based index
-//         totalPages: maxPage,
-//         visiblePages: 5,
-//         next: 'Next',
-//         prev: 'Prev',
-//         onPageClick: function (event, page) {
-//             fetchData(page - 1);
-//             console.log("Page =", page - 1);
-//         }
-//     });
-// }
-
-// displayPage(0, 2);
-
 
 async function getMaxPage() {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-max-page'; // Replace this URL with your actual API endpoint
