@@ -395,7 +395,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   // let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+   let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     if (key !== undefined) {
       apiUrl += `?key=${key}`;
     }
@@ -805,16 +805,39 @@ function updateUserProfileLink(userPhotoUrl, userName) {
 }
 
 
+// function initUserProfileUpdate() {
+//     function handleError(error) {
+//         console.error('Error fetching user data:', error);
+//     }
+    
+//     fetchUserData()
+//         .then(data => {
+//             const userPhotoUrl = data.userPhoto;
+//             const userName = `${data.name} ${data.lastName}`;
+//             updateUserProfileLink(userPhotoUrl, userName);
+//         })
+//         .catch(handleError);
+// }
+
+function insertUsername(username) {
+    const h2Element = document.querySelector('article h2');
+    if (h2Element) {
+        h2Element.textContent = `Hello, ${username}`;
+    }
+}
+
 function initUserProfileUpdate() {
     function handleError(error) {
         console.error('Error fetching user data:', error);
     }
-    
     fetchUserData()
         .then(data => {
             const userPhotoUrl = data.userPhoto;
             const userName = `${data.name} ${data.lastName}`;
+            const username = data.username; // Get the username from the response
+            
             updateUserProfileLink(userPhotoUrl, userName);
+            insertUsername(username); // Insert the username into the <h2> tag
         })
         .catch(handleError);
 }

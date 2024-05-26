@@ -338,7 +338,13 @@ userInfoDiv.classList.add('user-info');
 // User Image
 const userImgDiv = document.createElement('ion-icon');
 userImgDiv.classList.add('user-img');
-userImgDiv.setAttribute('name', 'person-circle-outline');
+if(recipe.userPhotoPath == null){
+    userImgDiv.setAttribute('name', 'person-circle-outline');
+}else{
+    userImgDiv.setAttribute('name', recipe.userPhotoPath);
+}
+// userInfoDiv.appendChild(userImgDiv)
+// userImgDiv.setAttribute('name', 'person-circle-outline');
 userInfoDiv.appendChild(userImgDiv);
 
 // Username with link
@@ -735,9 +741,9 @@ async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
     // const apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
-    // if (key !== undefined) {
-    //   apiUrl += `?key=${key}`;
-    // }
+    if (key !== undefined) {
+      apiUrl += `?key=${key}`;
+    }
   
     const headers = {
       'Content-Type': 'application/json',
@@ -931,3 +937,82 @@ function reportRecipe(userRecipeId, reportCause, extraNotes) {
         console.error('Response body:', error.response.body);
     });
   }
+
+//   function fetchUserProfileData() {
+//     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Authorization': JWTAccessToken,
+//     };
+
+//     return fetch(apiUrl, { // Return the fetch promise
+//         method: 'GET',
+//         headers: headers,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok (status: ${response.status})`);
+//         }
+//         return response.json(); // Assuming the response is JSON
+//     });
+// }
+
+// function updateUserIcon(userPhotoUrl) {
+//     const userImgElements = document.getElementsByClassName('user-img');
+//     if (userImgElements.length > 0) {
+//         const userImgDiv = userImgElements[0]; // Access the first element with the class 'user-img'
+        
+//         // Create a new img element
+//         const imgElement = document.createElement('img');
+//         imgElement.setAttribute('src', userPhotoUrl);
+//         imgElement.classList.add('profile-photo');
+
+//         // Replace the ion-icon element with the new img element
+//         userImgDiv.replaceWith(imgElement);
+//     }
+// }
+
+// // Fetch user data
+// function fetchUserData() {
+//     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Authorization': JWTAccessToken,
+//     };
+
+//     return fetch(apiUrl, { // Return the fetch promise
+//         method: 'GET',
+//         headers: headers,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok (status: ${response.status})`);
+//         }
+//         return response.json(); // Assuming the response is JSON
+//     });
+// }
+
+// // Handle errors
+// function handleError(error) {
+//     console.error('Error fetching user data:', error);
+// }
+
+// // Initialize the user icon update process
+// function initUserIconUpdate() {
+//     fetchUserData()
+//         .then(data => {
+//             const userPhotoUrl = data.userPhoto;
+//             console.log('User Photo URL:', userPhotoUrl);
+//             updateUserIcon(userPhotoUrl);
+//         })
+//         .catch(handleError);
+// }
+
+// // Start the process
+// initUserIconUpdate();
