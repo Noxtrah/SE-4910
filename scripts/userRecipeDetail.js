@@ -9,9 +9,14 @@ class RecipeDetail {
     loadRecipeDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const recipeId = parseInt(urlParams.get('id'), 10);
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
 
         if (recipeId) {
-            fetch(`https://recipiebeckend.azurewebsites.net/recipesUser/user-recipe-byID?userRecipeId=${recipeId}`)
+            fetch(`https://recipiebeckend.azurewebsites.net/recipesUser/user-recipe-byID?userRecipeId=${recipeId}`,{
+                headers: {
+                    'Authorization': JWTAccessToken
+                }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -37,10 +42,34 @@ class RecipeDetail {
         document.getElementById('recipe-title').textContent = selectedRecipe.title;
 
         const ingredientsList = document.getElementById('recipe-ingredients').getElementsByTagName('ul')[0];
+        ingredientsList.innerHTML = '';
+        const allergicFoods = selectedRecipe.allergicFoods; // Assuming data.allergicFoods is a comma-separated string of allergens
+
+        console.log("allergicFoods: " , allergicFoods);
+
+        const allergens = allergicFoods.split(',')
+        .map(allergen => allergen.trim().toLowerCase())
+        .filter(allergen => allergen !== "");
+
         if (selectedRecipe.ingredients) {
             selectedRecipe.ingredients.split(',').forEach(ingredient => {
                 const listItem = document.createElement('li');
-                listItem.textContent = ingredient.trim();
+                const trimmedIngredient = ingredient.trim();
+                listItem.textContent = trimmedIngredient;
+
+                // Check if the ingredient contains any of the allergens
+                allergens.forEach(allergen => {
+                    if (trimmedIngredient.toLowerCase().includes(allergen)) {
+                        listItem.style.color = 'red'; // Highlight the ingredient
+                        const warningIcon = document.createElement('i');
+                        warningIcon.className = 'fa-solid fa-triangle-exclamation fa-fade';
+                        warningIcon.style.verticalAlign = '0%';
+                        warningIcon.style.marginLeft = '10px';
+                        warningIcon.title = `You are allergic to ${allergen} !`;
+                        listItem.appendChild(warningIcon);
+                    }
+                });
+
                 ingredientsList.appendChild(listItem);
             });
         } else {

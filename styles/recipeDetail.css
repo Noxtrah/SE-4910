@@ -106,3 +106,7 @@ header {
     font-size: 14px;
     font-weight: bold;
 }
+
+.highlight{
+    color: red;
+}

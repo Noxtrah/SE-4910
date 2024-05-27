@@ -9,9 +9,15 @@ class RecipeDetail {
     loadRecipeDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const recipeId = parseInt(urlParams.get('id'), 10);
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
+
 
         if (recipeId) {
-            fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-by-id?id=${recipeId}`)
+            fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-by-id?id=${recipeId}`, {
+                headers: {
+                    'Authorization': JWTAccessToken
+                }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -20,7 +26,7 @@ class RecipeDetail {
                 })
                 .then(data => {
                     this.displayRecipeDetails(data);
-                    console.log(data)
+                    console.log("Recipe Data: ",data)
                     const mealNames = this.getMealNames(data.recipe.meal);
                     setTimeout(() => {
                         this.getRecommendations(data.recipe.ingredients, data.recipe.title, mealNames);
@@ -36,21 +42,55 @@ class RecipeDetail {
 
 
 
-    displayRecipeDetails(data) {
+    async displayRecipeDetails(data) {
+        // const allergies = await fetchAllergies()
+        // console.log("Allergies: ", allergies)
+
+
         const selectedRecipe = data.recipe;
 
-    
-    
         // Update recipe title
         document.getElementById('recipe-title').textContent = selectedRecipe.title;
-    
-        // Update ingredients list
+
+        // function highlightAllergicFoods(ingredientsText, allergicFoodString) {
+        //     var allergicFoods = allergicFoodString.split(","); // Split allergic foods by comma
+        //     console.log("Allergic Foods: ", allergicFoods);
+        //     // Highlight each allergic food
+        //     allergicFoods.forEach(function(allergicFood) {
+        //         var regex = new RegExp('(' + allergicFood.trim() + ')', 'gi');
+        //         ingredientsText = ingredientsText.replace(regex, '<span class="highlight">$1</span>'); // Highlight allergic food
+        //     });
+        
+        //     return ingredientsText;
+        // }
+        
+        // Assuming 'selectedRecipe.ingredients' is a comma-separated string
         const ingredientsList = document.getElementById('recipe-ingredients').getElementsByTagName('ul')[0];
         ingredientsList.innerHTML = ''; // Clear existing list items
+        const allergicFoods = data.allergicFoods; // Assuming data.allergicFoods is a comma-separated string of allergens
+
+        const allergens = allergicFoods.split(',')
+        .map(allergen => allergen.trim().toLowerCase())
+        .filter(allergen => allergen !== "");
+
         if (selectedRecipe.ingredients) {
             selectedRecipe.ingredients.split(',').forEach(ingredient => {
                 const listItem = document.createElement('li');
-                listItem.textContent = ingredient.trim();
+                const trimmedIngredient = ingredient.trim();
+                listItem.textContent = trimmedIngredient;
+
+                // Check if the ingredient contains any of the allergens
+                allergens.forEach(allergen => {
+                    if (trimmedIngredient.toLowerCase().includes(allergen)) {
+                        listItem.style.color = 'red'; // Highlight the ingredient
+                        const warningIcon = document.createElement('i');
+                        warningIcon.className = 'fa-solid fa-triangle-exclamation fa-fade';
+                        warningIcon.style.verticalAlign = '0%';
+                        warningIcon.style.marginLeft = '10px';
+                        listItem.appendChild(warningIcon);
+                    }
+                });
+
                 ingredientsList.appendChild(listItem);
             });
         } else {
@@ -187,6 +227,32 @@ class RecipeDetail {
             window.history.back();
             // window.history.go(-1);
         });
+    }
+}
+
+async function fetchAllergies() {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-allergies';
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': JWTAccessToken,
+    };
+  
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.text();
+      console.log("Allergies: " , data);
+  
+    } catch (error) {
+      console.error('Error fetching or displaying data:', error);
     }
 }
 
