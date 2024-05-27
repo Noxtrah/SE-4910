@@ -253,10 +253,12 @@ async function showRecipes() {
                 urlParams.append("cuisine", recipe.cuisine);
                 urlParams.append("meal", recipe.meal);
                 urlParams.append("preparationTime", recipe.preparationTime);
-                urlParams.append("photoPath", recipe.photoPath);
+                // urlParams.append("photoPath", recipe.photoPath);
 
                 const editRecipeUrl = `editUserRecipe.html?${urlParams.toString()}`;
                 window.open(editRecipeUrl, "_self");
+                console.log('url params', urlParams.toString());
+
             });
 
             deleteButton.addEventListener("click", async () => {
