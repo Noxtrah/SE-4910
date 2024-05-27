@@ -33,13 +33,28 @@ public class UserController extends ParentController {
     @Autowired
     FavService favService;
 
-
-
+    @GetMapping("/get-user-byId")
+    public User getuserbyid(@RequestParam long id)
+    {
+         return userService.getOneUserById(id);
+    }
     @PostMapping("/save-recipe")
     public ResponseEntity<?> saveUserRecipe(@ModelAttribute  UserRecipeRequest userRecipeRequest,Authentication authentication ) throws IOException {
         User currentUser = getCurrentUser(authentication);
         return userService.saveUserRecipe(userRecipeRequest,currentUser);
     }
+
+    @PutMapping("/edit-user-recipe")
+    public ResponseEntity<String> editUserRecipe(@ModelAttribute UserRecipeRequest userRecipeRequest, Authentication authentication)throws IOException {
+
+        User currentUser =getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return userService.editUserRecipe(userRecipeRequest,currentUser);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 
 
     @GetMapping("/get-saved-recipes")
@@ -143,6 +158,17 @@ public class UserController extends ParentController {
             return favService.getOneUserFavorites(currentUser);
         }
         return null;
+    }
+
+    @GetMapping("/user-allergies")
+    public ResponseEntity<String>getAllergiesOneUser(Authentication authentication)
+    {
+        User currentUser = getCurrentUser(authentication);
+        if (currentUser != null)
+        {
+            return userService.getAllergiesOneUser(currentUser);
+        }
+        return null;
 
     }
 
@@ -166,7 +192,6 @@ public class UserController extends ParentController {
             return userService.getUserInfo(currentUser);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
     //other users profile info

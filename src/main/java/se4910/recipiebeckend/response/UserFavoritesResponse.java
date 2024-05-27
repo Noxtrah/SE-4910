@@ -21,10 +21,9 @@ public class UserFavoritesResponse {
     String photoPath;
     String userRecipePhoto;
 
-
     public UserFavoritesResponse(Favorites favorites, int ingredientCount) {
         Recipe recipe = favorites.getRecipe();
-        this.id = favorites.getId();
+        this.id = recipe.getId();
         this.title = recipe.getTitle();
         this.ingredientCount = ingredientCount;
         this.description = recipe.getDescription();

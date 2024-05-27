@@ -25,6 +25,10 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long>
 
     Optional<Recipe> findById(Long recipeId);
 
+   // Page<Recipe> findAllPage(Pageable pageable);
+
+
+
     List<Recipe> findAll();
 
     List<Recipe> findByMeal(Meal meal);
@@ -40,8 +44,6 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long>
     List<Recipe> searchInTitle(String targetWord);
 
 
-    List<Recipe> findAllBy(Pageable pageable);
-
 
     @Modifying
     @Query("UPDATE recipe r SET r.ingredients = LOWER(r.ingredients)")
@@ -51,5 +53,8 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long>
   //  List<Recipe> limit(@Param("pageSize") int pageSize, @Param("offsetValue") int offsetValue);
 
     List<Recipe> findByIngredientsContaining(String ingredient);
+    Page<Recipe> findByCuisine(String cuisine, Pageable pageable);
+
+    Page<Recipe> findAllByOrderByTitleAsc(Pageable pageable);
 
 }

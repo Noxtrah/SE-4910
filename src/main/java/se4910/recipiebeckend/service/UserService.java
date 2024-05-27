@@ -1,6 +1,7 @@
 package se4910.recipiebeckend.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -62,12 +63,46 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username);
     }
 
+    @CachePut(value = "user-recipes")
     public ResponseEntity<?> saveUserRecipe(UserRecipeRequest userRecipeRequest,User user) throws IOException {
-        if (userRecipeRequest.getTitle().isEmpty()|| userRecipeRequest.getIngredients().isEmpty())
+
+        if (userRecipeRequest.getTitle().isEmpty() || userRecipeRequest.getIngredients().isEmpty())
         {
             return new ResponseEntity<>("title and getIngredients can not be empty",HttpStatus.BAD_REQUEST);
         }
         UserRecipes userRecipes = new UserRecipes();
+        userRecipes.setIsPublish(false);
+        userRecipes.setUser(user);
+        return  manipulateUserRecipeData(userRecipeRequest, userRecipes);
+
+    }
+
+    @CachePut(value = "user-recipes")
+    public ResponseEntity<String> editUserRecipe(UserRecipeRequest userRecipeRequest, User currentUser) {
+
+        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeRequest.getId());
+        if (optionalUserRecipes.isPresent())
+        {
+            UserRecipes targetRecipe = optionalUserRecipes.get();
+            targetRecipe.setUser(currentUser);
+            return manipulateUserRecipeData(userRecipeRequest,targetRecipe);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    private ResponseEntity<String> manipulateUserRecipeData(UserRecipeRequest userRecipeRequest, UserRecipes userRecipes) {
+
+        if(userRecipeRequest.getTitle() != null)
+        {
+            userRecipes.setTitle(userRecipeRequest.getTitle());
+        }
+        if(userRecipeRequest.getIngredients() != null)
+        {
+            userRecipes.setIngredients(userRecipeRequest.getIngredients());
+        }
         if(userRecipeRequest.getCuisine() !=null)
         {
             userRecipes.setCuisine(userRecipeRequest.getCuisine());
@@ -83,58 +118,23 @@ public class UserService implements UserDetailsService {
         if (userRecipeRequest.getRecipePhoto()!= null)
         {
             String photoUrlString = azurePhotoService.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
-            System.out.println(photoUrlString);
             userRecipes.setPhotoPath(photoUrlString);
         }
-
-        userRecipes.setIngredients(userRecipeRequest.getIngredients());
-        userRecipes.setTitle(userRecipeRequest.getTitle());
-        userRecipes.setUser(user);
-        userRecipes.setIsPublish(false);
+        if (userRecipeRequest.getPreparationTime() != null ) {
+            userRecipes.setPreparationTime(Integer.parseInt(userRecipeRequest.getPreparationTime()));
+        }
 
         try {
             userRecipeRepository.save(userRecipes);
-            return ResponseEntity.ok("id,"+ userRecipes.getId()+ ",Recipe successfully added");
+            return new ResponseEntity<>("successful",HttpStatus.OK);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+        return null;
     }
 
-    private void saveUserRecipeToDataset(UserRecipeRequest userRecipeRequest) {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Define the URL of your Python Flask application
-        String pythonUrl = "http://azure-python-project-url.com/add-recipe-to-dataset";
-
-        // Create headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // Create request body
-        String requestBody = "{" +
-                "\"recipe_name\":\"" + userRecipeRequest.getTitle() + "\"," +
-                "\"prep_time\":\"" + userRecipeRequest.getPreparationTime() + "\"," +
-                // Add other fields similarly
-                "}";
-
-        // Create HttpEntity
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        // Make a POST request to the Python Flask endpoint
-        ResponseEntity<String> response = restTemplate.postForEntity(pythonUrl, entity, String.class);
-
-        // Handle the response
-        if (response.getStatusCode() == HttpStatus.OK) {
-            System.out.println("Recipe added to dataset successfully");
-        } else {
-            System.err.println("Failed to add recipe to dataset");
-        }
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -144,17 +144,6 @@ public class UserService implements UserDetailsService {
         }
         return  user;
     }
-
-    public UserDetails loadUserById(Long id)
-    {
-        User user = userRepository.findById(id).get();
-        if (user != null)
-        {
-            return user;
-        }
-        return null;
-    }
-
 
     public ResponseEntity<String> publishUserRecipe(long userRecipeId)
     {
@@ -212,6 +201,7 @@ public class UserService implements UserDetailsService {
                 currentUser.setProfilePhotoPath(azurePhotoService.uploadPhotoToBlobStorage(profileInfoRequest.getProfilePhoto()));
             }
 
+            userRepository.save(currentUser);
             return new ResponseEntity<>("user updated", HttpStatus.OK);
     }
 
@@ -275,63 +265,7 @@ public class UserService implements UserDetailsService {
         return (reportRepository.findByUserAndUserRecipes(currentUser,userRecipes)).isPresent();
     }
 
-    public ResponseEntity<String> editUserRecipe(UserRecipeRequest userRecipeRequest, User currentUser) {
 
-        Optional<UserRecipes> optionalUserRecipes = userRecipeRepository.findById(userRecipeRequest.getId());
-        if (optionalUserRecipes.isPresent())
-        {
-            UserRecipes targetRecipe = optionalUserRecipes.get();
-            return editRecipe(targetRecipe,userRecipeRequest);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-    }
-
-    private ResponseEntity<String> editRecipe(UserRecipes userRecipes,UserRecipeRequest userRecipeRequest) {
-
-
-        if(userRecipeRequest.getTitle() != null)
-        {
-            userRecipes.setTitle(userRecipeRequest.getTitle());
-        }
-        if(userRecipeRequest.getIngredients() != null)
-        {
-            userRecipes.setIngredients(userRecipeRequest.getIngredients());
-        }
-        if(userRecipeRequest.getCuisine() !=null)
-        {
-            userRecipes.setCuisine(userRecipeRequest.getCuisine());
-        }
-        if (userRecipeRequest.getDescription() != null)
-        {
-            userRecipes.setDescription(userRecipeRequest.getDescription());
-        }
-        if (userRecipeRequest.getMeal() !=null)
-        {
-            userRecipes.setMeal(userRecipeRequest.getMeal());
-        }
-        if (userRecipeRequest.getRecipePhoto()!= null)
-        {
-            String photoUrlString = azurePhotoService.uploadPhotoToBlobStorage(userRecipeRequest.getRecipePhoto());
-            userRecipes.setPhotoPath(photoUrlString);
-        }
-        if (userRecipeRequest.getPreparationTime() != null ) {
-            userRecipes.setPreparationTime(Integer.parseInt(userRecipeRequest.getPreparationTime()));
-
-        }
-
-        try {
-            userRecipeRepository.save(userRecipes);
-            return ResponseEntity.ok("id,"+ userRecipes.getId()+ ",Recipe successfully edited");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 
     public ResponseEntity<String> editUserRecipeNoAuth(UserRecipeRequest userRecipeRequest) {
 
@@ -339,10 +273,22 @@ public class UserService implements UserDetailsService {
         if (optionalUserRecipes.isPresent())
         {
             UserRecipes targetRecipe = optionalUserRecipes.get();
-            return editRecipe(targetRecipe,userRecipeRequest);
+            return manipulateUserRecipeData(userRecipeRequest,targetRecipe);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public ResponseEntity<String> getAllergiesOneUser(User currentUser) {
+
+        if (currentUser.getAllergicFoods().isEmpty())
+        {
+            return new ResponseEntity<>("no allergies",HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>( currentUser.getAllergicFoods(),HttpStatus.OK) ;
+        }
+
     }
 }

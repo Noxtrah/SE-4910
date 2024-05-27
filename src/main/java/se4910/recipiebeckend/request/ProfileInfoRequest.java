@@ -15,6 +15,7 @@ public class ProfileInfoRequest {
 
     private MultipartFile profilePhoto;
 
+
     public ProfileInfoRequest( String bio, String allergicFoods, MultipartFile profilePhoto) {
 
         this.bio = bio;

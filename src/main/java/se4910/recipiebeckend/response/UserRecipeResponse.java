@@ -22,6 +22,7 @@ public class UserRecipeResponse {
     private String photoPath;
     private Boolean isPublish;
     String username;
+    String profilePhotoPath;
 
     public UserRecipeResponse(UserRecipes userRecipes) {
         this.id = userRecipes.getId();
@@ -34,6 +35,6 @@ public class UserRecipeResponse {
         this.photoPath = userRecipes.getPhotoPath();
         this.isPublish = userRecipes.getIsPublish();
         this.username = userRecipes.getUser().getUsername();
-
+        this.profilePhotoPath = userRecipes.getUser().getProfilePhotoPath();
     }
 }

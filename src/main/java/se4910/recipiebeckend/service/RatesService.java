@@ -10,6 +10,8 @@ import se4910.recipiebeckend.repository.RecipeRepository;
 import se4910.recipiebeckend.repository.UserRecipeRepository;
 import se4910.recipiebeckend.response.RateResponse;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -20,7 +22,6 @@ public class RatesService
     RatesRepository ratesRepository;
 
     RecipeRepository recipeRepository;
-
 
     UserRecipeRepository userRecipeRepository;
 
@@ -74,24 +75,23 @@ public class RatesService
 
     }
 
-
     public double GetAvgRatesByRecipeId(Long id) {
         Double avgRate = ratesRepository.findByIdRecipeId(id);
         if (avgRate != null) {
-            DecimalFormat df = new DecimalFormat("#,#");
-            return Double.parseDouble(df.format(avgRate));
+            // BigDecimal kullanarak küsuratı kes ve sadece bir ondalık basamak göster
+            BigDecimal bd = new BigDecimal(avgRate).setScale(1, RoundingMode.DOWN);
+            return bd.doubleValue();
         }
         return 0;
     }
 
-
-
     public double GetAvgRatesByUserRecipeId(Long id) {
 
-        if (ratesRepository.findByIdUserRecipesId(id) != null)
-        {
-            DecimalFormat df = new DecimalFormat("#.#");
-            return Double.parseDouble(df.format(ratesRepository.findByIdUserRecipesId(id)));
+        Double avgRate = ratesRepository.findByIdUserRecipesId(id);
+        if (avgRate != null) {
+            // BigDecimal kullanarak küsuratı kes ve sadece bir ondalık basamak göster
+            BigDecimal bd = new BigDecimal(avgRate).setScale(1, RoundingMode.DOWN);
+            return bd.doubleValue();
         }
         return 0;
 

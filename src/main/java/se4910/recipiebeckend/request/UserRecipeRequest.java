@@ -11,6 +11,7 @@ import javax.annotation.processing.Generated;
 @Getter
 @Setter
 @AllArgsConstructor
+
 public class UserRecipeRequest {
 
     private Long id;

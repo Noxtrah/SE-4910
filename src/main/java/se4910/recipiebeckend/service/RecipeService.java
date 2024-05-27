@@ -1,14 +1,15 @@
 package se4910.recipiebeckend.service;
 
-import com.azure.storage.blob.BlobServiceClient;
 import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import se4910.recipiebeckend.controller.ParentController;
+import org.springframework.transaction.annotation.Transactional;
 import se4910.recipiebeckend.entity.Meal;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
@@ -16,9 +17,8 @@ import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.repository.*;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.*;
-import java.util.UUID;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -35,9 +35,13 @@ public class RecipeService {
     AzurePhotoService azurePhotoService;
 
 
-
-
-
+ /*   @Transactional(readOnly = true)
+    public Page<Recipe> paginateRecipes(int page) {
+        int size = 6; // Her sayfada 6 öğe
+        Pageable pageable = PageRequest.of(page, size);
+        return recipeRepository.findAllPage(pageable);
+    }
+*/
     public List<Recipe> getAllRecipesBasic()
     {
         List<Recipe> recipes = recipeRepository.findAll();
@@ -77,6 +81,7 @@ public class RecipeService {
         return recipe.orElse(null);
     }
 
+    @CachePut(value = "recipes")
     public ResponseEntity<String> createRecipeBlob(RecipeRequest recipeRequest) {
         if (recipeRequest.getIngredients() == null || recipeRequest.getTitle() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -103,38 +108,14 @@ public class RecipeService {
         }
     }
 
-    public List<Recipe> getAllRecipes(){
-
+    @Cacheable("recipes") // recipes adlı bir önbellek oluşturur
+    public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
 
-    private List<Meal> mealConverter(String meal)
-    {
-        String[] mealNames = {};
-        List<Meal> meals = new ArrayList<>();
-        if(meal.contains(","))
-        {
-            mealNames = meal.split(",");
 
-
-            for (String mealName : mealNames) {
-                Optional<Meal> optionalMeal = Optional.ofNullable(mealRepository.findByMealName(mealName.trim()));
-
-                optionalMeal.ifPresent(meals::add);
-
-            }
-        }
-        else {
-
-            Meal newMeal = mealRepository.findByMealName(meal);
-            if (newMeal != null)
-            {
-                meals.add(newMeal);
-            }
-        }
-        return meals;
-    }
+    @CachePut(value = "recipes")
 
     public ResponseEntity<String> updateRecipe(RecipeRequest recipeRequest)
     {
@@ -202,6 +183,33 @@ public class RecipeService {
 
     }
 
+    private List<Meal> mealConverter(String meal)
+    {
+        String[] mealNames = {};
+        List<Meal> meals = new ArrayList<>();
+        if(meal.contains(","))
+        {
+            mealNames = meal.split(",");
+
+
+            for (String mealName : mealNames) {
+                Optional<Meal> optionalMeal = Optional.ofNullable(mealRepository.findByMealName(mealName.trim()));
+
+                optionalMeal.ifPresent(meals::add);
+
+            }
+        }
+        else {
+
+            Meal newMeal = mealRepository.findByMealName(meal);
+            if (newMeal != null)
+            {
+                meals.add(newMeal);
+            }
+        }
+        return meals;
+    }
+
     public List<Recipe> getRecipesByCuisine(String cuisine) {
 
         cuisine = cuisine.substring(0, 1).toUpperCase() + cuisine.substring(1).toLowerCase();
@@ -209,6 +217,34 @@ public class RecipeService {
 
     }
 
+    @Transactional(readOnly = true)
+    public Page<Recipe> getRecipesByCuisine2(String cuisine, int page) {
+        int size = 6; // Her sayfada 6 öğe
+        Pageable pageable = PageRequest.of(page, size);
+        cuisine = cuisine.substring(0, 1).toUpperCase() + cuisine.substring(1).toLowerCase();
+        return recipeRepository.findByCuisine(cuisine, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Recipe> getSortedRecipes2(int page) {
+        int size = 6; // Her sayfada 6 öğe
+        Pageable pageable = PageRequest.of(page, size);
+        return recipeRepository.findAllByOrderByTitleAsc(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecipeResponse> getSortedRecipesByRate(List<RecipeResponse> recipes, int page) {
+        // Tarifleri puanlarına göre sıralama
+        recipes.sort(Comparator.comparingDouble(RecipeResponse::getAvgRate).reversed());
+
+        int size = 6; // Her sayfada 6 öğe
+        int start = page * size;
+        int end = Math.min((page + 1) * size, recipes.size());
+        if (start >= recipes.size()) {
+            return new ArrayList<>();
+        }
+        return recipes.subList(start, end);
+    }
     public List<RecipeResponse> fillResponse( List<Recipe> filteredRecipes, User currentUser) {
 
         List<RecipeResponse> recipeResponses = new ArrayList<>();
@@ -323,30 +359,36 @@ public class RecipeService {
         return maxPage;
 
     }
-
     public RecipeDetailResponse getRecipeDetails(long id, User currentUser) {
-
         String matchingAllergicFoods = "";
         ArrayList<String> allergicFoodList = getAllergicFoods(currentUser.getAllergicFoods());
         Optional<Recipe> targetRecipe = recipeRepository.findById(id);
+
         if (targetRecipe.isPresent()) {
+            String ingredients = targetRecipe.get().getIngredients().toLowerCase();
             for (String allergicFood : allergicFoodList) {
-                if (targetRecipe.get().getIngredients().contains(allergicFood)) {
-                    matchingAllergicFoods += allergicFood + ", ";
+                System.out.println(allergicFood);
+                if (ingredients.contains(allergicFood.trim().toLowerCase())) {
+                    System.out.println("true");
+                    matchingAllergicFoods += allergicFood + ",";
+
                 }
             }
+            System.out.println(matchingAllergicFoods);
+            return new RecipeDetailResponse(targetRecipe.get(), matchingAllergicFoods);
+        } else {
 
-            return new RecipeDetailResponse(targetRecipe.get(),matchingAllergicFoods);
+            return null;
         }
-        return null;
     }
 
-    public ArrayList<String> getAllergicFoods(String foods) {
+    private ArrayList<String> getAllergicFoods(String foods) {
         ArrayList<String> allergicFoodList = new ArrayList<>();
         if (foods != null && !foods.isEmpty()) {
             String[] allergicFoodsArray = foods.split(",");
             allergicFoodList.addAll(Arrays.asList(allergicFoodsArray));
         }
+        System.out.println(allergicFoodList);
         return allergicFoodList;
     }
 
@@ -354,4 +396,7 @@ public class RecipeService {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         return recipe.map(value -> new RecipeDetailResponse(value, "")).orElse(null);
     }
+
+
+
 }

@@ -61,6 +61,7 @@ public class UserRecipeController extends ParentController{
         }
     }
 
+
     @GetMapping("/home-user-dashboard")
     public List<UserRecipeResponseFull> getCustomDataUserDashboard(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication)
     {
@@ -72,11 +73,7 @@ public class UserRecipeController extends ParentController{
 
     }
 
-    @PutMapping("/edit-user-recipe")
-    public ResponseEntity<String> editUserRecipe(@ModelAttribute UserRecipeRequest userRecipeRequest, Authentication authentication)throws IOException {
-        User currentUser = getCurrentUser(authentication);
-        return userService.editUserRecipe(userRecipeRequest, currentUser);
-    }
+
 
     @PutMapping("/edit-user-recipe-noAuth")
     public ResponseEntity<String> editUserRecipeNoAuth(@ModelAttribute UserRecipeRequest userRecipeRequest)throws IOException {

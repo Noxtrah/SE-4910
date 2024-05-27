@@ -4,20 +4,17 @@ import jakarta.persistence.Cacheable;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import se4910.recipiebeckend.entity.Recipe;
 import se4910.recipiebeckend.entity.User;
 import se4910.recipiebeckend.entity.UserRecipes;
 import se4910.recipiebeckend.request.RecipeRequest;
 import se4910.recipiebeckend.response.RecipeDetailResponse;
 import se4910.recipiebeckend.response.RecipeResponse;
-import se4910.recipiebeckend.response.UserRecipeResponse;
-import se4910.recipiebeckend.response.UserRecipeResponseFull;
 import se4910.recipiebeckend.service.RecipeService;
 import se4910.recipiebeckend.service.UserService;
 
@@ -45,8 +42,6 @@ public class RecipeController extends ParentController{
     private List<RecipeResponse> cachedDataExtended = new ArrayList<>();
 
 
-
-
     public List<RecipeResponse> paging( @RequestParam(name = "key") int key)
     {
         return  recipeService.doPaging(cachedDataExtended,key);
@@ -60,6 +55,16 @@ public class RecipeController extends ParentController{
         }
     }
 
+    private List<RecipeResponse> updateData(User currentUser, List<Recipe> recipes) {
+        if (currentUser != null) {
+            cachedDataExtended = recipeService.fillResponse(recipes, currentUser);
+        } else {
+            cachedDataExtended = recipeService.fillResponseDefaults(recipes);
+        }
+        return cachedDataExtended;
+    }
+
+
     //*************************************************************************
     @GetMapping("/home")
     public List<RecipeResponse> home(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication)
@@ -71,6 +76,15 @@ public class RecipeController extends ParentController{
             return paging(key);
     }
 
+ /*   @GetMapping("/home2")
+    public List<RecipeResponse> home2(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication) {
+        User currentUser = getCurrentUser(authentication);
+        Page<Recipe> recipePage = recipeService.paginateRecipes(key);
+        List<Recipe> recipes = recipePage.getContent();
+        return  updateData(currentUser, recipes);
+
+    }
+*/
     @GetMapping("/get-max-page")
     public int getMaxPage()
     {
@@ -123,40 +137,66 @@ public class RecipeController extends ParentController{
     }
 
     @GetMapping("/getRecipesByCuisine")
-    public List<RecipeResponse> getRecipesByCuisine(@RequestParam String cuisine, Authentication authentication) {
+    public List<RecipeResponse> getRecipesByCuisine(@RequestParam (name = "key", defaultValue = "0") int key, String cuisine, Authentication authentication) {
         User currentUser = getCurrentUser(authentication);
         cachedData = recipeService.getRecipesByCuisine(cuisine);
         updateCachedData(currentUser);
-        return paging(0); // Assuming page 0 as initial page
+        return paging(key); // Assuming page 0 as initial page
+    }
+
+    @GetMapping("/getRecipesByCuisine2")
+    public List<RecipeResponse> getRecipesByCuisine2(@RequestParam(name = "key", defaultValue = "0") int key, @RequestParam(name = "cuisine") String cuisine,
+                                                    Authentication authentication) {
+        User currentUser = getCurrentUser(authentication);
+        Page<Recipe> recipePage = recipeService.getRecipesByCuisine2(cuisine, key);
+        List<Recipe> recipes = recipePage.getContent();
+        return updateData(currentUser, recipes);
     }
 
 
     @GetMapping("/recipe-sort-preptime")
-    public List<RecipeResponse> sortRecipesPrepTime() {
+    public List<RecipeResponse> sortRecipesPrepTime(@RequestParam(name = "key", defaultValue = "0") int key) {
         cachedDataExtended = recipeService.sortRecipesPrepTime(cachedDataExtended);
-        return paging(0);
+        return paging(key);
     }
 
     @GetMapping("/recipe-sort-alph")
-    public List<RecipeResponse> sortRecipesAlph() {
+    public List<RecipeResponse> sortRecipesAlph(@RequestParam(name = "key", defaultValue = "0") int key) {
 
         cachedDataExtended = recipeService.sortRecipesAlph(cachedDataExtended);
-        return paging(0);
+        return paging(key);
     }
 
+    @GetMapping("/recipe-sort-alph2")
+    public List<RecipeResponse> sortRecipesAlph(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication) {
+        User currentUser = getCurrentUser(authentication);
+        Page<Recipe> recipePage = recipeService.getSortedRecipes2(key);
+        List<Recipe> recipes = recipePage.getContent();
+        return updateData(currentUser, recipes);
+    }
+
+
     @GetMapping("/recipe-sort-rate")
-    public List<RecipeResponse> sortRecipesRate() {
+    public List<RecipeResponse> sortRecipesRate(@RequestParam(name = "key", defaultValue = "0") int key) {
 
         cachedDataExtended = recipeService.sortRecipesRate(cachedDataExtended);
-        return paging(0);
+        return paging(key);
+    }
+
+    @GetMapping("/recipe-sort-rate2")
+    public List<RecipeResponse> sortRecipesRate2(@RequestParam(name = "key", defaultValue = "0") int key, Authentication authentication) {
+        User currentUser = getCurrentUser(authentication);
+        List<Recipe> allRecipes = recipeService.getAllRecipes();
+        List<RecipeResponse> recipeResponses = updateData(currentUser, allRecipes);
+        recipeResponses = recipeService.getSortedRecipesByRate(recipeResponses,key);
+       return recipeResponses;
     }
 
     @GetMapping("/recipe-sort-ingCount")
-    public List<RecipeResponse> sortRecipesIngCount() {
+    public List<RecipeResponse> sortRecipesIngCount(@RequestParam(name = "key", defaultValue = "0") int key) {
 
         cachedDataExtended = recipeService.sortRecipesIngCount(cachedDataExtended);
-        return paging(0);
-
+        return paging(key);
     }
 
     @GetMapping("/one-user-published-recipes")

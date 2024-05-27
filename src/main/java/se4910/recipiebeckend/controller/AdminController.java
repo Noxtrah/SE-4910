@@ -144,14 +144,26 @@ public class AdminController {
         }
     }
 */
+
     @DeleteMapping("/delete-recipe")
     public ResponseEntity<String> deleteRecipeById(@RequestParam long id) {
 
+        try {
+            recipeService.deleteRecipe(id);
+            return ResponseEntity.ok("Recipe deleted successfully");
+        } catch (Exception e) {
+            // Handle the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting reports/recipe: " + e.getMessage());
+        }
+
+    }
+    @DeleteMapping("/delete-userRecipe")
+    public ResponseEntity<String> deleteUserRecipeById(@RequestParam long id) {
 
         try {
             List<Report> reportsToDelete = reportRepository.findByUserRecipes_Id(id);
-            reportRepository.deleteAll(reportsToDelete);
-             recipeService.deleteRecipe(id);
+             reportRepository.deleteAll(reportsToDelete);
+             userRecipeService.deleteUserRecipe(id);
             return ResponseEntity.ok("Recipe deleted successfully");
         } catch (Exception e) {
             // Handle the exception
@@ -167,6 +179,7 @@ public class AdminController {
             List<Report> reportsToDelete = reportRepository.findByUserRecipes_Id(id);
 
             // Delete the found reports
+
             reportRepository.deleteAll(reportsToDelete);
 
             return ResponseEntity.ok("Reports discarded successfully");
