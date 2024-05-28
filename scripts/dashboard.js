@@ -436,17 +436,12 @@ async function fetchData(key = 0) {
    let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     if (key !== undefined) {
       apiUrl += `?key=${key}`;
-      apiUrl += `?key=${key}`;
     }
-  
   
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': JWTAccessToken,
-      'Content-Type': 'application/json',
-      'Authorization': JWTAccessToken,
     };
-  
   
     try {
       const response = await fetch(apiUrl, {
@@ -463,22 +458,7 @@ async function fetchData(key = 0) {
   
       displayDashboard(data);
       displayPagination(data);
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: JWTAccessToken ? headers : { 'Content-Type': 'application/json' },
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log(data);
-  
-      displayDashboard(data);
-      displayPagination(data);
     } catch (error) {
-      console.error('Error fetching or displaying data:', error);
       console.error('Error fetching or displaying data:', error);
     }
   }
