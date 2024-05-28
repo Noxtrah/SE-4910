@@ -53,7 +53,7 @@ async function saveRecipe(recipeData) {
 
 async function saveRecipetoAIdataSet(body, id) {
     try {
-        const apiUrl = 'https://recipieai.azurewebsites.net/add-recipe-to-dataset';
+        const apiUrl = 'http://127.0.0.1:5000/add-recipe-to-dataset';
         const photoPathURL = await getPhotoPathURL(id);
         const new_body = { ...body, photoPathURL };
 

@@ -84,7 +84,7 @@ class RecipeDetail {
         }
 
         const cuisineElement = document.getElementById('recipe-cuisine');
-        if (selectedRecipe.cuisine) {
+        if (selectedRecipe.cuisine && !selectedRecipe.cuisine.length > 1) {
             cuisineElement.innerHTML = `<p>${selectedRecipe.cuisine}</p>`;
         } else {
             cuisineElement.innerHTML = '<p>No cuisine information available</p>';
