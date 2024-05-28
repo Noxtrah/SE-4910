@@ -59,7 +59,7 @@ function registerUser() {
         lastName: lastName,
         username: userName,
         email: email,
-        birthday: birthday,
+        birthDay: birthday,
         password: password
         // add other fields as needed
     };

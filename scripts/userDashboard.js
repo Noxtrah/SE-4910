@@ -61,184 +61,6 @@ function setRating(rating, starContainer, recipe) {
 
 let recipeIndex = 0;
 
-  // Function to create a recipe element based on the provided recipe data
-// const createRecipeElement = async (recipe) => {
-//     // Create a new column for each recipe
-//     const recipeDiv = document.createElement('div');
-//     recipeDiv.classList.add('recipe-item');
-
-//     const recipeContentWrapper = document.createElement('div');
-//     recipeContentWrapper.classList.add('recipe-content-wrapper');
-
-//     const link = document.createElement('a');
-//     // link.style.display = 'block';
-//     link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
-
-//     console.log("Recipe ID: " , recipe.id);
-
-//     // Image
-//     const imgDiv = document.createElement('div');
-//     imgDiv.classList.add('imgDiv');
-//     imgDiv.style.cursor = 'pointer';
-    
-//     const img = document.createElement('img');
-//     img.src = recipe.photoPath;
-//     img.alt = 'Recipe Photo';
-
-//     // Apply CSS to constrain image size
-//     img.style.maxWidth = '100%'; // Adjust this value as needed
-//     img.style.height = '100%'; // Maintain aspect ratio
-
-//     link.appendChild(img);
-//     imgDiv.appendChild(link);
-
-//     const starContainer = document.createElement('div');
-//     starContainer.classList.add('rating');
-
-//     // const getCustomData = await getCustomDataOfUserDashboard(recipeIndex);
-//     const rate = recipe.rate;
-//     console.log("Rate: " , rate);
-
-//     for (let i = 1; i <= 5; i++) {
-//         const star = document.createElement('span');
-//         star.classList.add('star');
-//         if (i <= rate) {
-//             star.textContent = '★';
-//         } else {
-//             star.textContent = '☆';
-//         }
-//         star.onmouseover = () => hoverStar(star);
-//         const clickHandler = () => setRating(i, starContainer, recipe);
-//         star.onclick = clickHandler;
-//         starContainer.appendChild(star);
-//     }
-//     // Create average star
-//     const generalRateOfRecipe = recipe.avgRate;
-//     recipeIndex++;
-
-//     const averageRatingSpan = document.createElement('span');
-//     averageRatingSpan.classList.add('average-rating');
-//     const starSpan = document.createElement('span');
-//     starSpan.classList.add('star-span');
-//     starSpan.textContent = '★';
-//     starSpan.style.color = 'gold'; // You can use any color value
-
-//     const rateSpan = document.createElement('span');
-//     rateSpan.classList.add('average-rate-span');
-//     rateSpan.textContent = generalRateOfRecipe;
-
-//     averageRatingSpan.appendChild(starSpan);
-//     averageRatingSpan.appendChild(rateSpan);
-
-//     const ratingDiv = document.createElement('div');
-//     ratingDiv.classList.add('rating-div');
-
-//     ratingDiv.appendChild(averageRatingSpan);
-//     ratingDiv.appendChild(starContainer);
-
-//     // recipeDiv.appendChild(averageRatingSpan);
-//     // recipeDiv.appendChild(starContainer);
-
-//     // Create heart
-//     const heartContainer = document.createElement('span');
-//     heartContainer.classList.add('heart-border'); 
-//     heartContainer.textContent = '♥';
-
-//     heartContainer.classList.add('favorite-heart');
-//     if(recipe.isLiked){
-//         heartContainer.style.color = 'red';
-//     }
-
-//     heartContainer.addEventListener('click', async () => {
-//         giveLike(recipe.id);
-//         heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
-
-//         if(!recipe.isLiked){
-//             const numHearts = 5; // Number of hearts to create
-//             for (let i = 0; i < numHearts; i++) {
-//                 createFlyingHeart(heartContainer);
-//             }
-//         }
-//     });
-
-//     function createFlyingHeart(parentElement) {
-//         const heart = document.createElement('span');
-//         heart.classList.add('flying-heart');
-//         heart.textContent = '♥';
-//         document.body.appendChild(heart);
-    
-//         const rect = parentElement.getBoundingClientRect();
-//         const startX = rect.left + (rect.width / 2); // X coordinate of parent element
-//         const startY = rect.top + (rect.height / 2); // Y coordinate of parent element
-    
-//         // Randomize end coordinates within a range around the parent element
-//         const endX = startX + Math.random() * 100 - 50;
-//         const endY = startY + Math.random() * 100 - 90;
-    
-//         // Set initial position of heart
-//         heart.style.left = startX + 'px';
-//         heart.style.top = startY + 'px';
-    
-//         // Animate heart to fly to the end coordinates
-//         heart.animate([
-//             { transform: 'translate(0, 0)' },
-//             { transform: `translate(${endX - startX}px, ${endY - startY}px)` }
-//         ], {
-//             duration: 1000, // Animation duration in milliseconds
-//             easing: 'ease-out', // Animation easing function
-//             fill: 'forwards' // Keep heart at its final position after animation
-//         });
-    
-//         // Remove heart element after animation completes
-//         setTimeout(() => {
-//             heart.remove();
-//         }, 1000);
-//     }
-
-//     // Create alert
-//     const alertContainer = document.createElement('ion-icon');
-//     alertContainer.classList.add('alert');
-//     alertContainer.classList.add('alert-border');
-//     alertContainer.setAttribute('name','alert-outline');
-//     alertContainer.addEventListener('click', function() {
-//         createPopup(recipe);
-//     });
-
-//     imgDiv.appendChild(alertContainer);
-
-//     // Title
-//     const titleDiv = document.createElement('div');
-//     titleDiv.classList.add('titleDiv');
-//     titleDiv.textContent = recipe.title;
-
-//     // Append stars and heart to the recipeDiv
-//     recipeDiv.appendChild(imgDiv);
-//     recipeDiv.appendChild(titleDiv);
-
-//     // Create a div for user information
-//     const userDiv = document.createElement('div');
-//     userDiv.classList.add('user-info');
-
-//     // User Image
-//     const userImgDiv = document.createElement('ion-icon');
-//     userImgDiv.classList.add('user-img');    
-//     userImgDiv.setAttribute('name','person-circle-outline');
-
-//     userDiv.appendChild(userImgDiv);
-
-//     // Username
-//     const usernameSpan = document.createElement('span');
-//     usernameSpan.textContent = recipe.username;
-//     usernameSpan.classList.add('username');
-//     userDiv.appendChild(usernameSpan);
-
-//     // Append userDiv to recipeDiv
-//     recipeDiv.appendChild(userDiv);
-//     recipeDiv.appendChild(ratingDiv);
-
-//     return recipeDiv;
-// };
-
 const createRecipeElement = async (recipe) => {
     // Create a new column for each recipe
     const recipeDiv = document.createElement('div');
@@ -255,7 +77,7 @@ const createRecipeElement = async (recipe) => {
     link.addEventListener('click', () => openRecipeDetailPage(recipe.id));
 
     const img = document.createElement('img');
-    img.src = recipe.photoPath;
+    img.src = recipe.photoPath ? recipe.photoPath : '../Images/RecipeIcon4.png';
     img.alt = 'Recipe Photo';
     img.style.maxWidth = '100%'; // Adjust this value as needed
     img.style.maxHeight = '100%'; // Maintain aspect ratio
@@ -263,6 +85,7 @@ const createRecipeElement = async (recipe) => {
     link.appendChild(img);
     imgDiv.appendChild(link);
     recipeDiv.appendChild(imgDiv);
+
 
     // Title
     const titleDiv = document.createElement('div');
@@ -287,6 +110,9 @@ const createRecipeElement = async (recipe) => {
         } else {
             star.textContent = '☆';
         }
+        star.onmouseover = () => hoverStar(star);
+        const clickHandler = () => setRating(i, starContainer, recipe);
+        star.onclick = clickHandler;
         starContainer.appendChild(star);
     }
     ratingDiv.appendChild(starContainer);
@@ -334,7 +160,13 @@ userInfoDiv.classList.add('user-info');
 // User Image
 const userImgDiv = document.createElement('ion-icon');
 userImgDiv.classList.add('user-img');
-userImgDiv.setAttribute('name', 'person-circle-outline');
+if(recipe.userPhotoPath == null){
+    userImgDiv.setAttribute('name', 'person-circle-outline');
+}else{
+    userImgDiv.setAttribute('name', recipe.userPhotoPath);
+}
+// userInfoDiv.appendChild(userImgDiv)
+// userImgDiv.setAttribute('name', 'person-circle-outline');
 userInfoDiv.appendChild(userImgDiv);
 
 // Username with link
@@ -730,6 +562,7 @@ const displayDashboard = async (recipes) => {
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
     let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipesUser/home-user-dashboard';
+    // const apiUrl = 'https://run.mocky.io/v3/f162c031-dcc1-4794-bd22-e0b52a55a61d';
     if (key !== undefined) {
       apiUrl += `?key=${key}`;
     }
@@ -785,7 +618,7 @@ async function fetchData(key = 0) {
 
 const openRecipeDetailPage = (id) => {
     const recipeDetailURL = `userRecipeDetail.html?id=${id}`;
-    console.log("Girdi");
+    console.log("Girdi");    
     // Perform any additional actions before navigating, if needed
     // For example, you might want to validate the id or perform some asynchronous tasks
     window.location.href = recipeDetailURL;
@@ -873,36 +706,6 @@ window.onload = function () {
     setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
 
-
-// async function displayPage(startPage) {
-//     const maxPage = await getMaxPage();
-//     if (typeof startPage !== 'number' || startPage < 0 || startPage >= maxPage) {
-//         console.error(`Invalid startPage value: ${startPage}`);
-//         startPage = 0;  // Set a default valid startPage value
-//     }
-
-//     if (typeof maxPage !== 'number' || maxPage <= 0) {
-//         console.error(`Invalid maxPagePages value: ${maxPage}`);
-//         maxPage = 1;  // Set a default valid maxPagePages value
-//     }
-
-//     $('#pagination-demo').twbsPagination('destroy');
-//     $('#pagination-demo').twbsPagination({
-//         startPage: startPage + 1, // twbsPagination uses 1-based index
-//         totalPages: maxPage,
-//         visiblePages: 5,
-//         next: 'Next',
-//         prev: 'Prev',
-//         onPageClick: function (event, page) {
-//             fetchData(page - 1);
-//             console.log("Page =", page - 1);
-//         }
-//     });
-// }
-
-// displayPage(0, 2);
-
-
 async function getMaxPage() {
     const apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/get-max-page'; // Replace this URL with your actual API endpoint
 
@@ -956,3 +759,82 @@ function reportRecipe(userRecipeId, reportCause, extraNotes) {
         console.error('Response body:', error.response.body);
     });
   }
+
+//   function fetchUserProfileData() {
+//     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Authorization': JWTAccessToken,
+//     };
+
+//     return fetch(apiUrl, { // Return the fetch promise
+//         method: 'GET',
+//         headers: headers,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok (status: ${response.status})`);
+//         }
+//         return response.json(); // Assuming the response is JSON
+//     });
+// }
+
+// function updateUserIcon(userPhotoUrl) {
+//     const userImgElements = document.getElementsByClassName('user-img');
+//     if (userImgElements.length > 0) {
+//         const userImgDiv = userImgElements[0]; // Access the first element with the class 'user-img'
+        
+//         // Create a new img element
+//         const imgElement = document.createElement('img');
+//         imgElement.setAttribute('src', userPhotoUrl);
+//         imgElement.classList.add('profile-photo');
+
+//         // Replace the ion-icon element with the new img element
+//         userImgDiv.replaceWith(imgElement);
+//     }
+// }
+
+// // Fetch user data
+// function fetchUserData() {
+//     const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+//     const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Authorization': JWTAccessToken,
+//     };
+
+//     return fetch(apiUrl, { // Return the fetch promise
+//         method: 'GET',
+//         headers: headers,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok (status: ${response.status})`);
+//         }
+//         return response.json(); // Assuming the response is JSON
+//     });
+// }
+
+// // Handle errors
+// function handleError(error) {
+//     console.error('Error fetching user data:', error);
+// }
+
+// // Initialize the user icon update process
+// function initUserIconUpdate() {
+//     fetchUserData()
+//         .then(data => {
+//             const userPhotoUrl = data.userPhoto;
+//             console.log('User Photo URL:', userPhotoUrl);
+//             updateUserIcon(userPhotoUrl);
+//         })
+//         .catch(handleError);
+// }
+
+// // Start the process
+// initUserIconUpdate();

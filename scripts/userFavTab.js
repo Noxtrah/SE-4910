@@ -31,21 +31,48 @@ async function displayFavRecipes() {
       const cardDiv = document.createElement('div');
       cardDiv.classList.add('card');
       const truncatedDescription = truncateDescription(item.description);
+
+      let isUserRecipe;
+      if (item.userRecipePhoto) {
+        isUserRecipe = true;
+      } else {
+        isUserRecipe = false;
+      }
+
       const cardContent = `
-        <img src="${item.photoPath}" alt="${item.title}">
+        <img src="${isUserRecipe ? item.userRecipePhoto : (item.photoPath || 'default/path/to/image.jpg')}" alt="${item.title}">
         <div class="info">
           <h1>${item.title}</h1>
           <p>${truncatedDescription}</p>
-          <button>Read More</button>
+          <button class="read-more-btn" data-id="${item.id}" data-is-user-recipe="${isUserRecipe}">Read More</button>
         </div>
       `;
       cardDiv.innerHTML = cardContent;
       cardsContainer.appendChild(cardDiv);
     });
+    
+    
+    document.querySelectorAll('.read-more-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const id = event.target.getAttribute('data-id');
+        const isUserRecipe = event.target.getAttribute('data-is-user-recipe') === 'true';
+        goRecipeDetailPage(id, isUserRecipe);
+      });
+    });
   } catch (error) {
     console.error('Error displaying favorite recipes:', error);
   }
 }
+
+  function goRecipeDetailPage(id, isUserRecipe) {
+    const recipeDetailURL = isUserRecipe 
+      ? `userRecipeDetail.html?id=${id}` 
+      : `recipeDetail.html?id=${id}`;
+    window.location.href = recipeDetailURL;
+  }
+  
+ 
+
 
 function truncateDescription(description) {
   const maxLength = 100; // Maksimum karakter sayısı
@@ -71,3 +98,4 @@ function setupBackButton() {
 window.onload = function () {
   setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
 };
+

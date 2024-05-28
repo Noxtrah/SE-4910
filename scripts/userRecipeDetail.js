@@ -9,9 +9,14 @@ class RecipeDetail {
     loadRecipeDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const recipeId = parseInt(urlParams.get('id'), 10);
+        const JWTAccessToken = sessionStorage.getItem('accessToken');
 
         if (recipeId) {
-            fetch(`https://recipiebeckend.azurewebsites.net/recipesUser/user-recipe-byID?userRecipeId=${recipeId}`)
+            fetch(`https://recipiebeckend.azurewebsites.net/recipesUser/user-recipe-byID?userRecipeId=${recipeId}`,{
+                headers: {
+                    'Authorization': JWTAccessToken
+                }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -37,10 +42,34 @@ class RecipeDetail {
         document.getElementById('recipe-title').textContent = selectedRecipe.title;
 
         const ingredientsList = document.getElementById('recipe-ingredients').getElementsByTagName('ul')[0];
+        ingredientsList.innerHTML = '';
+        const allergicFoods = selectedRecipe.allergicFoods; // Assuming data.allergicFoods is a comma-separated string of allergens
+
+        console.log("allergicFoods: " , allergicFoods);
+
+        const allergens = allergicFoods.split(',')
+        .map(allergen => allergen.trim().toLowerCase())
+        .filter(allergen => allergen !== "");
+
         if (selectedRecipe.ingredients) {
             selectedRecipe.ingredients.split(',').forEach(ingredient => {
                 const listItem = document.createElement('li');
-                listItem.textContent = ingredient.trim();
+                const trimmedIngredient = ingredient.trim();
+                listItem.textContent = trimmedIngredient;
+
+                // Check if the ingredient contains any of the allergens
+                allergens.forEach(allergen => {
+                    if (trimmedIngredient.toLowerCase().includes(allergen)) {
+                        listItem.style.color = 'red'; // Highlight the ingredient
+                        const warningIcon = document.createElement('i');
+                        warningIcon.className = 'fa-solid fa-triangle-exclamation fa-fade';
+                        warningIcon.style.verticalAlign = '0%';
+                        warningIcon.style.marginLeft = '10px';
+                        warningIcon.title = `You are allergic to ${allergen} !`;
+                        listItem.appendChild(warningIcon);
+                    }
+                });
+
                 ingredientsList.appendChild(listItem);
             });
         } else {
@@ -72,10 +101,16 @@ class RecipeDetail {
             mealElement.innerHTML = '<p>No meal information available</p>';
         }
 
+        const recipeImage = document.querySelector('.recipe-image');
+
         if (selectedRecipe.photoPath) {
-            document.querySelector('.recipe-image').src = selectedRecipe.photoPath;
+            recipeImage.src = selectedRecipe.photoPath;
         } else {
-            '<p>No recipe photo available</p>';
+            recipeImage.src = '../Images/RecipeIcon4.png';
+            recipeImage.style.height = '40vh';
+            recipeImage.style.display = 'block'; // Change display to block to ensure the image is centered within its container
+            recipeImage.style.margin = 'auto';
+
         }
 
         const prepTimeElement = document.getElementById('recipe-prep-time');
@@ -166,34 +201,34 @@ let slideIndex = 0;
 const slidesContainer = document.getElementById('slides');
 
 // AI'dan gelen verileri burada tanımlayın
-const aiData = [
-    { img: "image1.jpg", alt: "AI verisi 1" },
-    { img: "image2.jpg", alt: "AI verisi 2" },
-    { img: "image3.jpg", alt: "AI verisi 3" },
-    { img: "image4.jpg", alt: "AI verisi 4" },
-    { img: "image5.jpg", alt: "AI verisi 5" },
-    { img: "image6.jpg", alt: "AI verisi 6" },
-    { img: "image7.jpg", alt: "AI verisi 7" },
-    { img: "image8.jpg", alt: "AI verisi 8" },
-    { img: "image9.jpg", alt: "AI verisi 9" }
-];
+// const aiData = [
+//     { img: "image1.jpg", alt: "AI verisi 1" },
+//     { img: "image2.jpg", alt: "AI verisi 2" },
+//     { img: "image3.jpg", alt: "AI verisi 3" },
+//     { img: "image4.jpg", alt: "AI verisi 4" },
+//     { img: "image5.jpg", alt: "AI verisi 5" },
+//     { img: "image6.jpg", alt: "AI verisi 6" },
+//     { img: "image7.jpg", alt: "AI verisi 7" },
+//     { img: "image8.jpg", alt: "AI verisi 8" },
+//     { img: "image9.jpg", alt: "AI verisi 9" }
+// ];
 
 // Verileri 3'erli gruplar halinde slider'a eklemek
-for (let i = 0; i < aiData.length; i += 3) {
-    const slide = document.createElement('div');
-    slide.className = 'slide';
+// for (let i = 0; i < aiData.length; i += 3) {
+//     const slide = document.createElement('div');
+//     slide.className = 'slide';
     
-    for (let j = 0; j < 3; j++) {
-        if (aiData[i + j]) {
-            const img = document.createElement('img');
-            img.src = aiData[i + j].img;
-            img.alt = aiData[i + j].alt;
-            slide.appendChild(img);
-        }
-    }
+//     for (let j = 0; j < 3; j++) {
+//         if (aiData[i + j]) {
+//             const img = document.createElement('img');
+//             img.src = aiData[i + j].img;
+//             img.alt = aiData[i + j].alt;
+//             slide.appendChild(img);
+//         }
+//     }
 
-    slidesContainer.appendChild(slide);
-}
+//     slidesContainer.appendChild(slide);
+// }
 
 function showSlide(index) {
     const slides = document.querySelectorAll('.slide');

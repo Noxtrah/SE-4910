@@ -157,7 +157,7 @@ a{
     padding-top:5%;
     z-index:1;
     word-wrap: break-word;
-    overflow-y: scroll;
+    overflow-y: auto;
     color: black;
   }
   
@@ -285,6 +285,27 @@ a{
   }
   
 } */
+.edit-recipe-btn{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 38px;
+  min-width: 96px;
+  min-height: 38px;
+  border: none;
+  color: #fff;
+  background-color: var(--dark_purple);
+  transition: background-color .17s ease,color .17s ease;
+}
+
+.edit-recipe-btn:hover{
+  background-color: var(--light_purple)
+}
 
 .delete-button{
   display: inline-block;

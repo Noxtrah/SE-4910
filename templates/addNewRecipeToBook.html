@@ -38,8 +38,34 @@
             <label for="recipe-meal">Meal:</label>
             <textarea id="recipe-meal" name="meal"></textarea>
 
-            <label for="recipe-prep-time">Preparation Time:</label>
-            <input type="text" id="recipe-prep-time" name="prep-time"></input>
+            <!-- <label for="recipe-prep-time">Preparation Time:</label>
+            <input type="text" id="recipe-prep-time" name="prep-time"></input> -->
+
+            <label for="recipe-prep-hour">Preparation Time:</label>
+            <div class="prep-time-container">
+                <select id="recipe-prep-hour" name="prep-hour">
+                    <option value="0">0 hour</option>
+                    <option value="1">1 hour</option>
+                    <option value="2">2 hours</option>
+                    <option value="3">3 hours</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <select id="recipe-prep-minute" name="prep-minute">
+                    <option value="0">0 minutes</option>
+                    <option value="5">5 minutes</option>
+                    <option value="10">10 minutes</option>
+                    <option value="15">15 minutes</option>
+                    <option value="20">20 minutes</option>
+                    <option value="25">25 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="35">35 minutes</option>
+                    <option value="40">40 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="50">50 minutes</option>
+                    <option value="55">55 minutes</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
 
             <label for="photo">Choose a Photo: <span class="file-name" style="color: black;"></span></label>
             <label class="custom-file-input" for="photo">

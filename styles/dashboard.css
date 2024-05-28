@@ -487,7 +487,6 @@ a {
 
 
   .favorite-heart {
-    /* margin-left: 20px; */
     color: black;
     cursor: pointer;
     position: absolute;
@@ -507,6 +506,14 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.flying-heart {
+  position: fixed;
+  font-size: 24px;
+  color: red; /* Color of the flying hearts */
+  pointer-events: none; /* Make hearts non-interactive */
+  z-index: 9999; /* Ensure hearts appear above other content */
 }
 
   .recipe p {
@@ -1961,6 +1968,14 @@ input[type="radio"],
 .profile-icon{
   font-size: 60px;
   margin-left: 42px;
+}
+
+.profile-photo{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 42px;
+  margin-right: 2px;
 }
 
 .profile-dropdown {

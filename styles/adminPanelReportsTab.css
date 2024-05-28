@@ -122,6 +122,12 @@ body {
     border-radius: 10px;
 }
 
+.report-recipe-information{
+    color:var(--black);
+    margin: 10px 1vw;
+    text-decoration-line:underline;
+}
+
 .selected-recipe-report{
     color: var(--black);
     margin: 10px 1vw;
@@ -129,6 +135,10 @@ body {
 
 .selected-recipe-report:last-child {
     margin-bottom: 5vh;
+}
+
+.seperator{
+    width: 90%;
 }
 
 /* .content-container {
@@ -169,11 +179,12 @@ body {
     /* Add fixed size for consistent grid layout */
     width: 100%; /* Adjust as needed */
     height: 100%; /* Adjust as needed */
-    
+    max-height: 10rem; /*New*/
 }
 
 .report-item img {
     max-width: 116.72px;
+    min-width: 116.72px; /*New*/
     height: 100%;
     object-fit: cover;
     margin-right: 20px;

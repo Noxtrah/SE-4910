@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/editUserRecipe.css">
+    <title>Add New Recipe</title>
+</head>
+
+<body>
+    <header>
+        <div id="header-container">
+            <button id="back-arrow-button">
+                <ion-icon class="back-arrow" name="chevron-back-circle-outline"></ion-icon>
+            </button>
+            <h1 id="my-recipe-book-title">Edit Recipe Form</h1>
+        </div>
+    </header>
+
+    <div class="recipe-form-container">
+        <h1 class="form-header">Edit Recipe</h1>
+
+        <!-- Recipe form -->
+        <form id="recipe-form" enctype="multipart/form-data">
+            <label for="recipe-title">Title:</label>
+            <input type="text" id="recipe-title" name="title" required>
+
+            <label for="recipe-ingredients">Ingredients:</label>
+            <textarea id="recipe-ingredients" name="ingredients" required></textarea>
+
+            <label for="recipe-description">Description:</label>
+            <textarea id="recipe-description" name="description" required></textarea>
+
+            <label for="recipe-cuisine">Cuisine:</label>
+            <textarea id="recipe-cuisine" name="cuisine"></textarea>
+
+            <label for="recipe-meal">Meal:</label>
+            <textarea id="recipe-meal" name="meal"></textarea>
+
+            <!-- <label for="recipe-prep-time">Preparation Time:</label>
+            <input type="text" id="recipe-prep-time" name="prep-time"></input> -->
+
+            <label for="recipe-prep-hour">Preparation Time:</label>
+            <div class="prep-time-container">
+                <select id="recipe-prep-hour" name="prep-hour">
+                    <option value="0">0 hour</option>
+                    <option value="1">1 hour</option>
+                    <option value="2">2 hours</option>
+                    <option value="3">3 hours</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <select id="recipe-prep-minute" name="prep-minute">
+                    <option value="0">0 minutes</option>
+                    <option value="5">5 minutes</option>
+                    <option value="10">10 minutes</option>
+                    <option value="15">15 minutes</option>
+                    <option value="20">20 minutes</option>
+                    <option value="25">25 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="35">35 minutes</option>
+                    <option value="40">40 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="50">50 minutes</option>
+                    <option value="55">55 minutes</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+
+            <label for="photo">Choose a Photo: <span class="file-name" style="color: black;"></span></label>
+            <label class="custom-file-input" for="photo">
+                Choose File
+                <input type="file" id="photo" class="photo" name="photo" accept="image/*" onchange="displayFileName(this)">
+            </label>
+            <script>
+                function displayFileName(input) {
+                  const fileName = input.files[0] ? input.files[0].name : '';
+                  document.querySelector('.file-name').textContent = fileName;
+                }
+              </script>
+        </form>
+
+        <!-- Back button -->
+        <div class="button-container">
+            <a href="recipe-book.html" id="back-button"></a>
+            <button type="submit" class="save-button" id="save-button">Edit Recipe</button>
+        </div>
+    </div>
+    <script src="../scripts/editUserRecipe.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

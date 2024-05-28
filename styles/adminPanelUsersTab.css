@@ -26,6 +26,15 @@ dir{
     margin-right: 15px;
 }
 
+.person-circle-outline{
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+    color: var(--dark_cyan)
+}
+
 .board h5{
     font-weight: 600;
     font-size: 14px;
