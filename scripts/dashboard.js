@@ -348,21 +348,59 @@ const createRecipeElement = async (recipe) => {
     heartContainer.classList.add('heart-border'); 
     heartContainer.textContent = '♥';
 
-    document.body.appendChild(heartContainer);
+    // document.body.appendChild(heartContainer);
 
     heartContainer.classList.add('favorite-heart');
     if(recipe.isLiked){
         heartContainer.style.color = 'red';
     }
-    // heart.onclick = () => toggleFavorite(heart);
 
-    // const clickHandler = () => setLike(heartContainer, recipe);
-    // heartContainer.onclick = clickHandler;
     heartContainer.addEventListener('click', async () => {
         giveLike(recipe.recipe.id);
         heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
+        if (!recipe.isLiked) {
+            const numHearts = 5; // Number of hearts to create
+            for (let i = 0; i < numHearts; i++) {
+                createFlyingHeart(heartContainer);
+            }
+        }
     });
 
+    imgDiv.appendChild(heartContainer);
+
+    function createFlyingHeart(parentElement) {
+        const heart = document.createElement('span');
+        heart.classList.add('flying-heart');
+        heart.textContent = '♥';
+        document.body.appendChild(heart);
+
+        const rect = parentElement.getBoundingClientRect();
+        const startX = rect.left + (rect.width / 2); // X coordinate of parent element
+        const startY = rect.top + (rect.height / 2); // Y coordinate of parent element
+
+        // Randomize end coordinates within a range around the parent element
+        const endX = startX + Math.random() * 100 - 50;
+        const endY = startY + Math.random() * 100 - 90;
+
+        // Set initial position of heart
+        heart.style.left = startX + 'px';
+        heart.style.top = startY + 'px';
+
+        // Animate heart to fly to the end coordinates
+        heart.animate([
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px)` }
+        ], {
+            duration: 1000, // Animation duration in milliseconds
+            easing: 'ease-out', // Animation easing function
+            fill: 'forwards' // Keep heart at its final position after animation
+        });
+
+        // Remove heart element after animation completes
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
 
 
     // Title
@@ -374,7 +412,7 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
     recipeDiv.appendChild(starContainer);
-    recipeDiv.appendChild(heartContainer);
+    // recipeDiv.appendChild(heartContainer);
 
     return recipeDiv;
 };
@@ -730,65 +768,7 @@ function basicSearch() {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
-//https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info
-// async function getStarsAndHeart(index) {
-//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
-//     // const headers = {
-//     //     'Content-Type': 'application/json',
-//     //     'Authorization': JWTAccessToken,
-//     // };
-//     const response = await fetch(
-// 		apiUrl,
-// 		{
-// 			method: 'GET',
-// 			headers: {
-// 				'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-// 			}
-// 		}
-// 	);
-// 	if (!response.ok) {
-// 		throw new Error(`HTTP error! status: ${response.status}`);
-// 	}
-// 	const data = await response.json();
-//     console.log(data);
-//     var starAndHeartInfoArray = []
-//     starAndHeartInfoArray.push(data);
-//     return starAndHeartInfoArray;
-// }
-
-// async function getSelectedCustomDataOfDashboard(index) {
-//    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
-//     const response = await fetch(
-//         apiUrl,
-//         {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-//             }
-//         }
-//     );
-
-//     if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const contentType = response.headers.get('Content-Type');
-
-//     if (contentType && contentType.includes('application/json')) {
-//         const data = await response.json();
-//         console.log("Data: " , data);
-//         return data[index];
-//     } else {
-//         // Handle non-JSON response or empty response
-//         console.error('Invalid or empty JSON response');
-//         return null; // or handle it according to your application's logic
-//     }
-// }
 
 function openNewTab() {
     const currentURL = window.location.href;
