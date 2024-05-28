@@ -497,10 +497,11 @@ async function fetchData(key = 0) {
 
 const fetchDataByMealType = async (mealType, key) => {
     key = sessionStorage.getItem('key');
+    sessionStorage.setItem('selectedOption', mealType);
+
     try {
         // Modify the endpoint based on the mealType parameter
         const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByMeal?mealType=${mealType}&key=${key}`;
-        sessionStorage.setItem('selectedOption', mealType);
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -512,9 +513,10 @@ const fetchDataByMealType = async (mealType, key) => {
 
 const fetchDataByCuisine = async (cuisine, key) => {
     key = sessionStorage.getItem('key');
+    sessionStorage.setItem('selectedOption', cuisine);
+
     try {
         const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByCuisine?cuisine=${cuisine}&key=${key}`;
-        sessionStorage.setItem('selectedOption', cuisine);
         console.log(apiUrl);
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -525,14 +527,28 @@ const fetchDataByCuisine = async (cuisine, key) => {
     }
 };
 
-const openRecipeDetailPage = (id) => {
-    const recipeDetailURL = `recipeDetail.html?id=${id}`;
-    // Perform any additional actions before navigating, if needed
-    // For example, you might want to validate the id or perform some asynchronous tasks
-    window.location.href = recipeDetailURL;
-};
+async function updateSelectedValue(newValue) {
+    const selectedValue = document.getElementById('selected-value');
+    const optionsViewButton = document.getElementById('options-view-button');
+    const options = document.querySelectorAll('.option');
+    console.log("New value: " , newValue);
+    selectedValue.textContent = newValue;
+    console.log("Selected value: " , selectedValue);
 
-document.addEventListener('DOMContentLoaded', function () {
+    selectedValue.style.display = 'block';
+    // sessionStorage.setItem('selectedOption', newValue);
+
+    // Ensure the dropdown is closed
+    optionsViewButton.checked = false;
+
+    // Update the display style for options
+    options.forEach(option => {
+        const optionText = option.querySelector('.opt-val').textContent;
+        option.style.display = optionText === newValue ? 'block' : 'none';
+    });
+}
+
+function initializeDropdown() {
     //DROPDOWN BOX (SORTING)
     const optionsViewButton = document.getElementById('options-view-button');
     const selectedValue = document.getElementById('selected-value');
@@ -549,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Check if there is a stored option in sessionStorage
     const storedOption = sessionStorage.getItem('selectedOption');
     if (storedOption) {
-        selectedValue.textContent = storedOption;
+        // selectedValue.textContent = storedOption;
         selectedValue.style.display = 'block';
         isOptionSelected = true;
     } else {
@@ -584,6 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
         option.addEventListener('click', function () {
             const selectedOptionText = option.querySelector('.opt-val').textContent;
             selectedValue.textContent = selectedOptionText;
+            // updateSelectedValue(selectedValue);
             selectedValue.style.display = 'block';
             optionsViewButton.checked = false; // Close the dropdown when an option is selected
             isOptionSelected = true;
@@ -592,6 +609,76 @@ document.addEventListener('DOMContentLoaded', function () {
             sessionStorage.setItem('selectedOption', selectedOptionText);
         });
     });
+}
+
+const openRecipeDetailPage = (id) => {
+    const recipeDetailURL = `recipeDetail.html?id=${id}`;
+    // Perform any additional actions before navigating, if needed
+    // For example, you might want to validate the id or perform some asynchronous tasks
+    window.location.href = recipeDetailURL;
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    //DROPDOWN BOX (SORTING)
+    initializeDropdown();
+    // const optionsViewButton = document.getElementById('options-view-button');
+    // const selectedValue = document.getElementById('selected-value');
+    // const optionValues = document.querySelectorAll('.opt-val');
+    // const options = document.querySelectorAll('.option');
+    // const inputs = document.querySelectorAll('input[type="radio"]');
+    // let isOptionSelected = false;
+
+    // // Initialize radio buttons to unchecked state
+    // inputs.forEach(input => {
+    //     input.checked = false;
+    // });
+
+    // // Check if there is a stored option in sessionStorage
+    // const storedOption = sessionStorage.getItem('selectedOption');
+    // if (storedOption) {
+    //     selectedValue.textContent = storedOption;
+    //     selectedValue.style.display = 'block';
+    //     isOptionSelected = true;
+    // } else {
+    //     selectedValue.textContent = 'Sort by:';
+    // }
+
+    // // Event listener for radio button change
+    // inputs.forEach(input => {
+    //     input.addEventListener('change', function () {
+    //         if (this.checked) {
+    //             optionValues.forEach(val => {
+    //                 val.style.display = 'block';
+    //             });
+    //         }
+    //     });
+    // });
+
+    // // Close the dropdown and reset the selected value to "Sort by:" when clicking outside the dropdown
+    // document.addEventListener('click', function (event) {
+    //     if (event.target !== optionsViewButton && isOptionSelected) {
+    //         optionsViewButton.checked = false;
+
+    //         selectedValue.style.display = 'none';
+    //         options.forEach(option => {
+    //             option.style.display = 'block';
+    //         });
+    //     }
+    // });
+
+    // // Add event listeners to each option to update the selected value and close the dropdown
+    // options.forEach(option => {
+    //     option.addEventListener('click', function () {
+    //         const selectedOptionText = option.querySelector('.opt-val').textContent;
+    //         selectedValue.textContent = selectedOptionText;
+    //         selectedValue.style.display = 'block';
+    //         optionsViewButton.checked = false; // Close the dropdown when an option is selected
+    //         isOptionSelected = true;
+
+    //         // Store the selected option in sessionStorage
+    //         sessionStorage.setItem('selectedOption', selectedOptionText);
+    //     });
+    // });
 
     const homeLink = document.getElementById('home-link');
 
@@ -621,7 +708,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchSortOperations(selectedValue, key) {
-    console.log("Key = " , key);
+    let selectedCuisines = ['Italian', 'Chinese', 'Mexican', 'French', 'Turkish', 'American'];
+    let selectedMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'dessert'];
+    console.log("selectedValue =", selectedValue);
+    console.log("Key =", key);
+
     switch (selectedValue) {
         case 'Prep. Time':
             fetchSortByTime(key);
@@ -635,13 +726,17 @@ function fetchSortOperations(selectedValue, key) {
         case 'Ingredient Count':
             fetchSortByIngrCount(key);
             break;
-        case selectedValue:
-            fetchDataByCuisine(selectedValue ,key);
-            break;
         default:
-            console.log("Invalid option selected");
+            if (selectedCuisines.includes(selectedValue)) {
+                fetchDataByCuisine(selectedValue, key);
+            } else if (selectedMealTypes.includes(selectedValue)) {
+                fetchDataByMealType(selectedValue, key);
+            } else {
+                console.log("Invalid option selected");
+            }
     }
 }
+
 
 function fetchSortByTime(key) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');

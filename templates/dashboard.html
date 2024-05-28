@@ -29,7 +29,7 @@
           <button class="meal-types">Cuisines<ion-icon name="chevron-down-outline"
               class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-cuisines-dropdown-content">
-            <a onclick="fetchDataByCuisine('French');">French</a>
+            <a onclick="fetchDataByCuisine('French'), updateSelectedValue('Sort by:');">French</a>
             <a onclick="fetchDataByCuisine('Chinese');">Chinese</a>
             <a onclick="fetchDataByCuisine('Japanese');">Japanese</a>
             <a onclick="fetchDataByCuisine('Italian');">Italian</a>
@@ -99,7 +99,7 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="cuisines-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French')">French</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French'); updateSelectedValue('Sort by:');">French</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Chinese')">Chinese</a>
                 <a style="font-size: larger;" class="nav-link glass"
                   onclick="fetchDataByCuisine('Japanese')">Japanese</a>
