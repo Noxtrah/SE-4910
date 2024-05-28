@@ -1664,6 +1664,40 @@ input[type="radio"] {
   }
 }
 
+@media screen and (max-width: 991px) {
+  .select-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* backdrop-filter: blur(20px); */
+    z-index: 3;
+
+  }
+
+  #app-cover{
+    width: 200px;
+    position: relative;
+    background-color: #8a6d8d81;
+
+  }
+
+  #options {
+    width: 200px;
+    text-align: center;
+    /* background-color: #8a6d8d81; */
+    backdrop-filter: blur(20px);
+
+  }
+
+  .opt-val{
+    text-align:center;
+    margin-left: -10px;
+    vertical-align: 150%;
+    backdrop-filter: blur(20px);
+
+  }
+}
+
 @keyframes moveup {
   0% {
     bottom: -25px;
