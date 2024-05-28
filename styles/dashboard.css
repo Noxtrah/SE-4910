@@ -1300,7 +1300,7 @@ Recipes
 
 .recipes-list {
   display: grid;
-  gap: 2rem 1rem;
+  gap: 3rem 1rem;
   padding-bottom: 3rem;
 }
 .tags-container {
@@ -1353,6 +1353,8 @@ Recipes
 @media screen and (min-width: 692px) {
   .recipes-list {
     grid-template-columns: 1fr 1fr;
+    gap: 2rem 1rem;
+
   }
   /* .recipe-img {
     height: 10rem;
@@ -1984,7 +1986,7 @@ input[type="radio"],
 @media screen and (max-width: 691px){
   .recipe-item {
     position: relative;
-    border: 4px solid silver;
+    border: 4px solid rgb(123, 115, 128);
     border-radius: 10px;
     min-height: 50vh;
   }
@@ -2083,4 +2085,42 @@ input[type="radio"],
 .paging-container .pagination li a:hover,
 .paging-container .pagination li.active a {
   background: rgba(255, 255, 255, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .paging-container {
+    position: relative;
+    /* height: 100vh; */
+    width: 100%;
+    /* background-size:auto; */
+    /* background-position:0%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+  }
+
+  #pagination-demo{
+    height: 40px;
+  }
+  
+  .paging-container .pagination {
+    position: relative;
+    /* height: 60px; */
+    background: #8a6d8d81;
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    border-radius: 2px;
+    /* padding: 0; */
+  }
+  .paging-container .pagination li a {
+    position: relative;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+  }
 }
