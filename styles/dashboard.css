@@ -13,8 +13,6 @@
 }
 
 .background{
-  /* background-image: url('Images/website-background-purple-and-black-tones-upscaled.png'); */
-  /* You can add additional background properties as needed */
   background-size: cover; /* Adjust to your preference */
   background-position: center; /* Adjust to your preference */
   background-repeat: no-repeat; /* Adjust to your preference */
@@ -24,14 +22,6 @@
   background-color: rgb(205, 199, 208);
   color: rgb(243, 232, 247);
 }
-
-/* body {
-  background: var(--backgroundColor);
-  font-family: var(--bodyFont);
-  font-weight: 400;
-  line-height: 1.75;
-  color: var(--textColor);
-} */
 
 p {
   margin-top: 100px;
@@ -697,6 +687,7 @@ body {
     margin: 0;
     height: auto;
     width: 100%;
+    overflow-x: hidden;
 }
 
 b {
