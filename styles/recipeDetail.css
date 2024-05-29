@@ -6,7 +6,6 @@
     --background_color: rgb(205, 199, 208);
 }
 
-
 body {
     font-family: Arial, sans-serif;
     font-size: larger;
@@ -22,13 +21,26 @@ header {
     padding: 1em;
 }
 
+
+.recipe-ingredients,
+.recipe-description,
+.recipe-cuisine,
+.recipe-meal,
+.recipe-prep-time {
+    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: inset 0 0 30px rgba(48, 3, 42, 0.1);
+    border-radius: 10px;
+    text-align: justify;
+}
+
 .recipe-container {
     max-width: 800px;
     margin: 20px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
 .recipe-image {
@@ -36,14 +48,14 @@ header {
     height: auto;
     border-radius: 8px;
     margin-bottom: 20px;
+    max-width: 500px;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
-.recipe-ingredients {
-    margin-bottom: 20px;
-}
-
-.recipe-description {
-    line-height: 1.6;
+h2 {
+    color: var(--dark_purple);
 }
 
 #header-container {
@@ -105,4 +117,8 @@ header {
 .recommendations-container .recommendation-title {
     font-size: 14px;
     font-weight: bold;
+}
+
+.highlight {
+    color: red;
 }

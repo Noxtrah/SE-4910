@@ -426,6 +426,7 @@ header {
       /* Kalp simgesini büyütmek için */
       font-size: 20px; /* İstenilen boyuta göre */
       color: rgb(33, 31, 34);
+      /* cursor: pointer; */
     }
 
     .recipe p {

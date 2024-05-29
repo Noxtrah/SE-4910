@@ -348,21 +348,59 @@ const createRecipeElement = async (recipe) => {
     heartContainer.classList.add('heart-border'); 
     heartContainer.textContent = '♥';
 
-    document.body.appendChild(heartContainer);
+    // document.body.appendChild(heartContainer);
 
     heartContainer.classList.add('favorite-heart');
     if(recipe.isLiked){
         heartContainer.style.color = 'red';
     }
-    // heart.onclick = () => toggleFavorite(heart);
 
-    // const clickHandler = () => setLike(heartContainer, recipe);
-    // heartContainer.onclick = clickHandler;
     heartContainer.addEventListener('click', async () => {
         giveLike(recipe.recipe.id);
         heartContainer.style.color = heartContainer.style.color === 'red' ? 'black' : 'red';
+        if (!recipe.isLiked) {
+            const numHearts = 5; // Number of hearts to create
+            for (let i = 0; i < numHearts; i++) {
+                createFlyingHeart(heartContainer);
+            }
+        }
     });
 
+    imgDiv.appendChild(heartContainer);
+
+    function createFlyingHeart(parentElement) {
+        const heart = document.createElement('span');
+        heart.classList.add('flying-heart');
+        heart.textContent = '♥';
+        document.body.appendChild(heart);
+
+        const rect = parentElement.getBoundingClientRect();
+        const startX = rect.left + (rect.width / 2); // X coordinate of parent element
+        const startY = rect.top + (rect.height / 2); // Y coordinate of parent element
+
+        // Randomize end coordinates within a range around the parent element
+        const endX = startX + Math.random() * 100 - 50;
+        const endY = startY + Math.random() * 100 - 90;
+
+        // Set initial position of heart
+        heart.style.left = startX + 'px';
+        heart.style.top = startY + 'px';
+
+        // Animate heart to fly to the end coordinates
+        heart.animate([
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px)` }
+        ], {
+            duration: 1000, // Animation duration in milliseconds
+            easing: 'ease-out', // Animation easing function
+            fill: 'forwards' // Keep heart at its final position after animation
+        });
+
+        // Remove heart element after animation completes
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
 
 
     // Title
@@ -374,7 +412,7 @@ const createRecipeElement = async (recipe) => {
     recipeDiv.appendChild(imgDiv);
     recipeDiv.appendChild(titleDiv);
     recipeDiv.appendChild(starContainer);
-    recipeDiv.appendChild(heartContainer);
+    // recipeDiv.appendChild(heartContainer);
 
     return recipeDiv;
 };
@@ -395,7 +433,7 @@ const displayDashboard = async (recipes) => {
 // Function to fetch data from the API
 async function fetchData(key = 0) {
     const JWTAccessToken = sessionStorage.getItem('accessToken');
-   // let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
+   let apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
     if (key !== undefined) {
       apiUrl += `?key=${key}`;
     }
@@ -439,7 +477,15 @@ async function fetchData(key = 0) {
           next: 'Next',
           prev: 'Prev',
           onPageClick: function (event, page) {
-            fetchData(page - 1); // Call fetchData with the selected page number
+            const selectedValue = sessionStorage.getItem('selectedOption');
+            sessionStorage.setItem('key', page - 1);
+            if(selectedValue !== null){
+                console.log("Girdi    " , page)
+                fetchSortOperations(selectedValue, page - 1);
+            }
+            else{
+                fetchData(page - 1);
+            }
           }
         });
         isPaginationInitialized = true; // Set flag to prevent re-initialization
@@ -449,12 +495,13 @@ async function fetchData(key = 0) {
     }
   }
 
+const fetchDataByMealType = async (mealType, key) => {
+    key = sessionStorage.getItem('key');
+    sessionStorage.setItem('selectedOption', mealType);
 
-const fetchDataByMealType = async (mealType) => {
     try {
         // Modify the endpoint based on the mealType parameter
-        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByMeal?mealType=${mealType}`;
-
+        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByMeal?mealType=${mealType}&key=${key}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -464,9 +511,12 @@ const fetchDataByMealType = async (mealType) => {
     }
 };
 
-const fetchDataByCuisine = async (cuisine) => {
+const fetchDataByCuisine = async (cuisine, key) => {
+    key = sessionStorage.getItem('key');
+    sessionStorage.setItem('selectedOption', cuisine);
+
     try {
-        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByCuisine?cuisine=${cuisine}`;
+        const apiUrl = `https://recipiebeckend.azurewebsites.net/recipes/getRecipesByCuisine?cuisine=${cuisine}&key=${key}`;
         console.log(apiUrl);
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -477,6 +527,90 @@ const fetchDataByCuisine = async (cuisine) => {
     }
 };
 
+async function updateSelectedValue(newValue) {
+    const selectedValue = document.getElementById('selected-value');
+    const optionsViewButton = document.getElementById('options-view-button');
+    const options = document.querySelectorAll('.option');
+    console.log("New value: " , newValue);
+    selectedValue.textContent = newValue;
+    console.log("Selected value: " , selectedValue);
+
+    selectedValue.style.display = 'block';
+    // sessionStorage.setItem('selectedOption', newValue);
+
+    // Ensure the dropdown is closed
+    optionsViewButton.checked = false;
+
+    // Update the display style for options
+    options.forEach(option => {
+        const optionText = option.querySelector('.opt-val').textContent;
+        option.style.display = optionText === newValue ? 'block' : 'none';
+    });
+}
+
+function initializeDropdown() {
+    //DROPDOWN BOX (SORTING)
+    const optionsViewButton = document.getElementById('options-view-button');
+    const selectedValue = document.getElementById('selected-value');
+    const optionValues = document.querySelectorAll('.opt-val');
+    const options = document.querySelectorAll('.option');
+    const inputs = document.querySelectorAll('input[type="radio"]');
+    let isOptionSelected = false;
+
+    // Initialize radio buttons to unchecked state
+    inputs.forEach(input => {
+        input.checked = false;
+    });
+
+    // Check if there is a stored option in sessionStorage
+    const storedOption = sessionStorage.getItem('selectedOption');
+    if (storedOption) {
+        // selectedValue.textContent = storedOption;
+        selectedValue.style.display = 'block';
+        isOptionSelected = true;
+    } else {
+        selectedValue.textContent = 'Sort by:';
+    }
+
+    // Event listener for radio button change
+    inputs.forEach(input => {
+        input.addEventListener('change', function () {
+            if (this.checked) {
+                optionValues.forEach(val => {
+                    val.style.display = 'block';
+                });
+            }
+        });
+    });
+
+    // Close the dropdown and reset the selected value to "Sort by:" when clicking outside the dropdown
+    document.addEventListener('click', function (event) {
+        if (event.target !== optionsViewButton && isOptionSelected) {
+            optionsViewButton.checked = false;
+
+            selectedValue.style.display = 'none';
+            options.forEach(option => {
+                option.style.display = 'block';
+            });
+        }
+    });
+
+    // Add event listeners to each option to update the selected value and close the dropdown
+    options.forEach(option => {
+        option.addEventListener('click', function () {
+            const selectedOptionText = option.querySelector('.opt-val').textContent;
+            selectedValue.textContent = selectedOptionText;
+            // updateSelectedValue(selectedValue);
+            selectedValue.style.display = 'block';
+            optionsViewButton.checked = false; // Close the dropdown when an option is selected
+            isOptionSelected = true;
+
+            // Store the selected option in sessionStorage
+            sessionStorage.setItem('selectedOption', selectedOptionText);
+        });
+    });
+}
+
 const openRecipeDetailPage = (id) => {
     const recipeDetailURL = `recipeDetail.html?id=${id}`;
     // Perform any additional actions before navigating, if needed
@@ -486,48 +620,71 @@ const openRecipeDetailPage = (id) => {
 
 document.addEventListener('DOMContentLoaded', function () {
     //DROPDOWN BOX (SORTING)
-    const optionsViewButton = document.getElementById('options-view-button');
-    const selectedValue = document.getElementById('selected-value');
-    const optionValue = document.querySelectorAll('.opt-val');
-    const options = document.querySelectorAll('.option');
-    const inputs = document.querySelectorAll('input[type="radio"]');
-	let isOptionSelected = false;
+    initializeDropdown();
+    // const optionsViewButton = document.getElementById('options-view-button');
+    // const selectedValue = document.getElementById('selected-value');
+    // const optionValues = document.querySelectorAll('.opt-val');
+    // const options = document.querySelectorAll('.option');
+    // const inputs = document.querySelectorAll('input[type="radio"]');
+    // let isOptionSelected = false;
 
-    inputs.forEach(input => {
-        input.checked = false;
-    });
+    // // Initialize radio buttons to unchecked state
+    // inputs.forEach(input => {
+    //     input.checked = false;
+    // });
 
-    inputs.forEach(input => {
-        input.addEventListener('change', function () {
-            // Check if the radio button is checked
-            if (this.checked) {
-                // Apply styles to .opt-val when a radio button is checked
-                optionValue.forEach(val => {
-                    val.style.display = 'block';
-                });
-            }
-        });
-    });
-    // Close the dropdown and reset the selected value to "Sort by:" when clicking anywhere outside the dropdown
-    document.addEventListener('click', function (event) {
-        if (event.target !== optionsViewButton && isOptionSelected) {
-            optionsViewButton.checked = false;
+    // // Check if there is a stored option in sessionStorage
+    // const storedOption = sessionStorage.getItem('selectedOption');
+    // if (storedOption) {
+    //     selectedValue.textContent = storedOption;
+    //     selectedValue.style.display = 'block';
+    //     isOptionSelected = true;
+    // } else {
+    //     selectedValue.textContent = 'Sort by:';
+    // }
 
-			selectedValue.style.display = 'none';
-            // Show the options when closing the dropdown
-            options.forEach(function (option) {
-                option.style.display = 'block';
-            });
-        }
-    });
+    // // Event listener for radio button change
+    // inputs.forEach(input => {
+    //     input.addEventListener('change', function () {
+    //         if (this.checked) {
+    //             optionValues.forEach(val => {
+    //                 val.style.display = 'block';
+    //             });
+    //         }
+    //     });
+    // });
 
-    // Add event listeners to each option to update the selected value and close the dropdown
-    options.forEach(function (option) {
-        option.addEventListener('click', function () {
-            selectedValue.textContent = optionValue;
-            optionsViewButton.checked = false; // Close the dropdown when an option is selected
-			isOptionSelected = true;
-        });
+    // // Close the dropdown and reset the selected value to "Sort by:" when clicking outside the dropdown
+    // document.addEventListener('click', function (event) {
+    //     if (event.target !== optionsViewButton && isOptionSelected) {
+    //         optionsViewButton.checked = false;
+
+    //         selectedValue.style.display = 'none';
+    //         options.forEach(option => {
+    //             option.style.display = 'block';
+    //         });
+    //     }
+    // });
+
+    // // Add event listeners to each option to update the selected value and close the dropdown
+    // options.forEach(option => {
+    //     option.addEventListener('click', function () {
+    //         const selectedOptionText = option.querySelector('.opt-val').textContent;
+    //         selectedValue.textContent = selectedOptionText;
+    //         selectedValue.style.display = 'block';
+    //         optionsViewButton.checked = false; // Close the dropdown when an option is selected
+    //         isOptionSelected = true;
+
+    //         // Store the selected option in sessionStorage
+    //         sessionStorage.setItem('selectedOption', selectedOptionText);
+    //     });
+    // });
+
+    const homeLink = document.getElementById('home-link');
+
+    homeLink.addEventListener('click', function() {
+        // Remove the selectedOption from sessionStorage
+        sessionStorage.removeItem('selectedOption');
     });
 
     //LOG-IN, LOG-OUT
@@ -538,82 +695,117 @@ document.addEventListener('DOMContentLoaded', function () {
     if (JWTAccessToken != null) {
         // Change the text of the anchor element
         logInLink.textContent = "Log-Out";
+        logInLink.addEventListener('click', function(event) {
+            // Prevent default action
+            event.preventDefault();
+            sessionStorage.removeItem('accessToken');
+            sessionStorage.removeItem('refreshToken');
+            window.location.href = 'logIn.html';
+        });
     }
 
     fetchData(0)
 });
 
-function fetchSortOperations(selectedValue) {
+function fetchSortOperations(selectedValue, key) {
+    let selectedCuisines = ['Italian', 'Chinese', 'Mexican', 'French', 'Turkish', 'American'];
+    let selectedMealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'dessert'];
+    console.log("selectedValue =", selectedValue);
+    console.log("Key =", key);
+
     switch (selectedValue) {
-        case 'time':
-            fetchSortByTime();
+        case 'Prep. Time':
+            fetchSortByTime(key);
             break;
-        case 'alphabet':
-            fetchSortByAlphabet();
+        case 'Alphabetical':
+            fetchSortByAlphabet(key);
             break;
-        case 'rate':
-            fetchSortByRate();
+        case 'Rate':
+            fetchSortByRate(key);
             break;
-        case 'ingrCount':
-            fetchSortByIngrCount();
+        case 'Ingredient Count':
+            fetchSortByIngrCount(key);
             break;
         default:
-            console.log("Invalid option selected");
+            if (selectedCuisines.includes(selectedValue)) {
+                fetchDataByCuisine(selectedValue, key);
+            } else if (selectedMealTypes.includes(selectedValue)) {
+                fetchDataByMealType(selectedValue, key);
+            } else {
+                console.log("Invalid option selected");
+            }
     }
 }
 
-function fetchSortByTime() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime')
-        .then(response => response.json())
-        .then(data => {
-            console.log("data ne: " , data);
+
+function fetchSortByTime(key) {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-preptime?key=${key}`, {
+        headers: {
+            'Authorization': JWTAccessToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("data:", data);
+        displayDashboard(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+}
+
+function fetchSortByAlphabet(key) {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-alph?key=${key}`, {
+        headers: {
+            'Authorization': JWTAccessToken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.log('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (Array.isArray(data)) {
             displayDashboard(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
+        } else {
+            console.error('Invalid data format:', data);
+        }
+    })
+    .catch(error => console.error('Error fetching data:', error));
 }
 
-// Function to fetch and display recipes sorted alphabetically
-function fetchSortByAlphabet() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-alph')
-        .then(response => {
-            if (!response.ok) {
-                console.log('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                displayDashboard(data);
-            } else {
-                console.error('Invalid data format:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
+function fetchSortByRate(key) {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-rate?key=${key}`, {
+        headers: {
+            'Authorization': JWTAccessToken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.log('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (Array.isArray(data)) {
+            displayDashboard(data);
+        } else {
+            console.error('Invalid data format:', data);
+        }
+    })
+    .catch(error => console.error('Error fetching data:', error));
 }
 
-
-// Function to fetch and display recipes sorted by rate
-function fetchSortByRate() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-rate')
-        .then(response => {
-            if (!response.ok) {
-                console.log('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                displayDashboard(data);
-            } else {
-                console.error('Invalid data format:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-// Function to fetch and display recipes sorted by ingredient count
-function fetchSortByIngrCount() {
-    fetch('https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-ingCount')
+function fetchSortByIngrCount(key) {
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+    fetch(`https://recipiebeckend.azurewebsites.net/recipes/recipe-sort-ingCount?key=${key}`, {
+        headers: {
+            'Authorization': JWTAccessToken
+        }
+    })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -630,7 +822,11 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     radio.addEventListener('change', function () {
         if (this.checked) {
             console.log("Selected value:", this.value);
-            fetchSortOperations(this.value);
+            // fetchSortOperations();
+            const selectedValue = sessionStorage.getItem('selectedOption');
+            const key = parseInt(sessionStorage.getItem('key')) || 0;
+            fetchSortOperations(selectedValue, key);
+            displayPagination();
         }
     });
 });
@@ -667,65 +863,7 @@ function basicSearch() {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
-//https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info
-// async function getStarsAndHeart(index) {
-//     var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/all-recipes-info';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
 
-//     // const headers = {
-//     //     'Content-Type': 'application/json',
-//     //     'Authorization': JWTAccessToken,
-//     // };
-//     const response = await fetch(
-// 		apiUrl,
-// 		{
-// 			method: 'GET',
-// 			headers: {
-// 				'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-// 			}
-// 		}
-// 	);
-// 	if (!response.ok) {
-// 		throw new Error(`HTTP error! status: ${response.status}`);
-// 	}
-// 	const data = await response.json();
-//     console.log(data);
-//     var starAndHeartInfoArray = []
-//     starAndHeartInfoArray.push(data);
-//     return starAndHeartInfoArray;
-// }
-
-// async function getSelectedCustomDataOfDashboard(index) {
-//    var apiUrl = 'https://recipiebeckend.azurewebsites.net/recipes/home';
-//     const JWTAccessToken = sessionStorage.getItem('accessToken');
-//     const response = await fetch(
-//         apiUrl,
-//         {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': JWTAccessToken,
-//             }
-//         }
-//     );
-
-//     if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     const contentType = response.headers.get('Content-Type');
-
-//     if (contentType && contentType.includes('application/json')) {
-//         const data = await response.json();
-//         console.log("Data: " , data);
-//         return data[index];
-//     } else {
-//         // Handle non-JSON response or empty response
-//         console.error('Invalid or empty JSON response');
-//         return null; // or handle it according to your application's logic
-//     }
-// }
 
 function openNewTab() {
     const currentURL = window.location.href;
@@ -756,3 +894,84 @@ async function getMaxPage() {
         return null; // Return null in case of error
     }
 }
+
+// Function to fetch user data
+function fetchUserData() {
+    const apiUrl = 'https://recipiebeckend.azurewebsites.net/user/user-profile-info'; // Replace this URL with your actual API endpoint
+
+    const JWTAccessToken = sessionStorage.getItem('accessToken');
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': JWTAccessToken,
+    };
+
+    return fetch(apiUrl, { // Return the fetch promise
+        method: 'GET',
+        headers: headers,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok (status: ${response.status})`);
+        }
+        return response.json(); // Assuming the response is JSON
+    });
+}
+
+
+function updateUserProfileLink(userPhotoUrl, userName) {
+    const iconElements = document.getElementsByClassName('profile-icon');
+    if (iconElements.length > 0) {
+        const iconElement = iconElements[0]; // Get the first element in the collection
+
+        // Create a new img element
+        const imgElement = document.createElement('img');
+        imgElement.setAttribute('src', userPhotoUrl);
+        imgElement.setAttribute('alt', userName);
+        imgElement.classList.add('profile-photo');
+
+        // Replace the ion-icon element with the new img element
+        iconElement.replaceWith(imgElement);
+    }
+}
+
+
+// function initUserProfileUpdate() {
+//     function handleError(error) {
+//         console.error('Error fetching user data:', error);
+//     }
+    
+//     fetchUserData()
+//         .then(data => {
+//             const userPhotoUrl = data.userPhoto;
+//             const userName = `${data.name} ${data.lastName}`;
+//             updateUserProfileLink(userPhotoUrl, userName);
+//         })
+//         .catch(handleError);
+// }
+
+function insertUsername(username) {
+    const h2Element = document.querySelector('article h2');
+    if (h2Element) {
+        h2Element.textContent = `Hello, ${username}`;
+    }
+}
+
+function initUserProfileUpdate() {
+    function handleError(error) {
+        console.error('Error fetching user data:', error);
+    }
+    fetchUserData()
+        .then(data => {
+            const userPhotoUrl = data.userPhoto;
+            const userName = `${data.name} ${data.lastName}`;
+            const username = data.username; // Get the username from the response
+            
+            updateUserProfileLink(userPhotoUrl, userName);
+            insertUsername(username); // Insert the username into the <h2> tag
+        })
+        .catch(handleError);
+}
+
+initUserProfileUpdate();
+

@@ -121,6 +121,7 @@ async function createSingleReportItem(report) {
     const discardButton = createButton('Discard');
     discardButton.classList.add('discard-button');
     discardButton.addEventListener('click', () => discardRecipe(report.userRecipeResponse.id));
+    discardButton.addEventListener('click', () => discardRecipe(report.userRecipeResponse.id));
     actionButtons.appendChild(discardButton);
 
     const detailButton = createButton('Detail');
@@ -137,6 +138,7 @@ async function createSingleReportItem(report) {
     const deleteButton = createButton('Delete');
     deleteButton.classList.add('delete-button');
     deleteButton.addEventListener('click', function() {
+        createWarningPopup(report);
         createWarningPopup(report);
     });
     actionButtons.appendChild(deleteButton);
@@ -159,6 +161,26 @@ function createButton(text) {
 
 function discardRecipe(recipeId) {
     // Implement discard logic
+    apiUrl = `https://recipiebeckend.azurewebsites.net/admin/discard-report?id=${recipeId}`
+    try{
+        fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Discard recipe response:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    catch(error){
+        console.log(error);
+    }
+
     apiUrl = `https://recipiebeckend.azurewebsites.net/admin/discard-report?id=${recipeId}`
     try{
         fetch(apiUrl, {
@@ -288,9 +310,17 @@ function fillDetailSideBar(reportedItem, detailSideBar){
     selectedCuisine.innerHTML = '<b>Cuisine of the Recipe : </b>' + reportRecipeResponse.cuisine;
     detailSideBar.appendChild(selectedCuisine);
 
+    function convertToHourMinuteFormat(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        const hoursText = hours === 1 ? 'hour' : 'hours';
+        const minutesText = minutes === 1 ? 'minute' : 'minutes';
+        return `${hours} ${hoursText} ${minutes} ${minutesText}`;
+    }
+
     const selectedPrepTime = document.createElement('p');
     selectedPrepTime.classList.add('selected-recipe-report');
-    selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + reportRecipeResponse.preparationTime;
+    selectedPrepTime.innerHTML = '<b>Preparation Time of the Recipe : </b>' + convertToHourMinuteFormat(reportRecipeResponse.preparationTime);
     detailSideBar.appendChild(selectedPrepTime);
 
     // selectedPrepTime.style.marginBottom = '20px';
@@ -304,10 +334,6 @@ function closeDetailSidebar() {
     const detailSideBarWrapper = document.querySelector('.detail-sidebar-wrapper');
     detailSideBarWrapper.remove();
 }
-
-// function deleteRecipe(report) {
-//     createWarningPopup(report);
-// }
 
 function createWarningPopup(reportedItem) {
     // Create overlay element
@@ -351,9 +377,9 @@ function createWarningPopup(reportedItem) {
 
     sendReportButton.classList.add('popup-delete-button');
 
-    sendReportButton.addEventListener('click', function () {
-        console.log(reportRecipeResponse.id);
+    sendReportButton.addEventListener('click', function() {
         deleteRecipe(reportRecipeResponse.id);
+        overlay.remove();
     });
 
 

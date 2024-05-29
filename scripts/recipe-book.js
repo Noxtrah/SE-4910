@@ -104,7 +104,7 @@ async function showRecipes() {
             const coverImage = document.createElement("img");
             coverImage.classList.add("cover");
             // coverImage.src = "../Images/background.png";
-            coverImage.src = recipe.photoPath;
+            coverImage.src = recipe.photoPath ? recipe.photoPath : "../Images/RecipeIcon2.webp";
             bookContainer.appendChild(coverImage);
 
             // Create description container
@@ -182,9 +182,11 @@ async function showRecipes() {
                 publishButton.textContent = publishButton.textContent === "Publish" ? "Unpublish" : "Publish";
             }
             // Create Edit button
-            // const editButton = document.createElement("button");
-            // editButton.textContent = "Edit";
-            // buttonsContainer.appendChild(editButton);
+            
+            const editRecipeBtn = document.createElement("button");
+            editRecipeBtn.classList.add("edit-recipe-btn");
+            editRecipeBtn.textContent = "Edit Recipe";
+            buttonsContainer.appendChild(editRecipeBtn);
 
             // Create Delete button
             const deleteButton = document.createElement("button");
@@ -199,13 +201,21 @@ async function showRecipes() {
             // Append recipe item to recipe container
             recipeContainer.appendChild(recipeItem);
 
+            function convertToHourMinuteFormat(totalMinutes) {
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                const hoursText = hours === 1 ? 'hour' : 'hours';
+                const minutesText = minutes === 1 ? 'minute' : 'minutes';
+                return `${hours} ${hoursText} ${minutes} ${minutesText}`;
+            }
+
             // Set content for each element based on the recipe data
             recipeName.textContent = recipe.title;
             recipeDescription.textContent = "Description: " + recipe.description;
             recipeIngredients.textContent = "Ingredients: " + recipe.ingredients;
             recipeCuisine.textContent = "Cuisine: " + recipe.cuisine;
             recipeMeal.textContent = "Meal: " + recipe.meal;
-            recipePrepTime.textContent = "Preparation Time: " + recipe.preparationTime;
+            recipePrepTime.textContent = "Preparation Time: " + convertToHourMinuteFormat(recipe.preparationTime);
             recipeTitle.textContent = recipe.title;
 
             // const publishButton = document.getElementById("publishButton");
@@ -230,6 +240,25 @@ async function showRecipes() {
                 else if(publishButton.textContent == "Publish"){
                     unpublishRecipe(userRecipeId, recipeDetails);
                 }
+            });
+
+            // ********************EDIT RECIPE************************************
+            editRecipeBtn.addEventListener("click", function() {
+                const recipeId = recipe.id;
+                const urlParams = new URLSearchParams();
+                urlParams.append("id", recipeId);
+                urlParams.append("title", recipe.title);
+                urlParams.append("description", recipe.description);
+                urlParams.append("ingredients", recipe.ingredients);
+                urlParams.append("cuisine", recipe.cuisine);
+                urlParams.append("meal", recipe.meal);
+                urlParams.append("preparationTime", recipe.preparationTime);
+                // urlParams.append("photoPath", recipe.photoPath);
+
+                const editRecipeUrl = `editUserRecipe.html?${urlParams.toString()}`;
+                window.open(editRecipeUrl, "_self");
+                console.log('url params', urlParams.toString());
+
             });
 
             deleteButton.addEventListener("click", async () => {
