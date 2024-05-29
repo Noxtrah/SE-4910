@@ -13,8 +13,6 @@
 }
 
 .background{
-  /* background-image: url('Images/website-background-purple-and-black-tones-upscaled.png'); */
-  /* You can add additional background properties as needed */
   background-size: cover; /* Adjust to your preference */
   background-position: center; /* Adjust to your preference */
   background-repeat: no-repeat; /* Adjust to your preference */
@@ -24,14 +22,6 @@
   background-color: rgb(205, 199, 208);
   color: rgb(243, 232, 247);
 }
-
-/* body {
-  background: var(--backgroundColor);
-  font-family: var(--bodyFont);
-  font-weight: 400;
-  line-height: 1.75;
-  color: var(--textColor);
-} */
 
 p {
   margin-top: 100px;
@@ -487,7 +477,6 @@ a {
 
 
   .favorite-heart {
-    /* margin-left: 20px; */
     color: black;
     cursor: pointer;
     position: absolute;
@@ -507,6 +496,14 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.flying-heart {
+  position: fixed;
+  font-size: 24px;
+  color: red; /* Color of the flying hearts */
+  pointer-events: none; /* Make hearts non-interactive */
+  z-index: 9999; /* Ensure hearts appear above other content */
 }
 
   .recipe p {
@@ -690,6 +687,7 @@ body {
     margin: 0;
     height: auto;
     width: 100%;
+    overflow-x: hidden;
 }
 
 b {
@@ -1302,7 +1300,7 @@ Recipes
 
 .recipes-list {
   display: grid;
-  gap: 2rem 1rem;
+  gap: 3rem 1rem;
   padding-bottom: 3rem;
 }
 .tags-container {
@@ -1355,6 +1353,8 @@ Recipes
 @media screen and (min-width: 692px) {
   .recipes-list {
     grid-template-columns: 1fr 1fr;
+    gap: 2rem 1rem;
+
   }
   /* .recipe-img {
     height: 10rem;
@@ -1666,6 +1666,40 @@ input[type="radio"] {
   }
 }
 
+@media screen and (max-width: 991px) {
+  .select-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* backdrop-filter: blur(20px); */
+    z-index: 3;
+
+  }
+
+  #app-cover{
+    width: 200px;
+    position: relative;
+    background-color: #8a6d8d81;
+
+  }
+
+  #options {
+    width: 200px;
+    text-align: center;
+    /* background-color: #8a6d8d81; */
+    backdrop-filter: blur(20px);
+
+  }
+
+  .opt-val{
+    text-align:center;
+    margin-left: -10px;
+    vertical-align: 150%;
+    backdrop-filter: blur(20px);
+
+  }
+}
+
 @keyframes moveup {
   0% {
     bottom: -25px;
@@ -1952,7 +1986,7 @@ input[type="radio"],
 @media screen and (max-width: 691px){
   .recipe-item {
     position: relative;
-    border: 4px solid silver;
+    border: 4px solid rgb(123, 115, 128);
     border-radius: 10px;
     min-height: 50vh;
   }
@@ -1961,6 +1995,14 @@ input[type="radio"],
 .profile-icon{
   font-size: 60px;
   margin-left: 42px;
+}
+
+.profile-photo{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 42px;
+  margin-right: 2px;
 }
 
 .profile-dropdown {
@@ -2043,4 +2085,42 @@ input[type="radio"],
 .paging-container .pagination li a:hover,
 .paging-container .pagination li.active a {
   background: rgba(255, 255, 255, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .paging-container {
+    position: relative;
+    /* height: 100vh; */
+    width: 100%;
+    /* background-size:auto; */
+    /* background-position:0%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+  }
+
+  #pagination-demo{
+    height: 40px;
+  }
+  
+  .paging-container .pagination {
+    position: relative;
+    /* height: 60px; */
+    background: #8a6d8d81;
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    border-radius: 2px;
+    /* padding: 0; */
+  }
+  .paging-container .pagination li a {
+    position: relative;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+  }
 }

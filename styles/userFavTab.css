@@ -176,8 +176,9 @@
   }
   
   h1 {
-    color: var(--light_purple);
+    color:#363b4e;
     font-size: 40px;
+    -webkit-text-stroke: 0.25px white; /* WebKit tarayıcılar için */
   }
   
   ul {

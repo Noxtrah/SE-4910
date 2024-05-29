@@ -23,13 +23,17 @@
         <a href="dashboard.html" class="active">Home</a>
         <a href="userDashboard.html">Recipes by Users</a>
         <!-- <a href="recipes.html">Cuisines</a> -->
+        <a href="logIn.html">Log-in</a>
         <a href="userProfile.html">Profile</a>
-        <a onclick="openNewTab()">Search By Ingredient</a>
+        <a href="userFavTab.html">Favourites</a>
+        <a href="recipe-book.html">My Recipe Book</a>
+        <a href="meal_planner.html">My Meal Planner</a>
+        <a href="searchByIngredientTab.html" target="_blank">Search By Ingredient</a>
         <div class="nav-dropdown  show-dropdown" onclick="toggleAndCloseDropdown(this)">
           <button class="meal-types">Cuisines<ion-icon name="chevron-down-outline"
               class="nav-dropdown-arrow-icon"></ion-icon></button>
           <div class="nav-cuisines-dropdown-content">
-            <a onclick="fetchDataByCuisine('French');">French</a>
+            <a onclick="fetchDataByCuisine('French'), updateSelectedValue('Sort by:');">French</a>
             <a onclick="fetchDataByCuisine('Chinese');">Chinese</a>
             <a onclick="fetchDataByCuisine('Japanese');">Japanese</a>
             <a onclick="fetchDataByCuisine('Italian');">Italian</a>
@@ -90,7 +94,7 @@
 
         <div class="nav-links">
           <div class="glass-nav-links">
-            <a style="font-size: larger;" href="dashboard.html" class="nav-link glass">Home</a>
+            <a style="font-size: larger;" href="dashboard.html" class="nav-link glass" id="home-link">Home</a>
             <a style="font-size: larger;" href="userDashboard.html" class="nav-link glass">Recipes by Users</a>
 
             <!-- Cuisines Dropdown -->
@@ -99,7 +103,7 @@
                 <ion-icon name="chevron-down-outline" class="dropdown-arrow-icon"></ion-icon>
               </button>
               <div class="cuisines-dropdown-content">
-                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French')">French</a>
+                <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('French'); updateSelectedValue('Sort by:');">French</a>
                 <a style="font-size: larger;" class="nav-link glass" onclick="fetchDataByCuisine('Chinese')">Chinese</a>
                 <a style="font-size: larger;" class="nav-link glass"
                   onclick="fetchDataByCuisine('Japanese')">Japanese</a>
@@ -193,6 +197,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;">
+            <h2></h2>
             <h1
               style="  font-weight:bold;
   min-block-size: 100%;
@@ -203,7 +208,7 @@
   font-family: system-ui;
   font-size: min(200%, 5vmin); font-size: 6vmin;
   line-height: 1.1;">
-                                Explore Recipies</h1>
+              Explore Recipes</h1>
             </article>
           </div>
         </div>

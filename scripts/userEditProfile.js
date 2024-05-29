@@ -69,14 +69,17 @@ saveButton.addEventListener("click", async function (event) {
 
         const finalAllergiesString = selectedFoods.map(food => food.trim()).join(',');
 
+    
         const photoUpload = document.getElementById('photo-upload');
         const photoFile = photoUpload.files[0];
 
         const formData = new FormData();
+   
         formData.append('bio', bio);
         formData.append('allergicFoods', finalAllergiesString);
         if (photoFile) {
             formData.append('profilePhoto', photoFile);
+    
         }
 
         console.log('Selected Allergies:', selectedFoods);
@@ -85,6 +88,7 @@ saveButton.addEventListener("click", async function (event) {
         await saveProfile(formData);
     } catch (error) {
         console.error('Error saving profile:', error);
+        
     }
 });
 
@@ -114,3 +118,30 @@ async function saveProfile(formData) {
         throw error;
     }
 }
+
+function setupBackButton() {
+    const backButton = document.getElementById('back-arrow-button');
+  
+    backButton.addEventListener('click', () => {
+        window.history.back();
+    });
+  }
+  // Call the function to generate user recipe boxes when the page loads
+  window.onload = function () {
+    setupBackButton(); // Call setupBackButton after generateUserRecipeBoxes
+  };
+
+  const saveProfileEditButton = document.getElementById('save-button');
+  // Pop-up elementini seçiyoruz
+  const savedPopup = document.getElementById('saved-popup');
+  
+  // Butona tıklama olayı ekliyoruz
+  saveButton.addEventListener('click', function() {
+      // Pop-up'ı gösteriyoruz
+      savedPopup.style.display = 'block';
+
+      // 2 saniye sonra pop-up'ı gizliyoruz
+      setTimeout(function() {
+          savedPopup.style.display = 'none';
+      }, 2000);
+  });
