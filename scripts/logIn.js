@@ -123,3 +123,16 @@ document.getElementById('login-button').addEventListener('click', function(event
     event.preventDefault(); // Prevent default form submission behavior
     loginUser();
 });
+
+document.getElementById('loginAsGuest').addEventListener('click', function(event) {
+    // Prevent default behavior of the link to ensure token removal happens first
+    event.preventDefault();
+
+    // Remove access token from sessionStorage
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('userId');
+
+    // Redirect to the guest dashboard
+    window.location.href = this.href;
+});
